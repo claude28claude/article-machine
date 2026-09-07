@@ -176,6 +176,45 @@ nav.tabs a:hover{color:var(--ink)}
 nav.tabs a[aria-current="page"]{color:var(--gold);border-bottom-color:var(--gold)}
 
 /* ==========================================================================
+   INSTALL BUTTON AND SHEET
+   ========================================================================== */
+
+.installbtn{
+  flex:0 0 auto;background:transparent;border:1px solid var(--gold);
+  color:var(--gold);font-family:var(--mono);font-size:var(--t-micro);
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:8px var(--s4);border-radius:var(--r-pill);cursor:pointer;
+  white-space:nowrap;transition:background var(--fast) var(--ease);
+}
+.installbtn:hover{background:rgba(201,162,39,.12)}
+.installbtn.big{font-size:var(--t-tiny);padding:12px var(--s5)}
+
+#sheet{position:fixed;inset:0;z-index:120;display:flex;
+  align-items:center;justify-content:center;padding:var(--s4)}
+.sheetbg{position:absolute;inset:0;background:rgba(4,4,7,.72);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.sheetbox{
+  position:relative;max-width:520px;width:100%;max-height:86vh;overflow-y:auto;
+  background:var(--panel);border:1px solid var(--line2);
+  border-radius:var(--r-lg);padding:var(--s6);box-shadow:var(--shadow);
+}
+.sheetbox h2{font-family:var(--serif);font-size:var(--t-h3);margin:0 0 var(--s5);font-weight:600}
+.sheetbox ol{margin:0;padding-left:1.35em}
+.sheetbox li{margin-bottom:var(--s3);font-size:var(--t-body);line-height:1.6}
+.sheetbox li b{color:var(--gold);font-weight:600}
+.sheetbox .note{
+  margin:var(--s5) 0 0;font-size:var(--t-copy);color:var(--dim);
+  padding-top:var(--s4);border-top:1px solid var(--line);
+}
+.sheetbox .note + .note{margin-top:var(--s3);padding-top:0;border-top:0}
+.sheetx{
+  position:absolute;top:var(--s4);right:var(--s4);background:transparent;
+  border:0;color:var(--dim);font-size:var(--t-h4);cursor:pointer;
+  line-height:1;padding:var(--s2);
+}
+.sheetx:hover{color:var(--ink)}
+
+/* ==========================================================================
    SEARCH RESULTS PANEL
    ========================================================================== */
 
@@ -575,7 +614,15 @@ footer a:hover{color:var(--gold)}
   nav.tabs{padding:0 var(--s4)}
   .wrap{padding:0 var(--s4)}
   .brand span{display:none}
+  /* Row one keeps the brand and the install button; the search box wraps to
+     its own row underneath, where it has the width to be usable. */
   .searchwrap{flex:1 1 100%;order:3;margin-bottom:var(--s3)}
+  .installbtn{order:2;margin-left:auto;padding:7px var(--s3)}
+  /* "Install app" pushes the header onto a third row on a narrow phone; the
+     word "app" is doing no work next to a download arrow. */
+  .installbtn .lbl{display:none}
+  .brand b{font-size:var(--t-body)}
+  .sheetbox{padding:var(--s5)}
   .figs{gap:var(--s5)}
 }
 

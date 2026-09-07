@@ -72,7 +72,28 @@ function renderNav(seg) {
       return '<a href="' + t.href + '"' + (on ? ' aria-current="page"' : '') + '>' +
              esc(t.label) + '</a>';
     }).join('');
+  syncHead();
 }
+
+/* The search results panel hangs below the header, so it needs the header's
+   real height. That was a hard-coded guess in CSS, and the install button
+   invalidated it by wrapping onto a third row on a narrow phone. Measure the
+   header instead — and measure it AFTER the nav is filled, since the nav is
+   rendered by JS and the header is 43px shorter without it. */
+function syncHead() {
+  var head = document.querySelector('header.top');
+  if (!head) return;
+  document.documentElement.style.setProperty('--headh',
+    Math.round(head.getBoundingClientRect().height) + 'px');
+}
+
+/* A resize event is not always enough — a font finishing loading, or the tab
+   being resized without one firing, both change the header's height silently.
+   Watching the element itself catches every case. */
+(function () {
+  var head = document.querySelector('header.top');
+  if (head && window.ResizeObserver) new ResizeObserver(syncHead).observe(head);
+})();
 
 /* ------------------------------------------------------------------ index */
 
@@ -1141,10 +1162,17 @@ function aboutPage() {
   'Rather than attach a vaguely related case to every article, this site leaves the field ' +
   'out. Seventy-two judgments are listed, against the articles they actually settled.</p></div>' +
 
-  '<div class="block"><h3>Offline and installable</h3>' +
-  '<p class="plain">The whole Constitution is loaded into your browser when you first open ' +
-  'the page. After that it works with no network at all. On a phone, your browser\'s ' +
-  '“Add to Home Screen” will install it as an app.</p></div>' +
+  '<div class="block"><h3>Offline, and installable as an app</h3>' +
+  '<p class="plain">Both subjects are loaded into your browser the first time you open the ' +
+  'page — around a megabyte in total. After that the site works with no network at all: on ' +
+  'a train, on a plane, or with the data switched off.</p>' +
+  '<p class="plain stack">You can also install it, so it gets its own icon and opens in its ' +
+  'own window without the browser bars. In Chrome and Edge the button below installs it in ' +
+  'one click; in other browsers it shows you where the option lives in that browser\'s menu.</p>' +
+  '<p class="stack"><button class="installbtn big" onclick="window.__install&amp;&amp;window.__install.trigger()">' +
+  '↓ Install as an app</button></p>' +
+  '<p class="why">Nothing is uploaded and nothing is tracked, installed or not. The install ' +
+  'is only your browser keeping the files and giving them an icon.</p></div>' +
 
   '</div>');
 }
@@ -1426,6 +1454,158 @@ document.addEventListener('click', function (e) {
   if (!resBox.hidden && !resBox.contains(e.target) && e.target !== qBox) closeResults();
 });
 
+/* =========================================================================
+   INSTALLING IT AS AN APP
+
+   Chromium browsers fire `beforeinstallprompt`, which can be captured and
+   replayed from a button of our own — that is the one-click install. Every
+   other browser installs through its own menu instead and fires nothing, so
+   the same button falls back to instructions for the browser actually in use.
+   The button hides itself once the site is already running installed.
+   ========================================================================= */
+
+(function () {
+  var btn   = document.getElementById('install');
+  var sheet = document.getElementById('sheet');
+  if (!btn || !sheet) return;
+
+  var deferred = null;
+  var ua = navigator.userAgent;
+  var isIOS      = /iPad|iPhone|iPod/.test(ua) ||
+                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isAndroid  = /Android/.test(ua);
+  var isFirefox  = /Firefox|FxiOS/.test(ua);
+  var isEdge     = /Edg\//.test(ua);
+  var isChromium = /Chrome|Chromium|CriOS/.test(ua) && !isFirefox;
+  var isSafari   = /Safari/.test(ua) && !isChromium && !isFirefox;
+
+  function installed() {
+    return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+           navigator.standalone === true;
+  }
+
+  if (!installed()) btn.hidden = false;
+
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();            // keep Chrome's own mini-bar from taking over
+    deferred = e;
+    btn.hidden = installed();
+  });
+
+  window.addEventListener('appinstalled', function () {
+    deferred = null;
+    btn.hidden = true;
+    closeSheet();
+  });
+
+  /* ---- the instructions, for browsers that install through their own menu ---- */
+  function steps() {
+    if (isIOS && isSafari) {
+      return { t: 'Add to your Home Screen', s: [
+        'Tap the Share button at the bottom of Safari — the square with an arrow coming out of it.',
+        'Scroll down the list and tap <b>Add to Home Screen</b>.',
+        'Tap <b>Add</b>. It appears as an app icon, opens without the browser bars, and works offline.'],
+        n: 'iPhone and iPad only allow this from Safari. If you are in Chrome on iOS, open the site in Safari first.' };
+    }
+    if (isIOS) {
+      return { t: 'Open this in Safari first', s: [
+        'On iPhone and iPad, only Safari can install a web app.',
+        'Open <b>claude28claude.github.io/article-machine</b> in Safari.',
+        'Then use Share → <b>Add to Home Screen</b>.'] };
+    }
+    if (isAndroid && isFirefox) {
+      return { t: 'Install from the Firefox menu', s: [
+        'Tap the <b>⋮</b> menu at the top right.',
+        'Tap <b>Install</b>, or <b>Add to Home screen</b>.'] };
+    }
+    if (isAndroid) {
+      return { t: 'Install from the browser menu', s: [
+        'Tap the <b>⋮</b> menu at the top right.',
+        'Tap <b>Install app</b>, or <b>Add to Home screen</b>.',
+        'Confirm. It gets its own icon and opens without the browser bars.'] };
+    }
+    if (isEdge) {
+      return { t: 'Install from Edge', s: [
+        'Click the <b>⋯</b> menu at the top right.',
+        'Choose <b>Apps</b> → <b>Install this site as an app</b>.'] };
+    }
+    if (isFirefox) {
+      return { t: 'Firefox on desktop cannot install this', s: [
+        'Desktop Firefox has no install option for web apps.',
+        'It still works offline here once loaded — nothing is lost except the separate window.',
+        'To get an app icon, open the site in Chrome or Edge and install from there.'] };
+    }
+    if (isSafari) {
+      return { t: 'Add to your Dock', s: [
+        'In Safari 17 or later, open the <b>File</b> menu.',
+        'Choose <b>Add to Dock</b>.',
+        'On older versions of Safari there is no install option; the site still works offline.'] };
+    }
+    return { t: 'Install from the browser menu', s: [
+      'Look for an install icon in the address bar — a screen with a downward arrow.',
+      'Or open the browser menu and look for <b>Install</b> or <b>Add to Home screen</b>.'],
+      n: 'If neither appears, your browser does not support installing web apps. The site still works offline once loaded.' };
+  }
+
+  function openSheet() {
+    var d = steps();
+    sheet.innerHTML =
+      '<div class="sheetbg"></div><div class="sheetbox" role="dialog" aria-modal="true" ' +
+      'aria-label="' + esc(d.t) + '"><button class="sheetx" aria-label="Close">✕</button>' +
+      '<div class="label tight">Install</div><h2>' + esc(d.t) + '</h2>' +
+      '<ol>' + d.s.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ol>' +
+      (d.n ? '<p class="note">' + esc(d.n) + '</p>' : '') +
+      '<p class="note">Once installed it opens in its own window, keeps both subjects on the ' +
+      'device, and works with no network at all.</p></div>';
+    sheet.hidden = false;
+    var x = sheet.querySelector('.sheetx');
+    x.focus();
+    x.addEventListener('click', closeSheet);
+    sheet.querySelector('.sheetbg').addEventListener('click', closeSheet);
+  }
+
+  function closeSheet() {
+    sheet.hidden = true;
+    sheet.innerHTML = '';
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !sheet.hidden) closeSheet();
+  });
+
+  /* One click where the browser allows it, instructions where it does not. */
+  function trigger() {
+    if (deferred) {
+      deferred.prompt();
+      deferred.userChoice.then(function (r) {
+        if (r && r.outcome === 'accepted') btn.hidden = true;
+        deferred = null;
+      });
+    } else if (installed()) {
+      sheet.innerHTML = '<div class="sheetbg"></div><div class="sheetbox" role="dialog">' +
+        '<button class="sheetx" aria-label="Close">✕</button>' +
+        '<div class="label tight">Install</div><h2>Already installed</h2>' +
+        '<p class="note" style="border:0;padding:0;margin:0">You are running this as an ' +
+        'installed app already.</p></div>';
+      sheet.hidden = false;
+      sheet.querySelector('.sheetx').addEventListener('click', closeSheet);
+      sheet.querySelector('.sheetbg').addEventListener('click', closeSheet);
+    } else {
+      openSheet();
+    }
+  }
+
+  btn.addEventListener('click', trigger);
+
+  /* The About page offers the same thing, for anyone who scrolled past the
+     button in the header. */
+  window.__install = { trigger: trigger, open: openSheet,
+                       canPrompt: function () { return !!deferred; },
+                       installed: installed };
+})();
+
+window.addEventListener('resize', syncHead);
+window.addEventListener('orientationchange', syncHead);
 window.addEventListener('hashchange', route);
 route();
 

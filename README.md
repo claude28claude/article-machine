@@ -154,7 +154,12 @@ Then open <http://localhost:8137>. It is also registered in the workspace
   Typing `21`, `art 21` or `article 21` all reach Article 21.
 - `J` and `K` step to the next and previous article.
 - `Esc` closes the results.
-- On a phone, "Add to Home Screen" installs it as an app.
+- **Install it as an app** with the button in the header. In Chrome and Edge
+  that is one click (the site captures `beforeinstallprompt` and replays it from
+  its own button). Every other browser installs from its own menu and fires no
+  event, so the same button shows instructions written for the browser actually
+  in use — Safari on iOS, Safari on macOS, Firefox, Android. The button hides
+  itself once the site is already running installed.
 
 ## Regenerating the data
 
