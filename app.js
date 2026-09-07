@@ -58,14 +58,17 @@ function activeSubject() {
   return hit || SUBJECTS.filter(function (s) { return s.isDefault; })[0];
 }
 
-function renderNav(seg0) {
+function renderNav(seg) {
   var sub = activeSubject();
   if (brandSub) brandSub.textContent = sub.name;
   if (!tabBar) return;
+  /* For a namespaced subject the first segment is its id, so the segment that
+     identifies the tab is the SECOND one. The default subject has no prefix. */
+  var key = sub.isDefault ? (seg[0] || '') : (seg[1] || '');
   tabBar.innerHTML = (SUBJECTS.length > 1
       ? '<a href="#/hub" class="hublink">All subjects</a>' : '') +
     sub.tabs.map(function (t) {
-      var on = t.match.indexOf(seg0) >= 0;
+      var on = t.match.indexOf(key) >= 0;
       return '<a href="' + t.href + '"' + (on ? ' aria-current="page"' : '') + '>' +
              esc(t.label) + '</a>';
     }).join('');
@@ -241,6 +244,18 @@ function homePage() {
     quick('356', "President's rule", 'And the case that made it reviewable') +
     quick('19', 'Freedom of speech', 'With the eight grounds on which it can be restricted') +
     '</div></div>';
+
+  /* The other subjects, once there is more than one. */
+  var others = SUBJECTS.filter(function (s) { return !s.isDefault; });
+  if (others.length) {
+    h += '<div class="wrap"><div class="label stack-lg">Also on this site</div>' +
+      '<div class="grid">' + others.map(function (s) {
+        return '<a class="pcard" href="#/' + s.id + '">' +
+          '<div class="pn">' + esc(s.name) + '</div>' +
+          '<div class="pt">' + esc(s.blurb) + '</div>' +
+          '<div class="pr">' + esc(s.stats().join(' · ')) + '</div></a>';
+      }).join('') + '</div></div>';
+  }
   render(h);
 }
 
@@ -808,6 +823,265 @@ function hubPage() {
   render(h + '</div></div>');
 }
 
+/* =========================================================================
+   SUBJECT: MODERN INDIAN HISTORY
+   The first subject added through the registry. Everything below is reached
+   only from #/history/... and touches nothing in the Constitution subject.
+   ========================================================================= */
+
+var HIST    = window.HISTORY    || {};
+var HIST_HY = window.HISTORY_HY || {};
+var histEra = {}, histEvent = {}, histAct = {}, histPerson = {}, histMove = {};
+(HIST.eras      || []).forEach(function (e) { histEra[e.id] = e; });
+(HIST.timeline  || []).forEach(function (e) { histEvent[e.id] = e; });
+(HIST.acts      || []).forEach(function (a) { histAct[a.id] = a; });
+(HIST.people    || []).forEach(function (p) { histPerson[p.id] = p; });
+(HIST.movements || []).forEach(function (m) { histMove[m.id] = m; });
+
+function histShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function histCrumb(here) {
+  return '<div class="crumb"><a href="#/history">Modern History</a>' +
+         (here ? ' → ' + esc(here) : '') + '</div>';
+}
+
+function histH1(t, sub) {
+  return '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
+         esc(t) + '</h1>' + (sub ? '<p class="sub">' + esc(sub) + '</p>' : '');
+}
+
+function histTimeline() {
+  var h = histCrumb('') + histH1('The timeline',
+    'From the Company\'s charter in 1600 to the Constitution in 1949, in ' +
+    (HIST.timeline || []).length + ' events. A gold marker means the event is high-yield.');
+
+  h += '<div class="listtabs">' + (HIST.eras || []).map(function (e) {
+    return '<button onclick="document.getElementById(\'era-' + e.id +
+      '\').scrollIntoView()">' + esc(e.n) + '</button>';
+  }).join('') + '</div>';
+
+  (HIST.eras || []).forEach(function (era) {
+    var evs = (HIST.timeline || []).filter(function (x) { return x.e === era.id; })
+                                   .sort(function (a, b) { return a.y - b.y; });
+    if (!evs.length) return;
+    h += '<div class="partband" id="era-' + esc(era.id) + '">' +
+      '<span class="pn">' + era.from + ' – ' + era.to + '</span>' +
+      '<h2>' + esc(era.n) + '</h2></div>' +
+      '<p class="foot before">' + esc(era.w) + '</p>';
+    h += evs.map(histRow).join('');
+  });
+  return histShell(h);
+}
+
+function histRow(ev) {
+  return '<a class="arow hy" href="#/history/event/' + encodeURIComponent(ev.id) + '">' +
+    '<span class="no' + (ev.hy ? '' : ' dimyear') + '">' + ev.y + '</span>' +
+    '<span class="tx"><b>' + esc(ev.t) + '</b>' +
+    '<i>' + esc(shorten(ev.w, 190)) + '</i></span>' +
+    (ev.hy ? '<span class="tag"><span class="chip tier t1">High-yield</span></span>' : '') +
+    '</a>';
+}
+
+function histEventPage(id) {
+  var ev = histEvent[id];
+  if (!ev) return notFound('No such event.');
+  var era = histEra[ev.e] || {};
+  var all = (HIST.timeline || []).slice().sort(function (a, b) { return a.y - b.y; });
+  var i = all.indexOf(ev);
+
+  var h = histCrumb(era.n || '') +
+    '<div class="arthead"><div class="big">' + ev.y + '</div><div class="ht">' +
+    '<h1>' + esc(ev.t) + '</h1><div class="chips">' +
+    (ev.d ? '<span class="chip">' + esc(ev.d) + '</span>' : '') +
+    (era.n ? '<span class="chip">' + esc(era.n) + '</span>' : '') +
+    (ev.hy ? '<span class="chip tier t1">High-yield</span>' : '') +
+    '</div></div></div>' +
+    '<div class="block"><h3>What happened</h3><p class="plain">' + esc(ev.w) + '</p></div>';
+
+  h += '<div class="nextprev">';
+  if (all[i - 1]) h += '<a href="#/history/event/' + encodeURIComponent(all[i - 1].id) +
+    '"><span class="d">Before</span><span class="t">' + all[i - 1].y + ' · ' +
+    esc(all[i - 1].t) + '</span></a>';
+  if (all[i + 1]) h += '<a class="r" href="#/history/event/' + encodeURIComponent(all[i + 1].id) +
+    '"><span class="d">After</span><span class="t">' + all[i + 1].y + ' · ' +
+    esc(all[i + 1].t) + '</span></a>';
+  return histShell(h + '</div>');
+}
+
+function histActs() {
+  var h = histCrumb('Acts') + histH1('The Acts, 1773 to 1947',
+    'The legislative spine of British rule — and, in 1935, the direct ancestor of the Constitution of 1950.');
+  h += (HIST.acts || []).map(function (a) {
+    return '<a class="arow hy" href="#/history/act/' + encodeURIComponent(a.id) + '">' +
+      '<span class="no">' + a.y + '</span><span class="tx"><b>' + esc(a.n) + '</b>' +
+      '<i>' + esc(a.w) + '</i></span></a>';
+  }).join('');
+  return histShell(h);
+}
+
+function histActPage(id) {
+  var a = histAct[id];
+  if (!a) return notFound('No such Act.');
+  var h = histCrumb('Acts') +
+    '<div class="arthead"><div class="big">' + a.y + '</div><div class="ht">' +
+    '<h1>' + esc(a.n) + '</h1></div></div>' +
+    '<div class="block"><h3>Why it mattered</h3><p class="plain">' + esc(a.w) + '</p></div>' +
+    '<div class="block"><h3>What it did</h3><ul class="entries">' +
+    a.k.map(function (x, i) {
+      return '<li><span class="en">' + (i + 1) + '</span><span>' + esc(x) + '</span></li>';
+    }).join('') + '</ul></div>';
+
+  /* The 1935 Act is the bridge between the two subjects. */
+  if (a.id === 'a-1935' || a.id === 'a-1947') {
+    h += '<div class="block"><h3>Where it leads</h3><div class="pills">' +
+      '<a class="pill" href="#/a/246">Article 246 · the three Lists</a>' +
+      '<a class="pill" href="#/schedule/7">Seventh Schedule</a>' +
+      '<a class="pill" href="#/a/395">Article 395 · repeals this Act</a>' +
+      '</div><p class="foot">The Constitution subject on this site carries the text these Acts led to.</p></div>';
+  }
+  return histShell(h);
+}
+
+function histPeople() {
+  var h = histCrumb('People') + histH1('The people',
+    (HIST.people || []).length + ' figures — reformers, nationalists, revolutionaries and the Viceroys they were arguing with.');
+  h += (HIST.people || []).map(function (p) {
+    return '<a class="arow hy" href="#/history/person/' + encodeURIComponent(p.id) + '">' +
+      '<span class="no" style="font-size:var(--t-small);color:var(--dim)">' + esc(p.y) + '</span>' +
+      '<span class="tx"><b>' + esc(p.n) + '</b><i>' + esc(shorten(p.w, 180)) + '</i></span>' +
+      (p.hy ? '<span class="tag"><span class="chip tier t1">High-yield</span></span>' : '') +
+      '</a>';
+  }).join('');
+  return histShell(h);
+}
+
+function histPersonPage(id) {
+  var p = histPerson[id];
+  if (!p) return notFound('No such person.');
+  return histShell(histCrumb('People') +
+    '<div class="arthead"><div class="ht"><h1>' + esc(p.n) + '</h1>' +
+    '<div class="chips"><span class="chip">' + esc(p.y) + '</span>' +
+    '<span class="chip case">' + esc(p.r) + '</span>' +
+    (p.hy ? '<span class="chip tier t1">High-yield</span>' : '') + '</div></div></div>' +
+    '<div class="block"><h3>What they did</h3><p class="plain">' + esc(p.w) + '</p></div>');
+}
+
+function histMovements() {
+  var h = histCrumb('Movements') + histH1('The movements',
+    'The set-pieces: what triggered each, how it was fought, and what it actually achieved.');
+  h += (HIST.movements || []).map(function (m) {
+    return '<a class="arow hy" href="#/history/movement/' + encodeURIComponent(m.id) + '">' +
+      '<span class="no" style="font-size:var(--n-sm)">' + m.from + '</span>' +
+      '<span class="tx"><b>' + esc(m.n) + ' · ' + m.from + '–' + m.to + '</b>' +
+      '<i>' + esc(shorten(m.w, 190)) + '</i></span></a>';
+  }).join('');
+  return histShell(h);
+}
+
+function histMovementPage(id) {
+  var m = histMove[id];
+  if (!m) return notFound('No such movement.');
+  return histShell(histCrumb('Movements') +
+    '<div class="arthead"><div class="big">' + m.from + '</div><div class="ht">' +
+    '<h1>' + esc(m.n) + '</h1><div class="chips">' +
+    '<span class="chip">' + m.from + ' – ' + m.to + '</span>' +
+    (m.hy ? '<span class="chip tier t1">High-yield</span>' : '') + '</div></div></div>' +
+    '<div class="block"><h3>What set it off</h3><p class="plain">' + esc(m.cause) + '</p></div>' +
+    '<div class="block"><h3>How it was fought</h3><p class="plain">' + esc(m.w) + '</p>' +
+    '<p class="why">Led by ' + esc(m.lead) + '</p></div>' +
+    '<div class="block"><h3>What it achieved</h3><p class="plain">' + esc(m.out) + '</p></div>');
+}
+
+function histHigh(slug) {
+  var tabs = [['', 'Overview'], ['confusions', 'Confused pairs'], ['facts', 'Quick facts']];
+  var body = '<div class="listtabs">' + tabs.map(function (t) {
+    return '<button onclick="location.hash=\'#/history/high-yield' + (t[0] ? '/' + t[0] : '') +
+      '\'" aria-pressed="' + (t[0] === (slug || '')) + '">' + esc(t[1]) + '</button>';
+  }).join('') + '</div>';
+
+  if (slug === 'confusions') {
+    body += histH1('The pairs that get mixed up',
+      'Plassey or Buxar, 1858 or 1861, which Act put dyarchy where, and which of Gandhi\'s three first campaigns was which.');
+    (HIST_HY.confusions || []).forEach(function (c) {
+      body += '<div class="cmp"><div class="cmph">' + esc(c.k) + '</div>' +
+        c.rows.map(function (r) {
+          return '<div class="cmpr"><div class="cmpk">' + esc(r[0]) + '</div>' +
+                 '<div class="cmpv">' + esc(r[1]) + '</div></div>';
+        }).join('') +
+        (c.note ? '<div class="cmpn">' + esc(c.note) + '</div>' : '') + '</div>';
+    });
+  } else if (slug === 'facts') {
+    body += histH1('Quick facts', 'The tables that get asked as they stand.');
+    (HIST_HY.facts || []).forEach(function (g) {
+      body += '<div class="block"><h3>' + esc(g.g) + '</h3>' +
+        (g.note ? '<p class="foot before">' + esc(g.note) + '</p>' : '') +
+        '<dl class="facts">' + g.items.map(function (it) {
+          return '<dt>' + esc(it[0]) + '</dt><dd>' + esc(it[1]) + '</dd>';
+        }).join('') + '</dl></div>';
+    });
+  } else {
+    var ev = (HIST.timeline || []).filter(function (x) { return x.hy; });
+    var pe = (HIST.people || []).filter(function (x) { return x.hy; });
+    var mo = (HIST.movements || []).filter(function (x) { return x.hy; });
+    var factCount = (HIST_HY.facts || []).reduce(function (a, g) { return a + g.items.length; }, 0);
+
+    body += histH1('The exam layer',
+      'What gets asked, marked across the timeline and gathered here.') +
+      '<div class="figs">' + fig(ev.length, 'key events') + fig((HIST.acts || []).length, 'Acts') +
+      fig(pe.length, 'key people') + fig(mo.length, 'movements') +
+      fig((HIST_HY.confusions || []).length, 'confused pairs') +
+      fig(factCount, 'quick facts') + '</div>';
+
+    body += '<div class="block"><h3>Start here</h3><div class="grid">' +
+      '<a class="pcard" href="#/history/high-yield/confusions"><div class="pn">' +
+      (HIST_HY.confusions || []).length + '</div><div class="pt">Confused pairs</div>' +
+      '<div class="pr">Plassey vs Buxar, 1858 vs 1861, the three big Acts, the three mass movements.</div></a>' +
+      '<a class="pcard" href="#/history/high-yield/facts"><div class="pn">' + factCount +
+      '</div><div class="pt">Quick facts</div><div class="pr">Viceroys, Congress sessions, newspapers, books, slogans, risings, trials, firsts.</div></a>' +
+      '<a class="pcard" href="#/history/acts"><div class="pn">' + (HIST.acts || []).length +
+      '</div><div class="pt">The Acts</div><div class="pr">1773 to 1947, and what each one actually did.</div></a>' +
+      '</div></div>';
+
+    body += '<div class="block"><h3>The events to know cold</h3>' +
+      ev.sort(function (a, b) { return a.y - b.y; }).map(histRow).join('') + '</div>';
+  }
+  return histShell(histCrumb('High-yield') + body);
+}
+
+function historyRoute(seg) {
+  switch (seg[0] || '') {
+    case '':           return render(histTimeline());
+    case 'high-yield': return render(histHigh(seg[1] || ''));
+    case 'acts':       return render(histActs());
+    case 'act':        return render(histActPage(seg[1]));
+    case 'people':     return render(histPeople());
+    case 'person':     return render(histPersonPage(seg[1]));
+    case 'movements':  return render(histMovements());
+    case 'movement':   return render(histMovementPage(seg[1]));
+    case 'event':      return render(histEventPage(seg[1]));
+    default:           return notFound('That address does not exist in Modern History.');
+  }
+}
+
+SUBJECTS.push({
+  id: 'history',
+  name: 'Modern History',
+  blurb: 'India from the Company\'s charter to the Constitution — the timeline, the Acts, the people and the movements.',
+  tabs: [
+    { href: '#/history',            label: 'Timeline',   match: ['', 'event'] },
+    { href: '#/history/high-yield', label: 'High-yield', match: ['high-yield'] },
+    { href: '#/history/acts',       label: 'Acts',       match: ['acts', 'act'] },
+    { href: '#/history/people',     label: 'People',     match: ['people', 'person'] },
+    { href: '#/history/movements',  label: 'Movements',  match: ['movements', 'movement'] },
+    { href: '#/',                   label: '↔ Constitution', match: [] }
+  ],
+  stats: function () {
+    return [(HIST.timeline || []).length + ' events', (HIST.acts || []).length + ' Acts',
+            (HIST.people || []).length + ' people', (HIST.movements || []).length + ' movements'];
+  },
+  route: historyRoute
+});
+
 /* ------------------------------------------------------------------ about */
 
 function aboutPage() {
@@ -921,6 +1195,43 @@ function buildIndex() {
       href: '#/amendment/' + m.n, num: ''
     });
   });
+  /* Modern History is searched from the same box, so "Plassey" or "Dandi" or
+     "Curzon" finds its way in without the reader having to switch subject
+     first. The kind label on each row says which subject it came from. */
+  (HIST.timeline || []).forEach(function (e) {
+    searchIndex.push({
+      kind: 'history', id: e.id, no: String(e.y), title: e.t,
+      sub: e.w, near: (e.t + ' ' + e.w).toLowerCase(),
+      hay: (e.y + ' ' + e.t + ' ' + e.w + ' ' + (e.d || '')).toLowerCase(),
+      href: '#/history/event/' + encodeURIComponent(e.id), num: ''
+    });
+  });
+  (HIST.people || []).forEach(function (p) {
+    var yr = /\d{4}/.exec(p.y);          // "1772–1833" / "Viceroy 1899–1905"
+    searchIndex.push({
+      kind: 'person', id: p.id, no: yr ? yr[0] : '', title: p.n, sub: p.r + ' · ' + p.y,
+      near: (p.n + ' ' + p.w).toLowerCase(),
+      hay: (p.n + ' ' + p.r + ' ' + p.y + ' ' + p.w).toLowerCase(),
+      href: '#/history/person/' + encodeURIComponent(p.id), num: ''
+    });
+  });
+  (HIST.acts || []).forEach(function (a) {
+    searchIndex.push({
+      kind: 'act', id: a.id, no: String(a.y), title: a.n, sub: a.w,
+      near: (a.n + ' ' + a.w).toLowerCase(),
+      hay: (a.y + ' ' + a.n + ' ' + a.w + ' ' + a.k.join(' ')).toLowerCase(),
+      href: '#/history/act/' + encodeURIComponent(a.id), num: ''
+    });
+  });
+  (HIST.movements || []).forEach(function (m) {
+    searchIndex.push({
+      kind: 'movement', id: m.id, no: String(m.from), title: m.n,
+      sub: m.w, near: (m.n + ' ' + m.w).toLowerCase(),
+      hay: (m.n + ' ' + m.w + ' ' + m.cause + ' ' + m.out + ' ' + m.lead).toLowerCase(),
+      href: '#/history/movement/' + encodeURIComponent(m.id), num: ''
+    });
+  });
+
   SCHEDULES.forEach(function (s) {
     var extra = '';
     if (s.items) extra = s.items.map(function (e) { return e.t; }).join(' ');
@@ -1051,7 +1362,7 @@ function route() {
   closeResults();
   window.scrollTo(0, 0);
 
-  renderNav(seg[0]);
+  renderNav(seg);
 
   /* A registered non-default subject handles its own routes under its id. */
   var sub = null;

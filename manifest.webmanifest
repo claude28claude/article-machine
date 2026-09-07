@@ -1,7 +1,7 @@
 {
-  "name": "The Article Machine — Constitution of India",
+  "name": "The Article Machine — Constitution & Modern History",
   "short_name": "Articles",
-  "description": "Every article of the Indian Constitution in plain English, with the official text, the landmark case and every amendment. Works offline.",
+  "description": "The Indian Constitution and Modern History in plain English, with a high-yield exam layer. Works offline.",
   "start_url": "./index.html#/",
   "scope": "./",
   "display": "standalone",

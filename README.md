@@ -1,8 +1,14 @@
 # The Article Machine
 
-Every article of the Constitution of India in plain English: what it actually
-means, the official text word for word, the landmark case that defined it, and
-every amendment that changed it. Searchable, works offline, installable.
+Two subjects for the Indian exam track, in plain English. Searchable across
+both, works offline, installable.
+
+**The Constitution of India** — every article, what it actually means, the
+official text word for word, the landmark case that defined it, and every
+amendment that changed it.
+
+**Modern History** — 1600 to 1949: the timeline, the Acts, the people and the
+movements.
 
 **Live at <https://claude28claude.github.io/article-machine/>**
 
@@ -42,6 +48,29 @@ is. Alongside it:
 recurs in Indian competitive-exam polity. They are *not* counts of past papers,
 and nothing on the site claims "asked N times". The site says so on the page
 itself, because a made-up frequency figure would be worse than none.
+
+## Modern History
+
+| | |
+|---|---|
+| Timeline events | **107**, across 8 eras from 1600 to 1949 |
+| Acts | **13**, from the Regulating Act 1773 to the Independence Act 1947 |
+| People | **32** |
+| Movements | **8**, each with trigger, method and outcome |
+| Confused pairs | **13** |
+| Quick facts | **111** across 8 tables |
+
+**This subject is written, not extracted.** The Constitution has a single
+authoritative PDF behind it; history does not. Dates are where errors hide, so
+the ones sources most often disagree on were checked before writing: the two
+dates of the Partition of Bengal, the founding of both Home Rule Leagues, the
+Non-Cooperation timeline, the Communal Award and Poona Pact including the
+71-to-148 seat figure, and the Azad Hind government. Where an attribution is
+genuinely disputed — "Jai Hind", "Sarfaroshi ki tamanna" — the entry says so
+instead of picking a side quietly.
+
+Every event is validated to fall inside the era it is filed under; that check
+caught five misfiled events on the first run.
 
 ## Adding another subject
 
@@ -102,7 +131,9 @@ of them so a reader can check what a summary lost.
 | `data-amendments.js` | The 106 amendments and the articles each touched |
 | `data-schedules.js` | The 12 Schedules, including all 220 entries of the three Lists |
 | `data-cases.js` | 91 landmark judgments, keyed to articles |
-| `data-highyield.js` | The exam layer: tiers, confused pairs, quick facts |
+| `data-highyield.js` | The Constitution's exam layer: tiers, confused pairs, quick facts |
+| `data-history.js` | Modern History: eras, timeline, Acts, people, movements |
+| `data-history-hy.js` | Modern History's exam layer |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline |
 | `tools/make-icons.py` | Regenerates the PWA icons |
