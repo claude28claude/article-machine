@@ -591,6 +591,27 @@ function aboutPage() {
   '<p class="why">This is a study aid, not legal advice. For anything that matters, read ' +
   'the article itself, and then the judgment.</p></div>' +
 
+  '<div class="block"><h3>Why the count here may not match your textbook</h3>' +
+  '<p class="plain">This site lists <b>506</b> article numbers: 471 in force and 35 repealed. ' +
+  'You will often see “395 articles” or “448 articles” instead. All three can be true, ' +
+  'because they count different things.</p>' +
+  '<ul class="trail" style="margin-top:var(--s4)">' +
+  '<li><span class="an">395</span><span class="ad">Plain-numbered articles, 1 to 395 — the ' +
+  'Constitution as adopted in 1949. Every one of them still has its number, even where the ' +
+  'article itself has been repealed.</span></li>' +
+  '<li><span class="an">111</span><span class="ad">Articles inserted by amendment and given a ' +
+  'letter: 21A, 31C, 51A, 243ZH, 371J, 330A and the rest.</span></li>' +
+  '<li><span class="an">506</span><span class="ad">The two added together — every article ' +
+  'number that appears in the official text.</span></li>' +
+  '<li><span class="an">35</span><span class="ad">Repealed: 24 plain-numbered and 11 lettered. ' +
+  'They are kept here, marked, because a number that has been emptied is itself worth ' +
+  'knowing about.</span></li>' +
+  '<li><span class="an">471</span><span class="ad">What is actually in force today.</span></li>' +
+  '</ul>' +
+  '<p class="why">That the plain-numbered articles come to exactly 395 is not a coincidence — ' +
+  'it is the check on the extraction. If it had found a false article the total would have ' +
+  'been 396, and if it had missed one it would have been 394.</p></div>' +
+
   '<div class="block"><h3>Why some fields are empty</h3>' +
   '<p class="plain">Most articles have never been the subject of a landmark judgment. ' +
   'Rather than attach a vaguely related case to every article, this site leaves the field ' +
