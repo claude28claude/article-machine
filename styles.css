@@ -473,6 +473,76 @@ details.fold > summary:hover{color:var(--ink)}
 .filters{display:flex;gap:var(--s2);flex-wrap:wrap;align-items:center;margin-bottom:var(--s5)}
 
 /* ==========================================================================
+   HIGH-YIELD
+   ========================================================================== */
+
+/* Tier colours: one hue per tier, used on chips, bands and cards alike so a
+   tier is recognisable wherever it appears. */
+.t1{--tier:var(--gold)}
+.t2{--tier:var(--indigo)}
+.t3{--tier:var(--dim)}
+
+.chip.tier{color:var(--tier);border-color:var(--tier);opacity:.9}
+.partband .pn.t1,.partband .pn.t2,.partband .pn.t3{color:var(--tier)}
+
+.tiergrid{display:grid;gap:var(--s3);grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.tiercard{
+  background:var(--panel);border:1px solid var(--line);
+  border-left:2px solid var(--tier);border-radius:var(--r-lg);padding:var(--s4);
+}
+.tiercard .tn{
+  font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.15em;
+  text-transform:uppercase;color:var(--tier);
+}
+.tiercard .tc{font-family:var(--serif);font-size:var(--t-h4);margin:var(--s2) 0 var(--s2)}
+.tiercard .ts{font-size:var(--t-small);color:var(--dim);line-height:1.5}
+
+/* A high-yield row leads with the reason, so the reason gets the room. */
+.arow.hy .tx i{color:var(--dim);margin-top:5px;line-height:1.55;white-space:normal}
+.arow.hy .tx b{font-weight:600}
+
+/* Confused pairs */
+.cmp{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);
+  margin-bottom:var(--s4);overflow:hidden;
+}
+.cmph{
+  font-family:var(--serif);font-size:var(--t-h4);padding:var(--s4) var(--s5);
+  border-bottom:1px solid var(--line);background:var(--panel2);
+}
+.cmpr{
+  display:flex;gap:var(--s5);padding:var(--s4) var(--s5);
+  border-bottom:1px solid var(--line);
+}
+.cmpr:last-of-type{border-bottom:0}
+.cmpk{
+  flex:0 0 27%;min-width:0;font-weight:600;font-size:var(--t-body);
+  color:var(--gold);line-height:1.45;
+}
+.cmpv{flex:1 1 auto;min-width:0;font-size:var(--t-body);color:var(--ink);line-height:1.6}
+.cmpn{
+  padding:var(--s4) var(--s5);background:rgba(201,162,39,.06);
+  border-top:1px solid var(--line);font-size:var(--t-copy);color:var(--dim);
+}
+.cmp a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,162,39,.35)}
+.cmp a:hover{border-bottom-color:var(--gold)}
+
+/* Quick facts */
+dl.facts{margin:0;display:grid;grid-template-columns:minmax(190px,32%) 1fr;gap:0}
+dl.facts dt{
+  padding:11px var(--s4) 11px 0;border-bottom:1px solid var(--line);
+  font-size:var(--t-body);color:var(--dim);line-height:1.5;
+}
+dl.facts dd{
+  margin:0;padding:11px 0;border-bottom:1px solid var(--line);
+  font-size:var(--t-body);line-height:1.6;
+}
+dl.facts a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,162,39,.35)}
+
+nav.tabs a.hublink{color:var(--dimmer)}
+nav.tabs a.hublink::before{content:"← "}
+
+/* ==========================================================================
    FOOTER
    ========================================================================== */
 
@@ -505,6 +575,17 @@ footer a:hover{color:var(--gold)}
   .brand span{display:none}
   .searchwrap{flex:1 1 100%;order:3;margin-bottom:var(--s3)}
   .figs{gap:var(--s5)}
+}
+
+@media (max-width:700px){
+  /* A 27% key column leaves about 80px on a phone, which is not enough for
+     "Article 352 — National". Stack the pair instead. */
+  .cmpr{flex-direction:column;gap:var(--s2);padding:var(--s4)}
+  .cmpk{flex:0 0 auto}
+  .cmph,.cmpn{padding-left:var(--s4);padding-right:var(--s4)}
+  dl.facts{grid-template-columns:1fr}
+  dl.facts dt{padding:12px 0 2px;border-bottom:0;color:var(--gold);font-size:var(--t-small)}
+  dl.facts dd{padding:0 0 12px}
 }
 
 @media (max-width:620px){

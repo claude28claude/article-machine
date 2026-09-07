@@ -20,7 +20,43 @@ One page, no framework, no build step, no network calls, no tracking.
 | ...of which carry a "why it matters" note | 267 |
 | Amendments | All **106**, with the articles each one touched |
 | Schedules | All **12**, with the three legislative Lists in full |
-| Landmark cases | **72** |
+| Landmark cases | **91** |
+| High-yield entries | **298** articles, 91 cases, 73 amendments, tiered |
+| Confused pairs | **16** side-by-side comparisons |
+| Quick facts | **52** across 6 sets |
+
+## The high-yield layer
+
+A separate section (`#/high-yield`) pulls out what actually gets asked, in three
+tiers — **must know / should know / worth a look** — for articles, cases and
+amendments alike, each with a line on *why* it is asked rather than just that it
+is. Alongside it:
+
+- **Confused pairs** — 32 vs 226, the three emergencies, 72 vs 161, 110 vs 117,
+  249/250/252/253, Fifth vs Sixth Schedule, the five writs, the four majorities.
+  Every article number mentioned is auto-linked to the real article.
+- **Quick facts** — the Preamble, dates, numbers, firsts and onlys, the
+  conventional borrowed-features list, and constitutional vs statutory bodies.
+
+**What the tiers are and are not.** They are editorial judgement about what
+recurs in Indian competitive-exam polity. They are *not* counts of past papers,
+and nothing on the site claims "asked N times". The site says so on the page
+itself, because a made-up frequency figure would be worse than none.
+
+## Adding another subject
+
+The site is built as a registry of subjects so an unrelated one can be added
+without touching the router or the header. In `app.js`:
+
+```js
+var SUBJECTS = [{ id, name, blurb, isDefault, tabs:[...], stats(), route(seg) }]
+```
+
+To add one: drop in its data file, push an entry, and it appears in the nav and
+answers at `#/<id>/...` on its own. The Constitution is the default subject, so
+its routes stay at the top level (`#/a/21`) and every published link keeps
+working; a second subject is namespaced under its id, and a hub page at `#/hub`
+appears automatically once there is more than one.
 
 ## Where the content comes from
 
@@ -65,7 +101,8 @@ of them so a reader can check what a summary lost.
 | `data-articles.js` | The 506 articles: heading, Part, official text, amendment trail |
 | `data-amendments.js` | The 106 amendments and the articles each touched |
 | `data-schedules.js` | The 12 Schedules, including all 220 entries of the three Lists |
-| `data-cases.js` | 72 landmark judgments, keyed to articles |
+| `data-cases.js` | 91 landmark judgments, keyed to articles |
+| `data-highyield.js` | The exam layer: tiers, confused pairs, quick facts |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline |
 | `tools/make-icons.py` | Regenerates the PWA icons |

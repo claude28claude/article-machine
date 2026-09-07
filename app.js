@@ -10,10 +10,66 @@ var AMENDMENTS= window.AMENDMENTS|| [];
 var SCHEDULES = window.SCHEDULES || [];
 var CASES     = window.CASES     || [];
 var PLAIN     = window.PLAIN     || {};
+var HIGHYIELD = window.HIGHYIELD || {};
 
 var main = document.getElementById('main');
 var qBox = document.getElementById('q');
 var resBox = document.getElementById('results');
+var tabBar = document.getElementById('tabs');
+var brandSub = document.getElementById('brandsub');
+
+/* ------------------------------------------------------------------ site
+
+   The site is built as a set of SUBJECTS so that an unrelated one can be
+   added later without touching the router or the header. To add a subject:
+   drop in its data file, push an entry here with its own `tabs` and `route`,
+   and it appears in the nav and at #/<id>/... on its own. Nothing below the
+   registry needs to change.
+
+   The Constitution is the default subject, so its routes sit at the top level
+   (#/a/21) rather than behind a prefix — the links already published stay
+   valid. Any later subject is namespaced under its own id.                  */
+
+var SITE = { name: 'The Article Machine' };
+
+var SUBJECTS = [{
+  id: 'constitution',
+  name: 'Constitution of India',
+  blurb: 'Every article in plain English, with the official text, the cases and the amendments.',
+  isDefault: true,
+  tabs: [
+    { href: '#/',            label: 'Articles',   match: ['', 'part', 'a'] },
+    { href: '#/high-yield',  label: 'High-yield', match: ['high-yield'] },
+    { href: '#/amendments',  label: 'Amendments', match: ['amendments', 'amendment'] },
+    { href: '#/schedules',   label: 'Schedules',  match: ['schedules', 'schedule'] },
+    { href: '#/cases',       label: 'Cases',      match: ['cases', 'case'] },
+    { href: '#/about',       label: 'About',      match: ['about'] }
+  ],
+  stats: function () {
+    return [ARTICLES.length + ' articles', AMENDMENTS.length + ' amendments',
+            CASES.length + ' cases', SCHEDULES.length + ' schedules'];
+  }
+}];
+
+function activeSubject() {
+  var seg = location.hash.replace(/^#\/?/, '').split('/')[0];
+  var hit = null;
+  SUBJECTS.forEach(function (s) { if (s.id === seg) hit = s; });
+  return hit || SUBJECTS.filter(function (s) { return s.isDefault; })[0];
+}
+
+function renderNav(seg0) {
+  var sub = activeSubject();
+  if (brandSub) brandSub.textContent = sub.name;
+  if (!tabBar) return;
+  tabBar.innerHTML = (SUBJECTS.length > 1
+      ? '<a href="#/hub" class="hublink">All subjects</a>' : '') +
+    sub.tabs.map(function (t) {
+      var on = t.match.indexOf(seg0) >= 0;
+      return '<a href="' + t.href + '"' + (on ? ' aria-current="page"' : '') + '>' +
+             esc(t.label) + '</a>';
+    }).join('');
+}
 
 /* ------------------------------------------------------------------ index */
 
@@ -361,7 +417,8 @@ function caseCard(c) {
   return '<a class="casecard" href="#/case/' + encodeURIComponent(c.id) + '">' +
     '<b>' + esc(c.n) + '</b>' +
     '<div class="meta">' + c.y + (c.c ? ' · ' + esc(c.c) : '') +
-    (c.b ? ' · ' + c.b + '-judge bench' : '') + '</div>' +
+    (c.b ? ' · ' + c.b + '-judge bench' : '') +
+    (c.court ? ' · ' + esc(c.court) : '') + '</div>' +
     '<p>' + esc(c.h) + '</p></a>';
 }
 
@@ -537,6 +594,7 @@ function casePage(id) {
     '</div><div class="ht"><h1>' + esc(c.n) + '</h1><div class="chips">' +
     (c.c ? '<span class="chip">' + esc(c.c) + '</span>' : '') +
     (c.b ? '<span class="chip case">' + c.b + '-judge bench</span>' : '') +
+    (c.court ? '<span class="chip">' + esc(c.court) + '</span>' : '') +
     (c.ov ? '<span class="chip gone">' + esc(c.ov.indexOf('overruled ') === 0 ?
        'Overruled an earlier case' : 'Overruled') + '</span>' : '') +
     '</div></div></div>';
@@ -556,6 +614,198 @@ function casePage(id) {
         (a ? ' · ' + esc(shorten(a.h, 44)) : '') + '</a>';
     }).join('') + '</div></div></div>';
   render(h);
+}
+
+/* ------------------------------------------------------------- high-yield */
+
+var TIERS = [
+  { n: 1, label: 'Must know',    sub: 'Answer these cold.' },
+  { n: 2, label: 'Should know',  sub: 'Regular, usually with a case or a number attached.' },
+  { n: 3, label: 'Worth a look', sub: 'Harder papers, and descriptive answers.' }
+];
+
+function tierChip(t) {
+  return '<span class="chip tier t' + t + '">' + esc(TIERS[t - 1].label) + '</span>';
+}
+
+function hyCount(kind, t) {
+  return (HIGHYIELD[kind] || []).filter(function (x) { return !t || x.t === t; }).length;
+}
+
+function hyShell(active, body) {
+  var tabs = [['', 'Overview'], ['articles', 'Articles'], ['cases', 'Cases'],
+              ['amendments', 'Amendments'], ['confusions', 'Confused pairs'],
+              ['facts', 'Quick facts']];
+  return '<div class="wrap artpage">' +
+    '<div class="crumb"><a href="#/">Articles</a> → High-yield' +
+    (active ? ' → ' + esc((tabs.filter(function (t) { return t[0] === active; })[0] || ['', ''])[1]) : '') +
+    '</div>' +
+    '<div class="listtabs">' + tabs.map(function (t) {
+      return '<button onclick="location.hash=\'#/high-yield' + (t[0] ? '/' + t[0] : '') +
+        '\'" aria-pressed="' + (t[0] === active) + '">' + esc(t[1]) + '</button>';
+    }).join('') + '</div>' + body + '</div>';
+}
+
+function highYieldHome() {
+  var h = '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
+    'The exam layer</h1>' +
+    '<p class="sub">What actually gets asked, and why. ' + hyCount('articles', 1) +
+    ' articles carry the “must know” tier, out of ' + LIVE.length +
+    ' in force — so you can start with those and work outward.</p>' +
+
+    '<div class="figs" style="margin-top:var(--s5)">' +
+      fig(hyCount('articles'), 'articles') +
+      fig(hyCount('cases'), 'cases') +
+      fig(hyCount('amendments'), 'amendments') +
+      fig((HIGHYIELD.confusions || []).length, 'confused pairs') +
+      fig((HIGHYIELD.facts || []).reduce(function (a, g) { return a + g.items.length; }, 0), 'quick facts') +
+    '</div>';
+
+  h += '<div class="block"><h3>How the three tiers work</h3><div class="tiergrid">' +
+    TIERS.map(function (t) {
+      return '<div class="tiercard t' + t.n + '">' +
+        '<div class="tn">' + esc(t.label) + '</div>' +
+        '<div class="tc">' + hyCount('articles', t.n) + ' articles · ' +
+        hyCount('cases', t.n) + ' cases · ' + hyCount('amendments', t.n) + ' amendments</div>' +
+        '<div class="ts">' + esc(t.sub) + '</div></div>';
+    }).join('') + '</div>' +
+    '<p class="why">These tiers are a judgement about what recurs in Indian competitive-exam ' +
+    'polity, not a count of past papers. Nothing here claims “asked N times”. What each entry ' +
+    'gives you instead is the <em>kind</em> of question the item produces — which is the part ' +
+    'that changes how you study it.</p></div>';
+
+  h += '<div class="block"><h3>Where to start</h3><div class="grid">' +
+    hyCard('articles', 'Articles', hyCount('articles'), 'Tiered, each with the reason it gets asked.') +
+    hyCard('confusions', 'Confused pairs', (HIGHYIELD.confusions || []).length,
+           '32 vs 226, the three emergencies, 110 vs 117, the five writs. Where marks are actually lost.') +
+    hyCard('facts', 'Quick facts', (HIGHYIELD.facts || []).length + ' sets',
+           'Preamble, dates, numbers, firsts and onlys, borrowed features, constitutional bodies.') +
+    hyCard('cases', 'Cases', hyCount('cases'), 'The judgments worth knowing by name.') +
+    hyCard('amendments', 'Amendments', hyCount('amendments'), 'The ones that changed something you will be asked about.') +
+    '</div></div>';
+  return hyShell('', h);
+}
+
+function hyCard(slug, title, n, sub) {
+  return '<a class="pcard" href="#/high-yield/' + slug + '">' +
+    '<div class="pn">' + n + '</div><div class="pt">' + esc(title) + '</div>' +
+    '<div class="pr">' + esc(sub) + '</div></a>';
+}
+
+/* One list renderer for articles, cases and amendments — they differ only in
+   how a row is labelled and where it links. */
+function hyList(kind, title, intro, rowFn) {
+  var rows = HIGHYIELD[kind] || [];
+  var h = '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
+    esc(title) + '</h1><p class="sub">' + esc(intro) + '</p>';
+  TIERS.forEach(function (t) {
+    var band = rows.filter(function (r) { return r.t === t.n; });
+    if (!band.length) return;
+    h += '<div class="partband"><span class="pn t' + t.n + '">' + esc(t.label) + '</span>' +
+      '<h2>' + band.length + ' ' + kind + '</h2>' +
+      '<span class="pr" style="font-family:var(--mono);font-size:var(--t-tiny);color:var(--dimmer)">' +
+      esc(t.sub) + '</span></div>';
+    h += band.map(rowFn).join('');
+  });
+  return hyShell(kind, h);
+}
+
+function hyArticles() {
+  return hyList('articles', 'The articles that get asked',
+    'Every one links to the full article, with the official text and any case attached to it.',
+    function (r) {
+      var a = byArt[r.a];
+      if (!a) return '';
+      return '<a class="arow hy" href="#/a/' + encodeURIComponent(r.a) + '">' +
+        '<span class="no">' + esc(r.a) + '</span><span class="tx">' +
+        '<b>' + esc(a.h || 'Repealed') + '</b><i>' + esc(r.w) + '</i></span></a>';
+    });
+}
+
+function hyCases() {
+  return hyList('cases', 'The cases worth knowing by name',
+    'Each one links to what it held, the citation and the articles it turns on.',
+    function (r) {
+      var c = caseById[r.id];
+      if (!c) return '';
+      return '<a class="arow hy" href="#/case/' + encodeURIComponent(r.id) + '">' +
+        '<span class="no" style="color:var(--indigo)">' + c.y + '</span><span class="tx">' +
+        '<b>' + esc(c.n) + '</b><i>' + esc(r.w) + '</i></span></a>';
+    });
+}
+
+function hyAmendments() {
+  return hyList('amendments', 'The amendments that changed something',
+    'Each one links to what it did and the articles it touched.',
+    function (r) {
+      var m = amdByNo[r.n];
+      if (!m) return '';
+      return '<a class="arow hy" href="#/amendment/' + r.n + '">' +
+        '<span class="no" style="color:var(--violet)">' + ordinal(r.n) + '</span>' +
+        '<span class="tx"><b>' + ordinal(r.n) + ' Amendment, ' + m.y + '</b>' +
+        '<i>' + esc(r.w) + '</i></span></a>';
+    });
+}
+
+function hyConfusions() {
+  var h = '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
+    'The pairs that get mixed up</h1>' +
+    '<p class="sub">Where marks are actually lost: two things that sound alike and are not.</p>';
+  (HIGHYIELD.confusions || []).forEach(function (c) {
+    h += '<div class="cmp"><div class="cmph">' + esc(c.k) + '</div>' +
+      c.rows.map(function (r) {
+        return '<div class="cmpr"><div class="cmpk">' + linkArts(r[0]) + '</div>' +
+               '<div class="cmpv">' + linkArts(r[1]) + '</div></div>';
+      }).join('') +
+      (c.note ? '<div class="cmpn">' + linkArts(c.note) + '</div>' : '') + '</div>';
+  });
+  return hyShell('confusions', h);
+}
+
+/* Turn every "article 226" / "Article 32" mentioned in the comparison text
+   into a link, so a confused pair is one click from the real thing. */
+function linkArts(s) {
+  return esc(s).replace(/\b([Aa]rticles?\s+)(\d{1,3}[A-Z]?(?:-[A-Z])?)/g,
+    function (all, word, num) {
+      return byArt[num] ? word + '<a href="#/a/' + encodeURIComponent(num) + '">' + num + '</a>' : all;
+    });
+}
+
+function hyFacts() {
+  var h = '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
+    'Quick facts</h1><p class="sub">The recall block — the things that are simply asked as they stand.</p>';
+  (HIGHYIELD.facts || []).forEach(function (g) {
+    h += '<div class="block"><h3>' + esc(g.g) + '</h3>' +
+      (g.note ? '<p class="foot before">' + esc(g.note) + '</p>' : '') +
+      '<dl class="facts">' + g.items.map(function (it) {
+        return '<dt>' + esc(it[0]) + '</dt><dd>' + linkArts(it[1]) + '</dd>';
+      }).join('') + '</dl></div>';
+  });
+  return hyShell('facts', h);
+}
+
+function highYieldPage(slug) {
+  if (!slug)                 return render(highYieldHome());
+  if (slug === 'articles')   return render(hyArticles());
+  if (slug === 'cases')      return render(hyCases());
+  if (slug === 'amendments') return render(hyAmendments());
+  if (slug === 'confusions') return render(hyConfusions());
+  if (slug === 'facts')      return render(hyFacts());
+  return notFound('No such high-yield section.');
+}
+
+/* --------------------------------------------------------------------- hub */
+
+function hubPage() {
+  var h = '<div class="wrap hero"><h1>' + esc(SITE.name) + '</h1>' +
+    '<p class="lede">Pick a subject.</p></div><div class="wrap"><div class="grid">';
+  SUBJECTS.forEach(function (s) {
+    h += '<a class="pcard" href="#/' + (s.isDefault ? '' : s.id) + '">' +
+      '<div class="pn">' + esc(s.name) + '</div>' +
+      '<div class="pt">' + esc(s.blurb) + '</div>' +
+      '<div class="pr">' + esc(s.stats().join(' · ')) + '</div></a>';
+  });
+  render(h + '</div></div>');
 }
 
 /* ------------------------------------------------------------------ about */
@@ -801,17 +1051,19 @@ function route() {
   closeResults();
   window.scrollTo(0, 0);
 
-  var tab = { '': 0, 'part': 0, 'a': 0, 'amendments': 1, 'amendment': 1,
-              'schedules': 2, 'schedule': 2, 'cases': 3, 'case': 3, 'about': 4 }[seg[0]];
-  document.querySelectorAll('nav.tabs a').forEach(function (el, i) {
-    if (i === tab) el.setAttribute('aria-current', 'page');
-    else el.removeAttribute('aria-current');
-  });
+  renderNav(seg[0]);
+
+  /* A registered non-default subject handles its own routes under its id. */
+  var sub = null;
+  SUBJECTS.forEach(function (s) { if (!s.isDefault && s.id === seg[0]) sub = s; });
+  if (sub && sub.route) return sub.route(seg.slice(1));
 
   switch (seg[0]) {
     case '':           return homePage();
+    case 'hub':        return hubPage();
     case 'part':       return partPage(seg[1]);
     case 'a':          return articlePage(seg[1]);
+    case 'high-yield': return highYieldPage(seg[1] || '');
     case 'amendments': return amendmentsPage();
     case 'amendment':  return amendmentPage(seg[1]);
     case 'schedules':  return schedulesPage();

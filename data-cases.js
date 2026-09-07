@@ -223,6 +223,73 @@ window.CASES = [
  h:"A divorced Muslim woman is entitled to maintenance under the general criminal law, and the Court urged a uniform civil code.",
  note:"Parliament responded with the Muslim Women (Protection of Rights on Divorce) Act, 1986, which was read down in Danial Latifi (2001) to preserve the substance of the judgment."},
 {id:"sarla-mudgal",n:"Sarla Mudgal v. Union of India",y:1995,c:"AIR 1995 SC 1531",a:["44","25","21"],
- h:"A Hindu husband who converts to Islam cannot contract a second marriage while the first subsists; the conversion does not dissolve it."}
+ h:"A Hindu husband who converts to Islam cannot contract a second marriage while the first subsists; the conversion does not dissolve it."},
+{id:"danial-latifi",n:"Danial Latifi v. Union of India",y:2001,c:"(2001) 7 SCC 740",b:5,a:["14","21","25","44"],
+ h:"Upheld the 1986 Act passed to undo Shah Bano, but read it so that a Muslim husband must make a reasonable and fair provision for his divorced wife's whole future, not merely for the iddat period.",
+ note:"A judgment that let Parliament keep its statute and the wife keep her maintenance."},
+
+/* ---- The Preamble, and the territory ---- */
+{id:"berubari",n:"In re Berubari Union",y:1960,c:"AIR 1960 SC 845",b:8,a:["1","3","368"],
+ h:"The Preamble is not part of the Constitution; and ceding Indian territory to another country cannot be done under article 3, because that article allows only internal rearrangement. It needs an amendment under article 368.",
+ note:"An advisory opinion under article 143 on the Nehru-Noon agreement with Pakistan, delivered on 14 March 1960. Parliament duly passed the 9th Amendment to give the territory up. Kesavananda reversed the Preamble holding thirteen years later: the Preamble IS part of the Constitution. Both halves are asked, and they point in opposite directions.",ov:"Kesavananda Bharati (1973), on the Preamble"},
+
+/* ---- Property, and the princes ---- */
+{id:"bank-nationalisation",n:"Rustom Cavasjee Cooper v. Union of India",y:1970,c:"AIR 1970 SC 564",b:11,a:["19","31","14","300A"],
+ h:"Struck down the bank nationalisation law for paying illusory compensation, and held that articles 19 and 31 are not watertight compartments — a law must satisfy both.",
+ note:"The Bank Nationalisation case. Its rejection of the compartment theory was the crack in A. K. Gopalan that Maneka Gandhi later widened into a doorway."},
+{id:"privy-purses",n:"Madhav Rao Scindia v. Union of India",y:1970,c:"AIR 1971 SC 530",b:11,a:["291","362","366"],
+ h:"Struck down the presidential order that had derecognised the rulers of the former princely states and stopped their privy purses.",
+ note:"The government lost, and then did the same thing properly: the 26th Amendment abolished the privy purses by amending the Constitution in 1971."},
+
+/* ---- Who counts as 'the State' ---- */
+{id:"rajasthan-seb",n:"Rajasthan State Electricity Board v. Mohan Lal",y:1967,c:"AIR 1967 SC 1857",b:5,a:["12"],
+ h:"A statutory corporation is an 'other authority' and therefore the State under article 12, even though it is not a government department.",
+ note:"The first widening of article 12 beyond government proper."},
+{id:"zee-telefilms",n:"Zee Telefilms Ltd. v. Union of India",y:2005,c:"(2005) 4 SCC 649",b:5,a:["12","32","226"],
+ h:"The Board of Control for Cricket in India is not 'the State' under article 12, because the government has no deep and pervasive control over it — but it performs public functions, so a writ still lies against it under article 226.",
+ note:"The outer edge of article 12, and a useful pair with Pradeep Kumar Biswas."},
+
+/* ---- Equality at work ---- */
+{id:"nargesh-meerza",n:"Air India v. Nergesh Meerza",y:1981,c:"AIR 1981 SC 1829",a:["14","15","16"],
+ h:"Struck down the rule terminating an air hostess on her first pregnancy as arbitrary — but upheld the earlier retirement age for air hostesses as a reasonable classification.",
+ note:"Decided 28 August 1981. Both halves get asked, and the split is the point: the Court found the pregnancy bar unreasonable while accepting a distinction it would be unlikely to accept today."},
+{id:"randhir-singh",n:"Randhir Singh v. Union of India",y:1982,c:"AIR 1982 SC 879",a:["14","16","39"],
+ h:"Equal pay for equal work, though only a directive principle under article 39(d), is enforceable through articles 14 and 16.",
+ note:"A clean example of a directive principle being given teeth by reading it with a fundamental right."},
+
+/* ---- Article 21 in the criminal process ---- */
+{id:"hussainara",n:"Hussainara Khatoon v. State of Bihar",y:1979,c:"AIR 1979 SC 1369",a:["21","39A","22"],
+ h:"A speedy trial is part of the right to life under article 21, and free legal aid to a poor accused is a constitutional duty, not charity.",
+ note:"The case that revealed undertrials in Bihar imprisoned longer than the maximum sentence for their alleged offence, and India's first reported public interest litigation."},
+{id:"sunil-batra",n:"Sunil Batra v. Delhi Administration",y:1978,c:"AIR 1978 SC 1675",b:5,a:["14","19","21"],
+ h:"A prisoner does not lose their fundamental rights at the prison gate: solitary confinement and bar fetters are subject to article 21.",
+ note:"The judgment that opened Indian prisons to constitutional scrutiny."},
+{id:"prem-shankar",n:"Prem Shankar Shukla v. Delhi Administration",y:1980,c:"AIR 1980 SC 1535",a:["14","19","21"],
+ h:"Routine handcuffing of an undertrial is unconstitutional; restraint must be justified in each case and recorded."},
+{id:"bachan-singh",n:"Bachan Singh v. State of Punjab",y:1980,c:"AIR 1980 SC 898",b:5,a:["21","14","19"],
+ h:"The death penalty is constitutional, but may be imposed only in the rarest of rare cases, after weighing the circumstances of the criminal as well as the crime.",
+ note:"The source of the 'rarest of rare' test, by 4-1. Bhagwati J. dissented, holding the death penalty itself unconstitutional."},
+{id:"mithu",n:"Mithu v. State of Punjab",y:1983,c:"AIR 1983 SC 473",b:5,a:["14","21"],
+ h:"Struck down the mandatory death sentence: a law that leaves the judge no discretion and the accused no hearing on sentence is arbitrary and unfair.",
+ note:"Section 303 of the Indian Penal Code, which made death the only sentence for murder by a life convict, was declared void."},
+{id:"rudul-sah",n:"Rudul Sah v. State of Bihar",y:1983,c:"AIR 1983 SC 1086",a:["21","32"],
+ h:"The Supreme Court may award compensation under article 32 for a violation of article 21 — a public law remedy distinct from a civil suit for damages.",
+ note:"Rudul Sah had been held for fourteen years after his acquittal. The award was ₹35,000, and the principle has been applied ever since."},
+{id:"bhim-singh",n:"Bhim Singh v. State of Jammu and Kashmir",y:1985,c:"AIR 1986 SC 494",a:["21","22","32"],
+ h:"Awarded compensation to an MLA unlawfully detained by the police so that he could not attend an Assembly session."},
+{id:"aruna-shanbaug",n:"Aruna Ramchandra Shanbaug v. Union of India",y:2011,c:"(2011) 4 SCC 454",a:["21","32"],
+ h:"Permitted passive euthanasia — withdrawal of life support from a patient in a permanent vegetative state — subject to High Court approval, while refusing active euthanasia.",
+ note:"Superseded by Common Cause (2018), which recognised advance directives and the right to die with dignity."},
+
+/* ---- Education, personal law, and the legislature ---- */
+{id:"mohini-jain",n:"Mohini Jain v. State of Karnataka",y:1992,c:"AIR 1992 SC 1858",a:["21","41","45"],
+ h:"Charging a capitation fee for a medical seat is unconstitutional, and the right to education flows from the right to life.",
+ note:"Partly overruled a year later by Unni Krishnan, which held the right is not to education at any level at State cost — a limit Parliament then fixed at fourteen through article 21A.",ov:"Unni Krishnan (1993), in part"},
+{id:"narasu-appa",n:"State of Bombay v. Narasu Appa Mali",y:1952,c:"AIR 1952 Bom 84",court:"Bombay High Court",a:["13","14","15","25","44"],
+ h:"Uncodified personal law is not 'law in force' under article 13, so it cannot be tested against the fundamental rights.",
+ note:"A High Court decision, not the Supreme Court's — but it has governed the question for seventy years and has been doubted repeatedly, including in Shayara Bano and Sabarimala."},
+{id:"lily-thomas",n:"Lily Thomas v. Union of India",y:2013,c:"(2013) 7 SCC 653",a:["102","191"],
+ h:"A legislator convicted and sentenced to two years or more is disqualified immediately; the provision allowing three months to appeal was struck down as beyond Parliament's power.",
+ note:"Decided 10 July 2013. Section 8(4) of the Representation of the People Act had let convicted MPs and MLAs keep their seats while an appeal was pending."}
 
 ];
