@@ -1,0 +1,228 @@
+/* The Article Machine - data-cases.js
+   Landmark judgments, keyed to the articles they settled.
+
+   A case is listed only where a real landmark exists. Most of the 471 live
+   articles have never been the subject of a defining judgment, and inventing
+   one for them would be worse than leaving the field empty.
+
+   Fields:  id    slug used in the URL
+            n     case name as it is normally cited
+            y     year of the judgment
+            c     citation, where a standard one exists
+            b     bench strength, for the constitution-bench cases
+            a     articles the case is about
+            h     the holding, in one or two sentences
+            note  the longer story, for the cases that changed the country
+            ov    overruled by / overruled                                  */
+window.CASES = [
+
+/* ---- The amending power, and the basic structure ---- */
+{id:"shankari-prasad",n:"Shankari Prasad v. Union of India",y:1951,c:"AIR 1951 SC 458",b:5,a:["368","13","31"],
+ h:"Parliament may amend fundamental rights: an amendment under article 368 is not 'law' within the meaning of article 13(2).",
+ note:"The first challenge to the First Amendment. The Court read 'law' in article 13 as ordinary legislation only, leaving the amending power unlimited. That reading held for sixteen years."},
+{id:"sajjan-singh",n:"Sajjan Singh v. State of Rajasthan",y:1965,c:"AIR 1965 SC 845",b:5,a:["368","13"],
+ h:"Upheld Shankari Prasad, but two judges doubted whether fundamental rights could really be left at Parliament's mercy.",
+ note:"Hidayatullah and Mudholkar JJ. wrote the dissents that Golak Nath and then Kesavananda would build on. Mudholkar J. used the phrase 'basic features' for the first time."},
+{id:"golak-nath",n:"I. C. Golak Nath v. State of Punjab",y:1967,c:"AIR 1967 SC 1643",b:11,a:["368","13"],
+ h:"Overruled the earlier cases: Parliament cannot take away or abridge fundamental rights at all, even by constitutional amendment.",
+ note:"A 6-5 majority, applying prospective overruling so that past amendments survived. It was an absolute bar rather than a limited one, and it did not last: the 24th Amendment answered it in 1971 and Kesavananda replaced it with something more durable.",ov:"Kesavananda Bharati (1973)"},
+{id:"kesavananda",n:"Kesavananda Bharati v. State of Kerala",y:1973,c:"AIR 1973 SC 1461",b:13,a:["368","13","31C","32"],
+ h:"Parliament may amend any part of the Constitution, including fundamental rights, but may not damage or destroy its basic structure.",
+ note:"The largest bench ever assembled in India, sitting for 68 days, deciding 7-6. It is the case that keeps the Constitution from being amended out of existence, and it did so without giving a closed list of what the basic structure contains - later benches have added to it. The date it was decided, 24 April 1973, became a constitutional boundary line of its own: laws put in the Ninth Schedule after it can still be tested against the basic structure."},
+{id:"indira-gandhi-election",n:"Indira Nehru Gandhi v. Raj Narain",y:1975,c:"AIR 1975 SC 2299",b:5,a:["368","329A","14"],
+ h:"Struck down clause (4) of article 329A, which had retrospectively validated the Prime Minister's election and put it beyond any court.",
+ note:"The first time the basic structure doctrine was actually used to strike something down. Free and fair elections, and judicial review, were held to be part of the basic structure."},
+{id:"minerva-mills",n:"Minerva Mills Ltd. v. Union of India",y:1980,c:"AIR 1980 SC 1789",b:5,a:["368","31C","14","19"],
+ h:"Struck down clauses (4) and (5) of article 368, inserted by the 42nd Amendment, which had tried to put amendments beyond judicial review and declare the amending power unlimited.",
+ note:"Also struck down the 42nd Amendment's expansion of article 31C. The judgment's central idea is balance: fundamental rights and directive principles are the two wheels of the chariot, and giving the directive principles blanket primacy destroys the balance. Limited amending power is itself part of the basic structure. The official text of the Constitution still prints article 368(4) and (5) with a footnote recording that they are invalid."},
+{id:"waman-rao",n:"Waman Rao v. Union of India",y:1981,c:"AIR 1981 SC 271",b:5,a:["368","31A","31B","31C"],
+ h:"Fixed 24 April 1973 - the date of Kesavananda - as the line: amendments made after it, including additions to the Ninth Schedule, are open to basic-structure review.",
+ note:"The prospective line that I. R. Coelho would later confirm and extend."},
+{id:"ir-coelho",n:"I. R. Coelho v. State of Tamil Nadu",y:2007,c:"(2007) 2 SCC 1",b:9,a:["31B","368","32","14","19","21"],
+ h:"A law placed in the Ninth Schedule after 24 April 1973 can still be struck down if it damages the basic structure.",
+ note:"The Ninth Schedule had grown from 13 entries to 284 as governments used it to park laws beyond the reach of fundamental rights. Coelho did not empty it, but it ended the idea that entry into the Schedule is an absolute immunity."},
+
+/* ---- Equality ---- */
+{id:"champakam",n:"State of Madras v. Champakam Dorairajan",y:1951,c:"AIR 1951 SC 226",b:7,a:["15","16","29","37"],
+ h:"Struck down caste-based reservation in college admissions; held that directive principles must give way to fundamental rights.",
+ note:"The judgment that produced the First Amendment, which added article 15(4) to authorise exactly what the Court had forbidden."},
+{id:"royappa",n:"E. P. Royappa v. State of Tamil Nadu",y:1974,c:"AIR 1974 SC 555",b:5,a:["14","16"],
+ h:"Equality is not merely a matter of reasonable classification: arbitrariness is itself a denial of equality.",
+ note:"The shift from the old classification test to the arbitrariness test, which Maneka Gandhi then took much further."},
+{id:"indra-sawhney",n:"Indra Sawhney v. Union of India",y:1992,c:"AIR 1993 SC 477",b:9,a:["16","15","335"],
+ h:"Upheld 27 per cent reservation for backward classes, capped total reservation at 50 per cent, required exclusion of the creamy layer, and barred reservation in promotions.",
+ note:"The Mandal case. Three of its holdings have since been changed by amendment: the 77th restored reservation in promotions, the 81st allowed backlog vacancies outside the ceiling, and the 103rd created a 10 per cent EWS quota that sits above the 50 per cent line."},
+{id:"nagaraj",n:"M. Nagaraj v. Union of India",y:2006,c:"(2006) 8 SCC 212",b:5,a:["16","335"],
+ h:"Upheld the amendments restoring reservation in promotions, but required the State to show backwardness, inadequate representation and administrative efficiency in each case.",
+ note:"Jarnail Singh (2018) later removed the requirement to prove backwardness for Scheduled Castes and Tribes, holding it inconsistent with Indra Sawhney."},
+{id:"jarnail-singh",n:"Jarnail Singh v. Lachhmi Narain Gupta",y:2018,c:"(2018) 10 SCC 396",b:5,a:["16","335"],
+ h:"Removed Nagaraj's requirement that a State collect data proving the backwardness of Scheduled Castes and Scheduled Tribes before reserving promotions."},
+{id:"janhit-abhiyan",n:"Janhit Abhiyan v. Union of India",y:2022,c:"(2023) 5 SCC 1",b:5,a:["15","16","46"],
+ h:"Upheld the 103rd Amendment's 10 per cent reservation for economically weaker sections, by 3-2, including its exclusion of those already covered by other reservations.",
+ note:"The majority held that reservation on purely economic grounds does not offend the basic structure and that the 50 per cent ceiling is not inviolable. The dissents said excluding the poor among SCs, STs and OBCs is itself discrimination."},
+{id:"shayara-bano",n:"Shayara Bano v. Union of India",y:2017,c:"(2017) 9 SCC 1",b:5,a:["14","15","25","13"],
+ h:"Struck down instant triple talaq as arbitrary and therefore void under article 14.",
+ note:"Decided 3-2. The majority split on reasoning - two judges held the practice arbitrary under article 14, one held it un-Islamic and so not protected by article 25 at all."},
+{id:"joseph-shine",n:"Joseph Shine v. Union of India",y:2018,c:"(2019) 3 SCC 39",b:5,a:["14","15","21"],
+ h:"Struck down the offence of adultery, which punished the man alone and treated a wife as her husband's property."},
+{id:"navtej-johar",n:"Navtej Singh Johar v. Union of India",y:2018,c:"(2018) 10 SCC 1",b:5,a:["14","15","19","21"],
+ h:"Read down section 377 to decriminalise consensual same-sex relations between adults.",
+ note:"Overruled Suresh Kumar Koushal (2013), which had restored section 377 after the Delhi High Court struck it down in 2009."},
+
+/* ---- Life and liberty ---- */
+{id:"gopalan",n:"A. K. Gopalan v. State of Madras",y:1950,c:"AIR 1950 SC 27",b:6,a:["21","19","22"],
+ h:"Read articles 19, 21 and 22 as separate, self-contained compartments, and 'procedure established by law' as any procedure Parliament enacts.",
+ note:"The narrow reading that left preventive detention almost unreviewable. Maneka Gandhi buried it 28 years later.",ov:"Maneka Gandhi (1978)"},
+{id:"maneka-gandhi",n:"Maneka Gandhi v. Union of India",y:1978,c:"AIR 1978 SC 597",b:7,a:["21","14","19"],
+ h:"A law taking away life or personal liberty must be fair, just and reasonable, not merely enacted; articles 14, 19 and 21 are to be read together.",
+ note:"The single most consequential reading of article 21. It converted 'procedure established by law' into something close to due process, and it made article 21 the article from which the Court has since drawn the rights to livelihood, health, shelter, a clean environment, legal aid, a speedy trial, privacy and dignity."},
+{id:"adm-jabalpur",n:"ADM Jabalpur v. Shivkant Shukla",y:1976,c:"AIR 1976 SC 1207",b:5,a:["21","359","32"],
+ h:"Held that during an emergency no one could approach a court even against unlawful detention, because article 21 was suspended.",
+ note:"The Court's worst hour, decided 4-1. Khanna J. dissented alone and lost the Chief Justiceship for it. The 44th Amendment made articles 20 and 21 non-suspendable in 1978, and the Court formally overruled the case in Puttaswamy in 2017.",ov:"Puttaswamy (2017)"},
+{id:"francis-coralie",n:"Francis Coralie Mullin v. Administrator, Delhi",y:1981,c:"AIR 1981 SC 746",a:["21"],
+ h:"The right to life means more than animal existence: it includes the right to live with human dignity and the bare necessities that go with it."},
+{id:"olga-tellis",n:"Olga Tellis v. Bombay Municipal Corporation",y:1985,c:"AIR 1986 SC 180",b:5,a:["21","19"],
+ h:"The right to life includes the right to livelihood, so pavement dwellers cannot be evicted without a fair hearing."},
+{id:"vishaka",n:"Vishaka v. State of Rajasthan",y:1997,c:"AIR 1997 SC 3011",a:["21","14","15","19","51"],
+ h:"Laid down binding guidelines against sexual harassment at work, drawn from international convention, to fill the absence of a law.",
+ note:"The guidelines governed Indian workplaces for sixteen years until Parliament passed the 2013 Act."},
+{id:"puttaswamy",n:"K. S. Puttaswamy v. Union of India",y:2017,c:"(2017) 10 SCC 1",b:9,a:["21","14","19"],
+ h:"Privacy is a fundamental right, intrinsic to life and personal liberty under article 21 and running through the other freedoms.",
+ note:"Unanimous, nine judges. It overruled M. P. Sharma (1954) and Kharak Singh (1962) on the point, formally overruled ADM Jabalpur, and set the proportionality test that any invasion of privacy must now pass. It is the foundation of the decriminalisation of homosexuality a year later and of India's data protection law."},
+{id:"common-cause",n:"Common Cause v. Union of India",y:2018,c:"(2018) 5 SCC 1",b:5,a:["21"],
+ h:"The right to die with dignity is part of article 21: passive euthanasia and advance directives are permitted, subject to safeguards."},
+{id:"dk-basu",n:"D. K. Basu v. State of West Bengal",y:1997,c:"AIR 1997 SC 610",a:["21","22"],
+ h:"Laid down mandatory requirements for every arrest and detention - memo of arrest, informing a relative, medical examination, an entry in the diary.",
+ note:"Most of the guidelines were later written into the Code of Criminal Procedure."},
+{id:"selvi",n:"Selvi v. State of Karnataka",y:2010,c:"(2010) 7 SCC 263",a:["20","21"],
+ h:"Narco-analysis, polygraph and brain-mapping tests cannot be conducted without consent: they violate the right against self-incrimination and personal liberty."},
+{id:"nandini-satpathy",n:"Nandini Satpathy v. P. L. Dani",y:1978,c:"AIR 1978 SC 1025",a:["20","21","22"],
+ h:"The protection against self-incrimination applies at the police-questioning stage, not only in court, and extends to any answer that could expose the person to a charge."},
+
+/* ---- Speech and the freedoms ---- */
+{id:"romesh-thappar",n:"Romesh Thappar v. State of Madras",y:1950,c:"AIR 1950 SC 124",a:["19","32"],
+ h:"Struck down a ban on circulating a journal; held that public order was not then a permitted ground for restricting speech.",
+ note:"This case and Brij Bhushan, decided the same day, produced the First Amendment, which added public order, friendly relations with foreign States and incitement to an offence to article 19(2)."},
+{id:"bennett-coleman",n:"Bennett Coleman & Co. v. Union of India",y:1972,c:"AIR 1973 SC 106",b:5,a:["19","14"],
+ h:"Newsprint quotas that limited page numbers were struck down: a restriction aimed at the volume of speech restricts speech, whatever its stated purpose."},
+{id:"shreya-singhal",n:"Shreya Singhal v. Union of India",y:2015,c:"(2015) 5 SCC 1",a:["19","14","21"],
+ h:"Struck down section 66A of the IT Act as vague and overbroad, and read down the intermediary takedown provision to require a court or government order.",
+ note:"The clearest modern statement that a restriction on speech must be narrowly drawn, and that discussion and advocacy are protected until they reach incitement."},
+{id:"anuradha-bhasin",n:"Anuradha Bhasin v. Union of India",y:2020,c:"(2020) 3 SCC 637",a:["19","21"],
+ h:"An indefinite internet shutdown is impermissible: orders must be published, reasoned, proportionate and open to review.",
+ note:"Held that freedom of speech and of trade over the internet is protected by article 19(1)(a) and 19(1)(g)."},
+{id:"bijoe-emmanuel",n:"Bijoe Emmanuel v. State of Kerala",y:1986,c:"AIR 1987 SC 748",a:["19","25"],
+ h:"Three children expelled for not singing the national anthem were ordered reinstated: standing respectfully without singing is not disrespect, and belief is protected.",
+ note:"'Our tradition teaches tolerance; our philosophy preaches tolerance; our Constitution practises tolerance.'"},
+
+/* ---- Religion, minorities, education ---- */
+{id:"shirur-mutt",n:"Commissioner, Hindu Religious Endowments v. Lakshmindra Thirtha Swamiar of Shirur Mutt",y:1954,c:"AIR 1954 SC 282",b:7,a:["25","26"],
+ h:"Created the 'essential religious practices' test: what is essential to a religion is protected, and the courts decide what is essential.",
+ note:"A doctrine the Court has used ever since, and one it has repeatedly been criticised for - it puts judges in the position of theologians."},
+{id:"sabarimala",n:"Indian Young Lawyers Association v. State of Kerala",y:2018,c:"(2019) 11 SCC 1",b:5,a:["25","26","14","15","17"],
+ h:"Struck down the exclusion of women of menstruating age from the Sabarimala temple, by 4-1.",
+ note:"A larger bench was later constituted to reconsider the questions it raised about the reach of essential religious practices."},
+{id:"kerala-education-bill",n:"In re Kerala Education Bill",y:1958,c:"AIR 1958 SC 956",b:7,a:["30","143","45"],
+ h:"Minority institutions may be regulated in the interests of standards, but regulation must not destroy the minority character.",
+ note:"An advisory opinion given to the President under article 143."},
+{id:"tma-pai",n:"T. M. A. Pai Foundation v. State of Karnataka",y:2002,c:"(2002) 8 SCC 481",b:11,a:["30","19","29"],
+ h:"Set out the rights of private and minority institutions: autonomy in admission and fees, subject to regulation preventing profiteering and capitation fees; the unit for deciding minority status is the State."},
+{id:"unni-krishnan",n:"Unni Krishnan v. State of Andhra Pradesh",y:1993,c:"AIR 1993 SC 2178",b:5,a:["21","21A","41","45"],
+ h:"Held that the right to education up to age 14 flows from article 21, but that it is not a right to education at any level at State cost.",
+ note:"The reasoning that Parliament turned into article 21A through the 86th Amendment nine years later. It partly overruled Mohini Jain (1992), which had found an unqualified right to education."},
+
+/* ---- Directive principles and property ---- */
+{id:"property-owners",n:"Property Owners Association v. State of Maharashtra",y:2024,c:"decided 5 November 2024",b:9,a:["39","31C","14"],
+ h:"Not every privately owned resource is a 'material resource of the community' under article 39(b); the earlier wide reading was rejected.",
+ note:"Seven judges in the majority, with Nagarathna J. partly dissenting and Dhulia J. dissenting. It rejected the view Krishna Iyer J. had put forward in Ranganatha Reddy (1977) and Sanjeev Coke (1983): private property may fall within article 39(b), but only if it is genuinely a material resource and genuinely of the community. The bench also held unanimously that article 31C as it stood before the 42nd Amendment survives, because Minerva Mills struck down the amendment that had replaced it."},
+{id:"kt-plantation",n:"K. T. Plantation Pvt. Ltd. v. State of Karnataka",y:2011,c:"(2011) 9 SCC 1",b:5,a:["300A","31","19"],
+ h:"Property under article 300A may be taken only by authority of law, and that law must be just, fair and reasonable, though compensation is not always constitutionally required."},
+{id:"vidya-devi",n:"Vidya Devi v. State of Himachal Pradesh",y:2020,c:"(2020) 2 SCC 569",a:["300A"],
+ h:"A State cannot take a citizen's land without acquisition or compensation and then plead limitation: article 300A is a constitutional right, not a mere formality."},
+
+/* ---- Courts, judges, review ---- */
+{id:"first-judges",n:"S. P. Gupta v. Union of India",y:1981,c:"AIR 1982 SC 149",b:7,a:["124","217","222","32"],
+ h:"'Consultation' with the Chief Justice does not mean concurrence, so the executive had the last word on appointments. Also opened public interest litigation by relaxing locus standi.",
+ note:"The First Judges case. Its holding on appointments lasted twelve years.",ov:"Second Judges case (1993)"},
+{id:"second-judges",n:"Supreme Court Advocates-on-Record Association v. Union of India",y:1993,c:"(1993) 4 SCC 441",b:9,a:["124","217","222"],
+ h:"Reversed the First Judges case: 'consultation' means concurrence, and the Chief Justice's view, formed collectively, is binding. The collegium was born."},
+{id:"third-judges",n:"In re Special Reference No. 1 of 1998",y:1998,c:"(1998) 7 SCC 739",b:9,a:["124","217","143"],
+ h:"Clarified the collegium: the Chief Justice must consult four senior-most judges for Supreme Court appointments and two for High Court appointments, and a recommendation made without that is not binding."},
+{id:"njac",n:"Supreme Court Advocates-on-Record Association v. Union of India (NJAC)",y:2015,c:"AIR 2016 SC 117",b:5,a:["124A","124B","124C","217","222","224A","231","368"],
+ h:"Struck down the 99th Amendment and the National Judicial Appointments Commission: the primacy of the judiciary in appointments is part of the basic structure.",
+ note:"Decided 4-1 on 16 October 2015. The official text of the Constitution still prints articles 124A, 124B and 124C, with a footnote recording that they were struck down. The collegium continues."},
+{id:"l-chandra-kumar",n:"L. Chandra Kumar v. Union of India",y:1997,c:"AIR 1997 SC 1125",b:7,a:["323A","323B","226","32","368"],
+ h:"Tribunals cannot replace the High Courts: judicial review under articles 226 and 32 is part of the basic structure, so tribunal decisions remain subject to High Court review."},
+{id:"pritam-singh",n:"Pritam Singh v. State",y:1950,c:"AIR 1950 SC 169",a:["136"],
+ h:"Special leave under article 136 is an extraordinary discretionary power, to be exercised sparingly and only where there is a substantial question or grave injustice."},
+{id:"union-carbide",n:"Union Carbide Corporation v. Union of India",y:1991,c:"(1991) 4 SCC 584",b:5,a:["142","21"],
+ h:"Article 142 gives the Court very wide power to do complete justice, but it cannot be used to override express statutory prohibitions."},
+
+/* ---- The Union, the States, federalism ---- */
+{id:"shamsher-singh",n:"Shamsher Singh v. State of Punjab",y:1974,c:"AIR 1974 SC 2192",b:7,a:["74","163","53","154"],
+ h:"The President and the Governor are constitutional heads: they act on the aid and advice of the council of ministers, except in the few areas where the Constitution gives them discretion."},
+{id:"bommai",n:"S. R. Bommai v. Union of India",y:1994,c:"AIR 1994 SC 1918",b:9,a:["356","355","74","32","14"],
+ h:"A proclamation under article 356 is open to judicial review; the majority of a government must be tested on the floor of the House, not in the Governor's judgment; and the dissolution of an Assembly can be reversed.",
+ note:"The case that ended casual dismissal of State governments. It also held secularism to be part of the basic structure. Its floor-test rule has been applied in almost every State political crisis since."},
+{id:"nabam-rebia",n:"Nabam Rebia v. Deputy Speaker",y:2016,c:"(2016) 8 SCC 1",b:5,a:["163","174","175","179","212"],
+ h:"A Governor cannot summon, advance or use the Assembly against the advice of the council of ministers on their own assessment of the political situation."},
+{id:"delhi-services",n:"Government of NCT of Delhi v. Union of India",y:2018,c:"(2018) 8 SCC 501",b:5,a:["239AA","239","74"],
+ h:"The Lieutenant Governor of Delhi is bound by the aid and advice of the elected government except on police, public order and land, and has no independent power to govern.",
+ note:"A further constitution bench in 2023 held that services also fall to the elected government; Parliament then legislated to reverse that."},
+{id:"west-bengal-union",n:"State of West Bengal v. Union of India",y:1962,c:"AIR 1963 SC 1241",b:6,a:["246","1","3","294"],
+ h:"Indian federalism is not a compact between sovereign States: the States have no sovereignty of their own that could resist Union legislation within its sphere."},
+{id:"anoop-baranwal",n:"Anoop Baranwal v. Union of India",y:2023,c:"(2023) 6 SCC 161",b:5,a:["324"],
+ h:"Election Commissioners are to be appointed by the President on the advice of a committee of the Prime Minister, the Leader of the Opposition and the Chief Justice, until Parliament legislates.",
+ note:"Parliament legislated the following year and replaced the Chief Justice on the panel with a Union minister."},
+{id:"mohinder-singh-gill",n:"Mohinder Singh Gill v. Chief Election Commissioner",y:1978,c:"AIR 1978 SC 851",b:5,a:["324","329"],
+ h:"Article 324 is a reservoir of power sufficient to fill gaps in election law, but it must be exercised fairly and is not immune from review."},
+{id:"article-370",n:"In re Article 370 of the Constitution",y:2023,c:"(2024) 2 SCC 1",b:5,a:["370","3","356","1"],
+ h:"Upheld the abrogation of article 370 and the reorganisation of Jammu and Kashmir, holding article 370 to have been a temporary provision and that the State retained no internal sovereignty.",
+ note:"The Court directed that statehood be restored as soon as possible and that elections be held."},
+
+/* ---- Legislature, ordinances, defection ---- */
+{id:"kihoto",n:"Kihoto Hollohan v. Zachillhu",y:1992,c:"AIR 1993 SC 412",b:5,a:["102","191","368"],
+ h:"Upheld the anti-defection law but struck down the clause making the Speaker's decision final: it is subject to judicial review.",
+ note:"The judgment that left the Tenth Schedule's central weakness in place - the Speaker, a partisan officeholder, is still the tribunal."},
+{id:"subhash-desai",n:"Subhash Desai v. Principal Secretary, Governor of Maharashtra",y:2023,c:"decided 11 May 2023",b:5,a:["179","212","163","174"],
+ h:"The Governor was wrong to call a floor test on the material before him, and a Speaker must recognise the whip appointed by the political party, not by a legislature faction."},
+{id:"dc-wadhwa",n:"D. C. Wadhwa v. State of Bihar",y:1987,c:"AIR 1987 SC 579",b:5,a:["213","123"],
+ h:"Repeatedly re-promulgating ordinances without placing them before the legislature is a fraud on the Constitution.",
+ note:"Bihar had kept 256 ordinances alive for years by re-issuing them."},
+{id:"krishna-kumar-singh",n:"Krishna Kumar Singh v. State of Bihar",y:2017,c:"(2017) 3 SCC 1",b:7,a:["123","213"],
+ h:"Re-promulgation of ordinances is unconstitutional, and laying an ordinance before the legislature is mandatory, not optional."},
+{id:"sita-soren",n:"Sita Soren v. Union of India",y:2024,c:"2024 INSC 161",b:7,a:["105","194"],
+ h:"A legislator who takes a bribe to vote or speak has no immunity under article 105 or 194.",
+ note:"Overruled P. V. Narasimha Rao (1998), which had by 3-2 given immunity to those who took the bribe and voted, but not to one who took it and abstained - a distinction the Court called untenable.",ov:"overruled P. V. Narasimha Rao (1998)"},
+{id:"raja-ram-pal",n:"Raja Ram Pal v. Speaker, Lok Sabha",y:2007,c:"(2007) 3 SCC 184",b:5,a:["105","122","194"],
+ h:"Parliament may expel a member, but the exercise of its privileges is not beyond judicial review; article 122 protects irregularity of procedure, not illegality."},
+
+/* ---- Services, tribunals, the State ---- */
+{id:"tulsiram-patel",n:"Union of India v. Tulsiram Patel",y:1985,c:"AIR 1985 SC 1416",b:5,a:["311","14","21"],
+ h:"Set out when the second proviso to article 311(2) allows dismissal without inquiry, and required the reasons to be recorded and reviewable."},
+{id:"ajay-hasia",n:"Ajay Hasia v. Khalid Mujib Sehravardi",y:1981,c:"AIR 1981 SC 487",b:5,a:["12","14"],
+ h:"Set out the tests for when a body is an 'instrumentality or agency of the State', and so 'the State' under article 12."},
+{id:"pradeep-kumar-biswas",n:"Pradeep Kumar Biswas v. Indian Institute of Chemical Biology",y:2002,c:"(2002) 5 SCC 111",b:7,a:["12"],
+ h:"Refined the Ajay Hasia tests: what matters is whether the body is financially, functionally and administratively under deep and pervasive State control."},
+
+/* ---- Exploitation, environment, the expanded article 21 ---- */
+{id:"pudr",n:"People's Union for Democratic Rights v. Union of India",y:1982,c:"AIR 1982 SC 1473",a:["23","24","21","32"],
+ h:"Paying less than the minimum wage is 'forced labour' under article 23; the article binds private parties, not only the State.",
+ note:"The Asiad workers case, and one of the first great public interest litigations."},
+{id:"bandhua-mukti",n:"Bandhua Mukti Morcha v. Union of India",y:1984,c:"AIR 1984 SC 802",a:["21","23","32"],
+ h:"A letter to the Court can be treated as a writ petition, and the Court may appoint commissioners to investigate facts in a public interest case."},
+{id:"mc-mehta-oleum",n:"M. C. Mehta v. Union of India (Oleum Gas Leak)",y:1987,c:"AIR 1987 SC 1086",b:5,a:["21","32"],
+ h:"Created absolute liability for enterprises in hazardous activity - no exceptions, unlike the older rule in Rylands v. Fletcher."},
+{id:"subhash-kumar",n:"Subhash Kumar v. State of Bihar",y:1991,c:"AIR 1991 SC 420",a:["21","32","48A"],
+ h:"The right to life includes the right to enjoy pollution-free water and air."},
+{id:"mc-mehta-sivakasi",n:"M. C. Mehta v. State of Tamil Nadu",y:1996,c:"AIR 1997 SC 699",a:["24","21A","39","45"],
+ h:"Directed the removal of children from hazardous employment in the Sivakasi fireworks industry and set up a welfare fund financed by offending employers."},
+
+/* ---- Personal law and the common civil code ---- */
+{id:"shah-bano",n:"Mohd. Ahmed Khan v. Shah Bano Begum",y:1985,c:"AIR 1985 SC 945",b:5,a:["44","14","15","25"],
+ h:"A divorced Muslim woman is entitled to maintenance under the general criminal law, and the Court urged a uniform civil code.",
+ note:"Parliament responded with the Muslim Women (Protection of Rights on Divorce) Act, 1986, which was read down in Danial Latifi (2001) to preserve the substance of the judgment."},
+{id:"sarla-mudgal",n:"Sarla Mudgal v. Union of India",y:1995,c:"AIR 1995 SC 1531",a:["44","25","21"],
+ h:"A Hindu husband who converts to Islam cannot contract a second marriage while the first subsists; the conversion does not dissolve it."}
+
+];

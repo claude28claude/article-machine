@@ -1,0 +1,17 @@
+{
+  "name": "The Article Machine — Constitution of India",
+  "short_name": "Articles",
+  "description": "Every article of the Indian Constitution in plain English, with the official text, the landmark case and every amendment. Works offline.",
+  "start_url": "./index.html#/",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0b0b0f",
+  "theme_color": "#0b0b0f",
+  "categories": ["education", "reference", "books"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
