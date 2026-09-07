@@ -1619,3 +1619,4 @@ window.__AM = { ARTICLES: ARTICLES, parts: parts, byArt: byArt, casesByArt: case
                 buildIndex: buildIndex, runSearch: runSearch };
 
 })();
+
