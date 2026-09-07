@@ -4,6 +4,8 @@ Every article of the Constitution of India in plain English: what it actually
 means, the official text word for word, the landmark case that defined it, and
 every amendment that changed it. Searchable, works offline, installable.
 
+**Live at <https://claude28claude.github.io/article-machine/>**
+
 One page, no framework, no build step, no network calls, no tracking.
 
 ---
