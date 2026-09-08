@@ -14,7 +14,7 @@
      once, fetch a fresh one in the background, and use that next time. Fast on
      every visit, and never more than one visit behind.  */
 
-var CACHE = 'article-machine-v11';
+var CACHE = 'article-machine-v12';
 var ASSETS = [
   './', './index.html', './styles.css', './app.js',
   './data-articles.js', './data-amendments.js', './data-schedules.js',

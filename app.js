@@ -1540,8 +1540,20 @@ function factsBlockLinked(g) {
   return '<div class="block"><h3>' + esc(g.g || g.h || '') + '</h3>' +
     (g.note ? '<p class="foot before">' + esc(g.note) + '</p>' : '') +
     '<dl class="facts">' + items.map(function (it) {
-      return '<dt>' + linkArts(it[0]) + '</dt><dd>' + linkArts(it[1]) + '</dd>';
+      return '<dt>' + artKey(it[0]) + '</dt><dd>' + linkArts(it[1]) + '</dd>';
     }).join('') + '</dl></div>';
+}
+
+/* linkArts links the DIGITS only, which is right inside a sentence and wrong
+   here: in the map the key cell IS the article reference, so linking only the
+   number leaves an eight-pixel-wide tap target on a phone. When the whole key
+   is an article reference, the whole key becomes the link. */
+function artKey(k) {
+  var m = /^(Articles?\s+)(\d{1,3}[A-Z]?)/.exec(k);
+  if (m && byArt[m[2]]) {
+    return '<a href="#/a/' + encodeURIComponent(m[2]) + '">' + esc(k) + '</a>';
+  }
+  return linkArts(k);
 }
 
 /* The row of pill buttons that switches between views inside a subject. */
