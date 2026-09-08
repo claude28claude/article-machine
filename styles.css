@@ -59,6 +59,28 @@
 
 *{box-sizing:border-box}
 
+/* An element carrying the `hidden` attribute must actually be hidden.
+
+   The browser's own rule for that is `[hidden]{display:none}` — specificity
+   (0,1,0) — which ANY heavier selector silently beats. `#sheet` did exactly
+   that with `display:flex` at (1,0,0), so the install overlay was never
+   hidden at all: an EMPTY, invisible, position:fixed, inset:0 layer sat at
+   z-index 120 over every page on the site and swallowed every pointer click.
+
+   Nothing looked wrong, because an empty flex container paints nothing. And
+   nothing in testing failed, because scripted .click() and keyboard
+   activation both bypass hit-testing — only a real mouse or finger hit the
+   overlay. The site was unclickable and every automated check passed.
+
+   This makes `hidden` win outright, whatever any other selector says. */
+[hidden]{display:none!important}
+
+/* The router replaces the whole page on every navigation. Scroll anchoring
+   would treat that as content shifting under the reader and try to preserve
+   their position, which is precisely wrong here — a new page starts at its
+   own top. */
+html{overflow-anchor:none}
+
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -637,7 +659,6 @@ footer a:hover{color:var(--gold)}
 }
 
 .hubsec{margin-top:var(--s7)}
-.hubsec[hidden]{display:none}
 .hubhead{
   display:flex;align-items:baseline;gap:var(--s4);flex-wrap:wrap;
   border-bottom:1px solid var(--line);
@@ -659,9 +680,8 @@ footer a:hover{color:var(--gold)}
   border:1px solid var(--line);border-radius:var(--r-sm);padding:var(--s4);
   transition:border-color var(--fast) var(--ease),transform var(--fast) var(--ease);
 }
-/* .topic and .hubsec set display themselves, so the browser's own [hidden]
-   rule would lose to them. The filter hides rows by setting el.hidden. */
-.topic[hidden]{display:none}
+/* The filter hides rows by setting el.hidden; the global [hidden] rule at the
+   top of this file is what makes that stick. */
 .topic:hover{border-color:var(--line2);transform:translateY(-1px)}
 .topic b{display:block;font-size:var(--t-body);font-weight:600;color:var(--ink);line-height:1.35}
 .topic i{

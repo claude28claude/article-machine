@@ -285,6 +285,13 @@ function plainOf(a) {
 
 function render(html) {
   main.innerHTML = html;
+  /* Scroll AFTER the new content is in place, not before. route() scrolls
+     first, but the page it scrolls is still the OLD one — and when the
+     content is then swapped, Chrome's scroll anchoring tries to keep what
+     you were looking at steady and nudges the position back down (it landed
+     at 38px, not 0). Doing it here, once the new page exists, leaves nothing
+     for anchoring to react to. */
+  jumpToTop();
   main.focus && main.focus();
 }
 
@@ -2035,6 +2042,32 @@ function moveSel(d) {
   rows[selIdx].scrollIntoView({ block: 'nearest' });
 }
 
+/* Going to a new page must put you at the TOP of it.
+
+   The stylesheet sets html{scroll-behavior:smooth}, which quietly turns
+   window.scrollTo(0,0) into an ANIMATED scroll — and that animation is then
+   running while render() replaces the entire page underneath it. The browser
+   abandons it part-way, so you land in the MIDDLE of the page you asked for.
+   With a sticky header the top bar looks identical either way, so the whole
+   thing reads as "the click did nothing".
+
+   It got much worse with the topic hub: that page is over 9,000px tall, so a
+   reader is usually thousands of pixels down when they click Economy or
+   Static GK — exactly the case where the abandoned animation strands them.
+
+   So this one scroll is forced to be instant. The smooth behaviour is left in
+   place for what it was meant for: the era buttons on the history timeline,
+   which scroll within a page the reader can see. */
+function jumpToTop() {
+  var root = document.documentElement;
+  var prev = root.style.scrollBehavior;
+  root.style.scrollBehavior = 'auto';   // beats the stylesheet for this call
+  window.scrollTo(0, 0);
+  if (root.scrollTop) root.scrollTop = 0;
+  if (document.body && document.body.scrollTop) document.body.scrollTop = 0;
+  root.style.scrollBehavior = prev;
+}
+
 /* ------------------------------------------------------------------ router */
 
 /* Every page here is the same document, so the browser's scroll restoration
@@ -2046,7 +2079,7 @@ function route() {
   var h = location.hash.replace(/^#\/?/, '');
   var seg = h.split('/').map(decodeURIComponent);
   closeResults();
-  window.scrollTo(0, 0);
+  jumpToTop();
 
   renderNav(seg);
 
