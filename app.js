@@ -917,7 +917,7 @@ function hyConfusions() {
 /* Turn every "article 226" / "Article 32" mentioned in the comparison text
    into a link, so a confused pair is one click from the real thing. */
 function linkArts(s) {
-  return esc(s).replace(/\b([Aa]rticles?\s+)(\d{1,3}[A-Z]?(?:-[A-Z])?)/g,
+  return esc(s).replace(/\b([Aa]rticles?\s+)(\d{1,3}(?:[A-Z]{1,2})?(?:-[A-Z])?)/g,
     function (all, word, num) {
       return byArt[num] ? word + '<a href="#/a/' + encodeURIComponent(num) + '">' + num + '</a>' : all;
     });
@@ -1549,7 +1549,7 @@ function factsBlockLinked(g) {
    number leaves an eight-pixel-wide tap target on a phone. When the whole key
    is an article reference, the whole key becomes the link. */
 function artKey(k) {
-  var m = /^(Articles?\s+)(\d{1,3}[A-Z]?)/.exec(k);
+  var m = /^(Articles?\s+)(\d{1,3}(?:[A-Z]{1,2})?(?:-[A-Z])?)/.exec(k);
   if (m && byArt[m[2]]) {
     return '<a href="#/a/' + encodeURIComponent(m[2]) + '">' + esc(k) + '</a>';
   }

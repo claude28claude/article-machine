@@ -5,9 +5,14 @@
    506 articles with their official headings and plain-English notes, in
    numerical order. That is the right shape for reading one article and the
    wrong shape for revision, because an exam does not ask "what is article
-   243I" — it asks which article covers the State Finance Commission. This
+   243-I" — it asks which article covers the State Finance Commission. This
    file is the reverse index: subject first, number second, grouped the way
    a syllabus groups them.
+
+   THE HYPHENATED NUMBERS ARE REAL. The Constitution writes 243-I, 243-O,
+   371-I and 243Z-I with a hyphen, so that the letter I is not read as the
+   numeral 1. Written without it they do not match anything, which is
+   exactly what happened on the first pass here.
 
    EVERY NUMBER HERE IS A LINK. The article numbers are rendered through the
    same linker the confused pairs use, so any row is one tap from the
@@ -263,7 +268,7 @@ groups: [
   ["Article 243B","Constitution of Panchayats"],
   ["Article 243D","Reservation of seats"],
   ["Article 243G","Powers, authority and responsibilities of Panchayats"],
-  ["Article 243I","Constitution of the State Finance Commission"],
+  ["Article 243-I","Constitution of the State Finance Commission"],
   ["Article 243K","Elections, and the State Election Commission"]
  ]},
 
@@ -322,7 +327,7 @@ groups: [
   ["Article 371F","Sikkim"],
   ["Article 371G","Mizoram"],
   ["Article 371H","Arunachal Pradesh"],
-  ["Article 371I","Goa"],
+  ["Article 371-I","Goa"],
   ["Article 371J","Karnataka — the Hyderabad-Karnataka region"],
   ["The sequence","A Nagaland, B Assam, C Manipur, D Andhra and Telangana, F Sikkim, G Mizoram, H Arunachal, I Goa, J Karnataka"]
  ]},
@@ -375,7 +380,7 @@ groups: [
   ["Parliament","79, 80, 81, 83, 85, 93, 105, 108, 110, 112, 123"],
   ["The courts","124, 131, 136, 137, 141, 143, 214, 226"],
   ["Audit and the States","148, 153, 155, 156, 161, 163, 164, 169, 170, 171, 174, 200, 213"],
-  ["Local government","243, 243A, 243D, 243G, 243I, 243K"],
+  ["Local government","243, 243A, 243D, 243G, 243-I, 243K"],
   ["Finance, services and elections","280, 300A, 312, 315, 320, 324, 326"],
   ["Commissions and language","338, 338A, 338B, 343, 350A, 351"],
   ["Emergency and amendment","352, 356, 360, 365, 368"]
