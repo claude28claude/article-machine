@@ -57,6 +57,23 @@ One page, no framework, no build step, no network calls, no tracking.
 | Confused pairs | **16** side-by-side comparisons |
 | Quick facts | **52** across 6 sets |
 
+## The article map
+
+The article pages run in numerical order, which is the right shape for reading
+one article and the wrong shape for revision — an exam asks which article
+covers the State Finance Commission, not what article 243I says. The map is
+the reverse index: subject first, number second, grouped the way a syllabus
+groups them, and **every number in it is a link to the article itself**.
+
+Two views: the map (the framework ranges, the twelve Schedules, and every
+subject group from citizenship to amendment), and the courts (the Supreme
+Court from 124 to 147 and the High Courts from 214 to 231 in full, the five
+writs, the judicial-review articles and the two tribunal articles).
+
+One small completeness fix worth noting: lists of the article 371 series
+usually run A, B, C, D and then jump to F. 371E is not missing from the
+Constitution, only from the lists, so it is here.
+
 ## The Constituent Assembly
 
 | | |
@@ -72,6 +89,22 @@ One page, no framework, no build step, no network calls, no tracking.
 attended the first sitting is the clearest case: 211 in some textbooks, 207 in
 other accounts. The page prints both and says which part is not in dispute,
 rather than picking one and sounding certain.
+
+## The treaties
+
+| | |
+|---|---|
+| To memorise first | **16**, with year, parties and the war each ended |
+| Grouped by war | Anglo-Maratha, Anglo-Mysore, Anglo-Sikh, Anglo-Nepalese, Anglo-Afghan |
+| Since 1947 | **6** — Panchsheel to the Lahore Declaration |
+| The drill | Twenty in date order, then the ten that come up most |
+| Confused pairs | **10** |
+
+**Two dates move, and both are given.** Sugauli was signed in December 1815
+and ratified in March 1816; Pondicherry is dated 1754 by some sources and 1755
+by others. One entry is flagged as the weaker association outright: the name
+"Srirangapatam" belongs firmly to 1792 and the Third Anglo-Mysore War, not to
+1799.
 
 ## The high-yield layer
 
@@ -137,9 +170,15 @@ number reads as stale rather than as wrong.
 | | |
 |---|---|
 | Packs | **18** |
-| Tables | **72** |
-| Facts | **850** |
+| Tables | **83** |
+| Facts | **942** |
 | Confused pairs | **10** |
+
+The **Important days** pack alone carries 151 rows: every date month by month
+with the reason behind it where there is one, a chain of month anchors, a
+thirty-five-date shortlist, and the pairs built to be confused — World Hindi
+Day on 10 January against Hindi Diwas on 14 September, World Consumer Rights
+Day on 15 March against National Consumer Day on 24 December.
 
 **Static means static.** Everything here was chosen because the answer is the
 same this year as last. Current affairs are deliberately excluded — they go
@@ -155,8 +194,8 @@ than the Nile. Those corrections are worth more than the easy rows around them.
 | | |
 |---|---|
 | Topics | **3** — diseases, nutrients, glands and hormones |
-| Tables | **31** |
-| Facts | **283** |
+| Tables | **35** |
+| Facts | **317** |
 | Confused pairs | **11** |
 | Quick facts | **47** |
 
@@ -250,7 +289,9 @@ of them so a reader can check what a summary lost.
 | `data-economy.js` | The plans, the 1991 reforms, the standing topics, the exam layer |
 | `data-gk.js` | 18 packs of static general knowledge, 850 facts |
 | `data-assembly.js` | The Constituent Assembly: story, dates, committees, people, debates |
-| `data-biology.js` | Diseases, nutrients, and glands and hormones — 283 facts |
+| `data-biology.js` | Diseases, nutrients, and glands and hormones |
+| `data-treaties.js` | The treaties of modern Indian history, and the agreements since 1947 |
+| `data-artmap.js` | The Constitution indexed by subject, and the courts article by article |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline |
 | `tools/make-icons.py` | Regenerates the PWA icons |

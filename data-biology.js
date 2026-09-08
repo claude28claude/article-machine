@@ -67,7 +67,9 @@ topics: [
     ["Trachoma","Chlamydia trachomatis. Eyes — historically the leading infectious cause of blindness"],
     ["Syphilis","Treponema pallidum, a spirochete. Sexually transmitted"],
     ["Gonorrhoea","Neisseria gonorrhoeae. Sexually transmitted"],
-    ["Botulism","Clostridium botulinum, from badly preserved food. Its toxin is among the most poisonous substances known"]
+    ["Botulism","Clostridium botulinum, from badly preserved food. Its toxin is among the most poisonous substances known"],
+    ["Bacillary dysentery","Shigella. Large intestine \u2014 blood and mucus in the stool. Not to be confused with amoebic dysentery, which is protozoan"],
+    ["Pneumonia, the other cause","Klebsiella pneumoniae also causes it, and is the answer when Streptococcus is not among the options"]
    ]},
 
   {h:"Viral diseases",
@@ -102,7 +104,9 @@ topics: [
     ["Filariasis, or elephantiasis","Wuchereria bancrofti, a roundworm, carried by the Culex mosquito. It blocks the lymphatic vessels"],
     ["Ascariasis","Ascaris, the roundworm. Small intestine"],
     ["Taeniasis","Taenia, the tapeworm, from undercooked pork or beef"],
-    ["Hookworm disease","Ancylostoma. Enters through the skin of the foot and causes anaemia"]
+    ["Hookworm disease","Ancylostoma. Enters through the skin of the foot and causes anaemia"],
+    ["Schistosomiasis","Schistosoma, a fluke or flatworm, picked up from water carrying infected snails. Also called bilharzia"],
+    ["Aspergillosis","Aspergillus, a fungus. Mainly the lungs, and mainly in people whose immunity is already low"]
    ]},
 
   {h:"Which vector carries what",
@@ -117,6 +121,18 @@ topics: [
     ["Housefly","Typhoid, cholera and dysentery — it carries the germs mechanically rather than as a host"],
     ["Dog, bat or monkey bite","Rabies"],
     ["Careful","Only the female mosquito bites — the male feeds on plant juice. And only the female Anopheles carries malaria"]
+   ]},
+
+  {h:"Sexually transmitted diseases",
+   note:"Asked as a set, and the trap is that the group mixes bacteria, viruses and a protozoan.",
+   rows:[
+    ["AIDS","Human immunodeficiency virus \u2014 a VIRUS"],
+    ["Gonorrhoea","Neisseria gonorrhoeae \u2014 a BACTERIUM"],
+    ["Syphilis","Treponema pallidum \u2014 a BACTERIUM, and a spirochete"],
+    ["Genital herpes","Herpes simplex virus \u2014 a VIRUS"],
+    ["Chlamydia","Chlamydia trachomatis \u2014 a BACTERIUM. The same organism causes trachoma of the eye"],
+    ["Trichomoniasis","Trichomonas vaginalis \u2014 a PROTOZOAN, and the only one in this group"],
+    ["Also spread this way","Hepatitis B and hepatitis C, both viral"]
    ]},
 
   {h:"What each disease attacks",
@@ -153,6 +169,7 @@ topics: [
    rows:[
     ["Diabetes mellitus","Too little insulin, or the body not responding to it. Type 1 is the failure of the pancreas to produce it; Type 2, far commoner, is resistance to it"],
     ["Hypertension","Persistently raised blood pressure. Normal is about 120/80 mm of mercury"],
+    ["Hypotension","Persistently low blood pressure \u2014 the opposite, and it causes dizziness and fainting rather than long-term organ damage"],
     ["Coronary heart disease","Fatty deposits narrowing the arteries that feed the heart"],
     ["Cancer","Uncontrolled cell division. Benign stays put; malignant invades and spreads, which is called metastasis. Its study is oncology"],
     ["Arthritis and osteoporosis","Inflammation of joints; loss of bone density, more common in women after menopause"],
@@ -277,7 +294,7 @@ topics: [
    ]},
 
   {h:"Fat-soluble vitamins",
-   note:"A, D, E and K dissolve in fat, are stored in the body, and can therefore be taken in toxic excess. The water-soluble ones cannot.",
+   note:"A, D, E and K dissolve in fat, are stored in the body, and can therefore be taken in toxic excess. The water-soluble ones cannot. Remember the four as ADEK.",
    rows:[
     ["Vitamin A — retinol","Deficiency causes night blindness, then xerophthalmia and Bitot's spots. Sources: carrot, green leafy vegetables, liver, milk, egg. The body makes it from the carotene in yellow and orange vegetables"],
     ["Vitamin D — calciferol","Deficiency causes rickets in children and osteomalacia in adults. Made in the skin from sunlight, which is why it is called the sunshine vitamin. It is really a hormone rather than a vitamin, since the body makes its own"],
@@ -309,8 +326,39 @@ topics: [
     ["Magnesium","Needed by hundreds of enzymes, and part of chlorophyll in plants"],
     ["Zinc","Wound healing, taste and immunity"],
     ["Fluorine","Strengthens tooth enamel in traces, but causes fluorosis in excess"],
-    ["Copper, selenium and chromium","Needed in trace amounts; part of various enzymes"],
+    ["Copper","Needed for iron metabolism and for connective tissue. Deficiency causes anaemia"],
+    ["Selenium","Part of the antioxidant enzymes, and needed for thyroid metabolism"],
+    ["Sulphur","Part of several amino acids and therefore of protein itself. A specific deficiency disease is not described"],
+    ["Cobalt","Its whole importance is that it is the metal at the centre of vitamin B12"],
+    ["Chromium","A trace element in glucose metabolism"],
     ["Careful","Iron deficiency causes anaemia. Iodine deficiency causes goitre. The two are constantly swapped in options"]
+   ]},
+
+  {h:"The chemical names in one table",
+   note:"Asked directly \u2014 \u201cthe chemical name of vitamin B3 is\u201d \u2014 so it is worth having them separated from everything else.",
+   rows:[
+    ["Vitamin A","Retinol"],
+    ["Vitamin B1","Thiamine"],
+    ["Vitamin B2","Riboflavin"],
+    ["Vitamin B3","Niacin"],
+    ["Vitamin B5","Pantothenic acid"],
+    ["Vitamin B6","Pyridoxine"],
+    ["Vitamin B7","Biotin"],
+    ["Vitamin B9","Folic acid"],
+    ["Vitamin B12","Cobalamin, or cyanocobalamin"],
+    ["Vitamin C","Ascorbic acid"],
+    ["Vitamin D","Calciferol"],
+    ["Vitamin E","Tocopherol"],
+    ["Vitamin K","Phylloquinone"]
+   ]},
+
+  {h:"The essential fatty acids, and the antioxidants",
+   rows:[
+    ["Omega-3","Alpha-linolenic acid. Found in flaxseed, walnut and mustard oil, and as long-chain forms in fish"],
+    ["Omega-6","Linoleic acid. Found in most vegetable oils, nuts and seeds"],
+    ["Why they are called essential","The body cannot make either of them, so both must come from food"],
+    ["The antioxidant vitamins","Vitamin E, vitamin C, and the carotenoids that the body turns into vitamin A"],
+    ["What an antioxidant does","It neutralises the free radicals produced by normal metabolism, which would otherwise damage cell membranes and DNA"]
    ]},
 
   {h:"Digestion — which enzyme acts where",

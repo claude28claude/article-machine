@@ -125,6 +125,14 @@ var SUBJECTS = [{
         n: 'the Objectives Resolution and the fights',
         w: 'Language, secular and socialist, federal or unitary, and the criticisms of the Assembly itself.',
         k: 'objectives resolution official language munshi ayyangar formula secular socialist uniform civil code criticism grammar of anarchy' },
+      { t: 'The article map', href: '#/high-yield/map',
+        n: amapCount('groups') + ' indexed entries',
+        w: 'The Constitution indexed by subject instead of by number, with every article number a link.',
+        k: 'which article covers index list ranges parts schedules directive principles emergency panchayat municipality language' },
+      { t: 'The courts, article by article', href: '#/high-yield/courts',
+        n: amapCount('courts') + ' entries',
+        w: 'Supreme Court 124 to 147 and High Courts 214 to 231 in full, the five writs, and the tribunals.',
+        k: 'supreme court high court writ habeas corpus mandamus certiorari prohibition quo warranto slp review judicial tribunal district judge' },
       { t: 'The Assembly - dates and confused pairs', href: '#/assembly/dates',
         n: (ASM.confusions || []).length + ' pairs',
         w: 'Adopted, signed and commenced are three different dates, and three different men chaired three different things.',
@@ -776,7 +784,8 @@ function hyCount(kind, t) {
 }
 
 function hyShell(active, body) {
-  var tabs = [['', 'Overview'], ['articles', 'Articles'], ['cases', 'Cases'],
+  var tabs = [['', 'Overview'], ['articles', 'Articles'], ['map', 'Article map'],
+              ['courts', 'Courts'], ['cases', 'Cases'],
               ['amendments', 'Amendments'], ['confusions', 'Confused pairs'],
               ['facts', 'Quick facts']];
   return '<div class="wrap artpage">' +
@@ -934,8 +943,49 @@ function highYieldPage(slug) {
   if (slug === 'amendments') return render(hyAmendments());
   if (slug === 'confusions') return render(hyConfusions());
   if (slug === 'facts')      return render(hyFacts());
+  if (slug === 'map')        return render(hyArticleMap());
+  if (slug === 'courts')     return render(hyCourts());
   return notFound('No such high-yield section.');
 }
+
+/* ------------------------------------------------------- the article map
+
+   The reverse index. The article pages run in numerical order, which is the
+   right shape for reading one article and the wrong shape for revision: an
+   exam asks which article covers the State Finance Commission, not what
+   article 243I says. Every number here is rendered through linkArts, so a
+   row is one tap from the official text. */
+
+var AMAP = window.ARTMAP || {};
+
+function amapCount(key) {
+  return (AMAP[key] || []).reduce(function (a, b) { return a + (b.rows || []).length; }, 0);
+}
+
+function hyArticleMap() {
+  var h = '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
+    'The article map</h1>' +
+    '<p class="sub">' + esc(AMAP.lede || '') + '</p>' +
+    '<div class="figs">' + fig(amapCount('framework'), 'framework rows') +
+      fig(amapCount('groups'), 'indexed entries') +
+      fig((AMAP.groups || []).length, 'subject groups') + '</div>';
+  if (AMAP.intro) h += '<p class="plain stack">' + esc(AMAP.intro) + '</p>';
+  h += (AMAP.framework || []).map(factsBlockLinked).join('');
+  h += (AMAP.groups || []).map(factsBlockLinked).join('');
+  return hyShell('map', h);
+}
+
+function hyCourts() {
+  var h = '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
+    'The courts, article by article</h1>' +
+    '<p class="sub">The Supreme Court from 124 to 147 and the High Courts from 214 to 231, in full, ' +
+    'plus the writs, the judicial review articles and the tribunals.</p>' +
+    '<div class="figs">' + fig(amapCount('courts'), 'entries') +
+      fig(5, 'writs') + fig(2, 'tribunal articles') + '</div>';
+  h += (AMAP.courts || []).map(factsBlockLinked).join('');
+  return hyShell('courts', h);
+}
+
 
 /* =========================================================================
    THE CONSTITUENT ASSEMBLY
@@ -1326,6 +1376,58 @@ function histHigh(slug) {
   return histShell(histCrumb('High-yield') + body);
 }
 
+/* ------------------------------------------------------------- treaties
+
+   A treaty question is always the same shape - which year, between whom,
+   and which war did it end - so the settlements get their own section
+   rather than being scattered through the timeline. */
+
+var TRT = window.TREATIES || {};
+
+function trtCount(key) {
+  return (TRT[key] || []).reduce(function (a, b) { return a + (b.rows || []).length; }, 0);
+}
+
+function histTreaties(slug) {
+  var tabs = [['', 'The treaties'], ['wars', 'By war'], ['after', 'After 1947'],
+              ['drill', 'The drill'], ['confusions', 'Confused pairs']];
+  var known = false;
+  tabs.forEach(function (t) { if (t[0] === (slug || '')) known = true; });
+  if (!known) return notFound('That address does not exist in the treaties section.');
+
+  var body = '<div class="listtabs">' + tabs.map(function (t) {
+    return '<button onclick="location.hash=\'#/history/treaties' + (t[0] ? '/' + t[0] : '') +
+      '\'" aria-pressed="' + (t[0] === (slug || '')) + '">' + esc(t[1]) + '</button>';
+  }).join('') + '</div>';
+
+  if (slug === 'wars') {
+    body += histH1('Grouped by the enemy',
+      'Maratha, Mysore, Sikh, Nepalese and Afghan - which is how they are actually remembered.');
+    body += (TRT.wars || []).map(factsBlock).join('');
+  } else if (slug === 'after') {
+    body += histH1('The agreements since independence',
+      'Six of them, and each is asked by year and by the two countries or the two leaders.');
+    body += (TRT.post || []).map(factsBlock).join('');
+  } else if (slug === 'drill') {
+    body += histH1('The drill',
+      'Twenty treaties in date order, then the ten that come up most.');
+    body += (TRT.drill || []).map(factsBlock).join('');
+  } else if (slug === 'confusions') {
+    body += histH1('The pairs that get mixed up',
+      'Two treaties called Amritsar, two signed in 1803, and the one that started a war rather than ending one.');
+    body += (TRT.confusions || []).map(cmpBlock).join('');
+  } else {
+    body += histH1('The treaties', TRT.lede || '');
+    body += '<div class="figs">' + fig(trtCount('main'), 'to memorise') +
+      fig(trtCount('wars'), 'grouped by war') + fig(trtCount('post'), 'since 1947') +
+      fig((TRT.confusions || []).length, 'confused pairs') + '</div>';
+    if (TRT.intro) body += '<p class="plain stack">' + esc(TRT.intro) + '</p>';
+    body += (TRT.main || []).map(factsBlock).join('');
+  }
+
+  return render(histShell(histCrumb('Treaties') + body));
+}
+
 function historyRoute(seg) {
   switch (seg[0] || '') {
     case '':           return render(histTimeline());
@@ -1335,6 +1437,7 @@ function historyRoute(seg) {
     case 'people':     return render(histPeople());
     case 'person':     return render(histPersonPage(seg[1]));
     case 'movements':  return render(histMovements());
+    case 'treaties':   return histTreaties(seg[1] || '');
     case 'movement':   return render(histMovementPage(seg[1]));
     case 'event':      return render(histEventPage(seg[1]));
     default:           return notFound('That address does not exist in Modern History.');
@@ -1352,6 +1455,7 @@ SUBJECTS.push({
     { href: '#/history/acts',       label: 'Acts',       match: ['acts', 'act'] },
     { href: '#/history/people',     label: 'People',     match: ['people', 'person'] },
     { href: '#/history/movements',  label: 'Movements',  match: ['movements', 'movement'] },
+    { href: '#/history/treaties',   label: 'Treaties',   match: ['treaties'] },
     { href: '#/constitution',       label: '↔ Constitution', match: [] }
   ],
   stats: function () {
@@ -1376,7 +1480,15 @@ SUBJECTS.push({
         n: (HIST_HY.confusions || []).length + ' pairs',
         w: 'Plassey or Buxar, 1858 or 1861, which Act put dyarchy where.' },
       { t: 'History - quick facts', href: '#/history/high-yield/facts', n: facts + ' facts',
-        w: 'Viceroys, Congress sessions, newspapers, books, slogans, risings and trials.' }
+        w: 'Viceroys, Congress sessions, newspapers, books, slogans, risings and trials.' },
+      { t: 'The treaties', href: '#/history/treaties',
+        n: trtCount('main') + ' to memorise',
+        w: 'Year, parties, and the war each one ended \u2014 from Alinagar in 1757 to Rawalpindi in 1919.',
+        k: 'allahabad diwani salbai bassein mangalore seringapatam amritsar sugauli lahore gandamak subsidiary alliance' },
+      { t: 'Treaties by war, and since 1947', href: '#/history/treaties/wars',
+        n: trtCount('wars') + ' rows',
+        w: 'Anglo-Maratha, Anglo-Mysore, Anglo-Sikh, Anglo-Nepalese and Anglo-Afghan, then Panchsheel to Lahore.',
+        k: 'maratha mysore sikh nepal afghan panchsheel indus waters tashkent shimla lahore declaration sri lanka accord' }
     ];
   },
   route: historyRoute
@@ -1417,6 +1529,18 @@ function factsBlock(g) {
     (g.note ? '<p class="foot before">' + esc(g.note) + '</p>' : '') +
     '<dl class="facts">' + items.map(function (it) {
       return '<dt>' + esc(it[0]) + '</dt><dd>' + esc(it[1]) + '</dd>';
+    }).join('') + '</dl></div>';
+}
+
+/* Same as factsBlock, but every article number in the text becomes a link.
+   The article map is an index, so a row that names article 243I is only
+   useful if that number is one tap from the article itself. */
+function factsBlockLinked(g) {
+  var items = g.items || g.rows || [];
+  return '<div class="block"><h3>' + esc(g.g || g.h || '') + '</h3>' +
+    (g.note ? '<p class="foot before">' + esc(g.note) + '</p>' : '') +
+    '<dl class="facts">' + items.map(function (it) {
+      return '<dt>' + linkArts(it[0]) + '</dt><dd>' + linkArts(it[1]) + '</dd>';
     }).join('') + '</dl></div>';
 }
 
@@ -2193,6 +2317,51 @@ function buildIndex() {
       href: '#/biology/high-yield', num: ''
     });
   });
+
+  /* The treaties, table by table, so "Sugauli" or "Gulab Singh" reaches the
+     table it sits in rather than only the section. */
+  (function () {
+    var view = { main: '', wars: 'wars', post: 'after', drill: 'drill' };
+    Object.keys(view).forEach(function (key) {
+      (TRT[key] || []).forEach(function (b, i) {
+        searchIndex.push({
+          kind: 'treaty', id: key + '-' + i, no: '', title: b.h, sub: 'Treaties',
+          near: (b.h + ' treaty treaties').toLowerCase(),
+          hay: (b.h + ' treaty treaties ' + (b.note || '') + ' ' +
+                b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+          href: '#/history/treaties' + (view[key] ? '/' + view[key] : ''), num: ''
+        });
+      });
+    });
+    (TRT.confusions || []).forEach(function (c, i) {
+      searchIndex.push({
+        kind: 'treaty', id: 'cmp-' + i, no: '', title: c.k,
+        sub: 'Treaties \u00b7 confused pair', near: c.k.toLowerCase(),
+        hay: (c.k + ' treaty ' + (c.note || '') + ' ' +
+              c.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+        href: '#/history/treaties/confusions', num: ''
+      });
+    });
+  })();
+
+  /* The article map and the courts index. These are indexed so that a
+     SUBJECT reaches its article number - the reverse of what the article
+     entries above do, and the whole point of the map. */
+  (function () {
+    var view = { framework: 'map', groups: 'map', courts: 'courts' };
+    Object.keys(view).forEach(function (key) {
+      (AMAP[key] || []).forEach(function (b, i) {
+        searchIndex.push({
+          kind: 'article map', id: key + '-' + i, no: '', title: b.h,
+          sub: key === 'courts' ? 'The courts, article by article' : 'The article map',
+          near: b.h.toLowerCase(),
+          hay: (b.h + ' ' + (b.note || '') + ' ' +
+                b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+          href: '#/high-yield/' + view[key], num: ''
+        });
+      });
+    });
+  })();
 
   SCHEDULES.forEach(function (s) {
     var extra = '';
