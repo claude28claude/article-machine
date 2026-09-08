@@ -14,7 +14,7 @@
      once, fetch a fresh one in the background, and use that next time. Fast on
      every visit, and never more than one visit behind.  */
 
-var CACHE = 'article-machine-v13';
+var CACHE = 'article-machine-v14';
 var ASSETS = [
   './', './index.html', './styles.css', './app.js',
   './data-articles.js', './data-amendments.js', './data-schedules.js',
@@ -29,11 +29,26 @@ var ASSETS = [
   './icon-192.png', './icon-512.png', './icon-maskable-512.png', './icon-180.png'
 ];
 
+/* cache.addAll() goes through the browser's own HTTP cache, and GitHub Pages
+   serves these files with max-age=600. So a service worker installing within
+   ten minutes of a deploy can precache the PREVIOUS version's bytes and then
+   go on serving them as if they were current — which is exactly what happened
+   when a fix shipped and the page kept showing the old behaviour, with the
+   right file sitting on the server the whole time.
+
+   `cache: 'reload'` forces every precache request past the HTTP cache to the
+   network. A failure still aborts the install, so the precache stays
+   all-or-nothing and the previous worker keeps serving. */
 self.addEventListener('install', function (e) {
   e.waitUntil(
-    caches.open(CACHE)
-      .then(function (c) { return c.addAll(ASSETS); })
-      .then(function () { return self.skipWaiting(); })
+    caches.open(CACHE).then(function (c) {
+      return Promise.all(ASSETS.map(function (url) {
+        return fetch(new Request(url, { cache: 'reload' })).then(function (res) {
+          if (!res || !res.ok) throw new Error('precache failed: ' + url);
+          return c.put(url, res);
+        });
+      }));
+    }).then(function () { return self.skipWaiting(); })
   );
 });
 
