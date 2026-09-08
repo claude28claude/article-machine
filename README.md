@@ -1,12 +1,18 @@
 # The Article Machine
 
-Four subjects for the Indian exam track, in plain English, organised by
-**topic** rather than by subject. Searchable across all four, works offline,
+Five subjects for the Indian exam track, in plain English, organised by
+**topic** rather than by subject. Searchable across all five, works offline,
 installable.
 
 **The Constitution of India** — every article, what it actually means, the
 official text word for word, the landmark case that defined it, and every
 amendment that changed it.
+
+**The Constituent Assembly** — the body that wrote it: how it was
+constituted, who chaired what, the committees, the members, the debates, and
+every date from 9 December 1946 to 26 January 1950. The article pages are
+about the document; this is about the making of it, and an exam treats the two
+as different topics.
 
 **Modern History** — 1600 to 1950: the timeline, the Acts, the people and the
 movements.
@@ -22,8 +28,11 @@ national parks, World Heritage Sites, monuments, important days, books,
 headquarters, science, the human body, space and defence, the states, and the
 world.
 
+**Biology** — three topics done in full rather than in summary: diseases,
+nutrients, and the glands and their hormones.
+
 The front page is a **filterable list of every topic on the site**. A reader
-arrives knowing what they need to revise, not which of four subjects it lives
+arrives knowing what they need to revise, not which of five subjects it lives
 in, so `#/` asks that question first and every subject sits one click behind
 it.
 
@@ -47,6 +56,22 @@ One page, no framework, no build step, no network calls, no tracking.
 | High-yield entries | **298** articles, 91 cases, 73 amendments, tiered |
 | Confused pairs | **16** side-by-side comparisons |
 | Quick facts | **52** across 6 sets |
+
+## The Constituent Assembly
+
+| | |
+|---|---|
+| The story | How it was constituted, the chairs, the three readings, and everything it did besides drafting |
+| The dates | 9 December 1946 to 26 January 1950, in order, plus the fifteen articles that came into force on 26 November 1949 |
+| Committees | The 8 major ones, 13 more, 4 sub-committees, and the Drafting Committee member by member |
+| The people | The names an exam asks for, the fifteen women, and the four people who physically made the document |
+| The debates | The Objectives Resolution, the language fight, "secular" and "socialist", and the criticisms |
+| Confused pairs | **10** |
+
+**Where two standard figures compete, both are given.** How many members
+attended the first sitting is the clearest case: 211 in some textbooks, 207 in
+other accounts. The page prints both and says which part is not in dispute,
+rather than picking one and sounding certain.
 
 ## The high-yield layer
 
@@ -125,6 +150,31 @@ game and no national language. Malaria is protozoan, not bacterial. Only three
 of the national emblem's four lions are visible. The Amazon may well be longer
 than the Nile. Those corrections are worth more than the easy rows around them.
 
+## Biology
+
+| | |
+|---|---|
+| Topics | **3** — diseases, nutrients, glands and hormones |
+| Tables | **31** |
+| Facts | **283** |
+| Confused pairs | **11** |
+| Quick facts | **47** |
+
+**Three topics, not a course.** These three account for most of the biology a
+general awareness paper asks, and each is a table-learning job rather than a
+reasoning one — so the value is in having the tables complete and right.
+
+**It deliberately overlaps the Static GK pack.** Static GK keeps a forty-row
+summary of vitamins, glands and pathogens; that is the revision version. This
+is the full one: every pathogen with its scientific name and the organ it
+attacks, every vitamin with its sources, every gland with all of its hormones
+and every disorder that follows from too much or too little.
+
+**Where the popular answer is wrong, the page says so.** Ringworm is a fungus,
+not a worm. Malaria is protozoan. Bile contains no enzyme. Vitamin D is really
+a hormone, because the body makes its own. Night blindness is curable and
+colour blindness is not.
+
 ## Adding another subject
 
 The site is built as a registry of subjects so an unrelated one can be added
@@ -199,6 +249,8 @@ of them so a reader can check what a summary lost.
 | `data-history-hy.js` | Modern History's exam layer |
 | `data-economy.js` | The plans, the 1991 reforms, the standing topics, the exam layer |
 | `data-gk.js` | 18 packs of static general knowledge, 850 facts |
+| `data-assembly.js` | The Constituent Assembly: story, dates, committees, people, debates |
+| `data-biology.js` | Diseases, nutrients, and glands and hormones — 283 facts |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline |
 | `tools/make-icons.py` | Regenerates the PWA icons |

@@ -1,7 +1,7 @@
 {
-  "name": "The Article Machine — Constitution, History, Economy, Static GK",
+  "name": "The Article Machine — Constitution, History, Economy, GK, Biology",
   "short_name": "Articles",
-  "description": "Four subjects for the Indian exam track, organised by topic: the Constitution, Modern History, the Indian Economy and Static GK. Plain English, with a high-yield exam layer. Works offline.",
+  "description": "Five subjects for the Indian exam track, organised by topic: the Constitution and the Constituent Assembly, Modern History, the Indian Economy, Static GK and Biology. Plain English, with a high-yield exam layer. Works offline.",
   "start_url": "./index.html#/",
   "scope": "./",
   "display": "standalone",

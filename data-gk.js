@@ -900,7 +900,7 @@ packs: [
 /* =================================================================== */
 {id:"body", n:"Human body, vitamins and diseases", hy:1,
  w:"The numbers, the deficiency diseases, and which organism causes what.",
- intro:"Two tables carry most of the marks: vitamin to deficiency disease, and pathogen type to disease. Get the second right by remembering that malaria is protozoan, not bacterial or viral — it is the most-asked and most-missed row in the whole subject.",
+ intro:"Two tables carry most of the marks: vitamin to deficiency disease, and pathogen type to disease. Get the second right by remembering that malaria is protozoan, not bacterial or viral — it is the most-asked and most-missed row in the whole subject. This pack is the short revision version. The Biology section has the same ground in full: every pathogen with its scientific name and the organ it attacks, every vitamin with its sources, and every gland with all of its hormones and disorders.",
  blocks:[
   {h:"Vitamins and deficiency",
    note:"Vitamins A, D, E and K are fat-soluble; the B group and C are water-soluble.",

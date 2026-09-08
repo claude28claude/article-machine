@@ -76,6 +76,7 @@ var SUBJECTS = [{
   isDefault: true,
   tabs: [
     { href: '#/constitution', label: 'Articles',  match: ['', 'constitution', 'part', 'a'] },
+    { href: '#/assembly',    label: 'The Assembly', match: ['assembly'] },
     { href: '#/high-yield',  label: 'High-yield', match: ['high-yield'] },
     { href: '#/amendments',  label: 'Amendments', match: ['amendments', 'amendment'] },
     { href: '#/schedules',   label: 'Schedules',  match: ['schedules', 'schedule'] },
@@ -107,7 +108,27 @@ var SUBJECTS = [{
         w: 'Kesavananda to Puttaswamy — what each one held, and which articles it turned on.' },
       { t: 'Constitution - the exam layer', href: '#/high-yield',
         n: hyCount('articles', 1) + ' must-know articles',
-        w: 'Articles, cases and amendments sorted into three tiers, plus the confused pairs.' }
+        w: 'Articles, cases and amendments sorted into three tiers, plus the confused pairs.' },
+      { t: 'The Constituent Assembly', href: '#/assembly',
+        n: asmCount('story') + ' facts',
+        w: 'Who constituted it and how, the chairs, the three readings, and everything else it did besides drafting.',
+        k: 'cabinet mission plan 1946 389 seats 299 objectives resolution b n rau three readings polity' },
+      { t: 'The Assembly\'s committees', href: '#/assembly/committees',
+        n: asmCount('committees') + ' rows',
+        w: 'The eight major committees and their chairmen, and the Drafting Committee member by member.',
+        k: 'ambedkar nehru patel rajendra prasad drafting committee chairman union powers advisory sub-committee alladi munshi saadulla' },
+      { t: 'Who was in the Constituent Assembly', href: '#/assembly/people',
+        n: '15 women, and the names asked',
+        w: 'The members an exam asks for, the fifteen women, and the people who wrote out and painted the document.',
+        k: 'members women sarojini naidu hansa mehta begum aizaz rasul dakshayani velayudhan raizada nandalal bose calligrapher' },
+      { t: 'What the Assembly argued about', href: '#/assembly/debates',
+        n: 'the Objectives Resolution and the fights',
+        w: 'Language, secular and socialist, federal or unitary, and the criticisms of the Assembly itself.',
+        k: 'objectives resolution official language munshi ayyangar formula secular socialist uniform civil code criticism grammar of anarchy' },
+      { t: 'The Assembly - dates and confused pairs', href: '#/assembly/dates',
+        n: (ASM.confusions || []).length + ' pairs',
+        w: 'Adopted, signed and commenced are three different dates, and three different men chaired three different things.',
+        k: '9 december 1946 26 november 1949 26 january 1950 constitution day adopted signed commenced sinha prasad ambedkar article 394' }
     );
     return out;
   }
@@ -916,6 +937,87 @@ function highYieldPage(slug) {
   return notFound('No such high-yield section.');
 }
 
+/* =========================================================================
+   THE CONSTITUENT ASSEMBLY
+
+   Part of the Constitution subject rather than a subject of its own: the
+   article pages are about the document, and this is about the making of it.
+   An exam treats them as two different topics, which is why this is its own
+   tab with its own committees, members, debates and dates.
+
+   Its routes sit at the top level (#/assembly) because the Constitution is
+   the default subject and its routes are not namespaced.
+   ========================================================================= */
+
+var ASM = window.ASSEMBLY || {};
+
+var ASM_VIEWS = [
+  ['',           'The story'],
+  ['committees', 'Committees'],
+  ['people',     'Who was who'],
+  ['debates',    'What was argued'],
+  ['dates',      'Dates and confusions']
+];
+
+/* Count the rows of every table in one section, so the hub reports what the
+   data actually holds instead of a number written by hand that then drifts
+   as rows are added. */
+function asmCount(key) {
+  return (ASM[key] || []).reduce(function (a, b) { return a + (b.rows || []).length; }, 0);
+}
+
+function asmShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function asmCrumb(here) {
+  return '<div class="crumb"><a href="#/constitution">Constitution</a> \u2192 ' +
+    (here ? '<a href="#/assembly">The Constituent Assembly</a> \u2192 ' + esc(here)
+          : 'The Constituent Assembly') + '</div>';
+}
+
+function assemblyPage(slug) {
+  slug = slug || '';
+  var label = null;
+  ASM_VIEWS.forEach(function (v) { if (v[0] === slug) label = v[1]; });
+  if (label === null) {
+    return notFound('That address does not exist in the Constituent Assembly section.');
+  }
+
+  var h = asmCrumb(slug ? label : '') + subTabs('#/assembly', ASM_VIEWS, slug);
+
+  if (slug === 'committees') {
+    h += pageH1('The committees, and who chaired them',
+      'Eight major committees, thirteen more, the four sub-committees under Patel, and the Drafting Committee member by member.');
+    h += (ASM.committees || []).map(factsBlock).join('');
+
+  } else if (slug === 'people') {
+    h += pageH1('Who was in the Assembly',
+      'The members an exam asks for, the fifteen women, and the four people who physically made the document.');
+    h += (ASM.people || []).map(factsBlock).join('');
+
+  } else if (slug === 'debates') {
+    h += pageH1('What the Assembly argued about',
+      'The Objectives Resolution, the fights that shaped the text, the criticisms, and the closing warning.');
+    h += (ASM.debates || []).map(factsBlock).join('');
+
+  } else if (slug === 'dates') {
+    h += pageH1('The dates, the numbers and the confused pairs',
+      'Every date in order, the counts that are asked as questions on their own, and the names that get swapped.');
+    h += (ASM.timeline || []).map(factsBlock).join('');
+    h += (ASM.facts || []).map(factsBlock).join('');
+    h += '<div class="block"><h3>The pairs that get mixed up</h3></div>';
+    h += (ASM.confusions || []).map(cmpBlock).join('');
+
+  } else {
+    h += pageH1('The Constituent Assembly', ASM.lede || '');
+    h += '<div class="figs">' + fig(389, 'seats in 1946') + fig(299, 'after Partition') +
+      fig(11, 'sessions') + fig(165, 'days sitting') + '</div>';
+    if (ASM.intro) h += '<p class="plain stack">' + esc(ASM.intro) + '</p>';
+    h += (ASM.story || []).map(factsBlock).join('');
+  }
+
+  return render(asmShell(h));
+}
+
 /* --------------------------------------------------------------------- hub */
 
 /* The front page. Every topic on the site in one filterable list, grouped by
@@ -1657,6 +1759,120 @@ SUBJECTS.push({
   route: gkRoute
 });
 
+/* =========================================================================
+   SUBJECT: BIOLOGY
+
+   Three topics, not a course: diseases, nutrients, and the glands with
+   their hormones. They are here because between them they account for most
+   of the biology a general awareness paper asks, and because each is a
+   table-learning job rather than a reasoning one.
+
+   The Static GK section keeps its short forty-row summary of the same
+   ground. That is the revision version; this is the full one.
+   ========================================================================= */
+
+var BIO = window.BIOLOGY || {};
+var bioTopicById = {};
+(BIO.topics || []).forEach(function (t) { bioTopicById[t.id] = t; });
+
+function bioRows(t) {
+  return t.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
+}
+
+function bioShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function bioHome() {
+  var total = (BIO.topics || []).reduce(function (a, t) { return a + bioRows(t); }, 0);
+  var h = '<div class="crumb">Biology</div>' +
+    pageH1('Three topics, in full',
+      'Diseases, nutrients, and the glands and their hormones \u2014 with every table complete rather than summarised, because this is the material that is asked row by row.');
+
+  h += '<div class="figs">' + fig((BIO.topics || []).length, 'topics') + fig(total, 'facts') +
+    fig((BIO.confusions || []).length, 'confused pairs') + '</div>';
+
+  h += '<div class="block"><h3>The topics</h3><div class="grid">' +
+    (BIO.topics || []).map(function (t) {
+      return '<a class="pcard" href="#/biology/topic/' + encodeURIComponent(t.id) + '">' +
+        '<div class="pn">' + esc(t.n) + '</div><div class="pt">' + esc(t.w) + '</div>' +
+        '<div class="pr">' + t.blocks.length + ' tables \u00b7 ' + bioRows(t) + ' facts</div></a>';
+    }).join('') + '</div></div>';
+
+  return bioShell(h);
+}
+
+function bioTopicPage(id) {
+  var t = bioTopicById[id];
+  if (!t) return bioShell('<div class="crumb"><a href="#/biology">Biology</a></div>' +
+    '<div class="empty"><b>No such topic</b>Nothing on this site is filed under that name.</div>');
+
+  var topics = BIO.topics || [], i = topics.indexOf(t);
+  var h = '<div class="crumb"><a href="#/biology">Biology</a> \u2192 ' + esc(t.n) + '</div>' +
+    pageH1(t.n, t.w);
+  if (t.intro) h += '<p class="plain stack">' + esc(t.intro) + '</p>';
+  h += t.blocks.map(factsBlock).join('');
+
+  var prev = topics[i - 1], next = topics[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/biology/topic/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Previous</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/biology/topic/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">Next</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+  return bioShell(h);
+}
+
+function bioHigh(slug) {
+  var tabs = [['', 'Confused pairs'], ['facts', 'Quick facts']];
+  var h = '<div class="crumb"><a href="#/biology">Biology</a> \u2192 High-yield</div>' +
+    subTabs('#/biology/high-yield', tabs, slug);
+
+  if (slug === 'facts') {
+    h += pageH1('Quick facts',
+      'Who discovered what, the pathogens by their scientific names, and the one-line answers that keep coming back.');
+    h += (BIO.facts || []).map(factsBlock).join('');
+  } else {
+    h += pageH1('The pairs that get mixed up',
+      'Which mosquito carries what, kwashiorkor against marasmus, and the two diseases that share the word diabetes.');
+    h += (BIO.confusions || []).map(cmpBlock).join('');
+  }
+  return bioShell(h);
+}
+
+function bioRoute(seg) {
+  switch (seg[0] || '') {
+    case '':           return render(bioHome());
+    case 'topic':      return render(bioTopicPage(seg[1]));
+    case 'high-yield': return render(bioHigh(seg[1] || ''));
+    default:           return notFound('That address does not exist in Biology.');
+  }
+}
+
+SUBJECTS.push({
+  id: 'biology',
+  name: 'Biology',
+  short: 'Biology',
+  blurb: 'Diseases and what causes them, the nutrients and the deficiency diseases, and every gland with its hormones and disorders.',
+  tabs: [
+    { href: '#/biology',            label: 'The three topics', match: ['', 'topic'] },
+    { href: '#/biology/high-yield', label: 'High-yield', match: ['high-yield'] }
+  ],
+  stats: function () {
+    var total = (BIO.topics || []).reduce(function (a, t) { return a + bioRows(t); }, 0);
+    return [(BIO.topics || []).length + ' topics', total + ' facts',
+            (BIO.confusions || []).length + ' confused pairs'];
+  },
+  topics: function () {
+    return (BIO.topics || []).map(function (t) {
+      return { t: t.n, href: '#/biology/topic/' + encodeURIComponent(t.id), w: t.w,
+               k: t.blocks.map(function (b) { return b.h; }).join(' '),
+               n: bioRows(t) + ' facts' };
+    }).concat([{ t: 'Biology - confused pairs and quick facts', href: '#/biology/high-yield',
+                 n: (BIO.confusions || []).length + ' pairs',
+                 w: 'Anopheles against Aedes, kwashiorkor against marasmus, and mellitus against insipidus.' }]);
+  },
+  route: bioRoute
+});
+
 /* ------------------------------------------------------------------ about */
 
 function aboutPage() {
@@ -1664,10 +1880,10 @@ function aboutPage() {
   '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s5);font-weight:600">' +
   'How this was built, and what to trust</h1>' +
 
-  '<p class="plain">Four subjects: the Constitution of India, Modern History, the Indian ' +
-  'Economy and Static General Knowledge. They are organised by topic rather than by ' +
-  'subject, because a reader arrives knowing what they need to revise rather than which ' +
-  'subject it belongs to.</p>' +
+  '<p class="plain">Five subjects: the Constitution of India — including the Constituent ' +
+  'Assembly that wrote it — Modern History, the Indian Economy, Static General Knowledge ' +
+  'and Biology. They are organised by topic rather than by subject, because a reader ' +
+  'arrives knowing what they need to revise rather than which subject it belongs to.</p>' +
 
   '<div class="block"><h3>The Constitution: where the text comes from</h3>' +
   '<p class="plain">Every article number, every official heading and every word of official ' +
@@ -1687,10 +1903,10 @@ function aboutPage() {
   'to either. Rather than guess, this site shows a date only where it clearly attaches to ' +
   'that Act, and shows nothing where it does not. A missing date is deliberate.</p></div>' +
 
-  '<div class="block"><h3>The other three subjects are written, not extracted</h3>' +
-  '<p class="plain">Modern History, the Indian Economy and Static GK have no equivalent ' +
-  'single government document behind them, so they are written from the established ' +
-  'record rather than lifted from a source. That is a weaker guarantee than the ' +
+  '<div class="block"><h3>The other subjects are written, not extracted</h3>' +
+  '<p class="plain">Modern History, the Indian Economy, Static GK, Biology and the account ' +
+  'of the Constituent Assembly have no equivalent single government document behind them, ' +
+  'so they are written from the established record rather than lifted from a source. That is a weaker guarantee than the ' +
   'Constitution\'s, and it is stated rather than hidden: the head of each data file says ' +
   'which kinds of statement it holds and how firm each kind is.</p>' +
   '<ul class="trail" style="margin-top:var(--s4)">' +
@@ -1746,8 +1962,8 @@ function aboutPage() {
   'one Act is left blank, and no article carries an invented “asked N times” figure.</p></div>' +
 
   '<div class="block"><h3>Offline, and installable as an app</h3>' +
-  '<p class="plain">All four subjects are loaded into your browser the first time you open ' +
-  'the page — about 1.2 MB in total, once. After that the site works with no network at ' +
+  '<p class="plain">All five subjects are loaded into your browser the first time you open ' +
+  'the page — about 1.4 MB in total, once. After that the site works with no network at ' +
   'all: on a train, on a plane, or with the data switched off.</p>' +
   '<p class="plain stack">You can also install it, so it gets its own icon and opens in its ' +
   'own window without the browser bars. In Chrome and Edge the button below installs it in ' +
@@ -1916,6 +2132,68 @@ function buildIndex() {
     });
   });
 
+  /* The Constituent Assembly. Every table is indexed on its own, so a name
+     that appears in one row - "Saadulla", "Dakshayani", "Raizada" - reaches
+     the table it sits in rather than only the section. */
+  (function () {
+    var view = { story: '', timeline: 'dates', committees: 'committees',
+                 people: 'people', debates: 'debates', facts: 'dates' };
+    Object.keys(view).forEach(function (key) {
+      (ASM[key] || []).forEach(function (b, i) {
+        searchIndex.push({
+          kind: 'assembly', id: key + '-' + i, no: '', title: b.h,
+          sub: 'The Constituent Assembly',
+          near: (b.h + ' constituent assembly').toLowerCase(),
+          hay: (b.h + ' constituent assembly ' + (b.note || '') + ' ' +
+                b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+          href: '#/assembly' + (view[key] ? '/' + view[key] : ''), num: ''
+        });
+      });
+    });
+    (ASM.confusions || []).forEach(function (c, i) {
+      searchIndex.push({
+        kind: 'assembly', id: 'cmp-' + i, no: '', title: c.k,
+        sub: 'Constituent Assembly \u00b7 confused pair',
+        near: c.k.toLowerCase(),
+        hay: (c.k + ' ' + (c.note || '') + ' ' +
+              c.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+        href: '#/assembly/dates', num: ''
+      });
+    });
+  })();
+
+  /* Biology, on the same pattern as Economy and Static GK: the topic, then
+     every table inside it, so "acromegaly" or "Culex" lands on the table. */
+  (BIO.topics || []).forEach(function (t) {
+    var href = '#/biology/topic/' + encodeURIComponent(t.id);
+    var all = t.blocks.map(function (b) {
+      return b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ');
+    }).join(' ');
+    searchIndex.push({
+      kind: 'biology', id: t.id, no: '', title: t.n, sub: t.w,
+      near: (t.n + ' ' + t.w + ' ' + (t.intro || '')).toLowerCase(),
+      hay: (t.n + ' ' + t.w + ' ' + (t.intro || '') + ' ' + all).toLowerCase(),
+      href: href, num: ''
+    });
+    t.blocks.forEach(function (b, i) {
+      searchIndex.push({
+        kind: 'biology', id: t.id + '-' + i, no: '', title: b.h, sub: t.n,
+        near: b.h.toLowerCase(),
+        hay: (b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+        href: href, num: ''
+      });
+    });
+  });
+  (BIO.confusions || []).forEach(function (c, i) {
+    searchIndex.push({
+      kind: 'biology', id: 'cmp-' + i, no: '', title: c.k,
+      sub: 'Biology \u00b7 confused pair', near: c.k.toLowerCase(),
+      hay: (c.k + ' ' + (c.note || '') + ' ' +
+            c.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+      href: '#/biology/high-yield', num: ''
+    });
+  });
+
   SCHEDULES.forEach(function (s) {
     var extra = '';
     if (s.items) extra = s.items.map(function (e) { return e.t; }).join(' ');
@@ -2002,7 +2280,7 @@ function runSearch(raw) {
 
   if (!hits.length) {
     resBox.innerHTML = '<div class="wrap"><div class="empty" style="padding:var(--s6)">' +
-      '<b>No match</b>Nothing in any of the four subjects matches “' + esc(raw) + '”.</div></div>';
+      '<b>No match</b>Nothing on this site matches “' + esc(raw) + '”.</div></div>';
   } else {
     resBox.innerHTML = '<div class="wrap">' + hits.map(function (h, i) {
       var r = h.r;
@@ -2104,6 +2382,7 @@ function route() {
     case 'hub':          return hubPage();
     case 'topics':       return hubPage();
     case 'constitution': return homePage();
+    case 'assembly':   return assemblyPage(seg[1] || '');
     case 'part':       return partPage(seg[1]);
     case 'a':          return articlePage(seg[1]);
     case 'high-yield': return highYieldPage(seg[1] || '');
