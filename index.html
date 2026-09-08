@@ -26,11 +26,11 @@
   <div class="topin">
     <a class="brand" href="#/" aria-label="The Article Machine — home">
       <svg class="mk" viewBox="0 0 100 100" aria-hidden="true">
-        <circle cx="50" cy="50" r="31" fill="none" stroke="#c9a227" stroke-width="6"/>
+        <circle cx="50" cy="50" r="31" fill="none" stroke="#e3b93c" stroke-width="6"/>
         <path d="M50 19 V81 M31.5 31.5 L68.5 68.5 M19 50 H81 M68.5 31.5 L31.5 68.5"
-              stroke="#c9a227" stroke-width="4"/>
+              stroke="#e3b93c" stroke-width="4"/>
         <circle cx="50" cy="50" r="7" fill="#0b0b0f"/>
-        <circle cx="50" cy="50" r="4" fill="#c9a227"/>
+        <circle cx="50" cy="50" r="4" fill="#e3b93c"/>
       </svg>
       <span style="display:block">
         <b>The Article Machine</b>
@@ -58,6 +58,12 @@
 <div id="sheet" hidden></div>
 
 <main id="main"></main>
+
+<!-- Back a step. It lives in the shell rather than being built per page, so
+     there is exactly one of it and only its hidden state changes. Fixed to
+     the bottom of the screen because an installed app has no browser chrome
+     to go back with. -->
+<button type="button" class="backfab" id="backfab" aria-label="Go back a step" hidden>Back</button>
 
 <footer>
   <div class="wrap">

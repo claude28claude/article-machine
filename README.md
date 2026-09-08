@@ -31,6 +31,12 @@ world.
 **Biology** — three topics done in full rather than in summary: diseases,
 nutrients, and the glands and their hormones.
 
+There are two front doors, because a reader arrives with one of two
+questions. `#/` is a **filterable list of every topic** — for when you know
+what you want. `#/index` is **the whole site as an outline**: every subject,
+every section, and every one of the 985 individual pages, folded shut so you
+can see the shape at a glance and open only the part you are working through.
+
 The front page is a **filterable list of every topic on the site**. A reader
 arrives knowing what they need to revise, not which of five subjects it lives
 in, so `#/` asks that question first and every subject sits one click behind
@@ -295,6 +301,34 @@ of them so a reader can check what a summary lost.
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline |
 | `tools/make-icons.py` | Regenerates the PWA icons |
+
+## Going back
+
+Every page except the front one carries a **Back** control, fixed to the
+bottom of the screen. It is there because the site installs as an app, and an
+installed app has no browser chrome — no address bar and no back arrow — so
+the browser's own Back is not available to reach for.
+
+It walks a trail of pages actually visited rather than calling
+`history.back()`. Two reasons: history can start outside the site, so the
+first Back would leave it; and a trail can fall back to something sensible
+when there is nothing to go back to. Open `#/a/356` cold from a bookmark and
+Back goes **up** — to the article list, not off the site.
+
+## The palette
+
+Three text colours on one unchanged near-black ground:
+
+| | |
+|---|---|
+| **Yellow** | the things you can act on — links, article numbers, figures, subject headings |
+| **Purple** | the key column of every table, the courts, the amendments |
+| **Red** | section headings, and anything dead or warned about |
+
+Each colour also has an `--x-rgb` companion so a translucent version is
+derived from the colour rather than typed out again. Six hard-coded
+`rgba(201,162,39,…)` values used to sit in the stylesheet as copies of the
+palette that would not have moved when the palette did.
 
 ## Running it
 

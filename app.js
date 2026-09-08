@@ -164,7 +164,7 @@ function renderNav(seg) {
     tabBar.innerHTML = SUBJECTS.map(function (s) {
       return '<a href="#/' + (s.isDefault ? 'constitution' : s.id) + '">' +
              esc(s.short || s.name) + '</a>';
-    }).join('') + '<a href="#/about">About</a>';
+    }).join('') + '<a href="#/index">Index</a><a href="#/about">About</a>';
     syncHead();
     return;
   }
@@ -175,6 +175,7 @@ function renderNav(seg) {
      identifies the tab is the SECOND one. The default subject has no prefix. */
   var key = sub.isDefault ? (seg[0] || '') : (seg[1] || '');
   tabBar.innerHTML = '<a href="#/" class="hublink">All topics</a>' +
+    '<a href="#/index">Index</a>' +
     sub.tabs.map(function (t) {
       var on = t.match.indexOf(key) >= 0;
       return '<a href="' + t.href + '"' + (on ? ' aria-current="page"' : '') + '>' +
@@ -202,6 +203,76 @@ function syncHead() {
   var head = document.querySelector('header.top');
   if (head && window.ResizeObserver) new ResizeObserver(syncHead).observe(head);
 })();
+
+/* ------------------------------------------------------------------ back
+
+   Going back a step is the commonest move there is while studying: open a
+   topic, read it, return to where you were choosing from. The browser has a
+   Back button for that, but the site is installed as an app on a phone and
+   an installed app has NO browser chrome - no address bar and no back arrow.
+   So the site carries its own.
+
+   It walks a trail of pages actually visited rather than calling
+   history.back(), for two reasons: history may start outside the site (the
+   first entry would leave it), and the trail can fall back to something
+   sensible - the parent section - when there is nothing to go back to, which
+   is what happens when a link is opened cold from outside. */
+
+var trail = [], lastHash = null, backJump = false;
+
+function recordStep(h) {
+  if (backJump) { backJump = false; return; }
+  /* The browser's own Back fires the same event we do. If the new page is
+     the one on top of our trail, the reader has gone back by other means and
+     the trail should shorten rather than grow. */
+  if (trail.length && trail[trail.length - 1] === h) { trail.pop(); return; }
+  if (lastHash !== null && lastHash !== h) {
+    trail.push(lastHash);
+    if (trail.length > 80) trail.shift();
+  }
+}
+
+/* Where "up" goes when there is no trail: the section this page belongs to,
+   never a URL that does not resolve. #/a/21 belongs to the article list,
+   #/case/kesavananda to the case list, anything inside a namespaced subject
+   to that subject's home. */
+function parentOf(h) {
+  var seg = h.replace(/^#\/?/, '').split('/').filter(Boolean);
+  if (!seg.length) return '#/';
+  var first = seg[0], sub = null;
+  SUBJECTS.forEach(function (s) { if (!s.isDefault && s.id === first) sub = s; });
+  if (sub) return seg.length > 1 ? '#/' + first : '#/';
+  if (first === 'a' || first === 'part')  return '#/constitution';
+  if (first === 'high-yield')             return seg.length > 1 ? '#/high-yield' : '#/constitution';
+  if (first === 'assembly')               return seg.length > 1 ? '#/assembly' : '#/constitution';
+  if (first === 'case')       return '#/cases';
+  if (first === 'amendment')  return '#/amendments';
+  if (first === 'schedule')   return '#/schedules';
+  return '#/';
+}
+
+function goBack() {
+  if (trail.length) {
+    backJump = true;
+    location.hash = trail.pop();
+    return;
+  }
+  location.hash = parentOf(location.hash);
+}
+
+/* The button lives in the shell rather than being created per page, so there
+   is one of it and its `hidden` state is the only thing that changes. */
+(function () {
+  var b = document.getElementById('backfab');
+  if (b) b.addEventListener('click', goBack);
+})();
+
+function syncBack() {
+  var b = document.getElementById('backfab');
+  if (!b) return;
+  /* Nothing to go back to from the front page - that IS the way back. */
+  b.hidden = atHub(location.hash.replace(/^#\/?/, '').split('/'));
+}
 
 /* ------------------------------------------------------------------ index */
 
@@ -314,6 +385,7 @@ function plainOf(a) {
 
 function render(html) {
   main.innerHTML = html;
+  syncBack();
   /* Scroll AFTER the new content is in place, not before. route() scrolls
      first, but the page it scrolls is still the OLD one — and when the
      content is then swapped, Chrome's scroll anchoring tries to keep what
@@ -1088,7 +1160,12 @@ function hubPage() {
       '<input id="topicq" type="search" autocomplete="off" spellcheck="false" ' +
       'aria-label="Filter topics" aria-controls="hublist" ' +
       'placeholder="Filter topics \u2014 try \u201cgst\u201d, \u201cdance\u201d, \u201cemergency\u201d, \u201crivers\u201d">' +
-      '<span id="topicn" aria-live="polite"></span></div></div>';
+      '<span id="topicn" aria-live="polite"></span></div>' +
+    /* The filter answers "I know what I want". The index answers "show me
+       what there is" - a different question, and the one a reader has when
+       they are planning rather than looking something up. */
+    '<div class="stack"><a class="pill big" href="#/index">' +
+    'Open the full index — every page on the site</a></div></div>';
 
   h += '<div class="wrap" id="hublist">';
   groups.forEach(function (g) {
@@ -2009,6 +2086,230 @@ SUBJECTS.push({
   route: bioRoute
 });
 
+/* ----------------------------------------------------------------- index
+
+   The whole site as a contents page: every subject, every section, and every
+   individual page inside them - all 506 articles, all 106 amendments, all 91
+   cases, every event, act, person, movement, plan, pack and topic.
+
+   It is deliberately not the same thing as the hub. The hub asks what you
+   need to study and filters about seventy topics down to the one you want.
+   This asks nothing: it shows the shape of the whole site at once, which is
+   what you want when you are deciding what to study rather than looking for
+   something you have already decided on.
+
+   Long groups are folded shut so the page opens as an outline and expands
+   where you point it. */
+
+function idxItems(list) {
+  return '<div class="idxgrid">' + list.map(function (it) {
+    return '<a href="' + it.href + '">' + esc(it.t) +
+      (it.n ? ' <i>' + esc(it.n) + '</i>' : '') + '</a>';
+  }).join('') + '</div>';
+}
+
+function idxGroup(name, list, forceOpen) {
+  if (!list.length) return '';
+  /* Only the Sections group of each subject opens by default. Anything else
+     open turns the outline back into the wall of links it exists to replace. */
+  var open = forceOpen ? ' open' : '';
+  return '<details class="idx"' + open + '><summary>' + esc(name) +
+    ' <b>' + list.length + '</b></summary>' + idxItems(list) + '</details>';
+}
+
+function idxSection(title, stat, body) {
+  return '<div class="idxsec"><div class="idxhead"><h2>' + esc(title) + '</h2>' +
+    '<span>' + esc(stat) + '</span></div>' + body + '</div>';
+}
+
+function indexPage() {
+  var h = '<div class="wrap artpage"><div class="crumb">Index</div>' +
+    pageH1('Everything on this site',
+      'Every section and every page, laid out so you can see the whole shape before you choose. Tap a group to open it.') +
+    '<div class="listtabs"><button type="button" id="idxopen">Open everything</button>' +
+    '<button type="button" id="idxclose">Close everything</button></div>';
+
+  var total = 0;
+  function count(list) { total += list.length; return list; }
+
+  /* ---------------------------------------------------------- Constitution */
+  var coiSections = count([
+    { t: 'The articles', href: '#/constitution', n: LIVE.length + ' in force' },
+    { t: 'The exam layer', href: '#/high-yield' },
+    { t: 'The article map', href: '#/high-yield/map' },
+    { t: 'The courts, article by article', href: '#/high-yield/courts' },
+    { t: 'The Constituent Assembly', href: '#/assembly' },
+    { t: 'The amendments', href: '#/amendments', n: String(AMENDMENTS.length) },
+    { t: 'The Schedules', href: '#/schedules', n: String(SCHEDULES.length) },
+    { t: 'Landmark cases', href: '#/cases', n: String(CASES.length) },
+    { t: 'About this site', href: '#/about' }
+  ]);
+
+  var partItems = count(parts.map(function (p) {
+    var live = p.arts.filter(function (a) { return !a.om; });
+    var use = live.length ? live : p.arts;
+    return { t: 'Part ' + p.num + ' \u00b7 ' + titleCase(p.title || p.arts[0].pt),
+             href: '#/part/' + encodeURIComponent(p.num),
+             n: use[0].a + '\u2013' + use[use.length - 1].a };
+  }));
+
+  var artItems = count(ARTICLES.map(function (a) {
+    return { t: 'Art. ' + a.a + ' \u2014 ' + shorten(a.h || 'Repealed', 42),
+             href: '#/a/' + encodeURIComponent(a.a) };
+  }));
+
+  var asmItems = count(ASM_VIEWS.map(function (v) {
+    return { t: v[1], href: '#/assembly' + (v[0] ? '/' + v[0] : '') };
+  }));
+
+  var hyItems = count([
+    { t: 'Overview', href: '#/high-yield' },
+    { t: 'Articles, in three tiers', href: '#/high-yield/articles' },
+    { t: 'The article map', href: '#/high-yield/map' },
+    { t: 'The courts', href: '#/high-yield/courts' },
+    { t: 'Cases', href: '#/high-yield/cases' },
+    { t: 'Amendments', href: '#/high-yield/amendments' },
+    { t: 'Confused pairs', href: '#/high-yield/confusions' },
+    { t: 'Quick facts', href: '#/high-yield/facts' }
+  ]);
+
+  var amdItems = count(AMENDMENTS.map(function (m) {
+    return { t: ordinal(m.n) + ' \u2014 ' + shorten(m.s, 38), href: '#/amendment/' + m.n,
+             n: String(m.y) };
+  }));
+
+  var schItems = count(SCHEDULES.map(function (s) {
+    return { t: ORD[s.n] + ' Schedule \u2014 ' + shorten(s.sub, 34), href: '#/schedule/' + s.n };
+  }));
+
+  var caseItems = count(CASES.map(function (c) {
+    return { t: shorten(c.n, 46), href: '#/case/' + encodeURIComponent(c.id), n: String(c.y) };
+  }));
+
+  h += idxSection('Constitution of India',
+    ARTICLES.length + ' articles \u00b7 ' + AMENDMENTS.length + ' amendments \u00b7 ' +
+    CASES.length + ' cases \u00b7 ' + SCHEDULES.length + ' schedules',
+    idxGroup('Sections', coiSections, true) +
+    idxGroup('The Parts', partItems) +
+    idxGroup('Every article', artItems) +
+    idxGroup('The Constituent Assembly', asmItems) +
+    idxGroup('The exam layer', hyItems) +
+    idxGroup('Every amendment', amdItems) +
+    idxGroup('The Schedules', schItems) +
+    idxGroup('Every case', caseItems));
+
+  /* -------------------------------------------------------------- History */
+  var histSections = count([
+    { t: 'The timeline', href: '#/history' },
+    { t: 'The Acts', href: '#/history/acts' },
+    { t: 'The people', href: '#/history/people' },
+    { t: 'The movements', href: '#/history/movements' },
+    { t: 'The treaties', href: '#/history/treaties' },
+    { t: 'The exam layer', href: '#/history/high-yield' }
+  ]);
+  var evItems = count((HIST.timeline || []).map(function (e) {
+    return { t: shorten(e.t, 44), href: '#/history/event/' + encodeURIComponent(e.id),
+             n: String(e.y) };
+  }));
+  var actItems = count((HIST.acts || []).map(function (a) {
+    return { t: shorten(a.n, 44), href: '#/history/act/' + encodeURIComponent(a.id),
+             n: String(a.y) };
+  }));
+  var perItems = count((HIST.people || []).map(function (p) {
+    return { t: p.n, href: '#/history/person/' + encodeURIComponent(p.id) };
+  }));
+  var movItems = count((HIST.movements || []).map(function (m) {
+    return { t: m.n, href: '#/history/movement/' + encodeURIComponent(m.id),
+             n: m.from + '\u2013' + m.to };
+  }));
+  var trtItems = count([
+    { t: 'The treaties', href: '#/history/treaties' },
+    { t: 'Grouped by war', href: '#/history/treaties/wars' },
+    { t: 'After 1947', href: '#/history/treaties/after' },
+    { t: 'The drill', href: '#/history/treaties/drill' },
+    { t: 'Confused pairs', href: '#/history/treaties/confusions' }
+  ]);
+  var histHyItems = count([
+    { t: 'Overview', href: '#/history/high-yield' },
+    { t: 'Confused pairs', href: '#/history/high-yield/confusions' },
+    { t: 'Quick facts', href: '#/history/high-yield/facts' }
+  ]);
+
+  h += idxSection('Modern History',
+    (HIST.timeline || []).length + ' events \u00b7 ' + (HIST.acts || []).length + ' Acts \u00b7 ' +
+    (HIST.people || []).length + ' people \u00b7 ' + (HIST.movements || []).length + ' movements',
+    idxGroup('Sections', histSections, true) +
+    idxGroup('Every event', evItems) +
+    idxGroup('The Acts', actItems) +
+    idxGroup('The people', perItems) +
+    idxGroup('The movements', movItems) +
+    idxGroup('The treaties', trtItems) +
+    idxGroup('The exam layer', histHyItems));
+
+  /* -------------------------------------------------------------- Economy */
+  var econSections = count([
+    { t: 'The Five Year Plans', href: '#/economy' },
+    { t: 'The 1991 reforms', href: '#/economy/reforms' },
+    { t: 'The standing topics', href: '#/economy/topics' },
+    { t: 'Confused pairs', href: '#/economy/high-yield' },
+    { t: 'Quick facts', href: '#/economy/high-yield/facts' }
+  ]);
+  var planItems = count((ECON.plans || []).map(function (p) {
+    return { t: p.n, href: '#/economy/plan/' + encodeURIComponent(p.id),
+             n: p.from + '\u2013' + p.to };
+  }));
+  var econTopicItems = count((ECON.topics || []).map(function (t) {
+    return { t: t.n, href: '#/economy/topic/' + encodeURIComponent(t.id) };
+  }));
+
+  h += idxSection('Indian Economy',
+    (ECON.plans || []).length + ' plans and gaps \u00b7 ' + (ECON.topics || []).length + ' topics',
+    idxGroup('Sections', econSections, true) +
+    idxGroup('Every plan', planItems) +
+    idxGroup('The standing topics', econTopicItems));
+
+  /* ------------------------------------------------------------ Static GK */
+  var gkItems = count((GKD.packs || []).map(function (p) {
+    return { t: p.n, href: '#/gk/pack/' + encodeURIComponent(p.id), n: gkRows(p) + ' facts' };
+  }));
+  var gkSections = count([
+    { t: 'All packs', href: '#/gk' },
+    { t: 'Confused pairs', href: '#/gk/confusions' }
+  ]);
+
+  h += idxSection('Static General Knowledge',
+    (GKD.packs || []).length + ' packs',
+    idxGroup('Sections', gkSections, true) +
+    idxGroup('Every pack', gkItems));
+
+  /* -------------------------------------------------------------- Biology */
+  var bioItems = count((BIO.topics || []).map(function (t) {
+    return { t: t.n, href: '#/biology/topic/' + encodeURIComponent(t.id), n: bioRows(t) + ' facts' };
+  }));
+  var bioSections = count([
+    { t: 'The three topics', href: '#/biology' },
+    { t: 'Confused pairs', href: '#/biology/high-yield' },
+    { t: 'Quick facts', href: '#/biology/high-yield/facts' }
+  ]);
+
+  h += idxSection('Biology', (BIO.topics || []).length + ' topics',
+    idxGroup('Sections', bioSections, true) +
+    idxGroup('The topics', bioItems));
+
+  h += '<p class="foot">' + total + ' pages listed. Every one of them is also ' +
+    'reachable from the search box at the top, which looks inside the pages as well ' +
+    'as at their names.</p></div>';
+  render(h);
+
+  function setAll(open) {
+    var d = main.querySelectorAll('details.idx');
+    for (var i = 0; i < d.length; i++) d[i].open = open;
+  }
+  var oa = document.getElementById('idxopen'), ca = document.getElementById('idxclose');
+  if (oa) oa.addEventListener('click', function () { setAll(true); });
+  if (ca) ca.addEventListener('click', function () { setAll(false); });
+}
+
 /* ------------------------------------------------------------------ about */
 
 function aboutPage() {
@@ -2537,6 +2838,8 @@ if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 function route() {
   var h = location.hash.replace(/^#\/?/, '');
   var seg = h.split('/').map(decodeURIComponent);
+  recordStep(location.hash || '#/');
+  lastHash = location.hash || '#/';
   closeResults();
   jumpToTop();
 
@@ -2573,6 +2876,8 @@ function route() {
     case 'schedule':   return schedulePage(seg[1]);
     case 'cases':      return casesPage();
     case 'case':       return casePage(seg[1]);
+    case 'index':      return indexPage();
+    case 'contents':   return indexPage();
     case 'about':      return aboutPage();
     default:           return notFound('That address does not exist on this site.');
   }

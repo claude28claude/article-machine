@@ -13,11 +13,28 @@
   --dim:#9a97a3;
   --dimmer:#66636f;
 
-  --gold:#c9a227;      /* the seal — the Constitution's own voice */
-  --indigo:#7396d4;    /* the courts */
-  --good:#4fb08a;      /* in force */
-  --hot:#c2685c;       /* repealed, struck down */
-  --violet:#a98cd8;    /* amendments */
+  /* PALETTE. Three text colours over the same near-black ground: yellow,
+     purple and red. The background is deliberately unchanged - only the
+     type carries the colour.
+
+     Yellow  the Constitution's own voice: links, numbers, figures
+     Purple  structure: the key column of every table, the courts, amendments
+     Red     the section headings, and anything that is dead or a warning
+
+     The -rgb companions exist so a translucent version of a colour is
+     derived from the colour rather than typed out again: a hard-coded
+     rgba(201,162,39,.35) is a copy of the palette that does not change when
+     the palette does, and there were six of those before this. */
+  --gold:#e3b93c;        --gold-rgb:227,185,60;
+  --purple:#a97bf0;      --purple-rgb:169,123,240;
+  --red:#e2564e;         --red-rgb:226,86,78;
+
+  /* The older names still used across the stylesheet, pointed at the new
+     three so that every one of them moves together from here on. */
+  --indigo:var(--purple);   /* the courts */
+  --violet:#c49bf2;         /* amendments - the lighter purple */
+  --hot:var(--red);         /* repealed, struck down */
+  --good:#d3b04a;           /* in force */
 
   --serif:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,ui-serif,serif;
   --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
@@ -208,7 +225,7 @@ nav.tabs a[aria-current="page"]{color:var(--gold);border-bottom-color:var(--gold
   padding:8px var(--s4);border-radius:var(--r-pill);cursor:pointer;
   white-space:nowrap;transition:background var(--fast) var(--ease);
 }
-.installbtn:hover{background:rgba(201,162,39,.12)}
+.installbtn:hover{background:rgba(var(--gold-rgb),.12)}
 .installbtn.big{font-size:var(--t-tiny);padding:12px var(--s5)}
 
 #sheet{position:fixed;inset:0;z-index:120;display:flex;
@@ -268,7 +285,7 @@ nav.tabs a[aria-current="page"]{color:var(--gold);border-bottom-color:var(--gold
   font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.12em;
   text-transform:uppercase;color:var(--dimmer);flex:0 0 auto;
 }
-mark{background:rgba(201,162,39,.24);color:var(--ink);border-radius:2px;padding:0 1px}
+mark{background:rgba(var(--gold-rgb),.24);color:var(--ink);border-radius:2px;padding:0 1px}
 
 /* ==========================================================================
    HERO
@@ -362,11 +379,11 @@ mark{background:rgba(201,162,39,.24);color:var(--ink);border-radius:2px;padding:
   text-transform:uppercase;padding:3px 8px;border-radius:var(--r-pill);
   border:1px solid var(--line2);color:var(--dim);white-space:nowrap;
 }
-.chip.gone{color:var(--hot);border-color:rgba(194,104,92,.4)}
-.chip.case{color:var(--indigo);border-color:rgba(115,150,212,.4)}
-.chip.amd{color:var(--violet);border-color:rgba(169,140,216,.4)}
-.chip.struck{color:var(--hot);border-color:rgba(194,104,92,.4)}
-.chip.live{color:var(--good);border-color:rgba(79,176,138,.4)}
+.chip.gone{color:var(--hot);border-color:rgba(var(--red-rgb),.45)}
+.chip.case{color:var(--indigo);border-color:rgba(var(--purple-rgb),.45)}
+.chip.amd{color:var(--violet);border-color:rgba(var(--purple-rgb),.4)}
+.chip.struck{color:var(--hot);border-color:rgba(var(--red-rgb),.45)}
+.chip.live{color:var(--good);border-color:rgba(var(--gold-rgb),.4)}
 
 /* ==========================================================================
    ARTICLE DETAIL
@@ -393,9 +410,12 @@ mark{background:rgba(201,162,39,.24);color:var(--ink);border-radius:2px;padding:
 .arthead .chips{display:flex;gap:6px;flex-wrap:wrap}
 
 .block{margin-top:var(--s7)}
+ /* Three colours, three jobs: red says where you are, purple says what a
+    row is about, and yellow is kept for the things you can act on - links,
+    numbers and figures. */
 .block > h3{
   font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.16em;
-  text-transform:uppercase;color:var(--dim);margin:0 0 var(--s4);
+  text-transform:uppercase;color:var(--red);margin:0 0 var(--s4);
   padding-bottom:var(--s2);border-bottom:1px solid var(--line);
 }
 .plain{font-size:var(--t-lead);line-height:1.68;max-width:68ch;margin:0}
@@ -528,7 +548,7 @@ details.fold > summary:hover{color:var(--ink)}
 }
 .listtabs button:hover{color:var(--ink);border-color:var(--line2)}
 .listtabs button[aria-pressed="true"]{
-  background:rgba(201,162,39,.12);border-color:var(--gold);color:var(--gold);
+  background:rgba(var(--gold-rgb),.12);border-color:var(--gold);color:var(--gold);
 }
 
 .filters{display:flex;gap:var(--s2);flex-wrap:wrap;align-items:center;margin-bottom:var(--s5)}
@@ -569,7 +589,7 @@ details.fold > summary:hover{color:var(--ink)}
 }
 .cmph{
   font-family:var(--serif);font-size:var(--t-h4);padding:var(--s4) var(--s5);
-  border-bottom:1px solid var(--line);background:var(--panel2);
+  border-bottom:1px solid var(--line);background:var(--panel2);color:var(--gold);
 }
 .cmpr{
   display:flex;gap:var(--s5);padding:var(--s4) var(--s5);
@@ -582,23 +602,26 @@ details.fold > summary:hover{color:var(--ink)}
 }
 .cmpv{flex:1 1 auto;min-width:0;font-size:var(--t-body);color:var(--ink);line-height:1.6}
 .cmpn{
-  padding:var(--s4) var(--s5);background:rgba(201,162,39,.06);
+  padding:var(--s4) var(--s5);background:rgba(var(--gold-rgb),.06);
   border-top:1px solid var(--line);font-size:var(--t-copy);color:var(--dim);
 }
-.cmp a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,162,39,.35)}
+.cmp a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(var(--gold-rgb),.35)}
 .cmp a:hover{border-bottom-color:var(--gold)}
 
 /* Quick facts */
 dl.facts{margin:0;display:grid;grid-template-columns:minmax(190px,32%) 1fr;gap:0}
+/* The key column of every table on the site. It was grey, which made a
+   two-column table read as one grey block; in purple the eye can run down
+   the keys alone, which is how these tables are actually revised. */
 dl.facts dt{
   padding:11px var(--s4) 11px 0;border-bottom:1px solid var(--line);
-  font-size:var(--t-body);color:var(--dim);line-height:1.5;
+  font-size:var(--t-body);color:var(--purple);line-height:1.5;
 }
 dl.facts dd{
   margin:0;padding:11px 0;border-bottom:1px solid var(--line);
   font-size:var(--t-body);line-height:1.6;
 }
-dl.facts a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(201,162,39,.35)}
+dl.facts a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(var(--gold-rgb),.35)}
 
 .arow .no.dimyear{color:var(--dim)}
 
@@ -691,7 +714,7 @@ footer a:hover{color:var(--gold)}
 .topic em{
   display:block;font-style:normal;font-family:var(--mono);
   font-size:var(--t-micro);letter-spacing:.1em;text-transform:uppercase;
-  color:var(--dimmer);margin-top:var(--s3);
+  color:var(--purple);margin-top:var(--s3);
 }
 
 /* The hub's empty state offers the deep search as a button, so .pill has to
@@ -702,6 +725,71 @@ button.pill{background:var(--panel);cursor:pointer}
 /* A year RANGE where the article number usually goes needs more room and a
    smaller face than a single number does. */
 .arow .no.range{font-size:var(--t-base);min-width:92px;font-family:var(--mono);letter-spacing:.02em}
+
+/* ==========================================================================
+   BACK, AND THE INDEX
+
+   Going back a step is the commonest thing a reader does while studying, and
+   on a phone with the site installed as an app there is no browser chrome to
+   do it with - no address bar, no back arrow. So the site carries its own,
+   fixed to the bottom of the screen where a thumb reaches, and present on
+   every page except the front one.
+   ========================================================================== */
+
+.backfab{
+  position:fixed;left:var(--s4);bottom:var(--s4);z-index:60;
+  display:inline-flex;align-items:center;gap:var(--s2);
+  background:var(--panel2);color:var(--ink);
+  border:1px solid var(--line2);border-radius:var(--r-pill);
+  font-family:var(--mono);font-size:var(--t-tiny);letter-spacing:.1em;
+  text-transform:uppercase;padding:11px var(--s5) 11px var(--s4);
+  cursor:pointer;box-shadow:var(--shadow);opacity:.92;
+  transition:border-color var(--fast) var(--ease),color var(--fast) var(--ease),
+             opacity var(--fast) var(--ease);
+}
+.backfab:hover,.backfab:focus-visible{opacity:1}
+.backfab::before{content:"\2190";font-size:15px;line-height:1}
+.backfab:hover{border-color:var(--purple);color:var(--purple)}
+.backfab:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* The index is a contents page, so it is dense on purpose: many short links
+   in columns rather than a few long rows. */
+.idxsec{margin-top:var(--s7)}
+.idxhead{
+  display:flex;align-items:baseline;gap:var(--s4);flex-wrap:wrap;
+  border-bottom:1px solid var(--line2);padding-bottom:var(--s3);
+}
+.idxhead h2{
+  font-family:var(--serif);font-size:var(--t-h3);font-weight:600;margin:0;
+  color:var(--gold);
+}
+.idxhead span{
+  font-family:var(--mono);font-size:var(--t-tiny);letter-spacing:.08em;
+  color:var(--dimmer);
+}
+details.idx{border-bottom:1px solid var(--line);padding:var(--s2) 0}
+details.idx > summary{
+  cursor:pointer;list-style:none;display:flex;align-items:baseline;
+  gap:var(--s3);padding:var(--s3) 0;
+  font-family:var(--mono);font-size:var(--t-tiny);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--red);
+}
+details.idx > summary::-webkit-details-marker{display:none}
+details.idx > summary::before{content:"\25b8";color:var(--purple);font-size:11px}
+details.idx[open] > summary::before{content:"\25be"}
+details.idx > summary:hover{color:var(--gold)}
+details.idx > summary b{font-weight:400;color:var(--dimmer);letter-spacing:.06em}
+.idxgrid{
+  display:grid;gap:var(--s1) var(--s4);padding:var(--s3) 0 var(--s4);
+  grid-template-columns:repeat(auto-fill,minmax(232px,1fr));
+}
+.idxgrid a{
+  display:block;text-decoration:none;color:var(--ink);
+  font-size:var(--t-copy);line-height:1.5;padding:5px 0;
+  border-bottom:1px solid transparent;
+}
+.idxgrid a:hover{color:var(--gold);border-bottom-color:rgba(var(--gold-rgb),.35)}
+.idxgrid a i{font-style:normal;color:var(--dimmer);font-family:var(--mono);font-size:var(--t-micro)}
 
 @media (max-width:760px){
   :root{--headh:150px}
@@ -728,7 +816,7 @@ button.pill{background:var(--panel);cursor:pointer}
   .cmpk{flex:0 0 auto}
   .cmph,.cmpn{padding-left:var(--s4);padding-right:var(--s4)}
   dl.facts{grid-template-columns:1fr}
-  dl.facts dt{padding:12px 0 2px;border-bottom:0;color:var(--gold);font-size:var(--t-small)}
+  dl.facts dt{padding:12px 0 2px;border-bottom:0;color:var(--purple);font-size:var(--t-small)}
   dl.facts dd{padding:0 0 12px}
 }
 
@@ -739,6 +827,8 @@ button.pill{background:var(--panel);cursor:pointer}
   .arow .no,.res .no{min-width:62px;font-size:18px}
   .arow .no.range{min-width:74px;font-size:var(--t-copy)}
   .topics{grid-template-columns:1fr}
+  .idxgrid{grid-template-columns:1fr}
+  .backfab{left:var(--s3);bottom:var(--s3);padding:10px var(--s4) 10px var(--s3)}
   .hubfilter{gap:var(--s3)}
   .arow .tag{display:none}
   .arthead{gap:var(--s3)}
