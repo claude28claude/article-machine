@@ -1,14 +1,31 @@
 # The Article Machine
 
-Two subjects for the Indian exam track, in plain English. Searchable across
-both, works offline, installable.
+Four subjects for the Indian exam track, in plain English, organised by
+**topic** rather than by subject. Searchable across all four, works offline,
+installable.
 
 **The Constitution of India** — every article, what it actually means, the
 official text word for word, the landmark case that defined it, and every
 amendment that changed it.
 
-**Modern History** — 1600 to 1949: the timeline, the Acts, the people and the
+**Modern History** — 1600 to 1950: the timeline, the Acts, the people and the
 movements.
+
+**Indian Economy** — every Five Year Plan and every gap between them, the 1991
+reforms in full, and eight standing topics: planning bodies, banking, the
+Budget and GST, poverty and schemes, agriculture, national income, who
+publishes which report, and the international bodies.
+
+**Static General Knowledge** — eighteen packs of the facts that do not change:
+national symbols, dance, awards, sports, firsts, superlatives, rivers and dams,
+national parks, World Heritage Sites, monuments, important days, books,
+headquarters, science, the human body, space and defence, the states, and the
+world.
+
+The front page is a **filterable list of every topic on the site**. A reader
+arrives knowing what they need to revise, not which of four subjects it lives
+in, so `#/` asks that question first and every subject sits one click behind
+it.
 
 **Live at <https://claude28claude.github.io/article-machine/>**
 
@@ -72,20 +89,66 @@ instead of picking a side quietly.
 Every event is validated to fall inside the era it is filed under; that check
 caught five misfiled events on the first run.
 
+## Indian Economy
+
+| | |
+|---|---|
+| Five Year Plans | **12**, 1951 to 2017, each with model, target, achievement |
+| Plan gaps | **3** — the 1966–69 holiday, the 1978–80 rolling plan, 1990–92 |
+| The 1991 reforms | The crisis, then liberalisation, privatisation and globalisation in full |
+| Standing topics | **8**, 218 facts in 30 tables |
+| Confused pairs | **10** |
+| Quick facts | **72** across 5 tables |
+
+**Three kinds of statement, and the difference is stated.** Dates and
+structures are firm. Achieved growth rates come from the Planning Commission's
+own end-of-plan reviews and move by a few tenths between sources depending on
+the GDP base year — the first decimal is safe, the last is not. Current figures
+(reserves, tax slabs) each carry the date they are true as of, so a stale
+number reads as stale rather than as wrong.
+
+## Static General Knowledge
+
+| | |
+|---|---|
+| Packs | **18** |
+| Tables | **72** |
+| Facts | **850** |
+| Confused pairs | **10** |
+
+**Static means static.** Everything here was chosen because the answer is the
+same this year as last. Current affairs are deliberately excluded — they go
+stale, and mixing them in is how a study file quietly stops being true.
+
+**Where the popular answer is wrong, the page says so.** India has no national
+game and no national language. Malaria is protozoan, not bacterial. Only three
+of the national emblem's four lions are visible. The Amazon may well be longer
+than the Nile. Those corrections are worth more than the easy rows around them.
+
 ## Adding another subject
 
 The site is built as a registry of subjects so an unrelated one can be added
 without touching the router or the header. In `app.js`:
 
 ```js
-var SUBJECTS = [{ id, name, blurb, isDefault, tabs:[...], stats(), route(seg) }]
+var SUBJECTS = [{ id, name, short, blurb, isDefault,
+                  tabs:[...], stats(), topics(), route(seg) }]
 ```
 
-To add one: drop in its data file, push an entry, and it appears in the nav and
-answers at `#/<id>/...` on its own. The Constitution is the default subject, so
-its routes stay at the top level (`#/a/21`) and every published link keeps
-working; a second subject is namespaced under its id, and a hub page at `#/hub`
-appears automatically once there is more than one.
+To add one: drop in its data file, push an entry, and it appears in the nav, in
+the topic hub, in the cross-subject search, and answers at `#/<id>/...` on its
+own. Nothing else needs touching. `topics()` returns
+`[{t, w, href, n, k?}]` — the rows the hub lists and filters, where `k` is
+optional extra keywords so a filter for "vitamin" reaches a pack called "Human
+body, vitamins and diseases".
+
+Three renderers are shared by every written subject, so a new one costs a data
+file and a route and no markup: `pageH1`, `cmpBlock` (a confused pair) and
+`factsBlock` (a table of facts, accepting either `{g, items}` or `{h, rows}`).
+
+The Constitution is the default subject, so its routes stay at the top level
+(`#/a/21`, `#/cases`) and every published link keeps working. Its own landing
+page is at `#/constitution`; `#/` is the topic hub.
 
 ## Where the content comes from
 
@@ -126,7 +189,7 @@ of them so a reader can check what a summary lost.
 |---|---|
 | `index.html` | The shell: header, search box, nav, footer |
 | `styles.css` | One stylesheet. Tokenised type ramp, numeral ramp, 4px space scale |
-| `app.js` | Hash router, search, and the renderer for all five views |
+| `app.js` | Hash router, topic hub, cross-subject search, and every view |
 | `data-articles.js` | The 506 articles: heading, Part, official text, amendment trail |
 | `data-amendments.js` | The 106 amendments and the articles each touched |
 | `data-schedules.js` | The 12 Schedules, including all 220 entries of the three Lists |
@@ -134,6 +197,8 @@ of them so a reader can check what a summary lost.
 | `data-highyield.js` | The Constitution's exam layer: tiers, confused pairs, quick facts |
 | `data-history.js` | Modern History: eras, timeline, Acts, people, movements |
 | `data-history-hy.js` | Modern History's exam layer |
+| `data-economy.js` | The plans, the 1991 reforms, the standing topics, the exam layer |
+| `data-gk.js` | 18 packs of static general knowledge, 850 facts |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline |
 | `tools/make-icons.py` | Regenerates the PWA icons |
@@ -149,9 +214,17 @@ Then open <http://localhost:8137>. It is also registered in the workspace
 
 ## Using it
 
-- `/` focuses the search box. It searches article numbers, headings, the
-  plain-English notes, the official text, case names and amendment subjects.
+- The **front page filters topics** by name and description. If nothing
+  matches, it hands the query to the deep search rather than dead-ending.
+- `/` focuses the search box. It searches all four subjects: article numbers,
+  headings, the plain-English notes, the official text, case names, amendment
+  subjects, history events, plans, and every table of facts — down to the
+  individual table, so "lactometer" reaches "Instruments and what they measure".
   Typing `21`, `art 21` or `article 21` all reach Article 21.
+- Every search term must begin at a word boundary. Without that, "gst" matched
+  inside "amongst" and "dance" inside "accordance" — which put Article 356 above
+  the folk-dance table for the query "punjab dance". A stem still matches, so
+  "amend" finds "amendment".
 - `J` and `K` step to the next and previous article.
 - `Esc` closes the results.
 - **Install it as an app** with the button in the header. In Chrome and Edge

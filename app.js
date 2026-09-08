@@ -30,15 +30,52 @@ var brandSub = document.getElementById('brandsub');
    (#/a/21) rather than behind a prefix — the links already published stay
    valid. Any later subject is namespaced under its own id.                  */
 
-var SITE = { name: 'The Article Machine' };
+var SITE = {
+  name: 'The Article Machine',
+  /* The front door is the topic list, not any one subject. A reader arrives
+     knowing what they need to revise, not which of four subjects it lives
+     in — so #/ asks that question and every subject sits one click behind
+     it. The Constitution keeps its old top-level routes (#/a/21, #/cases)
+     so that nothing already linked breaks; its landing page moved to
+     #/constitution. */
+  hub: 'Study by topic'
+};
+
+/* The Parts of the Constitution, named the way a syllabus names them rather
+   than the way the Constitution numbers them. "Part XVIII" is not a topic
+   anybody looks for; "Emergency provisions" is. Article ranges are read off
+   the data at run time rather than written here, so they cannot drift. */
+var COI_TOPICS = [
+  ['III',   'Fundamental Rights',        'Equality, freedom, life and liberty, religion — and the writs that enforce them.'],
+  ['IV',    'Directive Principles',      'What the state is directed to aim at, and cannot be taken to court over.'],
+  ['IVA',   'Fundamental Duties',        'The eleven duties, added by the 42nd Amendment in 1976.'],
+  ['V',     'The Union',                 'President, Vice-President, Council of Ministers, Parliament, the Supreme Court and the CAG.'],
+  ['VI',    'The States',                'Governor, state legislature, the High Courts and subordinate courts.'],
+  ['XVIII', 'Emergency provisions',      'National, state and financial emergency — and everything the 44th Amendment tightened.'],
+  ['XI',    'Centre-State relations',    'Who may legislate on what, and how the Union directs a state.'],
+  ['XX',    'Amendment of the Constitution', 'Article 368, and the basic structure doctrine that limits it.'],
+  ['XV',    'Elections',                 'The Election Commission and the bar on courts interfering in an election.'],
+  ['XII',   'Finance, property and contracts', 'Taxation, the Finance Commission, borrowing, and the right to property after 1978.'],
+  ['IX',    'The Panchayats',            'The 73rd Amendment — three tiers, five-year terms, reservation and the state election commission.'],
+  ['IXA',   'The Municipalities',        'The 74th Amendment — urban local government on the same pattern.'],
+  ['XIV',   'Services and the Public Service Commissions', 'The civil services, and the protections in Article 311.'],
+  ['XVII',  'Official language',         'Hindi, English, and the languages of the Eighth Schedule.'],
+  ['XVI',   'Special provisions for certain classes', 'Reservation of seats, and the National Commissions.'],
+  ['II',    'Citizenship',               'Who was a citizen at commencement, and who decides now.'],
+  ['I',     'The Union and its territory', 'How a state is created, renamed, merged or reorganised.'],
+  ['X',     'Scheduled and Tribal Areas','Read with the Fifth and Sixth Schedules.'],
+  ['XIVA',  'Tribunals',                 'Administrative tribunals, and what the courts did to them.'],
+  ['XXI',   'Temporary and special provisions', 'The special provisions for particular states, including Article 370 as it stands.']
+];
 
 var SUBJECTS = [{
   id: 'constitution',
   name: 'Constitution of India',
+  short: 'Constitution',
   blurb: 'Every article in plain English, with the official text, the cases and the amendments.',
   isDefault: true,
   tabs: [
-    { href: '#/',            label: 'Articles',   match: ['', 'part', 'a'] },
+    { href: '#/constitution', label: 'Articles',  match: ['', 'constitution', 'part', 'a'] },
     { href: '#/high-yield',  label: 'High-yield', match: ['high-yield'] },
     { href: '#/amendments',  label: 'Amendments', match: ['amendments', 'amendment'] },
     { href: '#/schedules',   label: 'Schedules',  match: ['schedules', 'schedule'] },
@@ -48,6 +85,31 @@ var SUBJECTS = [{
   stats: function () {
     return [ARTICLES.length + ' articles', AMENDMENTS.length + ' amendments',
             CASES.length + ' cases', SCHEDULES.length + ' schedules'];
+  },
+  topics: function () {
+    var out = COI_TOPICS.map(function (t) {
+      var p = null;
+      parts.forEach(function (x) { if (x.num === t[0]) p = x; });
+      if (!p) return null;
+      var live = p.arts.filter(function (a) { return !a.om; });
+      var use = live.length ? live : p.arts;
+      return {
+        t: t[1], w: t[2], href: '#/part/' + encodeURIComponent(p.num),
+        n: 'Articles ' + use[0].a + (use.length > 1 ? '-' + use[use.length - 1].a : '')
+      };
+    }).filter(Boolean);
+    out.push(
+      { t: 'The amendments', href: '#/amendments', n: AMENDMENTS.length + ' amendments',
+        w: 'All of them, in order, with the articles each one touched.' },
+      { t: 'The Schedules', href: '#/schedules', n: SCHEDULES.length + ' schedules',
+        w: 'The Union, State and Concurrent Lists, the languages, the salaries and the anti-defection law.' },
+      { t: 'Landmark cases', href: '#/cases', n: CASES.length + ' judgments',
+        w: 'Kesavananda to Puttaswamy — what each one held, and which articles it turned on.' },
+      { t: 'Constitution - the exam layer', href: '#/high-yield',
+        n: hyCount('articles', 1) + ' must-know articles',
+        w: 'Articles, cases and amendments sorted into three tiers, plus the confused pairs.' }
+    );
+    return out;
   }
 }];
 
@@ -58,15 +120,32 @@ function activeSubject() {
   return hit || SUBJECTS.filter(function (s) { return s.isDefault; })[0];
 }
 
+function atHub(seg) {
+  var first = seg[0] || '';
+  return first === '' || first === 'hub' || first === 'topics';
+}
+
 function renderNav(seg) {
+  if (!tabBar) return;
+
+  /* At the hub there is no active subject, so the nav becomes the list of
+     subjects instead of one subject's sections. */
+  if (atHub(seg)) {
+    if (brandSub) brandSub.textContent = SITE.hub;
+    tabBar.innerHTML = SUBJECTS.map(function (s) {
+      return '<a href="#/' + (s.isDefault ? 'constitution' : s.id) + '">' +
+             esc(s.short || s.name) + '</a>';
+    }).join('') + '<a href="#/about">About</a>';
+    syncHead();
+    return;
+  }
+
   var sub = activeSubject();
   if (brandSub) brandSub.textContent = sub.name;
-  if (!tabBar) return;
   /* For a namespaced subject the first segment is its id, so the segment that
      identifies the tab is the SECOND one. The default subject has no prefix. */
   var key = sub.isDefault ? (seg[0] || '') : (seg[1] || '');
-  tabBar.innerHTML = (SUBJECTS.length > 1
-      ? '<a href="#/hub" class="hublink">All subjects</a>' : '') +
+  tabBar.innerHTML = '<a href="#/" class="hublink">All topics</a>' +
     sub.tabs.map(function (t) {
       var on = t.match.indexOf(key) >= 0;
       return '<a href="' + t.href + '"' + (on ? ' aria-current="page"' : '') + '>' +
@@ -832,16 +911,99 @@ function highYieldPage(slug) {
 
 /* --------------------------------------------------------------------- hub */
 
+/* The front page. Every topic on the site in one filterable list, grouped by
+   subject but filtered across subjects — so a reader who types "rivers" or
+   "emergency" reaches the page they wanted without first having to work out
+   which of four subjects it belongs to. */
 function hubPage() {
-  var h = '<div class="wrap hero"><h1>' + esc(SITE.name) + '</h1>' +
-    '<p class="lede">Pick a subject.</p></div><div class="wrap"><div class="grid">';
-  SUBJECTS.forEach(function (s) {
-    h += '<a class="pcard" href="#/' + (s.isDefault ? '' : s.id) + '">' +
-      '<div class="pn">' + esc(s.name) + '</div>' +
-      '<div class="pt">' + esc(s.blurb) + '</div>' +
-      '<div class="pr">' + esc(s.stats().join(' · ')) + '</div></a>';
+  var groups = SUBJECTS.map(function (s) {
+    return { s: s, topics: s.topics ? s.topics() : [] };
   });
-  render(h + '</div></div>');
+  var total = groups.reduce(function (a, g) { return a + g.topics.length; }, 0);
+
+  var h = '<div class="wrap hero"><h1>What do you need to study?</h1>' +
+    '<p class="lede">' + total + ' topics across ' + SUBJECTS.length +
+    ' subjects, each written to be read on its own. Filter the list, or open a ' +
+    'subject and work through it.</p>' +
+    '<div class="hubfilter">' +
+      '<input id="topicq" type="search" autocomplete="off" spellcheck="false" ' +
+      'aria-label="Filter topics" aria-controls="hublist" ' +
+      'placeholder="Filter topics \u2014 try \u201cgst\u201d, \u201cdance\u201d, \u201cemergency\u201d, \u201crivers\u201d">' +
+      '<span id="topicn" aria-live="polite"></span></div></div>';
+
+  h += '<div class="wrap" id="hublist">';
+  groups.forEach(function (g) {
+    h += '<section class="hubsec">' +
+      '<div class="hubhead"><a href="#/' + (g.s.isDefault ? 'constitution' : g.s.id) + '">' +
+        esc(g.s.name) + '</a><span>' + esc(g.s.stats().join(' \u00b7 ')) + '</span></div>' +
+      '<div class="topics">' + g.topics.map(function (t) {
+        return '<a class="topic" href="' + t.href + '" data-k="' +
+          esc((t.t + ' ' + t.w + ' ' + (t.k || '') + ' ' + g.s.name).toLowerCase()) + '">' +
+          '<b>' + esc(t.t) + '</b><i>' + esc(t.w) + '</i>' +
+          '<em>' + esc(t.n) + '</em></a>';
+      }).join('') + '</div></section>';
+  });
+  h += '<div class="empty" id="hubempty" hidden><b>No topic matches that</b>' +
+    'The search box at the top of the page goes deeper \u2014 it looks inside every ' +
+    'article, case, event and fact on the site, not just the topic names.</div></div>';
+
+  render(h);
+  wireHubFilter();
+}
+
+/* The filter is plain substring matching over a key built from the topic's
+   title, its one-line description and its subject name — so "history" finds
+   a whole subject and "vitamin" finds one pack. Every term must match, which
+   makes "punjab dance" work. */
+function wireHubFilter() {
+  var box = document.getElementById('topicq');
+  if (!box) return;
+  var items = [].slice.call(document.querySelectorAll('#hublist .topic'));
+  var secs  = [].slice.call(document.querySelectorAll('#hublist .hubsec'));
+  var count = document.getElementById('topicn');
+  var none  = document.getElementById('hubempty');
+
+  function apply() {
+    var terms = box.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    var shown = 0;
+    items.forEach(function (el) {
+      var hay = el.getAttribute('data-k');
+      var ok = terms.every(function (t) { return hay.indexOf(t) >= 0; });
+      el.hidden = !ok;
+      if (ok) shown++;
+    });
+    secs.forEach(function (sec) {
+      sec.hidden = !sec.querySelector('.topic:not([hidden])');
+    });
+    if (count) count.textContent = terms.length ? shown + ' of ' + items.length : '';
+
+    /* A filter that can only dead-end is a bad filter. This one matches topic
+       names and descriptions, so a query naming a fact rather than a topic
+       finds nothing here even when the site holds the answer — "punjab dance"
+       is in the folk-dance table, not in any topic's name. Hand it to the
+       real search instead of stopping. */
+    if (!none) return;
+    none.hidden = shown > 0;
+    if (shown) return;
+    var raw = box.value.trim();
+    none.innerHTML = '<b>No topic is named that</b>' +
+      'The topic filter only looks at the names and one-line descriptions above. ' +
+      'The search box at the top of the page goes all the way in \u2014 every article, ' +
+      'case, event, plan and fact on the site.' +
+      '<div class="stack"><button class="pill big" type="button" id="deepsearch">' +
+      'Search everything for \u201c' + esc(raw) + '\u201d</button></div>';
+    var btn = document.getElementById('deepsearch');
+    /* A click anywhere outside the results panel closes it, and this button
+       is outside it. Without stopping the bubble the panel would open and
+       then be shut again by that handler in the same click. */
+    if (btn) btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      qBox.value = raw;
+      qBox.focus();
+      runSearch(raw);
+    });
+  }
+  box.addEventListener('input', apply);
 }
 
 /* =========================================================================
@@ -866,10 +1028,9 @@ function histCrumb(here) {
          (here ? ' → ' + esc(here) : '') + '</div>';
 }
 
-function histH1(t, sub) {
-  return '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
-         esc(t) + '</h1>' + (sub ? '<p class="sub">' + esc(sub) + '</p>' : '');
-}
+/* Kept as a name because it is called from a dozen places; the markup itself
+   is now shared with Economy and Static GK. */
+function histH1(t, sub) { return pageH1(t, sub); }
 
 function histTimeline() {
   var h = histCrumb('') + histH1('The timeline',
@@ -1023,23 +1184,10 @@ function histHigh(slug) {
   if (slug === 'confusions') {
     body += histH1('The pairs that get mixed up',
       'Plassey or Buxar, 1858 or 1861, which Act put dyarchy where, and which of Gandhi\'s three first campaigns was which.');
-    (HIST_HY.confusions || []).forEach(function (c) {
-      body += '<div class="cmp"><div class="cmph">' + esc(c.k) + '</div>' +
-        c.rows.map(function (r) {
-          return '<div class="cmpr"><div class="cmpk">' + esc(r[0]) + '</div>' +
-                 '<div class="cmpv">' + esc(r[1]) + '</div></div>';
-        }).join('') +
-        (c.note ? '<div class="cmpn">' + esc(c.note) + '</div>' : '') + '</div>';
-    });
+    body += (HIST_HY.confusions || []).map(cmpBlock).join('');
   } else if (slug === 'facts') {
     body += histH1('Quick facts', 'The tables that get asked as they stand.');
-    (HIST_HY.facts || []).forEach(function (g) {
-      body += '<div class="block"><h3>' + esc(g.g) + '</h3>' +
-        (g.note ? '<p class="foot before">' + esc(g.note) + '</p>' : '') +
-        '<dl class="facts">' + g.items.map(function (it) {
-          return '<dt>' + esc(it[0]) + '</dt><dd>' + esc(it[1]) + '</dd>';
-        }).join('') + '</dl></div>';
-    });
+    body += (HIST_HY.facts || []).map(factsBlock).join('');
   } else {
     var ev = (HIST.timeline || []).filter(function (x) { return x.hy; });
     var pe = (HIST.people || []).filter(function (x) { return x.hy; });
@@ -1087,6 +1235,7 @@ function historyRoute(seg) {
 SUBJECTS.push({
   id: 'history',
   name: 'Modern History',
+  short: 'History',
   blurb: 'India from the Company\'s charter to the Constitution — the timeline, the Acts, the people and the movements.',
   tabs: [
     { href: '#/history',            label: 'Timeline',   match: ['', 'event'] },
@@ -1100,7 +1249,405 @@ SUBJECTS.push({
     return [(HIST.timeline || []).length + ' events', (HIST.acts || []).length + ' Acts',
             (HIST.people || []).length + ' people', (HIST.movements || []).length + ' movements'];
   },
+  topics: function () {
+    var facts = (HIST_HY.facts || []).reduce(function (a, g) { return a + g.items.length; }, 0);
+    return [
+      { t: 'The timeline, 1600 to 1950', href: '#/history',
+        n: (HIST.timeline || []).length + ' events',
+        w: 'Every event in order, grouped into eight eras, with the high-yield ones marked.' },
+      { t: 'The Acts, 1773 to 1947', href: '#/history/acts',
+        n: (HIST.acts || []).length + ' Acts',
+        w: 'Regulating Act to Indian Independence Act \u2014 what each one actually changed.' },
+      { t: 'The people', href: '#/history/people', n: (HIST.people || []).length + ' people',
+        w: 'Governors-General, Viceroys, reformers, revolutionaries and the leaders of the Congress.' },
+      { t: 'The mass movements', href: '#/history/movements',
+        n: (HIST.movements || []).length + ' movements',
+        w: 'Swadeshi to Quit India \u2014 cause, course, leadership and outcome.' },
+      { t: 'History - confused pairs', href: '#/history/high-yield/confusions',
+        n: (HIST_HY.confusions || []).length + ' pairs',
+        w: 'Plassey or Buxar, 1858 or 1861, which Act put dyarchy where.' },
+      { t: 'History - quick facts', href: '#/history/high-yield/facts', n: facts + ' facts',
+        w: 'Viceroys, Congress sessions, newspapers, books, slogans, risings and trials.' }
+    ];
+  },
   route: historyRoute
+});
+
+/* =========================================================================
+   SHARED RENDERERS
+
+   Three of the four subjects are written rather than extracted, and they
+   present the same three shapes: a page heading, a compared pair, and a
+   table of facts. History grew its own copies of these first; they are
+   here now so that a fourth subject costs a data file and a route, and no
+   markup at all.
+   ========================================================================= */
+
+function pageH1(t, sub) {
+  return '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
+         esc(t) + '</h1>' + (sub ? '<p class="sub">' + esc(sub) + '</p>' : '');
+}
+
+/* A confused pair: a heading, two or more labelled rows, and the note that
+   says which one the question is actually asking about. */
+function cmpBlock(c) {
+  return '<div class="cmp"><div class="cmph">' + esc(c.k) + '</div>' +
+    c.rows.map(function (r) {
+      return '<div class="cmpr"><div class="cmpk">' + esc(r[0]) + '</div>' +
+             '<div class="cmpv">' + esc(r[1]) + '</div></div>';
+    }).join('') +
+    (c.note ? '<div class="cmpn">' + esc(c.note) + '</div>' : '') + '</div>';
+}
+
+/* A table of facts. Modern History calls the group `g` and its rows `items`;
+   Economy and Static GK call them `h` and `rows`. Both are accepted rather
+   than rewriting two data files to agree on a letter. */
+function factsBlock(g) {
+  var items = g.items || g.rows || [];
+  return '<div class="block"><h3>' + esc(g.g || g.h || '') + '</h3>' +
+    (g.note ? '<p class="foot before">' + esc(g.note) + '</p>' : '') +
+    '<dl class="facts">' + items.map(function (it) {
+      return '<dt>' + esc(it[0]) + '</dt><dd>' + esc(it[1]) + '</dd>';
+    }).join('') + '</dl></div>';
+}
+
+/* The row of pill buttons that switches between views inside a subject. */
+function subTabs(base, tabs, active) {
+  return '<div class="listtabs">' + tabs.map(function (t) {
+    return '<button onclick="location.hash=\'' + base + (t[0] ? '/' + t[0] : '') +
+      '\'" aria-pressed="' + (t[0] === (active || '')) + '">' + esc(t[1]) + '</button>';
+  }).join('') + '</div>';
+}
+
+/* =========================================================================
+   SUBJECT: INDIAN ECONOMY
+   The Five Year Plans, the 1991 reforms, and the standing topics.
+   ========================================================================= */
+
+var ECON = window.ECONOMY || {};
+var econPlanById = {}, econTopicById = {};
+(ECON.plans  || []).forEach(function (p) { econPlanById[p.id] = p; });
+(ECON.topics || []).forEach(function (t) { econTopicById[t.id] = t; });
+
+function econShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function econCrumb(here) {
+  return '<div class="crumb"><a href="#/economy">Economy</a>' +
+         (here ? ' → ' + esc(here) : '') + '</div>';
+}
+
+/* target vs achieved, written the way an answer sheet wants it */
+function econRate(p) {
+  if (p.kind !== 'plan') return '';
+  if (p.act === null || p.act === undefined) return 'target ' + p.tgt + '%';
+  return 'target ' + p.tgt + '% · achieved ' + p.act + '%';
+}
+
+function econPlanRow(p) {
+  var met = p.kind === 'plan' && p.act !== null && p.act !== undefined && p.act >= p.tgt;
+  return '<a class="arow hy" href="#/economy/plan/' + encodeURIComponent(p.id) + '">' +
+    '<span class="no range' + (p.kind === 'gap' ? ' dimyear' : '') + '">' +
+      p.from + '–' + String(p.to).slice(2) + '</span>' +
+    '<span class="tx"><b>' + esc(p.n) + '</b>' +
+      '<i>' + esc(p.theme || '') + (econRate(p) ? ' · ' + econRate(p) : '') + '</i></span>' +
+    '<span class="tag">' + (p.kind === 'gap' ? '<span class="chip">no plan</span>' :
+      (met ? '<span class="chip live">target met</span>' : '')) + '</span></a>';
+}
+
+function econHome() {
+  var fyp = (ECON.plans || []).filter(function (p) { return p.kind === 'plan'; });
+  var h = pageH1('Fifteen documents, sixty-six years',
+    'India planned in five-year blocks from 1951 to 2017 — twelve plans, and three gaps where ' +
+    'the country could not commit to five years at a time. The gaps matter as much as the plans.');
+
+  h += '<div class="figs">' + fig(fyp.length, 'Five Year Plans') +
+    fig((ECON.plans || []).length - fyp.length, 'plan gaps') +
+    fig((ECON.topics || []).length, 'standing topics') +
+    fig((ECON.confusions || []).length, 'confused pairs') + '</div>';
+
+  h += '<div class="block"><h3>The plans, in order</h3>' +
+    (ECON.plans || []).map(econPlanRow).join('') + '</div>';
+
+  h += '<div class="block"><h3>Start here</h3><div class="grid">' +
+    '<a class="pcard" href="#/economy/reforms"><div class="pn">1991</div>' +
+    '<div class="pt">The year the economy changed shape</div>' +
+    '<div class="pr">The crisis, liberalisation, privatisation, globalisation, and what did not follow.</div></a>' +
+    '<a class="pcard" href="#/economy/topics"><div class="pn">' + (ECON.topics || []).length +
+    '</div><div class="pt">Standing topics</div>' +
+    '<div class="pr">Banking, the Budget and GST, poverty and schemes, agriculture, national income.</div></a>' +
+    '<a class="pcard" href="#/economy/high-yield"><div class="pn">' +
+    (ECON.confusions || []).length + '</div><div class="pt">Confused pairs and quick facts</div>' +
+    '<div class="pr">Which plan had which objective, CRR against SLR, 1966 against 1991.</div></a>' +
+    '</div></div>';
+
+  return econShell(econCrumb('') + h);
+}
+
+function econPlanPage(id) {
+  var p = econPlanById[id];
+  if (!p) return econShell(econCrumb('') + '<div class="empty"><b>No such plan</b>' +
+    'Nothing on this site is filed under that name.</div>');
+
+  var all = ECON.plans || [];
+  var i = all.indexOf(p);
+
+  var h = econCrumb(p.n) +
+    '<div class="arthead"><div class="big">' + p.from + '<span style="font-size:.5em">–' +
+    String(p.to).slice(2) + '</span></div><div class="ht">' +
+    '<h1>' + esc(p.n) + '</h1>' +
+    '<div class="chips">' +
+      (p.kind === 'gap' ? '<span class="chip">not a Five Year Plan</span>' :
+        '<span class="chip live">Plan ' + p.no + '</span>') +
+      (p.model ? '<span class="chip amd">' + esc(p.model) + '</span>' : '') +
+    '</div></div></div>';
+
+  h += '<div class="block"><h3>What it was for</h3>' +
+    '<p class="plain">' + esc(p.theme) + '</p>' +
+    '<p class="plain">' + esc(p.w) + '</p></div>';
+
+  if (p.kind === 'plan') {
+    h += '<div class="block"><h3>Growth</h3><div class="figs">' +
+      fig(p.tgt + '%', 'target, a year') +
+      (p.act === null || p.act === undefined
+        ? '<div class="fig"><b style="color:var(--dim);font-size:var(--n-md)">not settled</b>' +
+          '<span>achieved</span></div>'
+        : fig(p.act + '%', 'achieved, a year')) + '</div></div>';
+  }
+
+  /* .entries puts its first cell in a fixed, non-shrinking column, because it
+     was built for a Schedule's entry NUMBER. A whole sentence in there cannot
+     wrap and runs off the side of a phone. .trail is the right list: a short
+     marker, then text that flows. */
+  h += '<div class="block"><h3>What happened in it</h3><ul class="trail">' +
+    (p.key || []).map(function (k, i) {
+      return '<li><span class="an">' + (i + 1) + '</span>' +
+             '<span class="ad">' + esc(k) + '</span></li>';
+    }).join('') + '</ul></div>';
+
+  if (p.note) h += '<div class="block"><div class="why">' + esc(p.note) + '</div></div>';
+
+  var prev = all[i - 1], next = all[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/economy/plan/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Before</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/economy/plan/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">After</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+
+  return econShell(h);
+}
+
+function econReform() {
+  var r = ECON.reform || {};
+  var h = econCrumb('1991') + pageH1(r.title || '1991', r.lede || '');
+
+  h += '<div class="block"><h3>' + esc((r.crisis || {}).h || 'How the crisis built') + '</h3>' +
+    '<p class="plain">' + esc((r.crisis || {}).w || '') + '</p>' +
+    '<dl class="facts">' + ((r.crisis || {}).rows || []).map(function (x) {
+      return '<dt>' + esc(x[0]) + '</dt><dd>' + esc(x[1]) + '</dd>';
+    }).join('') + '</dl></div>';
+
+  (r.lpg || []).forEach(function (part) {
+    h += '<div class="block"><h3>' + esc(part.k) + '</h3>' +
+      '<p class="plain">' + esc(part.w) + '</p>' +
+      '<dl class="facts">' + part.rows.map(function (x) {
+        return '<dt>' + esc(x[0]) + '</dt><dd>' + esc(x[1]) + '</dd>';
+      }).join('') + '</dl></div>';
+  });
+
+  h += factsBlock({ h: 'The committees behind the reforms', rows: r.committees || [] });
+  h += factsBlock({ h: 'What followed, and what did not',
+                    note: 'The criticisms are here alongside the achievements, because both are asked.',
+                    rows: r.after || [] });
+
+  return econShell(h);
+}
+
+function econTopics() {
+  var h = econCrumb('Topics') + pageH1('The standing topics',
+    'Eight subjects that do not belong to any one plan. Each is a study page: what the thing is, then the tables the questions come from.');
+  h += '<div class="grid">' + (ECON.topics || []).map(function (t) {
+    var rows = t.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
+    return '<a class="pcard" href="#/economy/topic/' + encodeURIComponent(t.id) + '">' +
+      '<div class="pn">' + esc(t.n) + '</div><div class="pt">' + esc(t.w) + '</div>' +
+      '<div class="pr">' + t.blocks.length + ' tables · ' + rows + ' facts</div></a>';
+  }).join('') + '</div>';
+  return econShell(h);
+}
+
+function econTopicPage(id) {
+  var t = econTopicById[id];
+  if (!t) return econShell(econCrumb('Topics') + '<div class="empty"><b>No such topic</b>' +
+    'Nothing on this site is filed under that name.</div>');
+  var h = '<div class="crumb"><a href="#/economy">Economy</a> → ' +
+    '<a href="#/economy/topics">Topics</a> → ' + esc(t.n) + '</div>' +
+    pageH1(t.n, t.w);
+  if (t.intro) h += '<p class="plain stack">' + esc(t.intro) + '</p>';
+  h += t.blocks.map(factsBlock).join('');
+  return econShell(h);
+}
+
+function econHigh(slug) {
+  var tabs = [['', 'Confused pairs'], ['facts', 'Quick facts']];
+  var h = econCrumb('High-yield') + subTabs('#/economy/high-yield', tabs, slug);
+
+  if (slug === 'facts') {
+    h += pageH1('Quick facts', 'The tables that are asked as they stand.');
+    h += (ECON.facts || []).map(factsBlock).join('');
+  } else {
+    h += pageH1('The pairs that get mixed up',
+      'Which plan had which objective, CRR against SLR, repo against reverse repo, and the two devaluations.');
+    h += (ECON.confusions || []).map(cmpBlock).join('');
+  }
+  return econShell(h);
+}
+
+function econRoute(seg) {
+  switch (seg[0] || '') {
+    case '':           return render(econHome());
+    case 'plan':       return render(econPlanPage(seg[1]));
+    case 'reforms':    return render(econReform());
+    case 'topics':     return render(econTopics());
+    case 'topic':      return render(econTopicPage(seg[1]));
+    case 'high-yield': return render(econHigh(seg[1] || ''));
+    default:           return notFound('That address does not exist in Economy.');
+  }
+}
+
+SUBJECTS.push({
+  id: 'economy',
+  name: 'Indian Economy',
+  short: 'Economy',
+  blurb: 'The Five Year Plans one by one, the 1991 reforms in full, and the standing topics — banking, the Budget, GST, poverty and agriculture.',
+  tabs: [
+    { href: '#/economy',            label: 'Five Year Plans', match: ['', 'plan'] },
+    { href: '#/economy/reforms',    label: '1991 reforms',    match: ['reforms'] },
+    { href: '#/economy/topics',     label: 'Topics',          match: ['topics', 'topic'] },
+    { href: '#/economy/high-yield', label: 'High-yield',      match: ['high-yield'] }
+  ],
+  stats: function () {
+    var fyp = (ECON.plans || []).filter(function (p) { return p.kind === 'plan'; }).length;
+    return [fyp + ' plans', (ECON.topics || []).length + ' topics',
+            (ECON.confusions || []).length + ' confused pairs'];
+  },
+  topics: function () {
+    var out = [
+      { t: 'The Five Year Plans', href: '#/economy',
+        n: (ECON.plans || []).length + ' plans and gaps',
+        w: 'Every plan from 1951 to 2017 — its model, its target, what it achieved and what happened in it.' },
+      { t: 'The 1991 reforms', href: '#/economy/reforms', n: 'liberalisation, privatisation, globalisation',
+        w: 'The balance of payments crisis, the gold flown to London, and the three kinds of change that followed.' }
+    ];
+    (ECON.topics || []).forEach(function (t) {
+      out.push({ t: t.n, href: '#/economy/topic/' + encodeURIComponent(t.id), w: t.w,
+                 k: t.blocks.map(function (b) { return b.h; }).join(' '),
+                 n: t.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0) + ' facts' });
+    });
+    out.push({ t: 'Economy — confused pairs and quick facts', href: '#/economy/high-yield',
+               n: (ECON.confusions || []).length + ' pairs',
+               w: 'Which plan had which objective, CRR against SLR, 1966 against 1991.' });
+    return out;
+  },
+  route: econRoute
+});
+
+/* =========================================================================
+   SUBJECT: STATIC GENERAL KNOWLEDGE
+   Eighteen packs of the material that does not change from year to year.
+   ========================================================================= */
+
+var GKD = window.GK || {};
+var gkPackById = {};
+(GKD.packs || []).forEach(function (p) { gkPackById[p.id] = p; });
+
+function gkRows(p) {
+  return p.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
+}
+
+function gkShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function gkHome() {
+  var total = (GKD.packs || []).reduce(function (a, p) { return a + gkRows(p); }, 0);
+  var h = '<div class="crumb">Static GK</div>' +
+    pageH1('The facts that do not move',
+      'Eighteen packs of static general knowledge — chosen because the answer is the same this year as ' +
+      'last. Current affairs are deliberately not here: they go stale, and mixing them in is how a ' +
+      'study file quietly stops being true.');
+
+  h += '<div class="figs">' + fig((GKD.packs || []).length, 'packs') +
+    fig(total, 'facts') + fig((GKD.confusions || []).length, 'confused pairs') + '</div>';
+
+  h += '<div class="block"><h3>The packs</h3><div class="grid">' +
+    (GKD.packs || []).map(function (p) {
+      return '<a class="pcard" href="#/gk/pack/' + encodeURIComponent(p.id) + '">' +
+        '<div class="pn">' + esc(p.n) + '</div><div class="pt">' + esc(p.w) + '</div>' +
+        '<div class="pr">' + p.blocks.length + ' tables · ' + gkRows(p) + ' facts</div></a>';
+    }).join('') + '</div></div>';
+
+  return gkShell(h);
+}
+
+function gkPackPage(id) {
+  var p = gkPackById[id];
+  if (!p) return gkShell('<div class="crumb"><a href="#/gk">Static GK</a></div>' +
+    '<div class="empty"><b>No such pack</b>Nothing on this site is filed under that name.</div>');
+
+  var packs = GKD.packs || [], i = packs.indexOf(p);
+  var h = '<div class="crumb"><a href="#/gk">Static GK</a> → ' + esc(p.n) + '</div>' +
+    pageH1(p.n, p.w);
+  if (p.intro) h += '<p class="plain stack">' + esc(p.intro) + '</p>';
+  h += p.blocks.map(factsBlock).join('');
+
+  var prev = packs[i - 1], next = packs[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/gk/pack/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Previous</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/gk/pack/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">Next</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+  return gkShell(h);
+}
+
+function gkConfusions() {
+  var h = '<div class="crumb"><a href="#/gk">Static GK</a> → Confused pairs</div>' +
+    pageH1('The pairs that get mixed up',
+      'Kathak or Kathakali, which lake is the largest what, and how many lions you can actually see.');
+  h += (GKD.confusions || []).map(cmpBlock).join('');
+  return gkShell(h);
+}
+
+function gkRoute(seg) {
+  switch (seg[0] || '') {
+    case '':           return render(gkHome());
+    case 'pack':       return render(gkPackPage(seg[1]));
+    case 'confusions': return render(gkConfusions());
+    default:           return notFound('That address does not exist in Static GK.');
+  }
+}
+
+SUBJECTS.push({
+  id: 'gk',
+  name: 'Static General Knowledge',
+  short: 'Static GK',
+  blurb: 'National symbols, dances, awards, sports, rivers and dams, parks, heritage sites, days, books, headquarters, science and the states.',
+  tabs: [
+    { href: '#/gk',             label: 'All packs',      match: ['', 'pack'] },
+    { href: '#/gk/confusions',  label: 'Confused pairs', match: ['confusions'] }
+  ],
+  stats: function () {
+    var total = (GKD.packs || []).reduce(function (a, p) { return a + gkRows(p); }, 0);
+    return [(GKD.packs || []).length + ' packs', total + ' facts'];
+  },
+  topics: function () {
+    return (GKD.packs || []).map(function (p) {
+      return { t: p.n, href: '#/gk/pack/' + encodeURIComponent(p.id), w: p.w,
+               k: p.blocks.map(function (b) { return b.h; }).join(' '),
+               n: gkRows(p) + ' facts' };
+    }).concat([{ t: 'Static GK — confused pairs', href: '#/gk/confusions',
+                 n: (GKD.confusions || []).length + ' pairs',
+                 w: 'Kathak or Kathakali, which lake is the largest what, and how many lions are visible.' }]);
+  },
+  route: gkRoute
 });
 
 /* ------------------------------------------------------------------ about */
@@ -1110,7 +1657,12 @@ function aboutPage() {
   '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s5);font-weight:600">' +
   'How this was built, and what to trust</h1>' +
 
-  '<div class="block"><h3>Where the text comes from</h3>' +
+  '<p class="plain">Four subjects: the Constitution of India, Modern History, the Indian ' +
+  'Economy and Static General Knowledge. They are organised by topic rather than by ' +
+  'subject, because a reader arrives knowing what they need to revise rather than which ' +
+  'subject it belongs to.</p>' +
+
+  '<div class="block"><h3>The Constitution: where the text comes from</h3>' +
   '<p class="plain">Every article number, every official heading and every word of official ' +
   'text on this site was extracted from the Government of India\'s own publication: ' +
   '<em>The Constitution of India [As on 1st May, 2024]</em>, Legislative Department, ' +
@@ -1127,6 +1679,28 @@ function aboutPage() {
   '<p class="why">Where a footnote cites two Acts at once, a commencement date can belong ' +
   'to either. Rather than guess, this site shows a date only where it clearly attaches to ' +
   'that Act, and shows nothing where it does not. A missing date is deliberate.</p></div>' +
+
+  '<div class="block"><h3>The other three subjects are written, not extracted</h3>' +
+  '<p class="plain">Modern History, the Indian Economy and Static GK have no equivalent ' +
+  'single government document behind them, so they are written from the established ' +
+  'record rather than lifted from a source. That is a weaker guarantee than the ' +
+  'Constitution\'s, and it is stated rather than hidden: the head of each data file says ' +
+  'which kinds of statement it holds and how firm each kind is.</p>' +
+  '<ul class="trail" style="margin-top:var(--s4)">' +
+  '<li><span class="an">Firm</span><span class="ad">Dates, structures, who founded what and ' +
+  'when. A plan\'s years, an Act\'s provisions, a river\'s source.</span></li>' +
+  '<li><span class="an">Soft</span><span class="ad">The achieved growth rate of a Five Year ' +
+  'Plan. These come from the Planning Commission\'s own end-of-plan reviews and move by a ' +
+  'few tenths between sources depending on the GDP base year. The first decimal is safe; ' +
+  'the last is not.</span></li>' +
+  '<li><span class="an">Dated</span><span class="ad">Foreign exchange reserves, tax slabs, ' +
+  'the number of World Heritage Sites. Every one of these carries the date it is true as ' +
+  'of, so a stale figure reads as stale rather than as wrong.</span></li>' +
+  '</ul>' +
+  '<p class="why">Where the confidently repeated answer is not the accurate one, the page ' +
+  'says so instead of repeating it. India has no national game and no national language. ' +
+  'Malaria is protozoan, not bacterial. Only three of the national emblem\'s four lions ' +
+  'are visible. Those corrections are worth more than the easy rows around them.</p></div>' +
 
   '<div class="block"><h3>What was written rather than extracted</h3>' +
   '<p class="plain">The plain-English explanation under each article, the one-line summary ' +
@@ -1160,12 +1734,14 @@ function aboutPage() {
   '<div class="block"><h3>Why some fields are empty</h3>' +
   '<p class="plain">Most articles have never been the subject of a landmark judgment. ' +
   'Rather than attach a vaguely related case to every article, this site leaves the field ' +
-  'out. Seventy-two judgments are listed, against the articles they actually settled.</p></div>' +
+  'out. ' + CASES.length + ' judgments are listed, against the articles they actually ' +
+  'settled. The same rule applies everywhere: a commencement date that cannot be pinned to ' +
+  'one Act is left blank, and no article carries an invented “asked N times” figure.</p></div>' +
 
   '<div class="block"><h3>Offline, and installable as an app</h3>' +
-  '<p class="plain">Both subjects are loaded into your browser the first time you open the ' +
-  'page — around a megabyte in total. After that the site works with no network at all: on ' +
-  'a train, on a plane, or with the data switched off.</p>' +
+  '<p class="plain">All four subjects are loaded into your browser the first time you open ' +
+  'the page — about 1.2 MB in total, once. After that the site works with no network at ' +
+  'all: on a train, on a plane, or with the data switched off.</p>' +
   '<p class="plain stack">You can also install it, so it gets its own icon and opens in its ' +
   'own window without the browser bars. In Chrome and Edge the button below installs it in ' +
   'one click; in other browsers it shows you where the option lives in that browser\'s menu.</p>' +
@@ -1179,7 +1755,7 @@ function aboutPage() {
 
 function notFound(msg) {
   render('<div class="wrap"><div class="empty"><b>Nothing here</b>' + esc(msg) +
-    '<div class="stack"><a class="pill" href="#/">Back to the articles</a></div></div></div>');
+    '<div class="stack"><a class="pill" href="#/">Back to all topics</a></div></div></div>');
 }
 
 /* ----------------------------------------------------------------- search */
@@ -1260,6 +1836,79 @@ function buildIndex() {
     });
   });
 
+  /* Economy. The plans are indexed one by one, and each standing topic is
+     indexed twice: once under its own name, and once per table inside it —
+     so "lactometer" or "primary deficit" finds the table it sits in, rather
+     than only the topic that happens to contain it. */
+  (ECON.plans || []).forEach(function (p) {
+    searchIndex.push({
+      kind: 'plan', id: p.id, no: String(p.from), title: p.n,
+      sub: p.theme + (p.kind === 'plan' ? ' \u00b7 target ' + p.tgt + '%' : ''),
+      near: (p.n + ' ' + p.theme + ' ' + p.w).toLowerCase(),
+      hay: (p.n + ' ' + p.from + ' ' + p.to + ' ' + p.theme + ' ' + p.w + ' ' +
+            (p.model || '') + ' ' + (p.key || []).join(' ') + ' ' + (p.note || '')).toLowerCase(),
+      href: '#/economy/plan/' + encodeURIComponent(p.id), num: ''
+    });
+  });
+  (ECON.topics || []).forEach(function (t) {
+    var href = '#/economy/topic/' + encodeURIComponent(t.id);
+    var all = t.blocks.map(function (b) {
+      return b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ');
+    }).join(' ');
+    searchIndex.push({
+      kind: 'economy', id: t.id, no: '', title: t.n, sub: t.w,
+      near: (t.n + ' ' + t.w + ' ' + (t.intro || '')).toLowerCase(),
+      hay: (t.n + ' ' + t.w + ' ' + (t.intro || '') + ' ' + all).toLowerCase(),
+      href: href, num: ''
+    });
+    t.blocks.forEach(function (b, i) {
+      searchIndex.push({
+        kind: 'economy', id: t.id + '-' + i, no: '', title: b.h, sub: t.n,
+        near: b.h.toLowerCase(),
+        hay: (b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+        href: href, num: ''
+      });
+    });
+  });
+  if (ECON.reform) {
+    searchIndex.push({
+      kind: 'economy', id: 'reforms', no: '1991', title: ECON.reform.title,
+      sub: ECON.reform.lede,
+      near: ('1991 reforms liberalisation privatisation globalisation lpg ' +
+             ECON.reform.lede).toLowerCase(),
+      hay: ('1991 lpg ' + ECON.reform.title + ' ' + ECON.reform.lede + ' ' +
+            ((ECON.reform.crisis || {}).rows || []).map(function (r) { return r[0] + ' ' + r[1]; }).join(' ') + ' ' +
+            (ECON.reform.lpg || []).map(function (p) {
+              return p.k + ' ' + p.w + ' ' + p.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ');
+            }).join(' ') + ' ' +
+            (ECON.reform.committees || []).map(function (r) { return r[0] + ' ' + r[1]; }).join(' ') + ' ' +
+            (ECON.reform.after || []).map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+      href: '#/economy/reforms', num: ''
+    });
+  }
+
+  /* Static GK, on the same pattern: the pack, then each table within it. */
+  (GKD.packs || []).forEach(function (p) {
+    var href = '#/gk/pack/' + encodeURIComponent(p.id);
+    var all = p.blocks.map(function (b) {
+      return b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ');
+    }).join(' ');
+    searchIndex.push({
+      kind: 'static gk', id: p.id, no: '', title: p.n, sub: p.w,
+      near: (p.n + ' ' + p.w + ' ' + (p.intro || '')).toLowerCase(),
+      hay: (p.n + ' ' + p.w + ' ' + (p.intro || '') + ' ' + all).toLowerCase(),
+      href: href, num: ''
+    });
+    p.blocks.forEach(function (b, i) {
+      searchIndex.push({
+        kind: 'static gk', id: p.id + '-' + i, no: '', title: b.h, sub: p.n,
+        near: b.h.toLowerCase(),
+        hay: (b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+        href: href, num: ''
+      });
+    });
+  });
+
   SCHEDULES.forEach(function (s) {
     var extra = '';
     if (s.items) extra = s.items.map(function (e) { return e.t; }).join(' ');
@@ -1287,16 +1936,21 @@ function runSearch(raw) {
   var artQ = /^(?:article|art\.?|a)?\s*(\d{1,3}[a-z]?(?:-[a-z])?)$/i.exec(q);
   var terms = q.split(/\s+/).filter(Boolean);
 
-  /* A short term matched as a bare substring is almost always wrong: "gst"
-     is inside "amongst", "act" inside "practice". Short terms must match a
-     whole word. Longer ones may still match a stem. */
+  /* A term matched as a bare substring is almost always wrong: "gst" is
+     inside "amongst", "act" inside "practice" — and, as testing found, "dance"
+     is inside "accordance", which put Article 356 above the folk-dance table
+     for the query "punjab dance". Length is no protection, so every term must
+     now begin at a word boundary. The boundary is only at the START, so a stem
+     still matches: "amend" finds "amendment", "constitut" finds
+     "constitutional". A term that does not begin with a letter or digit is
+     matched plainly, because \\b before "\u20b9" would never match. */
   var tests = terms.map(function (t) {
-    var lit = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    if (t.length <= 4) {
-      var re = new RegExp('\\b' + lit, 'i');
-      return function (s) { return re.test(s); };
+    if (!/^[a-z0-9]/.test(t)) {
+      return function (s) { return s.indexOf(t) >= 0; };
     }
-    return function (s) { return s.indexOf(t) >= 0; };
+    var lit = t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var re = new RegExp('\\b' + lit, 'i');
+    return function (s) { return re.test(s); };
   });
 
   idx.forEach(function (r) {
@@ -1341,8 +1995,7 @@ function runSearch(raw) {
 
   if (!hits.length) {
     resBox.innerHTML = '<div class="wrap"><div class="empty" style="padding:var(--s6)">' +
-      '<b>No match</b>Nothing in the Constitution, the amendments, the Schedules or the ' +
-      'cases matches “' + esc(raw) + '”.</div></div>';
+      '<b>No match</b>Nothing in any of the four subjects matches “' + esc(raw) + '”.</div></div>';
   } else {
     resBox.innerHTML = '<div class="wrap">' + hits.map(function (h, i) {
       var r = h.r;
@@ -1384,6 +2037,11 @@ function moveSel(d) {
 
 /* ------------------------------------------------------------------ router */
 
+/* Every page here is the same document, so the browser's scroll restoration
+   puts a reload part-way down whatever page loads next — which is rarely the
+   page the position came from. route() sets the scroll itself. */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
 function route() {
   var h = location.hash.replace(/^#\/?/, '');
   var seg = h.split('/').map(decodeURIComponent);
@@ -1398,8 +2056,13 @@ function route() {
   if (sub && sub.route) return sub.route(seg.slice(1));
 
   switch (seg[0]) {
-    case '':           return homePage();
-    case 'hub':        return hubPage();
+    /* #/ is the topic hub. The Constitution's landing page, which used to
+       live here, is at #/constitution; everything else about the subject
+       keeps the address it has always had. */
+    case '':             return hubPage();
+    case 'hub':          return hubPage();
+    case 'topics':       return hubPage();
+    case 'constitution': return homePage();
     case 'part':       return partPage(seg[1]);
     case 'a':          return articlePage(seg[1]);
     case 'high-yield': return highYieldPage(seg[1] || '');

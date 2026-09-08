@@ -608,6 +608,81 @@ footer a:hover{color:var(--gold)}
    RESPONSIVE — kept last so these rules win on source order.
    ========================================================================== */
 
+/* ==========================================================================
+   STUDY HUB
+
+   The front page is a topic list, not a subject list: the reader knows what
+   they need to revise, not which of four subjects it lives in. The filter is
+   a plain input rather than the site search, because the two answer different
+   questions — this one narrows a visible list of ~60 topics, the search box
+   looks inside 1,000 articles and facts.
+   ========================================================================== */
+
+.hubfilter{
+  display:flex;align-items:center;gap:var(--s4);
+  margin-top:var(--s6);max-width:620px;
+}
+.hubfilter input{
+  flex:1 1 auto;min-width:0;
+  background:var(--panel);border:1px solid var(--line);color:var(--ink);
+  font-family:var(--sans);font-size:var(--t-body);
+  padding:12px var(--s5);border-radius:var(--r-pill);outline:none;
+  transition:border-color var(--fast) var(--ease);
+}
+.hubfilter input::placeholder{color:var(--dimmer)}
+.hubfilter input:focus{border-color:var(--gold)}
+.hubfilter span{
+  font-family:var(--mono);font-size:var(--t-tiny);color:var(--dimmer);
+  white-space:nowrap;letter-spacing:.08em;
+}
+
+.hubsec{margin-top:var(--s7)}
+.hubsec[hidden]{display:none}
+.hubhead{
+  display:flex;align-items:baseline;gap:var(--s4);flex-wrap:wrap;
+  border-bottom:1px solid var(--line);
+  padding-bottom:var(--s3);margin-bottom:var(--s4);
+}
+.hubhead a{
+  font-family:var(--serif);font-size:var(--t-h3);font-weight:600;
+  color:var(--ink);text-decoration:none;
+}
+.hubhead a:hover{color:var(--gold)}
+.hubhead span{
+  font-family:var(--mono);font-size:var(--t-tiny);color:var(--dimmer);
+  letter-spacing:.08em;
+}
+
+.topics{display:grid;gap:var(--s2);grid-template-columns:repeat(auto-fill,minmax(292px,1fr))}
+.topic{
+  display:block;text-decoration:none;background:var(--panel);
+  border:1px solid var(--line);border-radius:var(--r-sm);padding:var(--s4);
+  transition:border-color var(--fast) var(--ease),transform var(--fast) var(--ease);
+}
+/* .topic and .hubsec set display themselves, so the browser's own [hidden]
+   rule would lose to them. The filter hides rows by setting el.hidden. */
+.topic[hidden]{display:none}
+.topic:hover{border-color:var(--line2);transform:translateY(-1px)}
+.topic b{display:block;font-size:var(--t-body);font-weight:600;color:var(--ink);line-height:1.35}
+.topic i{
+  display:block;font-style:normal;font-size:var(--t-small);color:var(--dim);
+  line-height:1.55;margin-top:5px;
+}
+.topic em{
+  display:block;font-style:normal;font-family:var(--mono);
+  font-size:var(--t-micro);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--dimmer);margin-top:var(--s3);
+}
+
+/* The hub's empty state offers the deep search as a button, so .pill has to
+   work on a <button> as well as on an <a>. */
+button.pill{background:var(--panel);cursor:pointer}
+.pill.big{font-size:var(--t-tiny);padding:8px var(--s4);letter-spacing:.06em}
+
+/* A year RANGE where the article number usually goes needs more room and a
+   smaller face than a single number does. */
+.arow .no.range{font-size:var(--t-base);min-width:92px;font-family:var(--mono);letter-spacing:.02em}
+
 @media (max-width:760px){
   :root{--headh:150px}
   .topin{padding:var(--s3) var(--s4) 0}
@@ -642,6 +717,9 @@ footer a:hover{color:var(--gold)}
   .official{padding:var(--s4)}
   .arow,.res,.amdrow{gap:var(--s3);padding-left:var(--s2);padding-right:var(--s2)}
   .arow .no,.res .no{min-width:62px;font-size:18px}
+  .arow .no.range{min-width:74px;font-size:var(--t-copy)}
+  .topics{grid-template-columns:1fr}
+  .hubfilter{gap:var(--s3)}
   .arow .tag{display:none}
   .arthead{gap:var(--s3)}
   .hero{padding:var(--s7) 0 var(--s6)}
