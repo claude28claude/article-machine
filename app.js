@@ -387,7 +387,7 @@ function partPage(num) {
   if (!p) return notFound('No Part ' + num + ' in the Constitution.');
 
   var h = '<div class="wrap artpage">' +
-    '<div class="crumb"><a href="#/">Articles</a> → Part ' + esc(p.num) + '</div>' +
+    '<div class="crumb"><a href="#/constitution">Articles</a> → Part ' + esc(p.num) + '</div>' +
     '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
     esc(titleCase(p.title)) + '</h1>' +
     '<p class="sub">Part ' + esc(p.num) + ' · Articles ' + esc(p.arts[0].a) + '–' +
@@ -424,7 +424,7 @@ function articlePage(num) {
   var p = partOf[a.a], pl = plainOf(a), idx = ARTICLES.indexOf(a);
 
   var h = '<div class="wrap artpage">' +
-    '<div class="crumb"><a href="#/">Articles</a> → ' +
+    '<div class="crumb"><a href="#/constitution">Articles</a> → ' +
     '<a href="#/part/' + encodeURIComponent(p.num) + '">Part ' + esc(p.num) + ' · ' +
     esc(titleCase(p.title)) + '</a>' + (a.c ? ' → ' + esc(a.c) : '') + '</div>';
 
@@ -752,7 +752,7 @@ function hyShell(active, body) {
               ['amendments', 'Amendments'], ['confusions', 'Confused pairs'],
               ['facts', 'Quick facts']];
   return '<div class="wrap artpage">' +
-    '<div class="crumb"><a href="#/">Articles</a> → High-yield' +
+    '<div class="crumb"><a href="#/constitution">Articles</a> → High-yield' +
     (active ? ' → ' + esc((tabs.filter(function (t) { return t[0] === active; })[0] || ['', ''])[1]) : '') +
     '</div>' +
     '<div class="listtabs">' + tabs.map(function (t) {
@@ -1243,7 +1243,7 @@ SUBJECTS.push({
     { href: '#/history/acts',       label: 'Acts',       match: ['acts', 'act'] },
     { href: '#/history/people',     label: 'People',     match: ['people', 'person'] },
     { href: '#/history/movements',  label: 'Movements',  match: ['movements', 'movement'] },
-    { href: '#/',                   label: '↔ Constitution', match: [] }
+    { href: '#/constitution',       label: '↔ Constitution', match: [] }
   ],
   stats: function () {
     return [(HIST.timeline || []).length + ' events', (HIST.acts || []).length + ' Acts',
@@ -2058,7 +2058,15 @@ function route() {
   switch (seg[0]) {
     /* #/ is the topic hub. The Constitution's landing page, which used to
        live here, is at #/constitution; everything else about the subject
-       keeps the address it has always had. */
+       keeps the address it has always had.
+
+       CAUTION when adding links. This address changed meaning, and every
+       link that still pointed at "#/" meaning "the Constitution" became a
+       link that silently lands on the hub instead. Three breadcrumbs
+       reading "Articles" and the History nav's "Constitution" tab all did
+       exactly that, and nothing failed loudly — the label lied and the page
+       still rendered. A link to the article list is "#/constitution"; only
+       a link that genuinely means "all topics" is "#/". */
     case '':             return hubPage();
     case 'hub':          return hubPage();
     case 'topics':       return hubPage();
@@ -2218,8 +2226,8 @@ document.addEventListener('click', function (e) {
       '<div class="label tight">Install</div><h2>' + esc(d.t) + '</h2>' +
       '<ol>' + d.s.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ol>' +
       (d.n ? '<p class="note">' + esc(d.n) + '</p>' : '') +
-      '<p class="note">Once installed it opens in its own window, keeps both subjects on the ' +
-      'device, and works with no network at all.</p></div>';
+      '<p class="note">Once installed it opens in its own window, keeps all four subjects on ' +
+      'the device, and works with no network at all.</p></div>';
     sheet.hidden = false;
     var x = sheet.querySelector('.sheetx');
     x.focus();
