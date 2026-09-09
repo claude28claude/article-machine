@@ -909,13 +909,24 @@ details.idx > summary b{font-weight:400;color:var(--dimmer);letter-spacing:.06em
 
 @media (max-width:760px){
   :root{--headh:162px}
-  .topin{padding:var(--s3) var(--s4) 0}
+  /* Three steps of larger type pushed the sticky header on a phone from
+     155px to 206px - a quarter of the screen, permanently, in exchange for
+     nothing a reader wanted. The reading text keeps every pixel it gained;
+     the chrome around it gives back what it can, by tightening the padding
+     rather than by shrinking any of the words. */
+  .topin{padding:var(--s2) var(--s4) 0}
+  #q{padding-top:7px;padding-bottom:7px}
+  /* The nav tabs are deliberately NOT tightened. Trimming their padding
+     would save three more pixels of header and take the tap target from
+     43px to 40px, which is below what a fingertip needs - and they are
+     the primary navigation. Header space is not worth buying with a
+     control that is harder to hit. */
   nav.tabs{padding:0 var(--s4)}
   .wrap{padding:0 var(--s4)}
   .brand span{display:none}
   /* Row one keeps the brand and the install button; the search box wraps to
      its own row underneath, where it has the width to be usable. */
-  .searchwrap{flex:1 1 100%;order:3;margin-bottom:var(--s3)}
+  .searchwrap{flex:1 1 100%;order:3;margin-bottom:var(--s2)}
   .installbtn{order:2;margin-left:auto;padding:7px var(--s3)}
   /* "Install app" pushes the header onto a third row on a narrow phone; the
      word "app" is doing no work next to a download arrow. */
