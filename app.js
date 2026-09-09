@@ -543,8 +543,8 @@ function articlePage(num) {
   /* ---- plain English ---- */
   if (pl && pl.p) {
     h += '<div class="block"><h3>What it means</h3>' +
-         '<p class="plain">' + esc(pl.p) + '</p>' +
-         (pl.w ? '<p class="why">' + esc(pl.w) + '</p>' : '') + '</div>';
+         '<p class="plain">' + prose(pl.p) + '</p>' +
+         (pl.w ? '<p class="why">' + prose(pl.w) + '</p>' : '') + '</div>';
   } else {
     h += '<div class="block"><h3>What it means</h3>' +
          '<p class="plain" style="color:var(--dim)">A plain-English note for this article ' +
@@ -681,7 +681,7 @@ function amendmentPage(no) {
     (m.untraced ? '<span class="chip gone">Superseded</span>' : '') +
     '</div></div></div>';
 
-  h += '<div class="block"><h3>What it did</h3><p class="plain">' + esc(m.s) + '</p>';
+  h += '<div class="block"><h3>What it did</h3><p class="plain">' + prose(m.s) + '</p>';
   if (m.untraced) h += '<p class="why">Later amendments overwrote this one so completely ' +
     'that the current official text no longer cites it anywhere. Its details here come ' +
     'from the Act itself rather than from the footnotes of the present Constitution.</p>';
@@ -750,7 +750,7 @@ function schedulePage(no) {
     '<span class="chip">' + esc(s.ref) + '</span>' +
     '<span class="chip live">' + esc(s.stat) + '</span></div></div></div>';
 
-  h += '<div class="block"><h3>What it is</h3><p class="plain">' + esc(s.p) + '</p>' +
+  h += '<div class="block"><h3>What it is</h3><p class="plain">' + prose(s.p) + '</p>' +
        '<div class="pills">' + refPills(s.ref) + '</div></div>';
 
   if (s.lists) {
@@ -822,8 +822,8 @@ function casePage(id) {
        'Overruled an earlier case' : 'Overruled') + '</span>' : '') +
     '</div></div></div>';
 
-  h += '<div class="block"><h3>What it held</h3><p class="plain">' + esc(c.h) + '</p>' +
-    (c.note ? '<p class="why">' + esc(c.note) + '</p>' : '') + '</div>';
+  h += '<div class="block"><h3>What it held</h3><p class="plain">' + prose(c.h) + '</p>' +
+    (c.note ? '<p class="why">' + prose(c.note) + '</p>' : '') + '</div>';
 
   if (c.ov) h += '<div class="block"><h3>Standing</h3><p class="plain">' +
     (c.ov.indexOf('overruled ') === 0
@@ -979,21 +979,191 @@ function hyConfusions() {
     h += '<div class="cmp"><div class="cmph">' + esc(c.k) + '</div>' +
       c.rows.map(function (r) {
         return '<div class="cmpr"><div class="cmpk">' + linkArts(r[0]) + '</div>' +
-               '<div class="cmpv">' + linkArts(r[1]) + '</div></div>';
+               '<div class="cmpv">' + emph(linkArts(r[1]), 2) + '</div></div>';
       }).join('') +
-      (c.note ? '<div class="cmpn">' + linkArts(c.note) + '</div>' : '') + '</div>';
+      (c.note ? '<div class="cmpn">' + prose(c.note, 2) + '</div>' : '') + '</div>';
   });
   return hyShell('confusions', h);
 }
 
-/* Turn every "article 226" / "Article 32" mentioned in the comparison text
-   into a link, so a confused pair is one click from the real thing. */
+/* Turn every "article 226" / "Article 32" mentioned in the text into a link,
+   so a confused pair, or an explanation that cross-refers, is one press from
+   the real thing.
+
+   The word "article" goes inside the link with the number. Linking the two
+   digits alone left an 18px target in the middle of a sentence, which is
+   half the 44px a fingertip needs and sits below the site's own standard —
+   the article map was fixed the same way, by making the whole key the link
+   rather than the digits inside it. */
 function linkArts(s) {
   return esc(s).replace(/\b([Aa]rticles?\s+)(\d{1,3}(?:[A-Z]{1,2})?(?:-[A-Z])?)/g,
     function (all, word, num) {
-      return byArt[num] ? word + '<a href="#/a/' + encodeURIComponent(num) + '">' + num + '</a>' : all;
+      return byArt[num]
+        ? '<a href="#/a/' + encodeURIComponent(num) + '">' + word + num + '</a>'
+        : all;
     });
 }
+
+/* ==========================================================================
+   EMPHASIS INSIDE A SENTENCE
+
+   Every explanation on this site used to be one flat grey paragraph, so
+   finding the fact you came for meant reading all of it. These functions
+   mark the two things a person is actually looking for — the named idea and
+   the figure — and the marking is a change of typeface rather than a colour
+   wash, which is quieter and survives being read for an hour. The EMPHASIS
+   block in styles.css says why.
+
+   Two rules keep it from turning into a highlighted textbook, which is the
+   failure mode of every automatic highlighter:
+
+     - a term is marked on its FIRST appearance in a paragraph and never
+       again, so "hormone" in a paragraph about hormones is marked once;
+     - at most three terms per paragraph, whatever else matches. Past three,
+       nothing is emphasised any more — it is just bold text.
+
+   Figures are not capped, because in "reduced from 21 to 18 in 1989" all
+   three numbers are the answer to something.  */
+
+/* Named ideas worth catching by eye. Deliberately not a dictionary: a word
+   earns a place here only if seeing it is a reason to slow down. Common
+   words with a technical meaning are in (writ, ordinance, quorum); common
+   words with only their ordinary meaning are out. */
+var KEYTERMS = [
+  /* the Constitution */
+  'Directive Principles of State Policy', 'Directive Principles',
+  'Fundamental Rights', 'Fundamental Duties', 'Basic Structure', 'Preamble',
+  'judicial review', 'Public Interest Litigation', 'writ petition', 'writs',
+  'writ', 'habeas corpus', 'mandamus', 'certiorari', 'quo warranto',
+  'President of India', 'Vice-President', 'Prime Minister',
+  'Council of Ministers', 'Cabinet', 'Governor', 'Chief Minister',
+  'Attorney General', 'Advocate General', 'Comptroller and Auditor General',
+  'Election Commission', 'Finance Commission', 'Public Service Commission',
+  'Supreme Court', 'High Court', 'Chief Justice', 'collegium',
+  'Parliament', 'Lok Sabha', 'Rajya Sabha', 'Legislative Assembly',
+  'Legislative Council', 'Money Bill', 'Finance Bill', 'ordinance',
+  'special majority', 'simple majority', 'absolute majority',
+  'National Emergency', 'Financial Emergency', 'Union List', 'State List',
+  'Concurrent List', 'residuary', 'anti-defection', 'Panchayat',
+  'Gram Sabha', 'Municipality', 'Scheduled Castes', 'Scheduled Tribes',
+  'Other Backward Classes', 'sovereign', 'socialist', 'secular', 'republic',
+  'quorum', 'impeachment', 'Constituent Assembly', 'Drafting Committee',
+  'Objectives Resolution', 'universal adult suffrage', 'single citizenship',
+  'doctrine of pleasure', 'due process', 'procedure established by law',
+  'separation of powers', 'Union territory', 'Union of States',
+  'Governor-General', 'Viceroy', 'President', 'Speaker', 'two-thirds',
+  'ratification', 'First Schedule', 'Second Schedule', 'Third Schedule',
+  'Fourth Schedule', 'Fifth Schedule', 'Sixth Schedule', 'Seventh Schedule',
+  'Eighth Schedule', 'Ninth Schedule', 'Tenth Schedule', 'Eleventh Schedule',
+  'Twelfth Schedule',
+  /* modern history */
+  'Doctrine of Lapse', 'Subsidiary Alliance', 'Permanent Settlement',
+  'Ryotwari', 'Mahalwari', 'Non-Cooperation Movement', 'Civil Disobedience',
+  'Quit India', 'Khilafat', 'Swadeshi', 'Home Rule',
+  'Round Table Conference', 'Simon Commission', 'Cripps Mission',
+  'Cabinet Mission', 'Mountbatten Plan', 'Indian National Congress',
+  'Muslim League', 'Revolt of 1857', 'Partition of Bengal',
+  'Jallianwala Bagh', 'Dandi March', 'Poona Pact', 'Lucknow Pact',
+  'Government of India Act', 'Regulating Act', 'Charter Act', 'Rowlatt Act',
+  'Vernacular Press Act', 'Ilbert Bill', 'Morley-Minto',
+  'Montagu-Chelmsford', 'Communal Award', 'dyarchy', 'provincial autonomy',
+  /* the economy */
+  'Five Year Plan', 'Green Revolution', 'White Revolution',
+  'liberalisation', 'privatisation', 'globalisation', 'disinvestment',
+  'devaluation', 'Reserve Bank of India', 'repo rate', 'reverse repo',
+  'cash reserve ratio', 'statutory liquidity ratio',
+  'open market operations', 'bank rate', 'fiscal deficit',
+  'revenue deficit', 'primary deficit', 'balance of payments', 'inflation',
+  'deflation', 'stagflation', 'gross domestic product', 'national income',
+  'NITI Aayog', 'Planning Commission', 'monetary policy', 'fiscal policy',
+  'nationalisation', 'mixed economy', 'licence raj', 'GDP', 'GNP', 'CRR',
+  'SLR', 'per capita income',
+  /* biology */
+  'haemoglobin', 'insulin', 'thyroxine', 'adrenaline', 'pituitary',
+  'thyroid', 'parathyroid', 'pancreas', 'adrenal', 'oestrogen',
+  'testosterone', 'melatonin', 'protozoan', 'bacterium', 'bacteria',
+  'virus', 'fungus', 'fungal', 'deficiency', 'vitamin', 'enzyme',
+  'hormone', 'antibody', 'vaccine', 'carbohydrate', 'protein',
+  'fat-soluble', 'water-soluble', 'metabolism', 'goitre', 'rickets',
+  'scurvy', 'beriberi', 'pellagra', 'anaemia', 'night blindness',
+  'malaria', 'tuberculosis', 'dengue', 'cholera', 'typhoid', 'ringworm',
+  'leprosy', 'osteomalacia', 'osteoporosis', 'cretinism', 'myxoedema',
+  'acromegaly', 'gigantism', 'dwarfism', 'tetany', 'diabetes',
+  /* The named vitamins are here as well as the bare word, so that "vitamin D"
+     is marked whole rather than leaving its letter stranded outside the
+     mark. Sorting by length below is what makes the longer one win. */
+  'vitamin B12', 'vitamin B1', 'vitamin B2', 'vitamin B3', 'vitamin B6',
+  'vitamin A', 'vitamin B', 'vitamin C', 'vitamin D', 'vitamin E',
+  'vitamin K'
+];
+
+var MONTHS = 'January|February|March|April|May|June|July|August|September|' +
+             'October|November|December';
+
+/* Longest first, so "Directive Principles of State Policy" is matched whole
+   rather than being eaten by "Directive Principles". Apostrophes and
+   hyphens are matched in both their typewriter and typographic forms,
+   because the data files contain both. */
+var EMPH_RE = (function () {
+  function rx(t) {
+    return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+            .replace(/'/g, '[\'’]')
+            .replace(/-/g, '[-‑–]');
+  }
+  var terms = KEYTERMS.slice().sort(function (a, b) { return b.length - a.length; });
+  return new RegExp(
+    '\\b(' + terms.map(rx).join('|') + ')\\b' +
+    '|(\\b\\d{1,2}\\s(?:' + MONTHS + ')\\s\\d{3,4}\\b)' +
+    '|(\\b(?:' + MONTHS + ')\\s\\d{3,4}\\b)' +
+    /* A span of years is one figure, not two: "1951-56" must not come out as
+       two separate marks with a stray hyphen loose between them. */
+    '|(\\b\\d[\\d,]*(?:\\.\\d+)?(?:\\s?[-–—]\\s?\\d[\\d,]*(?:\\.\\d+)?)?' +
+    '(?:st|nd|rd|th)?\\b(?:\\s(?:per\\scent|crore|lakh))?)',
+    'gi');
+})();
+
+/* Marks up already-escaped HTML. Anything between < and > is a tag and is
+   stepped over, and so is everything inside an <a>…</a> — a link is already
+   emphasised by being a link, and marking the words inside one would put a
+   second signal on top of the first. */
+function emph(html, cap) {
+  if (!html) return html;
+  if (cap == null) cap = 3;
+  var parts = String(html).split(/(<[^>]*>)/), inLink = 0, used = 0, seen = {};
+  for (var i = 0; i < parts.length; i++) {
+    var p = parts[i];
+    if (!p) continue;
+    if (p.charAt(0) === '<') {
+      if (/^<a[\s>]/i.test(p)) inLink++;
+      else if (/^<\/a\s*>/i.test(p)) inLink = Math.max(0, inLink - 1);
+      continue;
+    }
+    if (inLink) continue;
+    parts[i] = p.replace(EMPH_RE, function (m, term) {
+      if (term) {
+        var k = term.toLowerCase();
+        if (used >= cap || seen[k]) return m;
+        seen[k] = 1; used++;
+        return '<b class="kw">' + term + '</b>';
+      }
+      /* A short number in brackets is a clause reference — "clauses (4) and
+         (5)" — and a clause number is not a fact anybody memorises. Marking
+         those put gold pinpricks through the middle of the very paragraphs
+         that had most worth marking. A four-digit number in brackets is the
+         year of a case, "Minerva Mills (1980)", which is exactly the thing
+         to mark, so the rule is length-bound rather than bracket-bound. */
+      var whole = arguments[arguments.length - 1], at = arguments[arguments.length - 2];
+      if (/^\d{1,2}$/.test(m) &&
+          whole.charAt(at - 1) === '(' && whole.charAt(at + m.length) === ')') return m;
+      return '<em class="num">' + m + '</em>';
+    });
+  }
+  return parts.join('');
+}
+
+/* The one call every explanation goes through: escape it, turn its article
+   references into links, then mark the terms and the figures. */
+function prose(s, cap) { return emph(linkArts(s), cap); }
 
 function hyFacts() {
   var h = '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
@@ -1041,7 +1211,7 @@ function hyArticleMap() {
     '<div class="figs">' + fig(amapCount('framework'), 'framework rows') +
       fig(amapCount('groups'), 'indexed entries') +
       fig((AMAP.groups || []).length, 'subject groups') + '</div>';
-  if (AMAP.intro) h += '<p class="plain stack">' + esc(AMAP.intro) + '</p>';
+  if (AMAP.intro) h += '<p class="plain stack">' + prose(AMAP.intro) + '</p>';
   h += (AMAP.framework || []).map(factsBlockLinked).join('');
   h += (AMAP.groups || []).map(factsBlockLinked).join('');
   return hyShell('map', h);
@@ -1133,7 +1303,7 @@ function assemblyPage(slug) {
     h += pageH1('The Constituent Assembly', ASM.lede || '');
     h += '<div class="figs">' + fig(389, 'seats in 1946') + fig(299, 'after Partition') +
       fig(11, 'sessions') + fig(165, 'days sitting') + '</div>';
-    if (ASM.intro) h += '<p class="plain stack">' + esc(ASM.intro) + '</p>';
+    if (ASM.intro) h += '<p class="plain stack">' + prose(ASM.intro) + '</p>';
     h += (ASM.story || []).map(factsBlock).join('');
   }
 
@@ -1314,7 +1484,7 @@ function histEventPage(id) {
     (era.n ? '<span class="chip">' + esc(era.n) + '</span>' : '') +
     (ev.hy ? '<span class="chip tier t1">High-yield</span>' : '') +
     '</div></div></div>' +
-    '<div class="block"><h3>What happened</h3><p class="plain">' + esc(ev.w) + '</p></div>';
+    '<div class="block"><h3>What happened</h3><p class="plain">' + prose(ev.w) + '</p></div>';
 
   h += '<div class="nextprev">';
   if (all[i - 1]) h += '<a href="#/history/event/' + encodeURIComponent(all[i - 1].id) +
@@ -1343,7 +1513,7 @@ function histActPage(id) {
   var h = histCrumb('Acts') +
     '<div class="arthead"><div class="big">' + a.y + '</div><div class="ht">' +
     '<h1>' + esc(a.n) + '</h1></div></div>' +
-    '<div class="block"><h3>Why it mattered</h3><p class="plain">' + esc(a.w) + '</p></div>' +
+    '<div class="block"><h3>Why it mattered</h3><p class="plain">' + prose(a.w) + '</p></div>' +
     '<div class="block"><h3>What it did</h3><ul class="entries">' +
     a.k.map(function (x, i) {
       return '<li><span class="en">' + (i + 1) + '</span><span>' + esc(x) + '</span></li>';
@@ -1381,7 +1551,7 @@ function histPersonPage(id) {
     '<div class="chips"><span class="chip">' + esc(p.y) + '</span>' +
     '<span class="chip case">' + esc(p.r) + '</span>' +
     (p.hy ? '<span class="chip tier t1">High-yield</span>' : '') + '</div></div></div>' +
-    '<div class="block"><h3>What they did</h3><p class="plain">' + esc(p.w) + '</p></div>');
+    '<div class="block"><h3>What they did</h3><p class="plain">' + prose(p.w) + '</p></div>');
 }
 
 function histMovements() {
@@ -1404,10 +1574,10 @@ function histMovementPage(id) {
     '<h1>' + esc(m.n) + '</h1><div class="chips">' +
     '<span class="chip">' + m.from + ' – ' + m.to + '</span>' +
     (m.hy ? '<span class="chip tier t1">High-yield</span>' : '') + '</div></div></div>' +
-    '<div class="block"><h3>What set it off</h3><p class="plain">' + esc(m.cause) + '</p></div>' +
-    '<div class="block"><h3>How it was fought</h3><p class="plain">' + esc(m.w) + '</p>' +
+    '<div class="block"><h3>What set it off</h3><p class="plain">' + prose(m.cause) + '</p></div>' +
+    '<div class="block"><h3>How it was fought</h3><p class="plain">' + prose(m.w) + '</p>' +
     '<p class="why">Led by ' + esc(m.lead) + '</p></div>' +
-    '<div class="block"><h3>What it achieved</h3><p class="plain">' + esc(m.out) + '</p></div>');
+    '<div class="block"><h3>What it achieved</h3><p class="plain">' + prose(m.out) + '</p></div>');
 }
 
 function histHigh(slug) {
@@ -1498,7 +1668,7 @@ function histTreaties(slug) {
     body += '<div class="figs">' + fig(trtCount('main'), 'to memorise') +
       fig(trtCount('wars'), 'grouped by war') + fig(trtCount('post'), 'since 1947') +
       fig((TRT.confusions || []).length, 'confused pairs') + '</div>';
-    if (TRT.intro) body += '<p class="plain stack">' + esc(TRT.intro) + '</p>';
+    if (TRT.intro) body += '<p class="plain stack">' + prose(TRT.intro) + '</p>';
     body += (TRT.main || []).map(factsBlock).join('');
   }
 
@@ -1592,9 +1762,9 @@ function cmpBlock(c) {
   return '<div class="cmp"><div class="cmph">' + esc(c.k) + '</div>' +
     c.rows.map(function (r) {
       return '<div class="cmpr"><div class="cmpk">' + esc(r[0]) + '</div>' +
-             '<div class="cmpv">' + esc(r[1]) + '</div></div>';
+             '<div class="cmpv">' + prose(r[1], 2) + '</div></div>';
     }).join('') +
-    (c.note ? '<div class="cmpn">' + esc(c.note) + '</div>' : '') + '</div>';
+    (c.note ? '<div class="cmpn">' + prose(c.note, 2) + '</div>' : '') + '</div>';
 }
 
 /* A table of facts. Modern History calls the group `g` and its rows `items`;
@@ -1724,8 +1894,8 @@ function econPlanPage(id) {
     '</div></div></div>';
 
   h += '<div class="block"><h3>What it was for</h3>' +
-    '<p class="plain">' + esc(p.theme) + '</p>' +
-    '<p class="plain">' + esc(p.w) + '</p></div>';
+    '<p class="plain">' + prose(p.theme) + '</p>' +
+    '<p class="plain">' + prose(p.w) + '</p></div>';
 
   if (p.kind === 'plan') {
     h += '<div class="block"><h3>Growth</h3><div class="figs">' +
@@ -1746,7 +1916,7 @@ function econPlanPage(id) {
              '<span class="ad">' + esc(k) + '</span></li>';
     }).join('') + '</ul></div>';
 
-  if (p.note) h += '<div class="block"><div class="why">' + esc(p.note) + '</div></div>';
+  if (p.note) h += '<div class="block"><div class="why">' + prose(p.note) + '</div></div>';
 
   var prev = all[i - 1], next = all[i + 1];
   h += '<div class="nextprev">' +
@@ -1764,14 +1934,14 @@ function econReform() {
   var h = econCrumb('1991') + pageH1(r.title || '1991', r.lede || '');
 
   h += '<div class="block"><h3>' + esc((r.crisis || {}).h || 'How the crisis built') + '</h3>' +
-    '<p class="plain">' + esc((r.crisis || {}).w || '') + '</p>' +
+    '<p class="plain">' + prose((r.crisis || {}).w || '') + '</p>' +
     '<dl class="facts">' + ((r.crisis || {}).rows || []).map(function (x) {
       return '<dt>' + esc(x[0]) + '</dt><dd>' + esc(x[1]) + '</dd>';
     }).join('') + '</dl></div>';
 
   (r.lpg || []).forEach(function (part) {
     h += '<div class="block"><h3>' + esc(part.k) + '</h3>' +
-      '<p class="plain">' + esc(part.w) + '</p>' +
+      '<p class="plain">' + prose(part.w) + '</p>' +
       '<dl class="facts">' + part.rows.map(function (x) {
         return '<dt>' + esc(x[0]) + '</dt><dd>' + esc(x[1]) + '</dd>';
       }).join('') + '</dl></div>';
@@ -1804,7 +1974,7 @@ function econTopicPage(id) {
   var h = '<div class="crumb"><a href="#/economy">Economy</a> → ' +
     '<a href="#/economy/topics">Topics</a> → ' + esc(t.n) + '</div>' +
     pageH1(t.n, t.w);
-  if (t.intro) h += '<p class="plain stack">' + esc(t.intro) + '</p>';
+  if (t.intro) h += '<p class="plain stack">' + prose(t.intro) + '</p>';
   h += t.blocks.map(factsBlock).join('');
   return econShell(h);
 }
@@ -1917,7 +2087,7 @@ function gkPackPage(id) {
   var packs = GKD.packs || [], i = packs.indexOf(p);
   var h = '<div class="crumb"><a href="#/gk">Static GK</a> → ' + esc(p.n) + '</div>' +
     pageH1(p.n, p.w);
-  if (p.intro) h += '<p class="plain stack">' + esc(p.intro) + '</p>';
+  if (p.intro) h += '<p class="plain stack">' + prose(p.intro) + '</p>';
   h += p.blocks.map(factsBlock).join('');
 
   var prev = packs[i - 1], next = packs[i + 1];
@@ -2021,7 +2191,7 @@ function bioTopicPage(id) {
   var topics = BIO.topics || [], i = topics.indexOf(t);
   var h = '<div class="crumb"><a href="#/biology">Biology</a> \u2192 ' + esc(t.n) + '</div>' +
     pageH1(t.n, t.w);
-  if (t.intro) h += '<p class="plain stack">' + esc(t.intro) + '</p>';
+  if (t.intro) h += '<p class="plain stack">' + prose(t.intro) + '</p>';
   h += t.blocks.map(factsBlock).join('');
 
   var prev = topics[i - 1], next = topics[i + 1];
@@ -2398,9 +2568,26 @@ function aboutPage() {
   'settled. The same rule applies everywhere: a commencement date that cannot be pinned to ' +
   'one Act is left blank, and no article carries an invented “asked N times” figure.</p></div>' +
 
+  '<div class="block"><h3>How the pages are set</h3>' +
+  '<p class="plain">Three typefaces, each with one job. <b class="kw">Literata</b> — a serif ' +
+  'drawn for reading on a screen — sets the headings and the Constitution’s own words. ' +
+  '<b class="kw">Inter</b> sets everything the site says in its own voice: the explanations, ' +
+  'the tables, the cards. <b class="kw">IBM Plex Mono</b> sets the labels, the chips and the ' +
+  'article numbers. All three are stored with the site, so the pages look the same with ' +
+  'the network off and nothing about your reading is requested from anyone else.</p>' +
+  '<p class="plain stack">Inside an explanation, emphasis is a change of typeface rather ' +
+  'than a highlighter. A named idea appears in the serif and in purple; a figure appears in ' +
+  'the monospace and in yellow, so that <em class="num">1950</em> and <em class="num">1976</em> ' +
+  'are the same width and the eye can compare them down a page. A term is marked once per ' +
+  'paragraph and never more than three times, because a page where everything is ' +
+  'emphasised has nothing emphasised.</p>' +
+  '<p class="why">The marking is applied to the display only. It never changes, adds or ' +
+  'removes a word: strip the marks from any paragraph on this site and you get back exactly ' +
+  'the text that was written. The official text of the Constitution is not marked at all.</p></div>' +
+
   '<div class="block"><h3>Offline, and installable as an app</h3>' +
   '<p class="plain">All five subjects are loaded into your browser the first time you open ' +
-  'the page — about 1.4 MB in total, once. After that the site works with no network at ' +
+  'the page — about 1.6 MB in total, once, fonts and all. After that the site works with no network at ' +
   'all: on a train, on a plane, or with the data switched off.</p>' +
   '<p class="plain stack">You can also install it, so it gets its own icon and opens in its ' +
   'own window without the browser bars. In Chrome and Edge the button below installs it in ' +

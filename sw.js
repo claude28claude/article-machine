@@ -14,7 +14,7 @@
      once, fetch a fresh one in the background, and use that next time. Fast on
      every visit, and never more than one visit behind.  */
 
-var CACHE = 'article-machine-v15';
+var CACHE = 'article-machine-v16';
 var ASSETS = [
   './', './index.html', './styles.css', './app.js',
   './data-articles.js', './data-amendments.js', './data-schedules.js',
@@ -25,6 +25,10 @@ var ASSETS = [
   './data-treaties.js', './data-artmap.js',
   './data-plain-1.js', './data-plain-2.js', './data-plain-3.js',
   './data-plain-4.js', './data-plain-5.js',
+  './fonts/literata-400.woff2', './fonts/literata-600.woff2',
+  './fonts/literata-italic-400.woff2',
+  './fonts/inter-400.woff2', './fonts/inter-600.woff2',
+  './fonts/plexmono-400.woff2', './fonts/plexmono-500.woff2',
   './manifest.webmanifest',
   './icon-192.png', './icon-512.png', './icon-maskable-512.png', './icon-180.png'
 ];

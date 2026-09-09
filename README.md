@@ -300,6 +300,7 @@ of them so a reader can check what a summary lost.
 | `data-artmap.js` | The Constitution indexed by subject, and the courts article by article |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline |
+| `fonts/*.woff2` | Literata, Inter and IBM Plex Mono, latin subsets, 139 KB in total |
 | `tools/make-icons.py` | Regenerates the PWA icons |
 
 ## Going back
@@ -329,6 +330,57 @@ Each colour also has an `--x-rgb` companion so a translucent version is
 derived from the colour rather than typed out again. Six hard-coded
 `rgba(201,162,39,…)` values used to sit in the stylesheet as copies of the
 palette that would not have moved when the palette did.
+
+## The type
+
+Three self-hosted typefaces, each with one job, and the difference between
+them is what marks emphasis inside a sentence — there is no highlighter pen.
+
+| | |
+|---|---|
+| **Literata** | the Constitution's own voice: headings, the official text, and key terms quoted inside an explanation |
+| **Inter** | the site talking: explanations, tables, cards |
+| **IBM Plex Mono** | the machine's labels: section headings, chips, tags, and figures marked inside a sentence |
+
+They are latin subsets, one static weight per file, 139 KB for all seven,
+served from `./fonts` and precached with everything else. Nothing is fetched
+from a font CDN: the pages have to work with the aeroplane switch on, and a
+request to someone else's server would also be a record of what is being
+read. Each stack keeps its old device fallback behind the new face, so the
+text is readable from the first paint and stays readable if a file ever fails
+to load.
+
+Everything is two to three steps larger than it was. Reading text moved
+furthest — a paragraph went 17.5px to 20.5px — because that is what a person
+looks at for an hour; the letter-spaced mono labels moved one step, because
+capitals shout when they get big and they are signposts, not reading.
+
+### Emphasis
+
+`prose()` in `app.js` escapes a string, links its article references, then
+marks two things in what is left:
+
+- a **named idea** — one of ~225 curated exam terms — in the serif, in purple;
+- a **figure** — a year, a date, an ordinal, a percentage, a span like
+  1951-56 — in the monospace, in yellow, where the digits are all one width
+  so two years can be compared down a page.
+
+Two rules stop it becoming a highlighted textbook: a term is marked on its
+first appearance in a paragraph and never again, and at most three terms are
+marked per paragraph whatever else matches. Figures are not capped — in
+"reduced from 21 to 18 in 1989" all three are the answer to something.
+Across the site that comes to about **5% of words marked**, roughly one in
+twenty.
+
+Nothing inside an `<a>` is marked, because a link is already emphasised by
+being one. A short number in brackets is left alone, because on this site
+that is a clause reference — "clauses (4) and (5)" — while a four-digit
+number in brackets is the year of a case and is marked.
+
+The marking is display only. It never changes, adds or removes a word: a
+check over all 5,594 strings in the data files confirms that stripping the
+tags returns exactly the text that was written, with no unbalanced tags and
+no nested links. **The official text of the Constitution is never marked.**
 
 ## Running it
 
