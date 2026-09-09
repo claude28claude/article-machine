@@ -1,0 +1,114 @@
+=== table 0 (18 rows) ===
+ | Year(s) of presidency | Leader | Portrait | Place of conference | Reference(s)
+1 | December 1885 | Womesh Chandra Bonnerjee | 75px|alt=An image of Womesh Chandra Bonnerjee. | Bombay | / /
+2 | December 1886 | Dadabhai Naoroji | 75px|alt=An image of Dadabhai Naoroji. | Calcutta | /
+3 | December 1887 | Badruddin Tyabji | 75px|alt=An image of Badruddin Tyabji. | Madras | /
+4 | December 1888 | George Yule | 75px|alt=An image of George Yule. | Allahabad | /
+5 | December 1889 | William Wedderburn | 75px|alt=An image of William Wedderburn. | Bombay | 
+6 | December 1890 | Pherozeshah Mehta | 75px|alt=An image of Pherozesha Mehta. | Calcutta | 
+7 | December 1891 | Panapakkam Anandacharlu | |75px | Nagpur | 
+8 | December 1892 | Womesh Chandra Bonnerjee | 75px|alt=An image of Womesh Chandra Bonnerjee. | Allahabad | / /
+9 | December 1893 | Dadabhai Naoroji | 75px|alt=An image of Dadabhai Naoroji. | Lahore | 
+10 | December 1894 | Alfred Webb | 75px|alt=An image of Alfred Webb. | Madras | 
+11 | December 1895 | Surendranath Banerjee | 75px|alt=An image of Surendranath Banerjee. | Poona | 
+12 | December 1896 | Rahimtulla M. Sayani | 75px|alt=An image of Rahimtulla M. Sayani. | Calcutta | 
+13 | December 1897 | C. Sankaran Nair | 75px|alt=An image of C Sankaran Nair. | Amaravati | 
+14 | December 1898 | Anandamohan Bose | 75px|alt=An image of Anandamohan Bose. | Madras | 
+15 | December 1899 | Romesh Chunder Dutt | 75px|alt=An image of Romesh Chunder Dutt. | Lucknow | 
+16 | December 1900 | N. G. Chandavarkar | 75px|alt=An image of N. G. Chandavarkar. | Lahore | 
+}
+
+=== table 1 (47 rows) ===
+ | Year(s) of presidency | Name | Portrait | Place of conference | Reference(s)
+17 | December 1901 | Dinshaw Edulji Wacha | 75px|alt=An image of Dinshaw Edulji Wacha. | Calcutta | 
+18 | December 1902 | Surendranath Banerjee | 75px|alt=An image of Surendranath Banerjee. | Ahmedabad | 
+19 | December 1903 | Lalmohan Ghosh |  | Madras | 
+20 | December 1904 | Henry John Stedman Cotton | 75px|alt=An image of Henry Cotton. | Bombay | 
+21 | December 1905 | Gopal Krishna Gokhale | 75px|alt=An image of Gopal Krishna Gokhale. | Benares | 
+22 | December 1906 | Dadabhai Naoroji | 75px|alt=An image of Dadabhai Naoroji. | Calcutta | 
+23 | December 1907 | Rashbihari Ghosh | 75px|alt=An image of Rashbihari Ghosh. | Surat | 
+24 | December 1908 | Madras | 
+25 | December 1909 | Madan Mohan Malaviya | 75px|alt=An image of Madan Mohan Malaviya. | Lahore | 
+26 | December 1910 | William Wedderburn | 75px|alt=An image of William Wedderburn. | Allahabad | 
+27 | December 1911 | Bishan Narayan Dar |  | Calcutta | 
+28 | December 1912 | Raghunath Narasinha Mudholkar | 75px|alt=An image of Raghunath Narasinha Mudholkar. | Bankipore | 
+29 | December 1913 | Nawab Syed Muhammad Bahadur |  | Karachi | 
+30 | April 1914 | Bhupendra Nath Bose | 75px | Madras | 
+31 | December 1915 | Satyendra Prasanno Sinha | 75px|alt=An image of Satyendra Prasanno Sinha. | Bombay | 
+32 | December 1916 | Ambica Charan Mazumdar | 75px|alt=An image of Ambica Charan Mazumdar. | Lucknow | 
+33 | December 1917 | Annie Besant | 75px|alt=An image of Annie Besant. | Calcutta | 
+34 | August 1918 | Syed Hasan Imam | 75px|alt=An image of Syed Hasan Imam. | Bombay (special session) | 
+35 | December 1918 | Madan Mohan Malaviya | 75px|alt=An image of Madan Mohan Malaviya. | Delhi | 
+36 | December 1919 | Motilal Nehru | 75px|alt=An image of Motilal Nehru. | Amritsar | 
+37 | 1920 | Lala Lajpat Rai | 75px|alt=An image of Lala Lajpat Rai. | Calcutta (Special Session) | 
+38 | December 1920 | C. Vijayaraghavachariar | 75px|alt=An image of C. Vijayaraghavachariar. | Nagpur | 
+39 | December 1921 | Hakim Ajmal Khan | 75px|alt=An image of Hakim Ajmal Khan. | Ahmedabad | 
+40 | December 1922 | Chittaranjan Das | 75px|alt=An image of Chittaranjan Das. | Gaya | 
+41 | 1923 | Mohammad Ali Jauhar | 75px|alt=An image of Mohammad Ali Jouhar. | Kakinada | 
+42 | September 1923 | Abul Kalam Azad | 75px|alt=An image of Abul Kalam Azad. | Delhi (Special Session) | 
+43 | December 1924 | Mahatma Gandhi | 75px|alt=An image of Mahatma Gandhi. | Belgaum | 
+44 | April 1925 | Sarojini Naidu | 75px|alt=An image of Sarojini Naidu. | Kanpur | 
+45 | December 1926 | S. Srinivasa Iyengar | 75px|alt=An image of S. Srinivasa Iyengar. | Guwahati | 
+46 | December 1927 | Mukhtar Ahmed Ansari | 75px|alt=An image of Mukhtar Ahmad Ansari | Madras | 
+47 | 1928 | Motilal Nehru | 75px|alt=An image of Motilal Nehru. | Calcutta | 
+48 | 1929 | Jawaharlal Nehru | 75px|alt=An image of Jawaharlal Nehru. | Lahore | 
+49 | 1930 | Karachi | 
+50 | 1931 | Vallabhbhai Patel | 75px|alt=An image of Vallabhbhai Patel. | Karachi | 
+51 | 1932 | Madan Mohan Malaviya | 75px|alt=An image of Madan Mohan Malaviya. | Delhi | 
+52 | 1933 | Nellie Sengupta | 75px|alt=An image of Nellie Sengupta. | Calcutta | 
+53 | 1934 | Rajendra Prasad | 75px|alt=An image of Rajendra Prasad. | Bombay | 
+54 | 1935 | Lucknow | 
+55 | 1936 | Jawaharlal Nehru | 75px|alt=An image of Jawaharlal Nehru. | Lucknow | 
+56 | 1937 | Faizpur | 
+57 | 1938 | Subhas Chandra Bose | 75px|alt=Subhas Chandra Bose | Haripura | /
+58 | 1939 | Tewar, Madhya Pradesh / (then Tripuri) | /
+59 | 1939 (March) | Rajendra Prasad | 75px|alt=An image of Rajendra Prasad. | Tewar, Madhya Pradesh / (then Tripuri) | 
+60 | 1940–46 Duration of World war 2 | Abul Kalam Azad | 75px|alt=An image of Abul Kalam Azad. | Ramgarh | 
+61 | 1946 (July–Sept) | Jawaharlal Nehru | frameless|107x107px |  | 
+62 | 1946 | {{sortname|J. B.|Kripalani|}
+
+=== table 2 (43 rows) ===
+ | Year(s) of Presidency | Name | Portrait | Place of Conference | Reference(s)
+64 | 1948 | Bhogaraju Pattabhi Sitaramayya | 75px|alt=An image of Pattabhi Sitaraimayya. | Jaipur | 
+65 | 1949 | Jaipur | 
+66 | 1950 | Purushottam Das Tandon | 75px|alt=An image of Purushottam Das Tandon. | Nashik | 
+67 | 1951 | Jawaharlal Nehru | 75px|alt=An image of Jawaharlal Nehru. | New Delhi | /
+68 | 1952 | New Delhi | 
+69 | 1953 | Hyderabad | /
+70 | 1954 | Kalyani | /
+71 | 1955 | U. N. Dhebar | 75px|alt=An image of U. N. Dhebar. | Avadi | 
+72 | 1956 | Amritsar | 
+73 | 1957 | Indore | 
+74 | 1958 | Guwahati | 
+75 | 1959 | Nagpur | 
+76 | 1959 | Indira Gandhi | alt=An image of Indira Gandhi.|91x91px | Delhi (special session) | /
+73 | 1960 | Neelam Sanjiva Reddy | 75px|alt=An image of Neelam Sanjiva Reddy. | Bengaluru | 
+74 | 1961 | Bhavnagar | 
+75 | 1962 | Damodaram Sanjivayya | 75px|alt=An image of Damodaram Sanjivayya. | Patna | 
+75 | 1962–1963 | Neelam Sanjiva Reddy | 75px|alt=An image of Neelam Sanjiva Reddy. | Patna | 
+76 | 1964 | K. Kamaraj | 75px|alt=An image of K. Kamaraj. | Bhubaneswar | 
+77 | 1965 | Durgapur | 
+78 | 1966–1967 | Jaipur | 
+79 | 1968 | S. Nijalingappa | 75px|alt=An image of S. Nijalingappa. | Hyderabad | 
+80 | 1969 | Faridabad | 
+81 | 1970–1971 | Jagjivan Ram | 75px|alt=An image of Jagjivan Ram. | Mumbai | 
+82 | 1972–74 | Shankar Dayal Sharma | 75px|alt=An image of Shankar Dayal Sharma. | Kolkata | 
+83 | 1975–77 | D. K. Barooah | 75px|alt=An image of Devakanta Barua. | Chandigarh | 
+84 | 1977–78 | Kasu Brahmananda Reddy | 75px|alt=An image of Kasu Brahmananda Reddy | Chandigarh | 
+85 | 1978–83 | Indira Gandhi | alt=An image of Indira Gandhi.|91x91px | New Delhi | /
+85 | 1983 | Kolkata | /
+86 | 1985–1991 | Rajiv Gandhi | alt=An image of Rajiv Gandhi.|91x91px | Mumbai | / /
+87 | 1992 | P. V. Narasimha Rao | 102x102px | Tirupati | 
+88 | 1993 | Surajkund | 
+89 | 1994 | Delhi | 
+90 | 1996–1998 | Sitaram Kesri | frameless | Kolkata | 
+91 | 1998–2001 | Sonia Gandhi | 100x100px | New Delhi | /
+92 | 2001–2004 | Bengaluru | /
+93 | 2004–2006 | New Delhi | /
+94 | 2006–2010 | Hyderabad | /
+95 | 2010–2017 | New Delhi | /
+96 | 2017–2019 | Rahul Gandhi | frameless|83x83px | New Delhi | 
+97 | 2019–2022 | Sonia Gandhi | alt=An image of Sonia Gandhi.|100x100px | Jaipur | /
+98 | 2022–Incumbent | Mallikarjun Kharge | frameless|94x94px | New Delhi | 
+}
+

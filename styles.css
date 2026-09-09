@@ -745,6 +745,59 @@ nav.tabs a.hublink{color:var(--dimmer)}
 nav.tabs a.hublink::before{content:"← "}
 
 /* ==========================================================================
+   A CONGRESS SESSION
+
+   The row says WHAT the session was; the block under it says WHY it is
+   asked, and the whole point of this layout is that the second is not
+   swallowed by the first. So the reason gets its own rule down the side, its
+   own label in red, and the full body colour rather than the grey a footnote
+   would get — because on this page the reason IS the content, and the year
+   and the president are only its address.
+   ========================================================================== */
+
+.sess{
+  padding:var(--s5) 0;border-bottom:1px solid var(--line);
+}
+.sess:last-child{border-bottom:0}
+.sesshead{
+  display:flex;gap:var(--s4);align-items:baseline;text-decoration:none;
+  padding:var(--s2) var(--s2) var(--s2) 0;border-radius:var(--r-sm);
+  transition:background var(--fast) var(--ease);
+}
+a.sesshead:hover{background:var(--panel2)}
+.sy{
+  flex:0 0 auto;min-width:168px;font-family:var(--mono);
+  font-size:var(--t-small);letter-spacing:.02em;color:var(--gold);
+  line-height:1.4;
+}
+.stx{min-width:0;flex:1 1 auto}
+.stx b{
+  display:block;font-family:var(--serif);font-size:var(--t-h4);
+  font-weight:600;line-height:1.25;color:var(--ink);
+}
+.stx i{
+  display:block;font-style:normal;margin-top:3px;
+  font-size:var(--t-body);color:var(--purple);line-height:1.4;
+}
+.schips{display:flex;gap:6px;flex-wrap:wrap;margin:var(--s3) 0 0}
+
+.sesswhy{
+  margin:var(--s4) 0 0;padding:var(--s2) 0 var(--s2) var(--s5);
+  border-left:2px solid var(--gold);
+  font-size:var(--t-body);line-height:1.6;color:var(--ink);max-width:74ch;
+}
+.swl{
+  display:block;font-family:var(--mono);font-size:var(--t-micro);
+  letter-spacing:.16em;text-transform:uppercase;color:var(--red);
+  margin-bottom:var(--s2);
+}
+/* A year in which no session was held is still a row, because "who was
+   president in 1943" is a real question with a real answer. It is dimmed so
+   that it cannot be mistaken for a session that happened. */
+.sess.empty-year .stx b{color:var(--dim)}
+.sess.empty-year .sesswhy{border-left-color:var(--line2)}
+
+/* ==========================================================================
    FOOTER
    ========================================================================== */
 
@@ -955,6 +1008,11 @@ details.idx > summary b{font-weight:400;color:var(--dimmer);letter-spacing:.06em
   .arow .no.range{min-width:84px;font-size:var(--t-copy)}
   .topics{grid-template-columns:1fr}
   .idxgrid{grid-template-columns:1fr}
+  /* On a phone the date column would leave about 140px for a place name
+     and a president, so the head stacks instead. */
+  .sesshead{flex-direction:column;gap:var(--s2)}
+  .sy{min-width:0}
+  .sesswhy{padding-left:var(--s4)}
   .backfab{left:var(--s3);bottom:var(--s3);padding:10px var(--s4) 10px var(--s3)}
   .hubfilter{gap:var(--s3)}
   .arow .tag{display:none}

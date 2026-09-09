@@ -382,6 +382,51 @@ check over all 5,594 strings in the data files confirms that stripping the
 tags returns exactly the text that was written, with no unbalanced tags and
 no nested links. **The official text of the Constitution is never marked.**
 
+## The Congress sessions
+
+`data-congress.js` — every session of the Indian National Congress from 1885
+to 1948, and the years in between when no session was held but somebody was
+still president.
+
+Each session carries a `why`: the one reason it is asked. That field is
+rendered as its own block under the row, with a rule down the side and a
+label of its own, because the reason is the content and the year and the
+president are only its address. In a list of sixty the term marking is turned
+off and only figures are marked — on a page about Congress presidents the
+word "president" is a column heading, not a key term.
+
+Three sessions carry an ordinal and the rest do not. Neither source numbers
+the sessions, and counting them by hand makes Faizpur the 51st while the
+sources that give a number call it the 50th — the difference is whether the
+banned Delhi session of 1932 is counted. So a number is printed only where a
+source states one.
+
+## Governors, Governors-General and Viceroys
+
+`data-raj.js` — fifty-three holders of five offices in one line of
+succession, from Clive to Rajagopalachari, each with a page giving what he
+changed and then his policies one by one.
+
+The offices are the point. Warren Hastings was the first Governor-General of
+BENGAL; Bentinck the first of INDIA; Canning was the last Governor-General of
+the Company and the first Viceroy; Mountbatten the last Viceroy and the first
+Governor-General of free India. Every "who was the first" question is a
+question about one of those boundaries, so the section has a page for them.
+
+Acting holders are listed and marked, and their pages say they are not
+examined. Dropping them would make this list disagree with every other list;
+pretending they matter would waste the reader's time.
+
+## Checking those two files
+
+    python tools/verify/check.py
+
+Both files were written from two sources and this compares them back against
+both, row by row — 100 rows of name, year and venue. See
+`tools/verify/README.md`. The first run found eleven differences, four of them
+real: a missing presidency, a wrong term boundary, and five missing acting
+Viceroys.
+
 ## Running it
 
 ```bash

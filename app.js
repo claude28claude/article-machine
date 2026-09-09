@@ -1675,6 +1675,272 @@ function histTreaties(slug) {
   return render(histShell(histCrumb('Treaties') + body));
 }
 
+
+/* ==========================================================================
+   THE ADMINISTRATORS — Governors, Governors-General, Viceroys
+
+   Five offices in one line of succession, so the section is built from a
+   table of groups rather than five copies of the same code. Each holder gets
+   a page of his own, because "his policies and how he impacted India" is a
+   page's worth of writing, not a table cell.
+   ========================================================================== */
+
+var RAJ = window.RAJ || {};
+
+var RAJ_GROUPS = [
+  ['bengal',   'Governors of Bengal',              '1757–1773'],
+  ['ggBengal', 'Governors-General of Bengal',      '1773–1833'],
+  ['ggIndia',  'Governors-General of India',       '1833–1858'],
+  ['viceroys', 'Viceroys of India',                '1858–1947'],
+  ['free',     'Governors-General of the Dominion', '1947–1950']
+];
+
+var rajById = {}, rajAll = [];
+RAJ_GROUPS.forEach(function (g) {
+  (RAJ[g[0]] || []).forEach(function (p) {
+    p.grp = g[1]; p.grpYears = g[2];
+    rajById[p.id] = p; rajAll.push(p);
+  });
+});
+
+function rajYears(p) {
+  var s = p.from === p.to ? String(p.from) : p.from + '–' + p.to;
+  return p.also ? s + ' (' + p.also + ')' : s;
+}
+
+/* One row in the roll. The acting holders are shown but dimmed: dropping them
+   would make this list disagree with every other list, and pretending they
+   are examinable would waste the reader's time. */
+function rajRow(p) {
+  return '<a class="arow' + (p.acting ? ' gone' : '') + '" href="#/history/ruler/' +
+    encodeURIComponent(p.id) + '">' +
+    '<span class="no range">' + esc(rajYears(p)) + '</span>' +
+    '<span class="tx"><b>' + esc(p.n) + '</b><i>' + esc(p.t) +
+    (p.acting ? ' · acting' : '') + '</i></span>' +
+    '<span class="tag">' + (p.hy ? '<span class="chip live">Asked</span>' : '') +
+    '</span></a>';
+}
+
+function rajList() {
+  return RAJ_GROUPS.map(function (g) {
+    var list = RAJ[g[0]] || [];
+    if (!list.length) return '';
+    return '<div class="partband"><span class="pn">' + esc(g[2]) + '</span>' +
+      '<h2>' + esc(g[1]) + '</h2></div>' + list.map(rajRow).join('');
+  }).join('');
+}
+
+/* One administrator. The impact is stated first and the policies follow,
+   because "what did he change" is the question and the list of Acts is the
+   evidence for the answer. */
+function rajPage(id) {
+  var p = rajById[id];
+  if (!p) return notFound('There is no such Governor-General or Viceroy on this site.');
+
+  var h = '<div class="crumb"><a href="#/history">Modern History</a> → ' +
+    '<a href="#/history/raj">The administrators</a> → ' + esc(p.grp) + '</div>' +
+    /* The big numeral takes the term and nothing else. Clive held the office
+       twice, and putting "1758-1760 (and again 1765-1767)" at 38px pushed the
+       page 191px off the side of a phone. The second term is a chip. */
+    '<div class="arthead"><div class="big" style="font-size:var(--n-lg)">' +
+    esc(p.from === p.to ? String(p.from) : p.from + '–' + p.to) +
+    '</div><div class="ht"><h1>' + esc(p.n) + '</h1>' +
+    '<div class="chips"><span class="chip">' + esc(p.t) + '</span>' +
+    (p.also ? '<span class="chip amd">' + esc(p.also) + '</span>' : '') +
+    (p.acting ? '<span class="chip gone">Acting · not examined</span>' : '') +
+    (p.hy ? '<span class="chip live">Asked in exams</span>' : '') +
+    '</div></div></div>';
+
+  h += '<div class="block"><h3>What he changed</h3><p class="plain">' +
+    prose(p.w) + '</p>' +
+    (p.note ? '<p class="why">' + prose(p.note) + '</p>' : '') + '</div>';
+
+  if ((p.pol || []).length) {
+    h += factsBlock({ h: 'His policies, and what each one did', rows: p.pol });
+  }
+
+  var i = rajAll.indexOf(p), out = '<div class="nextprev">';
+  if (i > 0) out += '<a href="#/history/ruler/' + encodeURIComponent(rajAll[i - 1].id) +
+    '"><span class="d">Before him</span><span class="t">' + esc(rajAll[i - 1].n) +
+    '</span></a>';
+  if (i > -1 && i < rajAll.length - 1) out += '<a class="r" href="#/history/ruler/' +
+    encodeURIComponent(rajAll[i + 1].id) + '"><span class="d">After him</span>' +
+    '<span class="t">' + esc(rajAll[i + 1].n) + '</span></a>';
+  h += out + '</div>';
+
+  return render(histShell('<div class="wrap artpage">' + h + '</div>'));
+}
+
+function histRaj(slug) {
+  var tabs = [['', 'The roll'], ['offices', 'The four offices'],
+              ['drill', 'Who was in charge when'], ['confusions', 'Confused pairs']];
+  var known = false;
+  tabs.forEach(function (t) { if (t[0] === (slug || '')) known = true; });
+  if (!known) return notFound('That address does not exist in the administrators section.');
+
+  var body = '<div class="listtabs">' + tabs.map(function (t) {
+    return '<button onclick="location.hash=\'#/history/raj' + (t[0] ? '/' + t[0] : '') +
+      '\'" aria-pressed="' + (t[0] === (slug || '')) + '">' + esc(t[1]) + '</button>';
+  }).join('') + '</div>';
+
+  if (slug === 'offices') {
+    body += histH1('The four offices',
+      'Governor of Bengal, Governor-General of Bengal, Governor-General of India, ' +
+      'Viceroy. Every "who was the first" question is a question about these boundaries.');
+    body += (RAJ.offices || []).map(factsBlock).join('');
+  } else if (slug === 'drill') {
+    body += histH1('Who was in charge when',
+      'The events most often asked, each against the man who held the office.');
+    body += (RAJ.facts || []).map(factsBlock).join('');
+  } else if (slug === 'confusions') {
+    body += histH1('The pairs that get mixed up',
+      'Two Hastingses, two Mintos, two Elgins, two Treaties of Amritsar and two censuses.');
+    body += (RAJ.confusions || []).map(cmpBlock).join('');
+  } else {
+    body += histH1('The administrators', RAJ.lede || '');
+    body += '<div class="figs">' + fig(rajAll.length, 'in all') +
+      fig((RAJ.viceroys || []).length, 'Viceroys') +
+      fig(rajAll.filter(function (p) { return p.hy; }).length, 'asked in exams') +
+      fig((RAJ.confusions || []).length, 'confused pairs') + '</div>';
+    if (RAJ.intro) body += '<p class="plain stack">' + prose(RAJ.intro) + '</p>';
+    body += '<div class="stack-lg">' + rajList() + '</div>';
+  }
+
+  return render(histShell('<div class="wrap artpage">' +
+    histCrumb('The administrators') + body + '</div>'));
+}
+
+/* ==========================================================================
+   THE CONGRESS SESSIONS
+
+   Every session carries a `why` — the one reason it is asked — and the whole
+   point of this section is that the `why` is NOT buried in the row. It is
+   rendered as its own block under the session, labelled, with a rule down the
+   side, so that it can be read on its own without reading the row first.
+   ========================================================================== */
+
+var CONG = window.CONGRESS || {};
+var CONG_SESSIONS = CONG.sessions || [];
+var congById = {};
+CONG_SESSIONS.forEach(function (s) { congById[s.id] = s; });
+
+function sessHead(s, link) {
+  var yr = '<span class="sy">' + esc(s.y) + '</span>';
+  var name = '<b>' + esc(s.place) + '</b>' +
+    '<i>' + esc(s.pres) + '</i>';
+  var chips = '<span class="schips">' +
+    (s.n ? '<span class="chip">' + ordinal(s.n) + ' session</span>' : '') +
+    (s.special ? '<span class="chip amd">Special session</span>' : '') +
+    (s.none ? '<span class="chip gone">No session</span>' : '') +
+    (s.disputed ? '<span class="chip struck">Lists disagree</span>' : '') +
+    (s.tag ? '<span class="chip live">' + esc(s.tag) + '</span>' : '') +
+    '</span>';
+  var inner = yr + '<span class="stx">' + name + '</span>';
+  return link
+    ? '<a class="sesshead" href="#/history/session/' + encodeURIComponent(s.id) + '">' +
+      inner + '</a>' + chips
+    : '<div class="sesshead plain-head">' + inner + '</div>' + chips;
+}
+
+function sessBlock(s) {
+  return '<div class="sess' + (s.none ? ' empty-year' : '') + '">' +
+    sessHead(s, true) +
+    '<div class="sesswhy"><span class="swl">Why it matters</span>' +
+    /* Figures only in the list. On a page of sixty of these the term marks
+       start competing with each other and with the labels - and "president",
+       on a page about Congress presidents, is a column heading rather than a
+       key term. A cap of nothing leaves the years and dates marked, which is
+       what the eye is actually running down. */
+    prose(s.why, 0) + '</div></div>';
+}
+
+function sessPage(id) {
+  var s = congById[id];
+  if (!s) return notFound('There is no such Congress session on this site.');
+
+  var h = '<div class="crumb"><a href="#/history">Modern History</a> → ' +
+    '<a href="#/history/congress">Congress sessions</a></div>' +
+    '<div class="arthead"><div class="big" style="font-size:var(--n-lg)">' +
+    esc(String(s.y).replace(/^.*?(\d{4}).*$/, '$1')) + '</div><div class="ht">' +
+    '<h1>' + esc(s.place) + '</h1><div class="chips">' +
+    (s.n ? '<span class="chip">' + ordinal(s.n) + ' session</span>' : '') +
+    (s.special ? '<span class="chip amd">Special session</span>' : '') +
+    (s.none ? '<span class="chip gone">No session held</span>' : '') +
+    (s.disputed ? '<span class="chip struck">Standard lists disagree</span>' : '') +
+    (s.hy ? '<span class="chip live">Asked in exams</span>' : '') +
+    '</div></div></div>';
+
+  h += factsBlock({ h: 'The session', rows: [
+    ['When', s.y],
+    ['Where', s.place],
+    [s.none ? 'President through the gap' : 'President', s.pres],
+    ['Number', s.n ? ordinal(s.n) + ' session' : (s.special ? 'Special session, unnumbered' : '—')]
+  ] });
+
+  /* On a page of its own the block has nothing to compete with, so the terms
+     are marked here. */
+  h += '<div class="block"><h3>Why it matters</h3><p class="plain">' +
+    prose(s.why, 2) + '</p></div>';
+
+  var i = CONG_SESSIONS.indexOf(s), out = '<div class="nextprev">';
+  if (i > 0) out += '<a href="#/history/session/' + encodeURIComponent(CONG_SESSIONS[i - 1].id) +
+    '"><span class="d">Previous session</span><span class="t">' +
+    esc(CONG_SESSIONS[i - 1].place + ' · ' + CONG_SESSIONS[i - 1].y) + '</span></a>';
+  if (i > -1 && i < CONG_SESSIONS.length - 1) out += '<a class="r" href="#/history/session/' +
+    encodeURIComponent(CONG_SESSIONS[i + 1].id) + '"><span class="d">Next session</span>' +
+    '<span class="t">' + esc(CONG_SESSIONS[i + 1].place + ' · ' + CONG_SESSIONS[i + 1].y) +
+    '</span></a>';
+  h += out + '</div>';
+
+  return render(histShell('<div class="wrap artpage">' + h + '</div>'));
+}
+
+function histCongress(slug) {
+  var tabs = [['', 'Every session'], ['asked', 'The ones that get asked'],
+              ['firsts', 'Firsts and records'], ['confusions', 'Confused pairs']];
+  var known = false;
+  tabs.forEach(function (t) { if (t[0] === (slug || '')) known = true; });
+  if (!known) return notFound('That address does not exist in the Congress sessions section.');
+
+  var body = '<div class="listtabs">' + tabs.map(function (t) {
+    return '<button onclick="location.hash=\'#/history/congress' + (t[0] ? '/' + t[0] : '') +
+      '\'" aria-pressed="' + (t[0] === (slug || '')) + '">' + esc(t[1]) + '</button>';
+  }).join('') + '</div>';
+
+  if (slug === 'firsts') {
+    body += histH1('Firsts and records',
+      'First president, first Muslim, first woman, first Indian woman, youngest, ' +
+      'longest-serving, and the only session Gandhi ever presided over.');
+    body += (CONG.firsts || []).map(factsBlock).join('');
+  } else if (slug === 'confusions') {
+    body += histH1('The pairs that get mixed up',
+      'Besant or Naidu, Calcutta or Nagpur, elected or presiding, and the three ' +
+      'different sessions at which independence was demanded.');
+    body += (CONG.confusions || []).map(cmpBlock).join('');
+  } else {
+    var list = slug === 'asked'
+      ? CONG_SESSIONS.filter(function (s) { return s.hy; })
+      : CONG_SESSIONS;
+    if (slug === 'asked') {
+      body += histH1('The sessions that get asked',
+        list.length + ' of the ' + CONG_SESSIONS.length + ' sessions carry a fact ' +
+        'that is actually examined. These are those.');
+    } else {
+      body += histH1('The Congress sessions', CONG.lede || '');
+      body += '<div class="figs">' +
+        fig(CONG_SESSIONS.filter(function (s) { return !s.none; }).length, 'sessions') +
+        fig(CONG_SESSIONS.filter(function (s) { return s.hy; }).length, 'asked in exams') +
+        fig(CONG_SESSIONS.filter(function (s) { return s.special; }).length, 'special sessions') +
+        fig((CONG.confusions || []).length, 'confused pairs') + '</div>';
+      if (CONG.intro) body += '<p class="plain stack">' + prose(CONG.intro) + '</p>';
+    }
+    body += '<div class="stack-lg">' + list.map(sessBlock).join('') + '</div>';
+  }
+
+  return render(histShell('<div class="wrap artpage">' +
+    histCrumb('Congress sessions') + body + '</div>'));
+}
+
 function historyRoute(seg) {
   switch (seg[0] || '') {
     case '':           return render(histTimeline());
@@ -1685,6 +1951,10 @@ function historyRoute(seg) {
     case 'person':     return render(histPersonPage(seg[1]));
     case 'movements':  return render(histMovements());
     case 'treaties':   return histTreaties(seg[1] || '');
+    case 'raj':        return histRaj(seg[1] || '');
+    case 'ruler':      return rajPage(seg[1]);
+    case 'congress':   return histCongress(seg[1] || '');
+    case 'session':    return sessPage(seg[1]);
     case 'movement':   return render(histMovementPage(seg[1]));
     case 'event':      return render(histEventPage(seg[1]));
     default:           return notFound('That address does not exist in Modern History.');
@@ -1703,11 +1973,15 @@ SUBJECTS.push({
     { href: '#/history/people',     label: 'People',     match: ['people', 'person'] },
     { href: '#/history/movements',  label: 'Movements',  match: ['movements', 'movement'] },
     { href: '#/history/treaties',   label: 'Treaties',   match: ['treaties'] },
+    { href: '#/history/congress',   label: 'Congress sessions',
+      match: ['congress', 'session'] },
+    { href: '#/history/raj',        label: 'Viceroys',   match: ['raj', 'ruler'] },
     { href: '#/constitution',       label: '↔ Constitution', match: [] }
   ],
   stats: function () {
     return [(HIST.timeline || []).length + ' events', (HIST.acts || []).length + ' Acts',
-            (HIST.people || []).length + ' people', (HIST.movements || []).length + ' movements'];
+            CONG_SESSIONS.filter(function (x) { return !x.none; }).length + ' Congress sessions',
+            rajAll.length + ' Viceroys and Governors-General'];
   },
   topics: function () {
     var facts = (HIST_HY.facts || []).reduce(function (a, g) { return a + g.items.length; }, 0);
@@ -1723,6 +1997,14 @@ SUBJECTS.push({
       { t: 'The mass movements', href: '#/history/movements',
         n: (HIST.movements || []).length + ' movements',
         w: 'Swadeshi to Quit India \u2014 cause, course, leadership and outcome.' },
+      { t: 'The Congress sessions, 1885 to 1948', href: '#/history/congress',
+        n: CONG_SESSIONS.filter(function (x) { return !x.none; }).length + ' sessions',
+        w: 'Every session with its place and its president, and beside each one — '
+           + 'set apart, not buried — the single reason it is asked.' },
+      { t: 'Governors, Governors-General and Viceroys', href: '#/history/raj',
+        n: rajAll.length + ' in all',
+        w: 'Clive to Rajagopalachari, in order, with the policies each one brought '
+           + 'in and what they did to India.' },
       { t: 'History - confused pairs', href: '#/history/high-yield/confusions',
         n: (HIST_HY.confusions || []).length + ' pairs',
         w: 'Plassey or Buxar, 1858 or 1861, which Act put dyarchy where.' },
@@ -2375,6 +2657,8 @@ function indexPage() {
     { t: 'The people', href: '#/history/people' },
     { t: 'The movements', href: '#/history/movements' },
     { t: 'The treaties', href: '#/history/treaties' },
+    { t: 'The Congress sessions', href: '#/history/congress' },
+    { t: 'Governors-General and Viceroys', href: '#/history/raj' },
     { t: 'The exam layer', href: '#/history/high-yield' }
   ]);
   var evItems = count((HIST.timeline || []).map(function (e) {
@@ -2399,6 +2683,27 @@ function indexPage() {
     { t: 'The drill', href: '#/history/treaties/drill' },
     { t: 'Confused pairs', href: '#/history/treaties/confusions' }
   ]);
+  var congItems = count(CONG_SESSIONS.map(function (x) {
+    return { t: x.place + ' \u2014 ' + shorten(x.pres, 30),
+             href: '#/history/session/' + encodeURIComponent(x.id),
+             n: String(x.y).replace(/^.*?(\d{4}).*$/, '$1') };
+  }));
+  var congViews = count([
+    { t: 'Every session', href: '#/history/congress' },
+    { t: 'The ones that get asked', href: '#/history/congress/asked' },
+    { t: 'Firsts and records', href: '#/history/congress/firsts' },
+    { t: 'Confused pairs', href: '#/history/congress/confusions' }
+  ]);
+  var rajItems = count(rajAll.map(function (x) {
+    return { t: x.n, href: '#/history/ruler/' + encodeURIComponent(x.id),
+             n: rajYears(x) };
+  }));
+  var rajViews = count([
+    { t: 'The roll', href: '#/history/raj' },
+    { t: 'The four offices', href: '#/history/raj/offices' },
+    { t: 'Who was in charge when', href: '#/history/raj/drill' },
+    { t: 'Confused pairs', href: '#/history/raj/confusions' }
+  ]);
   var histHyItems = count([
     { t: 'Overview', href: '#/history/high-yield' },
     { t: 'Confused pairs', href: '#/history/high-yield/confusions' },
@@ -2407,13 +2712,19 @@ function indexPage() {
 
   h += idxSection('Modern History',
     (HIST.timeline || []).length + ' events \u00b7 ' + (HIST.acts || []).length + ' Acts \u00b7 ' +
-    (HIST.people || []).length + ' people \u00b7 ' + (HIST.movements || []).length + ' movements',
+    (HIST.people || []).length + ' people \u00b7 ' +
+    CONG_SESSIONS.filter(function (x) { return !x.none; }).length + ' Congress sessions \u00b7 ' +
+    rajAll.length + ' Viceroys and Governors-General',
     idxGroup('Sections', histSections, true) +
     idxGroup('Every event', evItems) +
     idxGroup('The Acts', actItems) +
     idxGroup('The people', perItems) +
     idxGroup('The movements', movItems) +
     idxGroup('The treaties', trtItems) +
+    idxGroup('Congress sessions', congViews) +
+    idxGroup('Every Congress session', congItems) +
+    idxGroup('Governors-General and Viceroys', rajViews) +
+    idxGroup('Every Governor-General and Viceroy', rajItems) +
     idxGroup('The exam layer', histHyItems));
 
   /* -------------------------------------------------------------- Economy */
@@ -2567,6 +2878,18 @@ function aboutPage() {
   'out. ' + CASES.length + ' judgments are listed, against the articles they actually ' +
   'settled. The same rule applies everywhere: a commencement date that cannot be pinned to ' +
   'one Act is left blank, and no article carries an invented “asked N times” figure.</p></div>' +
+
+  '<div class="block"><h3>Two lists, checked against two sources</h3>' +
+  '<p class="plain">The Congress sessions and the Governors-General and Viceroys ' +
+  'were both written from two independent lists and then compared back against ' +
+  'both, row by row — a hundred rows of name, year and venue. The comparison ' +
+  'found eleven differences. Seven were spellings of the same person, and both ' +
+  'spellings are now printed, because an answer key may use either. Four were ' +
+  'real mistakes and are fixed.</p>' +
+  '<p class="why">Where the two lists genuinely disagree — the year of the ' +
+  'Faizpur session, who presided at Delhi in 1932, whether there was a session ' +
+  'in 1930 at all — the page prints both answers and says which is which, ' +
+  'rather than choosing one and hiding the choice.</p></div>' +
 
   '<div class="block"><h3>How the pages are set</h3>' +
   '<p class="plain">Three typefaces, each with one job. <b class="kw">Literata</b> — a serif ' +
@@ -2817,6 +3140,71 @@ function buildIndex() {
       href: '#/biology/high-yield', num: ''
     });
   });
+
+
+  /* Every Congress session, by year, by place and by president — those are
+     the three ways a question can name the same thing, so all three have to
+     reach the same page. */
+  CONG_SESSIONS.forEach(function (s) {
+    searchIndex.push({
+      kind: 'congress', id: s.id, no: String(s.y).replace(/^.*?(\d{4}).*$/, '$1'),
+      title: s.place + ' · ' + s.pres,
+      sub: 'Congress session' + (s.tag ? ' · ' + s.tag : ''),
+      near: (s.place + ' ' + s.pres + ' ' + s.y + ' congress session').toLowerCase(),
+      hay: (s.place + ' ' + s.pres + ' ' + s.y + ' congress session inc ' +
+            (s.tag || '') + ' ' + s.why).toLowerCase(),
+      href: '#/history/session/' + encodeURIComponent(s.id), num: ''
+    });
+  });
+
+  (CONG.firsts || []).concat(CONG.confusions || []).forEach(function (b, i) {
+    var rows = b.rows || [];
+    searchIndex.push({
+      kind: 'congress', id: 'cg-' + i, no: '', title: b.h || b.k,
+      sub: 'Congress sessions' + (b.k ? ' · confused pair' : ''),
+      near: (b.h || b.k).toLowerCase(),
+      hay: ((b.h || b.k) + ' congress ' + (b.note || '') + ' ' +
+            rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+      href: '#/history/congress/' + (b.k ? 'confusions' : 'firsts'), num: ''
+    });
+  });
+
+  /* Every Governor, Governor-General and Viceroy, with his policies in the
+     haystack so that "Ilbert Bill" or "Doctrine of Lapse" finds the man. */
+  rajAll.forEach(function (p) {
+    searchIndex.push({
+      kind: 'viceroy', id: p.id, no: String(p.from), title: p.n, sub: p.t,
+      near: (p.n + ' ' + p.t).toLowerCase(),
+      hay: (p.n + ' ' + p.t + ' ' + rajYears(p) + ' ' + p.w + ' ' + (p.note || '') + ' ' +
+            (p.pol || []).map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+      href: '#/history/ruler/' + encodeURIComponent(p.id), num: ''
+    });
+  });
+
+  (function () {
+    var view = { offices: 'offices', facts: 'drill' };
+    Object.keys(view).forEach(function (key) {
+      (RAJ[key] || []).forEach(function (b, i) {
+        searchIndex.push({
+          kind: 'viceroy', id: key + '-' + i, no: '', title: b.h,
+          sub: 'Governors-General and Viceroys',
+          near: b.h.toLowerCase(),
+          hay: (b.h + ' viceroy governor general ' + (b.note || '') + ' ' +
+                b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+          href: '#/history/raj/' + view[key], num: ''
+        });
+      });
+    });
+    (RAJ.confusions || []).forEach(function (c, i) {
+      searchIndex.push({
+        kind: 'viceroy', id: 'rcmp-' + i, no: '', title: c.k,
+        sub: 'Viceroys · confused pair', near: c.k.toLowerCase(),
+        hay: (c.k + ' viceroy governor general ' + (c.note || '') + ' ' +
+              c.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+        href: '#/history/raj/confusions', num: ''
+      });
+    });
+  })();
 
   /* The treaties, table by table, so "Sugauli" or "Gulab Singh" reaches the
      table it sits in rather than only the section. */
