@@ -359,7 +359,7 @@ mark{background:rgba(var(--gold-rgb),.24);color:var(--ink);border-radius:2px;pad
    HERO
    ========================================================================== */
 
-.hero{padding:var(--s8) 0 var(--s7)}
+.hero{padding-top:var(--s8);padding-bottom:var(--s7)}
 .hero h1{
   font-family:var(--serif);font-size:var(--t-h1);line-height:1.06;
   margin:0 0 var(--s5);font-weight:600;letter-spacing:-.015em;max-width:16ch;
@@ -457,7 +457,11 @@ mark{background:rgba(var(--gold-rgb),.24);color:var(--ink);border-radius:2px;pad
    ARTICLE DETAIL
    ========================================================================== */
 
-.artpage{padding:var(--s7) 0 var(--s9)}
+/* Vertical padding only. The shorthand this replaces also set the left and
+   right padding to nothing, overriding .wrap - so between a phone and a wide
+   desktop, on a tablet, every page's text ran right to the edge of the
+   screen. .wrap owns the sides; .artpage owns the top and bottom. */
+.artpage{padding-top:var(--s7);padding-bottom:var(--s9)}
 .crumb{
   font-family:var(--mono);font-size:var(--t-tiny);letter-spacing:.1em;
   text-transform:uppercase;color:var(--dimmer);margin-bottom:var(--s5);
@@ -798,6 +802,174 @@ a.sesshead:hover{background:var(--panel2)}
 .sess.empty-year .sesswhy{border-left-color:var(--line2)}
 
 /* ==========================================================================
+   NAVIGATION AND THE INDEX, AFTER THE ANSWER KEY
+
+   Two levels, two colours. The bar in the header is the subjects, and the
+   one you are in is underlined in yellow. Inside a subject, its sections run
+   across the top of the page and the one you are in is underlined in purple
+   — purple being the colour this site already uses for "what this part is".
+   ========================================================================== */
+
+/* The strip of a subject's sections, at the top of every page inside it. */
+.secwrap{padding-top:var(--s4)}
+.secwrap + .artpage{padding-top:var(--s5)}
+.secstrip{
+  display:flex;align-items:center;gap:var(--s1);
+  overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);
+}
+.secstrip::-webkit-scrollbar{display:none}
+.secstrip a{
+  flex:0 0 auto;white-space:nowrap;text-decoration:none;
+  font-family:var(--sans);font-size:var(--t-small);font-weight:600;
+  color:var(--dim);padding:11px var(--s3) 11px;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:color var(--fast) var(--ease);
+}
+.secstrip a:hover{color:var(--ink)}
+.secstrip a[aria-current="page"]{color:var(--purple);border-bottom-color:var(--purple)}
+/* Its first item is the subject itself, and it leads back to the list of all
+   the subject's topics — so it is styled as a label you can press. */
+.secstrip a.secsub{
+  font-family:var(--mono);font-size:var(--t-micro);font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--red);
+  padding-left:0;margin-right:var(--s2);
+}
+.secstrip a.secsub::after{content:" \2630";letter-spacing:0;font-size:12px;color:var(--dimmer)}
+.secstrip a.secsub:hover{color:var(--gold)}
+
+/* A subject's own page, and the index hero */
+.pagehead{margin-bottom:var(--s6);padding-bottom:var(--s5);border-bottom:1px solid var(--line)}
+.pagehead h1,.ixhero h1{
+  font-family:var(--serif);font-size:var(--t-h1);font-weight:600;
+  line-height:1.08;letter-spacing:-.015em;margin:0;
+}
+.eyebrow{
+  font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--red);margin:0 0 var(--s3);
+}
+.pagehead .lede{font-size:var(--t-lead);color:var(--dim);max-width:62ch;margin:var(--s3) 0 0}
+.herostats{
+  display:flex;flex-wrap:wrap;gap:var(--s2) var(--s5);margin-top:var(--s5);
+  font-family:var(--mono);font-size:var(--t-tiny);color:var(--dim);letter-spacing:.02em;
+}
+.herostats b{color:var(--gold);font-weight:500}
+
+.ixhero{
+  border:1px solid var(--line);border-radius:var(--r-lg);
+  background:linear-gradient(160deg,var(--panel2),var(--panel));
+  padding:var(--s6) var(--s5);margin-bottom:var(--s6);
+}
+.ixhero > p{color:var(--dim);font-size:var(--t-lead);max-width:62ch;margin:var(--s4) 0 0}
+.ixhero .hubfilter{margin-top:var(--s5)}
+
+/* The index: one card per subject, every topic inside it. Columns, not a
+   grid. The Constitution's card lists thirty-one topics and Biology's four,
+   and in a grid every card in a row takes the height of the tallest, so at
+   desktop width History and Economy sat above twelve hundred pixels of empty
+   space. Columns pack the cards like a newspaper instead; the subjects are
+   numbered, so reading down the columns rather than across loses nothing. */
+.indexgrid{column-width:340px;column-gap:var(--s4)}
+.idxcard{
+  break-inside:avoid;-webkit-column-break-inside:avoid;
+  display:block;margin:0 0 var(--s4);
+  border:1px solid var(--line);border-radius:var(--r-lg);background:var(--panel);
+  padding:var(--s5) var(--s5) var(--s4);
+}
+.idxcard > .num{
+  font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--red);
+}
+.idxcard h2{font-family:var(--serif);font-size:var(--t-h3);font-weight:600;margin:var(--s1) 0 0}
+.idxcard h2 a{color:var(--ink);text-decoration:none}
+.idxcard h2 a:hover{color:var(--gold)}
+.idxcard .w{color:var(--dim);font-size:var(--t-small);line-height:1.5;margin:var(--s2) 0 var(--s4)}
+.idxmore{
+  display:inline-block;margin-top:var(--s3);text-decoration:none;
+  font-family:var(--mono);font-size:var(--t-tiny);letter-spacing:.06em;color:var(--gold);
+  padding:var(--s2) 0;
+}
+.idxmore:hover{text-decoration:underline}
+
+.idxlist{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.idxlist li{border-bottom:1px solid var(--line)}
+.idxlist li:last-child{border-bottom:0}
+.idxlist a{
+  display:flex;align-items:baseline;gap:var(--s3);text-decoration:none;
+  padding:10px 2px;font-size:var(--t-copy);line-height:1.4;color:var(--ink);
+  transition:color var(--fast) var(--ease);
+}
+.idxlist a:hover{color:var(--gold)}
+.idxlist .n{
+  flex:0 0 24px;font-family:var(--mono);font-size:var(--t-micro);color:var(--purple);
+}
+.idxlist .t{flex:1 1 auto;min-width:0}
+.idxlist .c{
+  flex:0 1 auto;max-width:42%;text-align:right;
+  font-family:var(--mono);font-size:var(--t-micro);color:var(--dimmer);line-height:1.5;
+}
+.topiclbl{
+  display:block;font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dimmer);margin:0 0 var(--s3);
+}
+.topiclist a{padding:14px 2px}
+.topiclist .t b{display:block;font-size:var(--t-body);font-weight:600;line-height:1.35}
+.topiclist .t .d{display:block;margin-top:4px;color:var(--dim);font-size:var(--t-small);line-height:1.5}
+.topiclist a:hover .t b{color:var(--gold)}
+.topiclist a:hover .d{color:var(--dim)}
+
+/* The rail: a subject's sections beside its topics on a wide screen. */
+.rail{display:grid;gap:var(--s6);grid-template-columns:230px 1fr;align-items:start}
+/* A grid item will not shrink below its widest child unless told to, and a
+   wide table inside it would then push the whole page sideways on a phone. */
+.rail > *{min-width:0}
+.railnav{position:sticky;top:calc(var(--headh) + 16px)}
+.railnav .lbl{
+  display:block;font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--dimmer);padding:0 0 var(--s3);
+}
+.railnav ol{list-style:none;margin:0;padding:0;counter-reset:r}
+.railnav li{counter-increment:r}
+.railnav a{
+  display:block;position:relative;text-decoration:none;
+  padding:9px 10px 9px 34px;font-size:var(--t-small);color:var(--dim);
+  border-left:2px solid var(--line);
+  transition:color var(--fast) var(--ease),border-color var(--fast) var(--ease);
+}
+.railnav a::before{
+  content:counter(r);position:absolute;left:11px;top:10px;
+  font-family:var(--mono);font-size:var(--t-micro);color:var(--dimmer);
+}
+.railnav a:hover{color:var(--ink);border-left-color:var(--purple)}
+
+/* On a narrower screen the rail stops being a column and becomes a strip
+   across the top, the same shape as the section strip on every other page. */
+@media (max-width:860px){
+  .rail{grid-template-columns:1fr;gap:var(--s5)}
+  .railnav{position:static}
+  .railnav ol{
+    display:flex;gap:var(--s1);overflow-x:auto;scrollbar-width:none;
+    border-bottom:1px solid var(--line);
+  }
+  .railnav ol::-webkit-scrollbar{display:none}
+  .railnav li{flex:0 0 auto}
+  .railnav a{
+    border-left:0;border-bottom:2px solid transparent;margin-bottom:-1px;
+    padding:11px var(--s3);white-space:nowrap;font-weight:600;
+  }
+  .railnav a::before{display:none}
+  .railnav a:hover{border-bottom-color:var(--purple)}
+}
+@media (max-width:620px){
+  .ixhero{padding:var(--s5) var(--s4)}
+  .idxcard{padding:var(--s4) var(--s4) var(--s3)}
+  /* A long count ("Articles 243ZH-243ZT") would squeeze the topic name to a
+     column one word wide. Below the name it has the whole line. */
+  .topiclist a{flex-wrap:wrap}
+  .topiclist .t{flex:1 1 0}
+  .topiclist .c{flex:1 0 100%;max-width:none;text-align:left;padding-left:36px;margin-top:-4px}
+}
+
+/* ==========================================================================
    FOOTER
    ========================================================================== */
 
@@ -975,7 +1147,10 @@ details.idx > summary b{font-weight:400;color:var(--dimmer);letter-spacing:.06em
      the primary navigation. Header space is not worth buying with a
      control that is harder to hit. */
   nav.tabs{padding:0 var(--s4)}
-  .wrap{padding:0 var(--s4)}
+  /* Sides only, for the same reason the other way round: the shorthand here
+     wiped .artpage's top padding on every phone, so each page began flush
+     against the underside of the header. */
+  .wrap{padding-left:var(--s4);padding-right:var(--s4)}
   .brand span{display:none}
   /* Row one keeps the brand and the install button; the search box wraps to
      its own row underneath, where it has the width to be usable. */
@@ -1023,7 +1198,8 @@ details.idx > summary b{font-weight:400;color:var(--dimmer);letter-spacing:.06em
      point if it was going to overflow anyway. */
   .chip{white-space:normal}
   .arthead{gap:var(--s3)}
-  .hero{padding:var(--s7) 0 var(--s6)}
+  .hero{padding-top:var(--s7);padding-bottom:var(--s6)}
+  .artpage{padding-top:var(--s6)}
   .nextprev{flex-direction:column}
   .nextprev a.r{text-align:left}
 }

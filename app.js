@@ -38,7 +38,7 @@ var SITE = {
      it. The Constitution keeps its old top-level routes (#/a/21, #/cases)
      so that nothing already linked breaks; its landing page moved to
      #/constitution. */
-  hub: 'Study by topic'
+  hub: 'The index'
 };
 
 /* The Parts of the Constitution, named the way a syllabus names them rather
@@ -154,33 +154,147 @@ function atHub(seg) {
   return first === '' || first === 'hub' || first === 'topics';
 }
 
-function renderNav(seg) {
-  if (!tabBar) return;
+/* ==========================================================================
+   NAVIGATION, AFTER THE ANSWER KEY
 
-  /* At the hub there is no active subject, so the nav becomes the list of
-     subjects instead of one subject's sections. */
-  if (atHub(seg)) {
-    if (brandSub) brandSub.textContent = SITE.hub;
-    tabBar.innerHTML = SUBJECTS.map(function (s) {
-      return '<a href="#/' + (s.isDefault ? 'constitution' : s.id) + '">' +
-             esc(s.short || s.name) + '</a>';
-    }).join('') + '<a href="#/index">Index</a><a href="#/about">About</a>';
-    syncHead();
-    return;
-  }
+   The header used to change with the page. At the front it listed the
+   subjects; inside a subject it was replaced by that subject's own sections,
+   so moving from Biology to Modern History meant going back to the front page
+   first and then choosing again — two taps and a page in between.
 
-  var sub = activeSubject();
-  if (brandSub) brandSub.textContent = sub.name;
-  /* For a namespaced subject the first segment is its id, so the segment that
-     identifies the tab is the SECOND one. The default subject has no prefix. */
-  var key = sub.isDefault ? (seg[0] || '') : (seg[1] || '');
-  tabBar.innerHTML = '<a href="#/" class="hublink">All topics</a>' +
-    '<a href="#/index">Index</a>' +
-    sub.tabs.map(function (t) {
+   Now the header never changes. It is the list of subjects, on every page,
+   with the one you are in underlined, so any subject is one tap away from
+   anywhere. Tapping a subject opens that subject's page, which lists its
+   topics and nothing else. The subject's own sections — the tabs that used to
+   live in the header — move into the page: a rail beside the topic list on a
+   wide screen, and a strip across the top of every page inside the subject.
+
+   The header stays exactly one row of tabs, so none of this costs any of the
+   screen on a phone.
+   ========================================================================== */
+
+function defaultSubject() {
+  return SUBJECTS.filter(function (s) { return s.isDefault; })[0];
+}
+
+function subjectById(id) {
+  var hit = null;
+  SUBJECTS.forEach(function (s) { if (s.id === id) hit = s; });
+  return hit;
+}
+
+/* Which item on the subject bar owns this address. The Constitution's pages
+   have no prefix of their own (#/a/21, #/cases), so anything that is not the
+   index, About, a subject page or another subject's prefix belongs to it. */
+function barKey(seg) {
+  var first = seg[0] || '';
+  if (first === '' || first === 'hub' || first === 'topics' ||
+      first === 'index' || first === 'contents') return '__index__';
+  if (first === 's') return subjectById(seg[1]) ? seg[1] : '__index__';
+  if (first === 'about') return 'about';
+  var sub = subjectById(first);
+  return sub && !sub.isDefault ? sub.id : defaultSubject().id;
+}
+
+/* A subject's sections are its old header tabs, less the two that are not
+   sections of it: About is on the bar now, and a tab with nothing to match
+   ("↔ Constitution") is a cross-link to a different subject. */
+function sectionsOf(sub) {
+  return (sub.tabs || []).filter(function (t) {
+    return t.match && t.match.length && t.label !== 'About';
+  });
+}
+
+function sectionKey(sub, seg) {
+  return sub.isDefault ? (seg[0] || '') : (seg[1] || '');
+}
+
+/* The strip across the top of every page inside a subject. Its first item is
+   the subject itself, and leads back to the list of all its topics. */
+function secStrip(seg) {
+  var k = barKey(seg);
+  if (k === '__index__' || k === 'about' || seg[0] === 's') return '';
+  var sub = subjectById(k);
+  if (!sub) return '';
+  var key = sectionKey(sub, seg);
+  return '<div class="wrap secwrap"><nav class="secstrip" aria-label="Sections of ' +
+    esc(sub.name) + '">' +
+    '<a class="secsub" href="#/s/' + sub.id + '">' + esc(sub.short || sub.name) + '</a>' +
+    sectionsOf(sub).map(function (t) {
       var on = t.match.indexOf(key) >= 0;
       return '<a href="' + t.href + '"' + (on ? ' aria-current="page"' : '') + '>' +
-             esc(t.label) + '</a>';
-    }).join('');
+        esc(t.label) + '</a>';
+    }).join('') + '</nav></div>';
+}
+
+function statSpans(list) {
+  return list.map(function (x) {
+    var m = /^(\d[\d,]*)\s+(.*)$/.exec(x);
+    return m ? '<span><b>' + esc(m[1]) + '</b> ' + esc(m[2]) + '</span>'
+             : '<span>' + esc(x) + '</span>';
+  }).join('');
+}
+
+/* A subject's own page: every topic in it, numbered, with a line on what each
+   one covers — the page the bar opens. */
+function subjectPage(id) {
+  var sub = subjectById(id);
+  if (!sub) return notFound('There is no such subject on this site.');
+  var i = SUBJECTS.indexOf(sub);
+  var topics = sub.topics ? sub.topics() : [];
+  var secs = sectionsOf(sub);
+
+  var h = '<div class="wrap artpage">' +
+    '<div class="pagehead"><p class="eyebrow">Subject ' + (i + 1) + ' of ' +
+    SUBJECTS.length + '</p>' +
+    '<h1>' + esc(sub.name) + '</h1>' +
+    '<p class="lede">' + esc(sub.blurb || '') + '</p>' +
+    '<div class="herostats">' + statSpans(sub.stats ? sub.stats() : []) +
+    '<span><b>' + topics.length + '</b> topics</span></div></div>';
+
+  h += '<div class="rail"><nav class="railnav" aria-label="Sections of ' +
+    esc(sub.name) + '"><span class="lbl">Sections</span><ol>' +
+    secs.map(function (t) {
+      return '<li><a href="' + t.href + '">' + esc(t.label) + '</a></li>';
+    }).join('') + '</ol></nav>';
+
+  h += '<div><p class="lbl topiclbl">Every topic in ' + esc(sub.short || sub.name) +
+    '</p><ul class="idxlist topiclist">' +
+    topics.map(function (t, j) {
+      return '<li><a href="' + t.href + '"><span class="n">' + (j + 1) + '</span>' +
+        '<span class="t"><b>' + esc(t.t) + '</b>' +
+        (t.w ? '<span class="d">' + esc(t.w) + '</span>' : '') + '</span>' +
+        (t.n ? '<span class="c">' + esc(t.n) + '</span>' : '') + '</a></li>';
+    }).join('') + '</ul>' +
+    '<p class="foot">These are the topics. Every single page of ' + esc(sub.name) +
+    ' — each article, event, case and person — is in the ' +
+    '<a href="#/index">full index</a>.</p></div></div></div>';
+
+  render(h);
+}
+
+function renderNav(seg) {
+  if (!tabBar) return;
+  var on = barKey(seg);
+  function tab(href, key, label) {
+    return '<a href="' + href + '"' + (on === key ? ' aria-current="page"' : '') + '>' +
+      esc(label) + '</a>';
+  }
+  tabBar.innerHTML = tab('#/', '__index__', 'Index') +
+    SUBJECTS.map(function (s) { return tab('#/s/' + s.id, s.id, s.short || s.name); }).join('') +
+    tab('#/about', 'about', 'About');
+
+  var sub = subjectById(on);
+  if (brandSub) brandSub.textContent = sub ? sub.name : (on === 'about' ? 'About' : SITE.hub);
+
+  /* On a phone the bar scrolls sideways, and a subject near the end of it —
+     Biology — would be underlined somewhere off the edge of the screen. Bring
+     the underlined tab into view. scrollLeft, not scrollIntoView: the bar is
+     inside a sticky header and scrollIntoView would move the page as well. */
+  var cur = tabBar.querySelector('[aria-current="page"]');
+  if (cur && tabBar.scrollWidth > tabBar.clientWidth) {
+    tabBar.scrollLeft = Math.max(0, cur.offsetLeft - 16);
+  }
   syncHead();
 }
 
@@ -239,16 +353,22 @@ function recordStep(h) {
 function parentOf(h) {
   var seg = h.replace(/^#\/?/, '').split('/').filter(Boolean);
   if (!seg.length) return '#/';
-  var first = seg[0], sub = null;
-  SUBJECTS.forEach(function (s) { if (!s.isDefault && s.id === first) sub = s; });
-  if (sub) return seg.length > 1 ? '#/' + first : '#/';
-  if (first === 'a' || first === 'part')  return '#/constitution';
-  if (first === 'high-yield')             return seg.length > 1 ? '#/high-yield' : '#/constitution';
-  if (first === 'assembly')               return seg.length > 1 ? '#/assembly' : '#/constitution';
-  if (first === 'case')       return '#/cases';
-  if (first === 'amendment')  return '#/amendments';
-  if (first === 'schedule')   return '#/schedules';
-  return '#/';
+  if (seg[0] === 's' || seg[0] === 'index' || seg[0] === 'contents' ||
+      seg[0] === 'about' || seg[0] === 'hub' || seg[0] === 'topics') return '#/';
+
+  /* "Up" is read off the subject's own sections, the same list the strip at
+     the top of the page shows. A page that IS a section goes up to the
+     subject's list of topics. A page INSIDE a section — one act, one Viceroy,
+     one article — goes up to its section. So the Acts page goes to Modern
+     History, not sideways to the Timeline, and Curzon goes to the Viceroys.
+     A hand-written list of these used to live here, and every new section
+     had to remember to add itself to it; this cannot be forgotten. */
+  var sub = subjectById(barKey(seg));
+  if (!sub) return '#/';
+  var key = sectionKey(sub, seg), here = '#/' + seg.join('/'), sec = null;
+  sectionsOf(sub).forEach(function (t) { if (!sec && t.match.indexOf(key) >= 0) sec = t; });
+  if (sec && sec.href.replace(/\/+$/, '') !== here) return sec.href;
+  return '#/s/' + sub.id;
 }
 
 function goBack() {
@@ -257,7 +377,16 @@ function goBack() {
     location.hash = trail.pop();
     return;
   }
-  location.hash = parentOf(location.hash);
+  /* Going UP is a Back too, so it must not leave the page it came from on the
+     trail. It used to: Back from an article opened cold went up to the list,
+     and the next Back went straight back DOWN to the article, which is not
+     what anybody pressing Back twice means. Now repeated Backs keep climbing
+     — Acts, then Modern History's topics, then the index. */
+  var up = parentOf(location.hash);
+  /* Only when the address really changes: if it did not, no hashchange would
+     fire to consume the flag, and it would swallow the next real step. */
+  if (up !== location.hash) backJump = true;
+  location.hash = up;
 }
 
 /* The button lives in the shell rather than being created per page, so there
@@ -384,7 +513,7 @@ function plainOf(a) {
 /* --------------------------------------------------------------- rendering */
 
 function render(html) {
-  main.innerHTML = html;
+  main.innerHTML = secStrip(location.hash.replace(/^#\/?/, '').split('/')) + html;
   syncBack();
   /* Scroll AFTER the new content is in place, not before. route() scrolls
      first, but the page it scrolls is still the OLD one — and when the
@@ -1322,35 +1451,50 @@ function hubPage() {
   });
   var total = groups.reduce(function (a, g) { return a + g.topics.length; }, 0);
 
-  var h = '<div class="wrap hero"><h1>What do you need to study?</h1>' +
-    '<p class="lede">' + total + ' topics across ' + SUBJECTS.length +
-    ' subjects, each written to be read on its own. Filter the list, or open a ' +
-    'subject and work through it.</p>' +
+  /* The front page is the index, as on the Answer Key: every subject, and
+     inside each one every topic, as a numbered list. The bar above switches
+     subject; this page shows the shape of all of them at once. */
+  var h = '<div class="wrap artpage"><section class="ixhero">' +
+    '<h1>Everything to study, on one screen</h1>' +
+    '<p>' + SUBJECTS.length + ' subjects and ' + total + ' topics for the SSC track. ' +
+    'Choose a subject from the bar at the top to see only its topics — the bar ' +
+    'stays there on every page, so you can switch subject from anywhere — or run ' +
+    'down all of them below.</p>' +
+    '<div class="herostats"><span><b>' + SUBJECTS.length + '</b> subjects</span>' +
+    '<span><b>' + total + '</b> topics</span>' +
+    '<span><b>' + ARTICLES.length + '</b> articles</span>' +
+    '<span>Works offline</span></div>' +
     '<div class="hubfilter">' +
       '<input id="topicq" type="search" autocomplete="off" spellcheck="false" ' +
       'aria-label="Filter topics" aria-controls="hublist" ' +
-      'placeholder="Filter topics \u2014 try \u201cgst\u201d, \u201cdance\u201d, \u201cemergency\u201d, \u201crivers\u201d">' +
+      'placeholder="Filter topics — try “gst”, “viceroy”, “emergency”, “rivers”">' +
       '<span id="topicn" aria-live="polite"></span></div>' +
-    /* The filter answers "I know what I want". The index answers "show me
-       what there is" - a different question, and the one a reader has when
-       they are planning rather than looking something up. */
     '<div class="stack"><a class="pill big" href="#/index">' +
-    'Open the full index — every page on the site</a></div></div>';
+    'Every page on the site — the full outline</a></div></section>';
 
-  h += '<div class="wrap" id="hublist">';
-  groups.forEach(function (g) {
-    h += '<section class="hubsec">' +
-      '<div class="hubhead"><a href="#/' + (g.s.isDefault ? 'constitution' : g.s.id) + '">' +
-        esc(g.s.name) + '</a><span>' + esc(g.s.stats().join(' \u00b7 ')) + '</span></div>' +
-      '<div class="topics">' + g.topics.map(function (t) {
-        return '<a class="topic" href="' + t.href + '" data-k="' +
+  h += '<div class="indexgrid" id="hublist">' + groups.map(function (g, i) {
+    return '<section class="idxcard">' +
+      '<span class="num">Subject ' + (i + 1) + '</span>' +
+      '<h2><a href="#/s/' + g.s.id + '">' + esc(g.s.name) + '</a></h2>' +
+      '<p class="w">' + esc(g.s.blurb || '') + '</p>' +
+      '<ul class="idxlist">' + g.topics.map(function (t, j) {
+        /* A count that runs to a phrase ("15 women, and the names asked")
+           belongs on the subject's own page, where there is room for it. In
+           a card it would wrap into the topic name, so only short counts
+           are shown here. */
+        var c = t.n && String(t.n).length <= 22 ? t.n : '';
+        return '<li data-k="' +
           esc((t.t + ' ' + t.w + ' ' + (t.k || '') + ' ' + g.s.name).toLowerCase()) + '">' +
-          '<b>' + esc(t.t) + '</b><i>' + esc(t.w) + '</i>' +
-          '<em>' + esc(t.n) + '</em></a>';
-      }).join('') + '</div></section>';
-  });
+          '<a href="' + t.href + '"><span class="n">' + (j + 1) + '</span>' +
+          '<span class="t">' + esc(t.t) + '</span>' +
+          (c ? '<span class="c">' + esc(c) + '</span>' : '') + '</a></li>';
+      }).join('') + '</ul>' +
+      '<a class="idxmore" href="#/s/' + g.s.id + '">Open ' + esc(g.s.short || g.s.name) +
+      ' →</a></section>';
+  }).join('') + '</div>';
+
   h += '<div class="empty" id="hubempty" hidden><b>No topic matches that</b>' +
-    'The search box at the top of the page goes deeper \u2014 it looks inside every ' +
+    'The search box at the top of the page goes deeper — it looks inside every ' +
     'article, case, event and fact on the site, not just the topic names.</div></div>';
 
   render(h);
@@ -1364,8 +1508,8 @@ function hubPage() {
 function wireHubFilter() {
   var box = document.getElementById('topicq');
   if (!box) return;
-  var items = [].slice.call(document.querySelectorAll('#hublist .topic'));
-  var secs  = [].slice.call(document.querySelectorAll('#hublist .hubsec'));
+  var items = [].slice.call(document.querySelectorAll('#hublist li[data-k]'));
+  var secs  = [].slice.call(document.querySelectorAll('#hublist .idxcard'));
   var count = document.getElementById('topicn');
   var none  = document.getElementById('hubempty');
 
@@ -1379,7 +1523,7 @@ function wireHubFilter() {
       if (ok) shown++;
     });
     secs.forEach(function (sec) {
-      sec.hidden = !sec.querySelector('.topic:not([hidden])');
+      sec.hidden = !sec.querySelector('li[data-k]:not([hidden])');
     });
     if (count) count.textContent = terms.length ? shown + ' of ' + items.length : '';
 
@@ -1768,7 +1912,7 @@ function rajPage(id) {
     '<span class="t">' + esc(rajAll[i + 1].n) + '</span></a>';
   h += out + '</div>';
 
-  return render(histShell('<div class="wrap artpage">' + h + '</div>'));
+  return render(histShell(h));
 }
 
 function histRaj(slug) {
@@ -1806,8 +1950,7 @@ function histRaj(slug) {
     body += '<div class="stack-lg">' + rajList() + '</div>';
   }
 
-  return render(histShell('<div class="wrap artpage">' +
-    histCrumb('The administrators') + body + '</div>'));
+  return render(histShell(histCrumb('The administrators') + body));
 }
 
 /* ==========================================================================
@@ -1892,7 +2035,7 @@ function sessPage(id) {
     '</span></a>';
   h += out + '</div>';
 
-  return render(histShell('<div class="wrap artpage">' + h + '</div>'));
+  return render(histShell(h));
 }
 
 function histCongress(slug) {
@@ -1937,8 +2080,7 @@ function histCongress(slug) {
     body += '<div class="stack-lg">' + list.map(sessBlock).join('') + '</div>';
   }
 
-  return render(histShell('<div class="wrap artpage">' +
-    histCrumb('Congress sessions') + body + '</div>'));
+  return render(histShell(histCrumb('Congress sessions') + body));
 }
 
 function historyRoute(seg) {
@@ -1997,6 +2139,14 @@ SUBJECTS.push({
       { t: 'The mass movements', href: '#/history/movements',
         n: (HIST.movements || []).length + ' movements',
         w: 'Swadeshi to Quit India \u2014 cause, course, leadership and outcome.' },
+      { t: 'The treaties', href: '#/history/treaties',
+        n: trtCount('main') + ' to memorise',
+        w: 'Year, parties, and the war each one ended \u2014 from Alinagar in 1757 to Rawalpindi in 1919.',
+        k: 'allahabad diwani salbai bassein mangalore seringapatam amritsar sugauli lahore gandamak subsidiary alliance' },
+      { t: 'Treaties by war, and since 1947', href: '#/history/treaties/wars',
+        n: trtCount('wars') + ' rows',
+        w: 'Anglo-Maratha, Anglo-Mysore, Anglo-Sikh, Anglo-Nepalese and Anglo-Afghan, then Panchsheel to Lahore.',
+        k: 'maratha mysore sikh nepal afghan panchsheel indus waters tashkent shimla lahore declaration sri lanka accord' },
       { t: 'The Congress sessions, 1885 to 1948', href: '#/history/congress',
         n: CONG_SESSIONS.filter(function (x) { return !x.none; }).length + ' sessions',
         w: 'Every session with its place and its president, and beside each one — '
@@ -2009,15 +2159,7 @@ SUBJECTS.push({
         n: (HIST_HY.confusions || []).length + ' pairs',
         w: 'Plassey or Buxar, 1858 or 1861, which Act put dyarchy where.' },
       { t: 'History - quick facts', href: '#/history/high-yield/facts', n: facts + ' facts',
-        w: 'Viceroys, Congress sessions, newspapers, books, slogans, risings and trials.' },
-      { t: 'The treaties', href: '#/history/treaties',
-        n: trtCount('main') + ' to memorise',
-        w: 'Year, parties, and the war each one ended \u2014 from Alinagar in 1757 to Rawalpindi in 1919.',
-        k: 'allahabad diwani salbai bassein mangalore seringapatam amritsar sugauli lahore gandamak subsidiary alliance' },
-      { t: 'Treaties by war, and since 1947', href: '#/history/treaties/wars',
-        n: trtCount('wars') + ' rows',
-        w: 'Anglo-Maratha, Anglo-Mysore, Anglo-Sikh, Anglo-Nepalese and Anglo-Afghan, then Panchsheel to Lahore.',
-        k: 'maratha mysore sikh nepal afghan panchsheel indus waters tashkent shimla lahore declaration sri lanka accord' }
+        w: 'Viceroys, Congress sessions, newspapers, books, slogans, risings and trials.' }
     ];
   },
   route: historyRoute
@@ -2576,7 +2718,7 @@ function idxSection(title, stat, body) {
 
 function indexPage() {
   var h = '<div class="wrap artpage"><div class="crumb">Index</div>' +
-    pageH1('Everything on this site',
+    pageH1('Every page on the site',
       'Every section and every page, laid out so you can see the whole shape before you choose. Tap a group to open it.') +
     '<div class="listtabs"><button type="button" id="idxopen">Open everything</button>' +
     '<button type="button" id="idxclose">Close everything</button></div>';
@@ -2586,6 +2728,7 @@ function indexPage() {
 
   /* ---------------------------------------------------------- Constitution */
   var coiSections = count([
+    { t: 'Every topic, listed', href: '#/s/constitution' },
     { t: 'The articles', href: '#/constitution', n: LIVE.length + ' in force' },
     { t: 'The exam layer', href: '#/high-yield' },
     { t: 'The article map', href: '#/high-yield/map' },
@@ -2652,6 +2795,7 @@ function indexPage() {
 
   /* -------------------------------------------------------------- History */
   var histSections = count([
+    { t: 'Every topic, listed', href: '#/s/history' },
     { t: 'The timeline', href: '#/history' },
     { t: 'The Acts', href: '#/history/acts' },
     { t: 'The people', href: '#/history/people' },
@@ -2729,6 +2873,7 @@ function indexPage() {
 
   /* -------------------------------------------------------------- Economy */
   var econSections = count([
+    { t: 'Every topic, listed', href: '#/s/economy' },
     { t: 'The Five Year Plans', href: '#/economy' },
     { t: 'The 1991 reforms', href: '#/economy/reforms' },
     { t: 'The standing topics', href: '#/economy/topics' },
@@ -2754,6 +2899,7 @@ function indexPage() {
     return { t: p.n, href: '#/gk/pack/' + encodeURIComponent(p.id), n: gkRows(p) + ' facts' };
   }));
   var gkSections = count([
+    { t: 'Every topic, listed', href: '#/s/gk' },
     { t: 'All packs', href: '#/gk' },
     { t: 'Confused pairs', href: '#/gk/confusions' }
   ]);
@@ -2768,6 +2914,7 @@ function indexPage() {
     return { t: t.n, href: '#/biology/topic/' + encodeURIComponent(t.id), n: bioRows(t) + ' facts' };
   }));
   var bioSections = count([
+    { t: 'Every topic, listed', href: '#/s/biology' },
     { t: 'The three topics', href: '#/biology' },
     { t: 'Confused pairs', href: '#/biology/high-yield' },
     { t: 'Quick facts', href: '#/biology/high-yield/facts' }
@@ -3451,6 +3598,7 @@ function route() {
     case 'schedule':   return schedulePage(seg[1]);
     case 'cases':      return casesPage();
     case 'case':       return casePage(seg[1]);
+    case 's':          return subjectPage(seg[1]);
     case 'index':      return indexPage();
     case 'contents':   return indexPage();
     case 'about':      return aboutPage();
@@ -3660,7 +3808,8 @@ if ('serviceWorker' in navigator) {
 }
 
 window.__AM = { ARTICLES: ARTICLES, parts: parts, byArt: byArt, casesByArt: casesByArt,
-                buildIndex: buildIndex, runSearch: runSearch };
+                buildIndex: buildIndex, runSearch: runSearch,
+                parentOf: parentOf, barKey: barKey };
 
 })();
 

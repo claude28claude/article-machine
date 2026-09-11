@@ -316,6 +316,29 @@ first Back would leave it; and a trail can fall back to something sensible
 when there is nothing to go back to. Open `#/a/356` cold from a bookmark and
 Back goes **up** — to the article list, not off the site.
 
+Going up is a Back too, so it does not leave the page it came from on the
+trail: repeated Backs keep climbing — an act, then the Acts, then Modern
+History's topics, then the index — instead of bouncing back down to where
+they started. "Up" is read off each subject's own sections (`sectionsOf`), so a
+new section is covered the moment it is added to its subject's `tabs`.
+
+## Getting around
+
+The navigation is the Answer Key's, ported:
+
+| | |
+|---|---|
+| **The bar** | One row in the header, the same on every page: Index · Constitution · History · Economy · Static GK · Biology · About. The subject you are in is underlined in yellow, so any subject is one tap from anywhere. |
+| **A subject's page** — `#/s/<id>` | What the bar opens. Every topic in the subject, numbered, with a line on what each covers, and the subject's sections in a rail beside them (a strip across the top on a phone). |
+| **The section strip** | Across the top of every page inside a subject; the section you are in is underlined in purple. Its first item is the subject itself and leads back to its topics. |
+| **The index** — `#/` | Every subject as a card, every topic inside it, and a filter. The full page-by-page outline is one link away at `#/index`. |
+
+The header used to be replaced by a subject's own tabs as soon as you entered
+it, so changing subject meant going back to the front first. Now it never
+changes, and never grows: the sections moved into the page rather than onto a
+second header row, which on a phone would have cost another 44px of screen for
+good.
+
 ## The palette
 
 Three text colours on one unchanged near-black ground:
