@@ -2107,7 +2107,7 @@ SUBJECTS.push({
   id: 'history',
   name: 'Modern History',
   short: 'History',
-  blurb: 'India from the Company\'s charter to the Constitution — the timeline, the Acts, the people and the movements.',
+  blurb: 'India from the Company\'s charter to the Constitution — the timeline, the Acts, the people, the movements, every Congress session and every Viceroy.',
   tabs: [
     { href: '#/history',            label: 'Timeline',   match: ['', 'event'] },
     { href: '#/history/high-yield', label: 'High-yield', match: ['high-yield'] },
