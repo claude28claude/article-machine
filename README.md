@@ -193,7 +193,7 @@ number reads as stale rather than as wrong.
 |---|---|
 | Packs | **22** |
 | Tables | **121** |
-| Facts | **1,345** |
+| Facts | **1,364** |
 | Confused pairs | **10** |
 
 The **Important days** pack alone carries 151 rows: every date month by month
@@ -266,7 +266,7 @@ a box; a page that has no `notes` simply shows none.
 |---|---|
 | Topics | **6** — Jainism and the councils; Mughal battles; administration and revenue; Akbar's religious policy; architecture and painting; books, writers and travellers |
 | Emperors | **7** in full (Babur to Aurangzeb, with Sher Shah), and the **9** later Mughals a line each |
-| Tables | **28**, 188 facts |
+| Tables | **28**, 196 facts |
 | SSC notes | **82** |
 | Confused pairs | **11** — two councils at Pataliputra, three Panipats, four tombs and four builders |
 
@@ -301,6 +301,22 @@ international organisations.
 Every current-affairs row says what date it is true as of. The Booker 2026
 winner is due on 9 November 2026 and Gaganyaan G1 has not flown as of 10
 October 2026; both are written so that they read as dated, not as wrong.
+
+## Checked, not just written
+
+Everything added for the 10 October set was fact-checked after it was
+written: twelve independent checkers took one slice each (Jainism, the Mughal
+pages, the Booker and cup holders, the five GK packs, the Economy additions
+and the code), checked every row against sources, and every error they claimed
+went to two more checkers told to disprove it. A row was changed only when
+both agreed. That pass corrected 25 facts, including Humayun's exile (about a
+year in Persia, not most of fifteen), the date of the two-number mansab (about
+1595, not the 1570s), Roe and the Surat factory (the factory dated from 1613;
+Roe won wider rights), the "largest mosque" (the Taj-ul-Masajid at Bhopal is
+bigger than the Jama Masjid), the JCB Prize (discontinued in 2025), and four
+older Five Year Plan notes that contradicted the site's own figures. It also
+added 36 high-yield facts the pages were missing, from Saraighat and Lachit
+Borphukan to SITE, EDUSAT and the classical-language status of Prakrit and Pali.
 
 ## Adding another subject
 
@@ -375,7 +391,7 @@ of them so a reader can check what a summary lost.
 | `data-history.js` | Modern History: eras, timeline, Acts, people, movements |
 | `data-history-hy.js` | Modern History's exam layer |
 | `data-economy.js` | The plans, the 1991 reforms, the standing topics, the exam layer |
-| `data-gk.js` | 22 packs of static general knowledge, 1,345 facts |
+| `data-gk.js` | 22 packs of static general knowledge, 1,364 facts |
 | `data-assembly.js` | The Constituent Assembly: story, dates, committees, people, debates |
 | `data-biology.js` | Diseases, nutrients, and glands and hormones |
 | `data-treaties.js` | The treaties of modern Indian history, and the agreements since 1947 |
@@ -383,7 +399,7 @@ of them so a reader can check what a summary lost.
 | `data-early.js` | Ancient and Medieval History: Jainism and its councils, and the Mughals |
 | `data-daily.js` | The dated daily study sets: current affairs, and recaps of what was added |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
-| `sw.js` | Service worker: precache everything, then serve offline |
+| `sw.js` | Service worker: precache everything, then serve offline. A data file whose new fields app.js now reads carries a `?v=` query in `index.html` and in `ASSETS`; bump it on such a deploy, or the first visit afterwards pairs new code with old cached data |
 | `fonts/*.woff2` | Literata, Inter and IBM Plex Mono, latin subsets, 139 KB in total |
 | `tools/make-icons.py` | Regenerates the PWA icons |
 

@@ -41,8 +41,8 @@ plans: [
  theme:"Agriculture, irrigation and power",
  model:"Harrod–Domar model",
  tgt:2.1, act:3.6,
- w:"India in 1951 was short of food, absorbing eight million refugees and running double-digit inflation. The First Plan did not try to be clever: it put money into land, water and electricity and left industry mostly alone. It is the only plan whose growth comfortably beat its own target.",
- key:["Bhakra–Nangal, Hirakud and the Damodar Valley projects begun — the 'temples of modern India'",
+ w:"India in 1951 was short of food, absorbing eight million refugees and running double-digit inflation. The First Plan did not try to be clever: it put money into land, water and electricity and left industry mostly alone. It beat its own target by a wider margin than any later plan.",
+ key:["Bhakra–Nangal, Hirakud and the Damodar Valley projects (all under way before the plan began) pushed forward as its showpieces — the 'temples of modern India'",
       "Community Development Programme launched 2 October 1952; National Extension Service 1953",
       "IIT Kharagpur (1951) and the University Grants Commission (1953) established",
       "Roughly 45% of outlay went to agriculture, irrigation and power together"],
@@ -143,10 +143,10 @@ plans: [
  note:"See the 1991 reforms in full — this gap is where that story sits."},
 
 {id:"eighth", kind:"plan", no:8, n:"Eighth Five Year Plan", from:1992, to:1997, hy:1,
- ssc:["Years ==1992-97==; the ==first plan after liberalisation==; core objective ==human development==.", "Often called the ==Rao-Manmohan model==.", "Target 5.6%, achieved ==6.8%==.", "India a founder member of the ==WTO==, 1 January 1995; PMRY (1993), MPLADS (1993), the mid-day meal scheme (1995)."],
+ ssc:["Years ==1992-97==; the ==first plan after liberalisation==; core objective ==human development==.", "Often called the ==Rao-Manmohan model==.", "It moved India to ==indicative planning==: the plan sets broad goals and priorities, and the state guides rather than directs, leaving most investment to the market and the private sector.", "Target 5.6%, achieved ==6.8%==.", "India a founder member of the ==WTO==, 1 January 1995; PMRY (1993), MPLADS (1993), the mid-day meal scheme (1995)."],
  theme:"Human development as the core",
  tgt:5.6, act:6.8,
- w:"The first plan of the liberalised economy, and the first to say plainly that the state would now be a facilitator rather than the main investor. It is the plan with the largest gap between target and achievement, in the right direction.",
+ w:"The first plan of the liberalised economy, and the first to say plainly that the state would now be a facilitator rather than the main investor. After the First Plan, it is the plan that beat its target by the widest margin.",
  key:["Written after the 1991 reforms — planning shifts from allocating licences to setting direction",
       "Human development named as the core objective: employment, literacy, health, population",
       "73rd and 74th Amendments (1992–93) put money and functions into panchayats and municipalities",
@@ -161,7 +161,7 @@ plans: [
  key:["Seven Basic Minimum Services identified for priority funding",
       "East Asian crisis (1997) and post-Pokhran-II sanctions (1998) both fell inside the plan",
       "Emphasis on the private sector as the main source of investment"],
- note:"The first plan since the Third to fall more than a full percentage point short of its target."},
+ note:"The first plan since the Fourth to fall more than a full percentage point short of its target."},
 
 {id:"tenth", kind:"plan", no:10, n:"Tenth Five Year Plan", from:2002, to:2007, hy:1,
  ssc:["Years ==2002-07==; aim to ==double per capita income in ten years==.", "First with ==monitorable targets==, and with growth targets set ==state by state==.", "Target ==8%==, achieved 7.6%.", "NREGA (2005, in force February 2006); National Rural Health Mission (2005)."],
@@ -172,7 +172,7 @@ plans: [
       "All children in school by 2003; the gender gap in literacy cut by half by 2007",
       "Infant mortality to 45 per 1,000 by 2007; forest cover to 25%",
       "Sarva Shiksha Abhiyan and the National Rural Health Mission (2005) ran through it"],
- note:"The 8% target was the highest ever set and was very nearly met — the closest any plan came to a target above 6%."},
+ note:"The 8% target was the highest set up to then (the Eleventh later set 9%), and it was very nearly met."},
 
 {id:"eleventh", kind:"plan", no:11, n:"Eleventh Five Year Plan", from:2007, to:2012, hy:1,
  ssc:["Years ==2007-12==; theme ==faster and more inclusive growth==.", "Target 9%, revised to 8.1%; achieved about ==8%== despite the 2008 crisis.", "==27 monitorable targets==; Right to Education Act in force 1 April 2010."],
@@ -217,7 +217,9 @@ planNotes: [
  "10th: ==double per capita income== in ten years, ==monitorable targets==; 11th: ==faster and more inclusive growth==.",
  "12th, the ==last==: ==faster, more inclusive and sustainable growth==. NITI Aayog took over on ==1 January 2015==.",
  "Plans that beat their target: the ==1st, 5th, 6th, 7th and 8th==. The biggest miss: the ==3rd== (5.6% target, 2.4% achieved).",
- "Highest target: the ==11th== (9%). Highest achievement: the ==11th== (about 8%), then the ==10th== (7.6%)."
+ "Highest target: the ==11th== (9%). Highest achievement: the ==11th== (about 8%), then the ==10th== (7.6%).",
+ "The idea was borrowed from the ==USSR==, whose first Five Year Plan under Stalin began in ==1928==.",
+ "'Economic and social planning' is ==Entry 20 of the Concurrent List== in the Seventh Schedule."
 ],
 
 planMatch: [
@@ -341,6 +343,7 @@ reform: {
     ["Chelliah Committee (1991)","Tax reform. Raja J. Chelliah is called the father of tax reform in India: fewer rates, lower rates, wider base."],
     ["Rangarajan Committee (1993)","The framework for disinvestment of public sector shareholding."],
     ["Malhotra Committee (1993)","Insurance. Led to the opening of insurance to private companies and the creation of IRDA in 1999."],
+    ["Disinvestment Commission (1996)","Constituted 23 August 1996, chaired by G.V. Ramakrishna, to advise on which public sector firms to sell and how."],
     ["Kelkar Task Force (2002)","Direct and indirect taxes. The same Vijay Kelkar's 2003 report first proposed a national goods and services tax."]
   ],
 
@@ -743,7 +746,7 @@ confusions: [
  rows:[["Beat it","First (2.1 target, 3.6 achieved), Fifth (4.4 / 4.8), Sixth (5.2 / 5.7), Seventh (5.0 / 6.0), Eighth (5.6 / 6.8)"],
        ["Missed it","Second (marginally), Third (5.6 / 2.4 — the worst), Fourth (5.7 / 3.3), Ninth (6.5 / 5.4), Tenth (8.0 / 7.6), Eleventh (9.0 / 8.0)"],
        ["The biggest miss","The Third Plan — it achieved less than half of what it set out to do"],
-       ["The biggest beat","The Eighth Plan — 6.8% against a target of 5.6%"]],
+       ["The biggest beat","The First Plan — 3.6% against a target of 2.1%. The Eighth (6.8% against 5.6%) comes next"]],
  note:"Achieved figures are the Planning Commission's own end-of-plan estimates and vary by a few tenths across sources. The ranking does not change."},
 
 {k:"Planning Commission vs NITI Aayog",

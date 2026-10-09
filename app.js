@@ -2289,7 +2289,7 @@ function emperorsPage() {
   var h = earlyCrumb([['The Mughal emperors']]) +
     pageH1('The Mughal emperors',
       'Six great Mughals from 1526 to 1707, the Sur interlude in the middle of them, and the ' +
-      'fourteen decades of decline that ended with an emperor exiled to Rangoon.');
+      'fifteen decades of decline that ended with an emperor exiled to Rangoon.');
   h += notesBlock(EARLY.mughalNotes, 'the dynasty in ' + (EARLY.mughalNotes || []).length + ' lines');
   h += '<div class="block"><h3>The great Mughals, and Sher Shah</h3>' +
     greatEmperors().map(emperorRow).join('') + '</div>';
@@ -2516,7 +2516,7 @@ function econPlanRow(p) {
   var met = p.kind === 'plan' && p.act !== null && p.act !== undefined && p.act >= p.tgt;
   return '<a class="arow hy" href="#/economy/plan/' + encodeURIComponent(p.id) + '">' +
     '<span class="no range' + (p.kind === 'gap' ? ' dimyear' : '') + '">' +
-      p.from + '–' + String(p.to).slice(2) + '</span>' +
+      yrSpan(p.from, p.to) + '</span>' +
     '<span class="tx"><b>' + esc(p.n) + '</b>' +
       '<i>' + esc(p.theme || '') + (econRate(p) ? ' · ' + econRate(p) : '') + '</i></span>' +
     '<span class="tag">' + (p.kind === 'gap' ? '<span class="chip">no plan</span>' :
@@ -2543,7 +2543,7 @@ function econHome() {
      never disagree with the pages it summarises. */
   h += factsBlock({ h: 'At a glance', note: 'One line each: years, model where there was one, focus, and growth.',
     rows: (ECON.plans || []).map(function (p) {
-      var head = (p.kind === 'plan' ? ordinal(p.no) + ' Plan' : p.n) + ', ' + p.from + '\u2013' + String(p.to).slice(2);
+      var head = (p.kind === 'plan' ? ordinal(p.no) + ' Plan' : p.n) + ', ' + yrSpan(p.from, p.to);
       var bits = [];
       if (p.model) bits.push(p.model);
       bits.push(p.theme);
@@ -2551,7 +2551,7 @@ function econHome() {
       return [head, bits.join(' \u00b7 ')];
     }) });
 
-  h += factsBlock({ h: 'Which plan was it?',
+  if (ECON.planMatch && ECON.planMatch.length) h += factsBlock({ h: 'Which plan was it?',
     note: 'The question is usually put this way round: a scheme, an Act or an event, and the plan it fell in.',
     rows: ECON.planMatch || [] });
 
@@ -2579,8 +2579,8 @@ function econPlanPage(id) {
   var i = all.indexOf(p);
 
   var h = econCrumb(p.n) +
-    '<div class="arthead"><div class="big">' + p.from + '<span style="font-size:.5em">–' +
-    String(p.to).slice(2) + '</span></div><div class="ht">' +
+    '<div class="arthead"><div class="big">' + p.from + '<span style="font-size:.5em">' +
+    yrSpan(p.from, p.to).slice(4) + '</span></div><div class="ht">' +
     '<h1>' + esc(p.n) + '</h1>' +
     '<div class="chips">' +
       (p.kind === 'gap' ? '<span class="chip">not a Five Year Plan</span>' :
@@ -3066,8 +3066,11 @@ function dailySetPage(id) {
   /* Contents. Buttons rather than links: the address is the router's, so an
      in-page anchor would be read as a route. */
   h += '<div class="listtabs stack">' + d.parts.map(function (p) {
-    return '<button type="button" onclick="location.hash=\'#/daily/' + esc(d.id) + '/' +
-      esc(p.id) + '\'">' + esc(p.h) + '</button>';
+    /* Pressing the part you are already on changes no hash, so no hashchange
+       would fire and nothing would scroll. Fire one by hand in that case. */
+    return '<button type="button" onclick="var h=\'#/daily/' + esc(d.id) + '/' + esc(p.id) +
+      '\';if(location.hash===h)window.dispatchEvent(new HashChangeEvent(\'hashchange\'));else location.hash=h">' +
+      esc(p.h) + '</button>';
   }).join('') + '</div>';
 
   h += d.parts.map(dailyPart).join('');
@@ -3556,7 +3559,7 @@ function aboutPage() {
 
   '<div class="block"><h3>Offline, and installable as an app</h3>' +
   '<p class="plain">Every subject is loaded into your browser the first time you open ' +
-  'the page — about 1.8 MB in total, once, fonts and all. After that the site works with no network at ' +
+  'the page — about 2 MB in total, once, fonts and all. After that the site works with no network at ' +
   'all: on a train, on a plane, or with the data switched off.</p>' +
   '<p class="plain stack">You can also install it, so it gets its own icon and opens in its ' +
   'own window without the browser bars. In Chrome and Edge the button below installs it in ' +
@@ -3827,10 +3830,10 @@ function buildIndex() {
   });
   (EARLY.emperors || []).forEach(function (e) {
     searchIndex.push({
-      kind: 'mughal', id: 'emp-' + e.id, no: String(e.from), title: e.n,
+      kind: e.kind === 'sur' ? 'sur dynasty' : 'mughal', id: 'emp-' + e.id, no: String(e.from), title: e.n,
       sub: (e.kind === 'sur' ? 'Sur dynasty' : 'Mughal emperor') + ' · ' + yrSpan(e.from, e.to),
       near: (e.n + ' ' + (e.full || '')).toLowerCase(),
-      hay: unmark(e.n + ' ' + (e.full || '') + ' mughal emperor ' + e.from + ' ' + e.to + ' ' + e.w + ' ' +
+      hay: unmark(e.n + ' ' + (e.full || '') + (e.kind === 'sur' ? ' sur dynasty ' : ' mughal emperor ') + e.from + ' ' + e.to + ' ' + e.w + ' ' +
             (e.key || []).join(' ') + ' ' + (e.notes || []).join(' ') + ' ' + (e.born || '') + ' ' +
             (e.tomb || '')).toLowerCase(),
       href: e.kind === 'later' ? '#/early/mughals' : '#/early/emperor/' + encodeURIComponent(e.id), num: ''
@@ -4217,7 +4220,13 @@ qBox.addEventListener('keydown', function (e) {
 });
 
 resBox.addEventListener('click', function (e) {
-  if (e.target.closest('.res')) { qBox.value = ''; closeResults(); }
+  /* A result for the page you are already on changes no hash, so nothing
+     would happen; a daily set's tables all share their part's address. */
+  var hit = e.target.closest('.res');
+  if (hit) {
+    qBox.value = ''; closeResults();
+    if (hit.getAttribute('href') === location.hash) { e.preventDefault(); route(); }
+  }
 });
 
 document.addEventListener('keydown', function (e) {

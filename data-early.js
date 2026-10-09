@@ -47,7 +47,7 @@ topics: [
   "Mahavira: born at ==Kundagrama== near Vaishali, Kaivalya at ==Jrimbhikagrama== on the ==Rijupalika== river under a sal tree, nirvana at ==Pavapuri==.",
   "Triratna: right faith, right knowledge, right conduct. Of the five vows, Mahavira added ==brahmacharya== to Parshvanath's four.",
   "Jain texts are in ==Ardhamagadhi Prakrit==; the ==Bhagavati Sutra== has its own list of the sixteen Mahajanapadas.",
-  "Gommateshwara (Bahubali) at ==Shravanabelagola==, Karnataka, c. 983 CE, commissioned by ==Chamundaraya==; the Mahamastakabhisheka is held every ==12 years==.",
+  "Gommateshwara (Bahubali) at ==Shravanabelagola==, Karnataka, c. 983 CE, commissioned by ==Chamundaraya==, on ==Vindhyagiri== hill; the Mahamastakabhisheka is held every ==12 years==.",
   "Dilwara temples, ==Mount Abu==: Vimal Vasahi (1031) by ==Vimal Shah==; Luna Vasahi (1230) by the brothers ==Vastupala and Tejapala==.",
   "Kharavela of Kalinga, Jain patron: ==Hathigumpha inscription==, Udayagiri hills near Bhubaneswar."
  ],
@@ -108,7 +108,8 @@ topics: [
     ["Tattvartha Sutra","Umaswati. The one text both sects accept"],
     ["Parishishtaparvan","Hemachandra, 12th century, in the court of Kumarapala of Gujarat. The source for Chandragupta Maurya's conversion"],
     ["Adipurana","Jinasena in Sanskrit, 9th century, in the Rashtrakuta court; and Pampa's Kannada Adipurana of 941 CE"],
-    ["The three gems of Kannada","Pampa, Ponna and Ranna, all Jain poets"]
+    ["The three gems of Kannada","Pampa, Ponna and Ranna, all Jain poets"],
+    ["Classical language status","==Prakrit==, the language of the Jain Agamas, was made a classical language on ==3 October 2024==, with Pali (the language of the Buddhist canon), Marathi, Assamese and Bengali: eleven classical languages in all"]
    ]},
   {h:"The patrons",
    rows:[
@@ -122,9 +123,11 @@ topics: [
   {h:"Temples, caves and places",
    rows:[
     ["Shravanabelagola, Hassan, Karnataka","Gommateshwara (Bahubali), a monolith about 17 metres (57 ft) high, c. 983 CE, commissioned by ==Chamundaraya==. Mahamastakabhisheka every 12 years; last held in 2018"],
+    ["Shravanabelagola's two hills","The statue stands on ==Vindhyagiri== (Indragiri). ==Chandragiri==, the hill facing it, holds the Chandragupta Basadi and the Bhadrabahu cave, where Chandragupta Maurya is said to have died"],
     ["Dilwara temples, Mount Abu, Rajasthan","White marble. ==Vimal Vasahi== (1031), built by Vimal Shah, minister of the Solanki king Bhima I, for Adinatha; ==Luna Vasahi== (1230), built by Vastupala and Tejapala, for Neminatha"],
     ["Ranakpur, Pali, Rajasthan","The Chaumukha temple to Adinatha, begun 1437 by the merchant Dharna Shah under Rana Kumbha; 1,444 carved pillars, no two alike"],
     ["Palitana, Gujarat","Over 800 temples on Shatrunjaya hill"],
+    ["Statue of Ahimsa, Mangi-Tungi, Nashik, Maharashtra","A 108 ft (33 m) image of Rishabhanatha carved from the hill, consecrated in 2016. Guinness lists it as the ==tallest Jain idol==, above the 57 ft Gommateshwara"],
     ["Udayagiri and Khandagiri, Odisha","Rock-cut cells for Jain monks near Bhubaneswar, from Kharavela's time; the Hathigumpha (elephant cave) inscription"],
     ["Ellora, Maharashtra","Caves 30 to 34 are Jain (Digambara), including the Indra Sabha"],
     ["Sittanavasal, Tamil Nadu","A Jain cave temple with paintings, near Pudukkottai"],
@@ -169,20 +172,21 @@ topics: [
   {h:"Humayun and Sher Shah",
    rows:[
     ["Battle of Chausa, 26 June 1539","==Sher Khan== defeats Humayun near Buxar, and crowns himself Sher Shah"],
-    ["Battle of Kannauj (Bilgram), 17 May 1540","Sher Shah defeats Humayun again. Humayun flees, and spends fifteen years in exile, mostly at the Safavid court of Shah Tahmasp"],
+    ["Battle of Kannauj (Bilgram), 17 May 1540","Sher Shah defeats Humayun again. Humayun flees, and spends fifteen years in exile: first in Sindh and Rajputana, then in Persia under Shah Tahmasp (1544-45), whose troops helped him retake Kandahar (1545). He took Kabul the same year and ruled from there until he returned to India in 1555"],
     ["Battle of Sirhind, 1555","Humayun defeats ==Sikandar Shah Suri== and recovers Delhi"]
    ]},
   {h:"Akbar to Aurangzeb",
    rows:[
     ["Second Battle of Panipat, 5 November 1556","Akbar's army under the regent ==Bairam Khan== against ==Hemu== (Hem Chandra Vikramaditya), general of Adil Shah Suri, who had taken Delhi. Hemu was hit in the eye by an arrow, captured and killed"],
     ["Battle of Haldighati, 18 June 1576","Akbar's army under Raja ==Man Singh== of Amber against ==Maharana Pratap== of Mewar. Pratap escaped on his horse Chetak; Mewar was never fully subdued"],
-    ["Battles of Dharmat and Samugarh, 1658","The war of succession among Shah Jahan's sons. At Samugarh, near Agra, Aurangzeb and Murad defeated ==Dara Shikoh=="]
+    ["Battles of Dharmat and Samugarh, 1658","The war of succession among Shah Jahan's sons. At Samugarh, near Agra, Aurangzeb and Murad defeated ==Dara Shikoh=="],
+    ["Battle of Saraighat, 1671","The ==Ahoms== under ==Lachit Borphukan== defeat Aurangzeb's army under Raja Ram Singh of Amber, on the Brahmaputra at Guwahati. Lachit Divas is marked on 24 November"]
    ]},
   {h:"After Aurangzeb",
    rows:[
     ["Battle of Karnal, 24 February 1739","==Nadir Shah== of Persia defeats Muhammad Shah 'Rangila'. Delhi is sacked; the Peacock Throne and the Koh-i-Noor go to Persia"],
     ["Battle of Plassey, 1757","Fought in the reign of Alamgir II, but between the East India Company and the Nawab of Bengal. See Modern History"],
-    ["Third Battle of Panipat, 14 January 1761","==Ahmad Shah Abdali== (Durrani) against the ==Marathas== under Sadashivrao Bhau. The Maratha defeat left the field open for the Company"],
+    ["Third Battle of Panipat, 14 January 1761","==Ahmad Shah Abdali== (Durrani) against the ==Marathas== under Sadashivrao Bhau. The Peshwa, ==Balaji Baji Rao== (Nana Saheb), was not on the field; his son and heir Vishwasrao was killed with Bhau. The Maratha defeat left the field open for the Company"],
     ["Battle of Buxar, 22 October 1764","The Company defeats ==Shah Alam II==, Shuja-ud-Daula of Awadh and Mir Qasim together. Followed by the grant of the Diwani in 1765"]
    ]},
   {h:"Not Mughal, but asked alongside",
@@ -197,7 +201,7 @@ topics: [
  w:"The mansabdari system, zat and sawar, the jagirs, Todar Mal's revenue settlement, the officers at the centre and in the provinces, and Sher Shah's reforms that Akbar built on.",
  intro:"The Mughal state was a military hierarchy that paid itself out of land revenue. Every officer held a rank (mansab) that fixed both his pay and the troops he had to keep, and was usually paid by being assigned the revenue of a piece of land (a jagir) rather than in cash. Learn the two numbers in a mansab and the three steps of the revenue system, and most questions answer themselves.",
  notes:[
-  "==Mansabdari== was introduced by ==Akbar== in the 1570s: every officer got a rank with two numbers, ==zat== (personal rank and pay) and ==sawar== (cavalry to be maintained).",
+  "==Mansabdari== was introduced by ==Akbar== in the 1570s; from about ==1595== every rank had two numbers, ==zat== (personal rank and pay) and ==sawar== (cavalry to be maintained).",
   "Jahangir added the ==du-aspa sih-aspa== rank: troopers with two or three horses each.",
   "A ==jagir== was the right to collect revenue from an area, given in place of salary, and it was transferable. Land kept for the emperor's own treasury was ==khalisa==.",
   "Land revenue: ==Raja Todar Mal=='s ==zabti== system and the ==Ain-i-Dahsala== of ==1580==, an average of ten years' produce and prices.",
@@ -216,7 +220,9 @@ topics: [
     ["The range","From 10 to 5,000 for nobles under Akbar; 7,000 for a few, such as Raja Man Singh and Mirza Aziz Koka, and higher for princes"],
     ["Du-aspa sih-aspa","Jahangir's addition: a part of the sawar rank counted at two or three horses per trooper"],
     ["How a mansabdar was paid","In cash (naqdi), or more often by a jagir, the revenue of a territory"],
-    ["Not hereditary","A mansab was not inherited, and a jagir was moved every few years so that no noble could put down roots"]
+    ["Not hereditary","A mansab was not inherited, and a jagir was moved every few years so that no noble could put down roots"],
+    ["Two numbers","At first a mansab was a single number. Zat and sawar were stated separately from about 1595-96, Akbar's fortieth regnal year"],
+    ["Dagh and chehra","Akbar's checks on the cavalry a mansabdar kept, from 1573-74: ==dagh==, the branding of horses, and ==chehra==, the descriptive roll of each trooper. Alauddin Khalji had used both before him"]
    ]},
   {h:"Land revenue",
    rows:[
@@ -227,7 +233,8 @@ topics: [
     ["Nasaq and kankut","Assessment by estimate, from past records or from the standing crop"],
     ["The land classes","Polaj, parauti, chachar, banjar, by how often the field was cultivated"],
     ["Who collected","The amalguzar in the sarkar; the qanungo kept records, the patwari kept the village accounts, the muqaddam was the village headman"],
-    ["Jagir and khalisa","Revenue assigned to a mansabdar was jagir; revenue kept for the emperor was khalisa"]
+    ["Jagir and khalisa","Revenue assigned to a mansabdar was jagir; revenue kept for the emperor was khalisa"],
+    ["Ilahi gaz","Akbar's standard measure for land, about 41 digits (roughly 33 inches), in place of the Sikandari gaz used under Sher Shah. The rope (tanab) was replaced by bamboo lengths joined with iron rings"]
    ]},
   {h:"The officers",
    rows:[
@@ -296,9 +303,9 @@ topics: [
   {h:"Akbar's nine jewels (Navaratna)",
    note:"A later tradition rather than a court institution, and the list varies by book. These are the nine most lists agree on.",
    rows:[
-    ["Abul Fazl","Historian: Akbarnama and Ain-i-Akbari"],
+    ["Abul Fazl","Historian: Akbarnama and Ain-i-Akbari. Killed in 1602 by Bir Singh Deo Bundela, at the instigation of Prince Salim (Jahangir)"],
     ["Faizi","Poet laureate, Abul Fazl's brother; translated the Lilavati"],
-    ["Birbal","Wit and courtier; killed fighting the Yusufzais in 1586"],
+    ["Birbal","Wit and courtier, born Mahesh Das, a Brahmin; given the title Raja Birbal by Akbar. Killed fighting the Yusufzais in 1586"],
     ["Tansen","Musician from Gwalior, a disciple of Swami Haridas"],
     ["Raja Todar Mal","Finance and land revenue"],
     ["Raja Man Singh","General, of Amber; commanded at Haldighati"],
@@ -336,20 +343,20 @@ topics: [
     ["Shalimar Bagh, Srinagar (1619)","Jahangir, for Nur Jahan. Nishat Bagh nearby is by her brother Asaf Khan"],
     ["Jahangir's tomb, Shahdara, Lahore","Built after his death in 1627, under Nur Jahan and Shah Jahan"],
     ["Taj Mahal, Agra (1632-53)","Shah Jahan, for Mumtaz Mahal. Chief architect ==Ustad Ahmad Lahauri==; white Makrana marble; pietra dura. UNESCO, 1983"],
-    ["Red Fort, Delhi (1638-48)","Shah Jahan. Diwan-i-Aam, Diwan-i-Khas, Rang Mahal. UNESCO, 2007"],
-    ["Jama Masjid, Delhi (1650-56)","Shah Jahan. The largest mosque in India"],
+    ["Red Fort, Delhi (1638-48)","Shah Jahan; architect ==Ustad Ahmad Lahauri==, also the chief architect of the Taj. Diwan-i-Aam, Diwan-i-Khas, Rang Mahal. UNESCO, 2007"],
+    ["Jama Masjid, Delhi (1650-56)","Shah Jahan. Often called the largest mosque in India, though the Taj-ul-Masajid at Bhopal is bigger"],
     ["Moti Masjid, Agra Fort","Shah Jahan"],
     ["Shalimar Gardens, Lahore (1641)","Shah Jahan"],
     ["Moti Masjid, Red Fort, Delhi","Aurangzeb, for his own use"],
     ["Badshahi Mosque, Lahore (1673)","Aurangzeb"],
-    ["Bibi ka Maqbara, Aurangabad","Built by Aurangzeb's son ==Azam Shah== for his mother Dilras Banu Begum. The 'Taj of the Deccan'"],
+    ["Bibi ka Maqbara, Aurangabad","Built by Aurangzeb's son ==Azam Shah== for his mother Dilras Banu Begum. Architect Ata-ullah, son of Ustad Ahmad Lahauri, with the engineer Hanspat Rai, both named on the main gate. The 'Taj of the Deccan'"],
     ["Safdarjung's Tomb, Delhi (1754)","For Safdarjung, Nawab of Awadh and Mughal wazir. The last great Mughal garden tomb"]
    ]},
   {h:"The vocabulary",
    rows:[
     ["Charbagh","A garden in four parts, divided by water channels"],
     ["Pietra dura (parchin kari)","Inlay of coloured stones in marble"],
-    ["Double dome","An inner dome for the ceiling and a taller outer one for the skyline; first used in India at Humayun's Tomb"],
+    ["Double dome","An inner dome for the ceiling and a taller outer one for the skyline. Seen in its mature Persian form first at Humayun's Tomb; an earlier double dome is at Sikandar Lodi's tomb (1517-18)"],
     ["Jharokha","A projecting balcony; Akbar's jharokha darshan, showing himself to the public each morning, was ended by Aurangzeb"]
    ]},
   {h:"Painting and music",
@@ -377,7 +384,7 @@ topics: [
   "==Tuzuk-i-Jahangiri==: Jahangir's own memoir, in Persian.",
   "==Padshahnama==: ==Abdul Hamid Lahori==, on Shah Jahan.",
   "==Sirr-i-Akbar==: ==Dara Shikoh=='s Persian translation of ==fifty Upanishads==; his ==Majma-ul-Bahrain== compares Sufism and Vedanta.",
-  "==William Hawkins== (1608) and ==Sir Thomas Roe== (1615-19) came to ==Jahangir==; Roe won the right to trade at Surat.",
+  "==William Hawkins== (1608) and ==Sir Thomas Roe== (1615-19) came to ==Jahangir==; Roe won wider rights to trade and set up factories in the empire (the Surat factory dated from 1613).",
   "==Bernier== (physician) and ==Tavernier== (jeweller), both French, saw Shah Jahan's and Aurangzeb's courts."
  ],
  blocks:[
@@ -400,6 +407,7 @@ topics: [
   {h:"Translation and the meeting of ideas",
    rows:[
     ["Razmnama","The Mahabharata in Persian, from Akbar's translation bureau (Maktab Khana) at Fatehpur Sikri"],
+    ["The Persian Ramayana","Translated for Akbar by Badauni; the Atharvaveda by Haji Ibrahim Sirhindi"],
     ["Sirr-i-Akbar (The Great Secret)","Dara Shikoh's Persian translation of fifty Upanishads, 1657"],
     ["Majma-ul-Bahrain (The Mingling of Two Oceans)","Dara Shikoh: Sufism and Vedanta compared"],
     ["Ramcharitmanas","Tulsidas, written in Akbar's reign, though not at his court"]
@@ -408,8 +416,8 @@ topics: [
    rows:[
     ["Ralph Fitch","English merchant; reached Akbar's Fatehpur Sikri in 1585"],
     ["Antonio Monserrate","Jesuit, on the first mission to Akbar, 1580"],
-    ["William Hawkins","Captain of the Hector; reached Jahangir in 1608 with a letter from James I. Given a mansab, but no trading rights"],
-    ["Sir Thomas Roe","Ambassador of James I to Jahangir, 1615-19. Secured permission for the English factory at Surat"],
+    ["William Hawkins","Captain of the Hector; reached Surat in 1608 and Jahangir's court at Agra in 1609, with a letter from James I. Given a mansab, but no trading rights"],
+    ["Sir Thomas Roe","Ambassador of James I to Jahangir, 1615-19. Secured wider rights to trade and set up factories in the Mughal empire; the Surat factory itself dated from 1613"],
     ["Peter Mundy","English traveller under Shah Jahan"],
     ["Jean-Baptiste Tavernier","French jeweller; six voyages between 1630 and 1668; described the Peacock Throne"],
     ["Francois Bernier","French physician to Dara Shikoh; Travels in the Mogul Empire"],
@@ -446,7 +454,8 @@ emperors: [
       "Khanwa 1527 against Rana Sanga; took the title Ghazi",
       "Chanderi 1528 against Medini Rai; Ghaghra 1529 against the Afghans",
       "Wrote his memoir, the Tuzuk-i-Baburi, in Chagatai Turkish",
-      "Laid out the Aram Bagh at Agra, the first Mughal garden"],
+      "Laid out the Aram Bagh at Agra, the first Mughal garden",
+      "Became ruler of Fergana in June 1494 on his father Umar Shaikh Mirza's death, aged 11 (NCERT and most guidebooks say 12)"],
  notes:["Founder of the Mughal empire after ==First Panipat, 1526==.",
         "Used ==field artillery== and the ==tulughma== tactic.",
         "Memoir: ==Baburnama==, in ==Turkish==."]},
@@ -457,7 +466,7 @@ emperors: [
  w:"Reigned twice, 1530-40 and 1555-56, with fifteen years of exile between. He divided the empire with his brothers, lost it to Sher Shah, and won it back a year before his death.",
  key:["Built Din-panah in Delhi, 1533",
       "Defeated by Sher Shah at Chausa (1539) and Kannauj (1540)",
-      "Exile, mostly at the Safavid court of Shah Tahmasp of Persia; Akbar born on the way, at Amarkot, 1542",
+      "Exile: wandered in Sindh and Rajputana (Akbar born on the way, at Amarkot, 1542), then at the Safavid court of Shah Tahmasp of Persia (1544); with Persian help took Kandahar and Kabul (1545) and held Kabul until he marched back into India, 1554-55",
       "Recovered Delhi in 1555 after defeating Sikandar Shah Suri at Sirhind",
       "Died after a fall from the stairs of the Sher Mandal, his library in the Purana Qila",
       "Brought the painters Mir Sayyid Ali and Abdus Samad from Persia"],
@@ -501,7 +510,7 @@ emperors: [
  w:"Salim, named for the Sufi Shaikh Salim Chishti whose blessing Akbar had sought for a son. A connoisseur of painting and nature whose reign was steered in its second half by his wife Nur Jahan and her family.",
  key:["Executed Guru Arjan Dev, the fifth Sikh Guru, in 1606, for supporting his rebel son Khusrau",
       "The golden chain of justice (zanjir-i-adl) at Agra Fort",
-      "Married Mehr-un-Nisa in 1611 and named her Nur Jahan",
+      "Married Mehr-un-Nisa in 1611 and titled her Nur Mahal; she was Nur Jahan from 1616",
       "Received William Hawkins (1608) and Sir Thomas Roe (1615-19)",
       "Lost Kandahar to Persia, 1622",
       "Wrote the Tuzuk-i-Jahangiri; Mughal painting at its height (Ustad Mansur, Abul Hasan)"],
@@ -540,15 +549,15 @@ emperors: [
         "Executed ==Guru Tegh Bahadur==, ==1675=="]},
 
 {id:"bahadur-shah-1", kind:"later", n:"Bahadur Shah I", from:1707, to:1712,
- w:"Muazzam, also called Shah Alam I. Won the succession war after Aurangzeb; released Shahu, the Maratha heir, which split the Marathas."},
+ w:"Muazzam, also called Shah Alam I. Won the succession war after Aurangzeb, defeating Azam Shah at Jajau (1707). Shahu, the Maratha heir, had been released by Azam in May 1707 (some guidebooks credit Bahadur Shah I), which split the Marathas."},
 {id:"jahandar-shah", kind:"later", n:"Jahandar Shah", from:1712, to:1713,
  w:"The first emperor raised by a noble, Zulfiqar Khan. Abolished the jizya."},
 {id:"farrukhsiyar", kind:"later", n:"Farrukhsiyar", from:1713, to:1719,
- w:"Put on the throne by the Sayyid brothers, the 'king makers'. His farman of 1717 gave the East India Company duty-free trade in Bengal for 3,000 rupees a year, the 'Magna Carta of the Company'."},
+ w:"Put on the throne by the Sayyid brothers, the 'king makers' (Abdullah Khan, wazir, and Husain Ali Khan, mir bakhshi), who deposed, blinded and killed him in 1719 and then raised Rafi-ud-Darajat, Rafi-ud-Daulah and Muhammad Shah. His farman of 1717 gave the East India Company duty-free trade in Bengal for 3,000 rupees a year, the 'Magna Carta of the Company'."},
 {id:"muhammad-shah", kind:"later", n:"Muhammad Shah 'Rangila'", from:1719, to:1748,
  w:"The provinces broke away in his reign: Hyderabad under Nizam-ul-Mulk (1724), Awadh under Saadat Khan, Bengal under Murshid Quli Khan. Nadir Shah defeated him at Karnal in 1739 and sacked Delhi."},
 {id:"ahmad-shah", kind:"later", n:"Ahmad Shah Bahadur", from:1748, to:1754,
- w:"Ahmad Shah Abdali's invasions of north India began in his reign."},
+ w:"Ahmad Shah Abdali's first invasion (1748) was beaten back at Manupur just before his accession; Abdali invaded again during his reign."},
 {id:"alamgir-2", kind:"later", n:"Alamgir II", from:1754, to:1759,
  w:"The Battle of Plassey, 1757, was fought in his reign."},
 {id:"shah-alam-2", kind:"later", n:"Shah Alam II", from:1759, to:1806,
@@ -612,7 +621,7 @@ confusions: [
  {k:"Hawkins or Roe",
   rows:[
    ["William Hawkins, 1608","A sea captain; got a mansab, ==no trading rights=="],
-   ["Sir Thomas Roe, 1615-19","An ambassador of James I; ==got the factory at Surat=="]],
+   ["Sir Thomas Roe, 1615-19","An ambassador of James I; ==won wider trading rights== and factories beyond Surat (the Surat factory dated from 1613)"]],
   note:"Both came to Jahangir. The one who succeeded is Roe."},
  {k:"Haldighati or Talikota",
   rows:[

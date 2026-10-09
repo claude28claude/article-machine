@@ -329,7 +329,7 @@ packs: [
     ["Chappell-Hadlee Trophy","Australia against New Zealand, ODIs"],
     ["Trans-Tasman Trophy","Australia against New Zealand, Tests"],
     ["Basil D'Oliveira Trophy","England against South Africa, Tests"],
-    ["Richards-Botham Trophy","England against West Indies, Tests, since 2020, replacing the Wisden Trophy"],
+    ["Richards-Botham Trophy","England against West Indies, Tests, first contested in 2022, replacing the Wisden Trophy (last played for in 2020)"],
     ["Benaud-Qadir Trophy","Australia against Pakistan, Tests, since 2022"]
    ]},
   {h:"Cricket: India's domestic trophies",
@@ -343,6 +343,7 @@ packs: [
     ["Cooch Behar Trophy and Vinoo Mankad Trophy","Under-19: multi-day and one-day"],
     ["C.K. Nayudu Trophy","Under-23"],
     ["Vizzy Trophy and Rohinton Baria Trophy","Inter-university cricket"],
+    ["Moin-ud-Dowlah Gold Cup","Cricket, Hyderabad, since 1930-31; started by Nawab Moin-ud-Dowlah Bahadur"],
     ["Indian Premier League","Since 2008. Mumbai Indians and Chennai Super Kings have five titles each"],
     ["Women's Premier League","Since 2023"]
    ]},
@@ -390,13 +391,14 @@ packs: [
    rows:[
     ["Davis Cup","The ==men's== team competition, since 1900. Given by Dwight F. Davis"],
     ["Billie Jean King Cup","The ==women's== team competition, since 1963 as the Federation Cup; renamed in 2020"],
-    ["Hopman Cup","Mixed teams, Perth, since 1989"],
+    ["Hopman Cup","Mixed teams, since 1989; held in Perth until 2019, revived in Europe from 2023"],
     ["Laver Cup","Europe against the Rest of the World, since 2017"],
     ["United Cup","Mixed teams, Australia, since 2023"],
     ["Australian Open","Hard court, Melbourne, January"],
     ["French Open (Roland Garros)","Clay, Paris. The men's trophy is the Coupe des Mousquetaires"],
     ["Wimbledon","Grass, London. The oldest tournament, 1877, and the only Grand Slam on grass. The women's trophy is the Venus Rosewater Dish"],
-    ["US Open","Hard court, Flushing Meadows, New York"]
+    ["US Open","Hard court, Flushing Meadows, New York"],
+    ["Davis Cup, India's record","Never won. Runner-up three times: 1966 (lost to Australia), 1974 (forfeited the final to apartheid South Africa) and 1987 (lost to Sweden)"]
    ]},
   {h:"Table tennis, golf and chess",
    rows:[
@@ -413,6 +415,9 @@ packs: [
   {h:"The cups whose names give nothing away",
    rows:[
     ["Ezra Cup and Radha Mohan Cup","Polo"],
+    ["Burdwan Trophy","Weightlifting"],
+    ["Holkar Trophy","Contract bridge, in India"],
+    ["Nehru Trophy Boat Race","Snake-boat (chundan vallam) race on Punnamada Lake, Alappuzha, Kerala, traditionally on the second Saturday of August; it began in 1952 in honour of Jawaharlal Nehru's visit. Not the hockey Nehru Trophy of Delhi"],
     ["Bermuda Bowl","Contract bridge, the world team championship"],
     ["America's Cup","Yachting, since 1851: the oldest international sporting trophy"],
     ["Stanley Cup","Ice hockey, the NHL"],
@@ -469,7 +474,7 @@ packs: [
    ]},
   {h:"India's six medals",
    rows:[
-    ["Silver: Neeraj Chopra","Men's javelin, 89.45 m. The gold went to Arshad Nadeem of Pakistan with 92.97 m, an Olympic record. With his Tokyo gold, Chopra became the first Indian athlete in track and field with two Olympic medals"],
+    ["Silver: Neeraj Chopra","Men's javelin, 89.45 m. The gold went to Arshad Nadeem of Pakistan with 92.97 m, an Olympic record. With his Tokyo gold, Chopra became the first Indian since independence with two Olympic medals in track and field (Norman Pritchard won two in 1900), and the first Indian with an individual Olympic gold and silver"],
     ["Bronze: Manu Bhaker","Women's 10 m air pistol: India's first medal of the Games, and the first Olympic medal by an Indian woman shooter"],
     ["Bronze: Manu Bhaker and Sarabjot Singh","10 m air pistol mixed team, beating South Korea. Bhaker became the first Indian since independence to win two medals at a single Games"],
     ["Bronze: Swapnil Kusale","Men's 50 m rifle three positions; India's first medal in the event"],
@@ -485,7 +490,7 @@ packs: [
     ["Mirabai Chanu","Fourth, women's 49 kg weightlifting; she won silver at Tokyo"],
     ["Dhiraj Bommadevara and Ankita Bhakat","Fourth, archery mixed team: India's best Olympic archery result"],
     ["Anant Jeet Singh Naruka and Maheshwari Chauhan","Fourth, skeet mixed team"],
-    ["Vinesh Phogat","Reached the women's 50 kg wrestling final, the first Indian woman wrestler to do so, then was disqualified for being about 100 g over the weight limit on the morning of the final. The Court of Arbitration for Sport dismissed her appeal for a shared silver. She announced her retirement"]
+    ["Vinesh Phogat","Reached the women's 50 kg wrestling final, the first Indian woman wrestler to do so, then was disqualified for being about 100 g over the weight limit on the morning of the final. The Court of Arbitration for Sport dismissed her appeal for a shared silver. She announced her retirement, then reversed it in December 2025 to aim for Los Angeles 2028"]
    ]},
   {h:"India's team",
    rows:[
@@ -494,6 +499,7 @@ packs: [
     ["Opening ceremony flag bearers","P.V. Sindhu and Sharath Kamal"],
     ["Closing ceremony flag bearers","Manu Bhaker and P.R. Sreejesh"],
     ["Place on the medal table","71st"],
+    ["Best haul","Paris's 6 ties London 2012's 6 as India's second-best Olympic tally; the record is still ==7 at Tokyo 2020== (1 gold, 2 silver, 4 bronze)"],
     ["India's Olympic total after Paris","41 medals, 10 of them gold: eight in hockey, Abhinav Bindra's in 2008 and Neeraj Chopra's in 2021"]
    ]},
   {h:"The Paris 2024 Paralympics",
@@ -509,7 +515,10 @@ packs: [
     ["Gold: Dharambir","Men's club throw F51"],
     ["Gold: Praveen Kumar","Men's high jump T64"],
     ["Gold: Navdeep Singh","Men's javelin F41, upgraded from silver after the winner was disqualified"],
-    ["Preethi Pal","Two bronzes, 100 m and 200 m T35: India's first Paralympic medals on the track"]
+    ["Preethi Pal","Two bronzes, 100 m and 200 m T35: India's first Paralympic medals on the track"],
+    ["Bronze: Kapil Parmar","Men's judo 60 kg J1 (visually impaired): India's first Paralympic medal in judo"],
+    ["Bronze: Mariyappan Thangavelu","Men's high jump T63, with Sharad Kumar taking silver: the first Indian with medals at three consecutive Paralympics (gold Rio 2016, silver Tokyo 2020, bronze Paris 2024)"],
+    ["Paralympic medal table","1. China (94 gold, 220 in all); 2. Great Britain; 3. USA. India 18th"]
    ]},
   {h:"The Games to come",
    rows:[
@@ -618,7 +627,7 @@ packs: [
     ["Longest highway tunnel","The Atal Tunnel at Rohtang, about 9.02 km — the longest highway tunnel above 10,000 feet in the world"],
     ["Longest national highway","NH 44, running from Srinagar to Kanyakumari, about 3,745 km"],
     ["Largest dome","Gol Gumbaz at Bijapur, Karnataka"],
-    ["Largest mosque","Jama Masjid, Delhi"],
+    ["Largest mosque","Jama Masjid, Delhi, is the usual answer; the Taj-ul-Masajid at Bhopal is in fact larger"],
     ["Largest cave temple","The Kailasa temple at Ellora — cut downward from a single rock"]
    ]},
   {h:"The world",
@@ -1059,7 +1068,7 @@ packs: [
 {id:"books", n:"Books and their authors", hy:1,
  w:"Classical works, the writings of the national movement, the autobiographies, the pen names, and the literary prizes with their latest winners.",
  intro:"Autobiographies are the most-asked group, because the title rarely names the person. The second group worth learning cold is the classical Sanskrit and court literature, where the author-to-patron chain is itself a question. The third is the prizes: who won the latest Nobel and Jnanpith is current affairs, so that table carries its date.",
- notes:["==The Story of My Experiments with Truth==: ==Gandhi==, written in ==Gujarati== and translated by Mahadev Desai.", "==The Discovery of India==: ==Nehru==, written in ==Ahmednagar Fort== prison in 1944.", "==Gita Rahasya==: ==Tilak==, written in ==Mandalay== jail. ==Poverty and Un-British Rule in India==: ==Dadabhai Naoroji==, the drain theory.", "==Anandamath==: ==Bankim Chandra Chattopadhyay==, the source of ==Vande Mataram==.", "==Gitanjali==: ==Tagore==, ==Nobel Prize 1913==, still the only Indian winner of the literature prize.", "==Wings of Fire==: ==A.P.J. Abdul Kalam==, with Arun Tiwari. ==India Wins Freedom==: ==Maulana Azad==.", "==Arthashastra==: ==Kautilya==. ==Indica==: ==Megasthenes==, Seleucus's envoy to Chandragupta Maurya. ==Ashtadhyayi==: ==Panini==.", "Sports: ==Playing It My Way== (Tendulkar), ==The Race of My Life== (Milkha Singh), ==Unbreakable== (Mary Kom), ==A Shot at History== (Abhinav Bindra), ==Golden Girl== (P.T. Usha).", "Pen names: ==Premchand== = Dhanpat Rai Srivastava; ==Nirala== = Suryakant Tripathi; ==Dinkar== = Ramdhari Singh; ==Gulzar== = Sampooran Singh Kalra; ==Mark Twain== = Samuel Clemens.", "Nobel Literature ==2026==: ==Anne Carson== (Canada), announced ==8 October 2026==. ==2025==: ==Laszlo Krasznahorkai== (Hungary). ==2024==: ==Han Kang== (South Korea).", "Jnanpith: first ==G. Sankara Kurup== (1965, Malayalam); 60th (2025) ==R. Vairamuthu== (Tamil); 59th ==Vinod Kumar Shukla== (Hindi); 58th ==Gulzar== and ==Rambhadracharya==.", "Pulitzer winners of Indian origin: ==Jhumpa Lahiri== (2000, ==Interpreter of Maladies==) and ==Siddhartha Mukherjee== (2011, The Emperor of All Maladies)."],
+ notes:["==The Story of My Experiments with Truth==: ==Gandhi==, written in ==Gujarati== and translated by Mahadev Desai.", "==The Discovery of India==: ==Nehru==, written in ==Ahmednagar Fort== prison in 1944.", "==Gita Rahasya==: ==Tilak==, written in ==Mandalay== jail. ==Poverty and Un-British Rule in India==: ==Dadabhai Naoroji==, the drain theory.", "==Anandamath==: ==Bankim Chandra Chattopadhyay==, the source of ==Vande Mataram==.", "==Gitanjali==: ==Tagore==, ==Nobel Prize 1913==, still the only Indian winner of the literature prize.", "==Wings of Fire==: ==A.P.J. Abdul Kalam==, with Arun Tiwari. ==India Wins Freedom==: ==Maulana Azad==.", "==Arthashastra==: ==Kautilya==. ==Indica==: ==Megasthenes==, Seleucus's envoy to Chandragupta Maurya. ==Ashtadhyayi==: ==Panini==.", "Sports: ==Playing It My Way== (Tendulkar), ==The Race of My Life== (Milkha Singh), ==Unbreakable== (Mary Kom), ==A Shot at History== (Abhinav Bindra), ==Golden Girl== (P.T. Usha).", "Pen names: ==Premchand== = Dhanpat Rai Srivastava; ==Nirala== = Suryakant Tripathi; ==Dinkar== = Ramdhari Singh; ==Gulzar== = Sampooran Singh Kalra; ==Mark Twain== = Samuel Clemens.", "Nobel Literature ==2026==: ==Anne Carson== (Canada), announced ==8 October 2026==. ==2025==: ==Laszlo Krasznahorkai== (Hungary). ==2024==: ==Han Kang== (South Korea).", "Jnanpith: first ==G. Sankara Kurup== (1965, Malayalam); 60th (2025) ==R. Vairamuthu== (Tamil); 59th ==Vinod Kumar Shukla== (Hindi); 58th ==Gulzar== and ==Rambhadracharya==.", "Pulitzer winners of Indian origin include ==Gobind Behari Lal== (1937, journalism, the first), ==Jhumpa Lahiri== (2000, ==Interpreter of Maladies==) and ==Siddhartha Mukherjee== (2011, The Emperor of All Maladies)."],
  blocks:[
   {h:"Classical and medieval",
    rows:[
@@ -1202,11 +1211,13 @@ packs: [
     ["60th Jnanpith (2025)","==R. Vairamuthu==, Tamil poet and lyricist: the third Tamil winner, after Akilan (1975) and D. Jayakanthan (2002)"],
     ["59th Jnanpith (2024)","Vinod Kumar Shukla, Hindi: the first winner from Chhattisgarh"],
     ["58th Jnanpith (2023)","Gulzar (Urdu) and Jagadguru Rambhadracharya (Sanskrit)"],
+    ["First Jnanpith for English","Amitav Ghosh, the 54th (2018)"],
+    ["Most Jnanpiths by language","Hindi, with 12 recipients (the 12th Vinod Kumar Shukla, 2024), then Kannada with 8"],
     ["Sahitya Akademi Award","The Sahitya Akademi was founded on 12 March 1954; its award, given since 1955, covers 24 languages"],
     ["Saraswati Samman","K.K. Birla Foundation, since 1991. The first winner was Harivansh Rai Bachchan"],
     ["Vyas Samman","K.K. Birla Foundation, since 1991, for Hindi"],
-    ["Pulitzer Prize","Columbia University, since 1917. Indian-origin winners: Gobind Behari Lal (1937, journalism), Jhumpa Lahiri (2000, Interpreter of Maladies), Siddhartha Mukherjee (2011, The Emperor of All Maladies)"],
-    ["JCB Prize for Literature","Since 2018, for a work of fiction by an Indian writer: 25 lakh rupees"]
+    ["Pulitzer Prize","Columbia University, since 1917. Indian-origin winners include Gobind Behari Lal (1937, journalism, the first), Jhumpa Lahiri (2000, Interpreter of Maladies), Siddhartha Mukherjee (2011, The Emperor of All Maladies) and Vijay Seshadri (2014, poetry, 3 Sections)"],
+    ["JCB Prize for Literature","Given 2018 to 2024 for a work of fiction by an Indian writer (25 lakh rupees), and discontinued in 2025. The last winner was Upamanyu Chatterjee, Lorenzo Searches for the Meaning of Life (2024)"]
    ]}
  ]},
 
@@ -1386,6 +1397,7 @@ packs: [
     ["UNCTAD","Geneva, 1964: trade and development"],
     ["UN Women","New York, 2010"],
     ["UNAIDS","Geneva, 1996"],
+    ["UN Human Rights Council","Geneva, 15 March 2006, by General Assembly resolution 60/251, replacing the Commission on Human Rights. 47 members elected by the General Assembly for three years"],
     ["International Atomic Energy Agency (IAEA)","==Vienna==, 1957. Reports to the General Assembly and the Security Council. Nobel Peace Prize 2005"],
     ["World Trade Organization","Geneva, 1 January 1995. Not a UN agency, though it works with the UN"],
     ["Organisation for the Prohibition of Chemical Weapons (OPCW)","The Hague, 1997. Nobel Peace Prize 2013"],
@@ -1404,6 +1416,9 @@ packs: [
     ["Commonwealth","London Declaration, 1949, which let republics such as India stay in. Secretariat at Marlborough House, London. 56 members; Gabon and Togo joined in 2022"],
     ["Non-Aligned Movement","First summit ==Belgrade, 1961==. Founders: Nehru, Nasser, Tito, Sukarno and Nkrumah. Rooted in the Bandung Conference (1955). 120 members, no permanent secretariat"],
     ["Indian Ocean Rim Association","1997; secretariat Ebene, Mauritius"],
+    ["IBSA","India, Brazil and South Africa: the IBSA Dialogue Forum, Brasilia Declaration, 6 June 2003"],
+    ["Mekong-Ganga Cooperation","November 2000, Vientiane. Six members: India, Thailand, Myanmar, Cambodia, Laos and Vietnam"],
+    ["Colombo Plan","Conceived at the Commonwealth conference in Colombo, January 1950; in force 1 July 1951, with India among the seven founders. Secretariat in Colombo"],
     ["International Solar Alliance","Launched by India and France at COP21, Paris, 30 November 2015; headquarters ==Gurugram=="],
     ["Coalition for Disaster Resilient Infrastructure","2019, New Delhi"]
    ]},
@@ -1677,6 +1692,7 @@ packs: [
    ]},
   {h:"The centres and where they are",
    rows:[
+    ["Thumba Equatorial Rocket Launching Station (TERLS)","Near Thiruvananthapuram. India's first rocket launching station (1963), chosen because it lies very close to the ==magnetic equator==; dedicated to the United Nations on 2 February 1968"],
     ["Vikram Sarabhai Space Centre (VSSC)","Thiruvananthapuram. Launch vehicles; the largest ISRO centre"],
     ["Satish Dhawan Space Centre (SDSC SHAR)","Sriharikota, Andhra Pradesh. The launch port, with two launch pads; named after Satish Dhawan in 2002"],
     ["U R Rao Satellite Centre (URSC)","Bengaluru. Designs and builds satellites; formerly the ISRO Satellite Centre (ISAC)"],
@@ -1709,12 +1725,15 @@ packs: [
    rows:[
     ["21 November 1963","First rocket launch, from Thumba: an American Nike-Apache sounding rocket"],
     ["19 April 1975","==Aryabhata==, the first Indian satellite, launched by the Soviet Union"],
+    ["1 August 1975 to 31 July 1976","==SITE==, the Satellite Instructional Television Experiment: a joint ISRO-NASA project that used NASA's ATS-6 satellite to broadcast educational television to about 2,400 villages"],
     ["1979","Bhaskara-I, the first Earth-observation satellite, also Soviet-launched"],
     ["18 July 1980","==Rohini RS-1==, the first satellite on an Indian rocket (SLV-3)"],
     ["1981","APPLE, the first experimental communication satellite, launched by Ariane"],
     ["1982","INSAT-1A, the first of the INSAT series"],
     ["3 April 1984","==Rakesh Sharma==, the first Indian in space, on Soyuz T-11 to the Salyut 7 station: 'saare jahan se achha'"],
-    ["1988","IRS-1A, the first Indian remote-sensing satellite"],
+    ["1988","IRS-1A, the first operational Indian remote-sensing satellite (Bhaskara-I, 1979, was the experimental one)"],
+    ["12 September 2002","MetSat-1, PSLV-C4: India's first dedicated weather satellite; renamed ==Kalpana-1== on 5 February 2003, after Kalpana Chawla"],
+    ["20 September 2004","==EDUSAT== (GSAT-3), GSLV-F01: India's first satellite dedicated to education, and the first operational GSLV flight"],
     ["22 October 2008","==Chandrayaan-1==, PSLV-C11. Its Moon Impact Probe struck near the south pole; NASA's Moon Mineralogy Mapper on board confirmed water molecules"],
     ["5 November 2013","==Mangalyaan==, PSLV-C25. Reached Mars orbit on 24 September 2014: first Asian country at Mars, and first anywhere to succeed at the first attempt"],
     ["2013-2018","IRNSS, seven satellites, named ==NavIC==: India's own regional navigation system"],
@@ -1729,7 +1748,7 @@ packs: [
    rows:[
     ["28 February 2021","PSLV-C51 carries Amazonia-1, Brazil's satellite: NSIL's first dedicated commercial launch"],
     ["October 2022 and March 2023","LVM3 launches 36 OneWeb satellites each time"],
-    ["14 July 2023","==Chandrayaan-3== on LVM3-M4. Vikram landed on ==23 August 2023== near the south pole; the Pragyan rover drove off it. Landing site: the Shiv Shakti point"],
+    ["14 July 2023","==Chandrayaan-3== on LVM3-M4. Vikram landed on ==23 August 2023== near the south pole; the Pragyan rover drove off it. Landing site: the Shiv Shakti point. India became the ==fourth country to soft-land on the Moon==, after the USA, the USSR and China, and the first near the south pole"],
     ["2 September 2023","==Aditya-L1== on PSLV-C57. Reached its halo orbit around the L1 point on 6 January 2024"],
     ["21 October 2023","TV-D1: first test of the Gaganyaan crew escape system"],
     ["1 January 2024","==XPoSat==, PSLV-C58: India's first X-ray polarimetry satellite"],
@@ -1740,7 +1759,7 @@ packs: [
     ["29 January 2025","GSLV-F15 carries NVS-02, a NavIC satellite: the ==100th launch from Sriharikota==. The satellite was stranded short of its orbit when its engine valves failed to open"],
     ["18 May 2025","PSLV-C61 / EOS-09: ==failed==, a pressure drop in the third stage. ISRO's 101st launch"],
     ["25 June to 15 July 2025","==Axiom-4==: ==Shubhanshu Shukla== flies to the International Space Station on a SpaceX Falcon 9, the first Indian aboard it"],
-    ["30 July 2025","==NISAR==, GSLV-F16: NASA-ISRO Synthetic Aperture Radar, the first joint mission of the two agencies, carrying L-band and S-band radars"],
+    ["30 July 2025","==NISAR==, GSLV-F16: NASA-ISRO Synthetic Aperture Radar, the first joint Earth-observation satellite of the two agencies, carrying L-band and S-band radars"],
     ["2 November 2025","LVM3-M5 / CMS-03: about 4,400 kg, the heaviest communication satellite launched from India"],
     ["24 December 2025","LVM3-M6 lifts BlueBird Block-2 for the American company AST SpaceMobile: about 6,100 kg, the heaviest payload an Indian rocket has carried"],
     ["12 January 2026","PSLV-C62 / EOS-N1: ==failed== near the end of the third stage. The second PSLV failure in a row"],

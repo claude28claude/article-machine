@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Article Machine — Constitution, History, Economy, Static GK, Biology and daily sets</title>
-<meta name="description" content="Five subjects for the Indian exam track, organised by topic. The Constitution: all 506 articles in plain English, plus the Constituent Assembly that wrote it — its committees, its members, its debates and its dates. Modern History: the timeline from 1600 to 1950, every Congress session with its president, and every Governor-General and Viceroy with his policies. Indian Economy: every Five Year Plan and the 1991 reforms, with SSC notes. Ancient and Medieval History: Jainism and the Jain councils, and the Mughal empire from Babur to Bahadur Shah Zafar. Static GK: twenty-two packs of the facts that do not change, including every cup by sport, Paris 2024, books and authors, international organisations and every ISRO mission. Biology: diseases, nutrients, and the glands and their hormones. Daily study sets: one dated page per study day, with the current affairs and highlighted SSC notes. Searchable across all of it, works offline, installable.">
+<meta name="description" content="Seven subjects for the Indian exam track, organised by topic. The Constitution: all 506 articles in plain English, plus the Constituent Assembly that wrote it — its committees, its members, its debates and its dates. Modern History: the timeline from 1600 to 1950, every Congress session with its president, and every Governor-General and Viceroy with his policies. Indian Economy: every Five Year Plan and the 1991 reforms, with SSC notes. Ancient and Medieval History: Jainism and the Jain councils, and the Mughal empire from Babur to Bahadur Shah Zafar. Static GK: twenty-two packs of the facts that do not change, including every cup by sport, Paris 2024, books and authors, international organisations and every ISRO mission. Biology: diseases, nutrients, and the glands and their hormones. Daily study sets: one dated page per study day, with the current affairs and highlighted SSC notes. Searchable across all of it, works offline, installable.">
 <meta name="theme-color" content="#0b0b0f">
 <meta name="color-scheme" content="dark">
 <link rel="manifest" href="manifest.webmanifest">
@@ -16,6 +16,13 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%230b0b0f'/%3E%3Ccircle cx='50' cy='50' r='31' fill='none' stroke='%23c9a227' stroke-width='6'/%3E%3Cpath d='M50 19 V81 M31.5 31.5 L68.5 68.5 M19 50 H81 M68.5 31.5 L31.5 68.5' stroke='%23c9a227' stroke-width='4'/%3E%3Ccircle cx='50' cy='50' r='7' fill='%230b0b0f'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%23c9a227'/%3E%3C/svg%3E">
+<!-- A data file app.js now depends on in a new way carries a ?v= query.
+     Data files are served stale-while-revalidate, so without it the first
+     visit after a deploy pairs the new app.js with the old cached data:
+     the page renders, but whatever the new code reads from the new fields
+     is simply missing. A new query string is a new URL, which no cache
+     holds, so the fresh file is fetched. Bump it, here and in sw.js, on any
+     deploy that changes what app.js expects from that file. -->
 <!-- The two faces that set almost every page: the sans the explanations
      are in, and the serif the headings and the official text are in. Told to
      the browser here so the download starts with the stylesheet rather than
@@ -112,16 +119,16 @@
 <script src="data-highyield.js"></script>
 <script src="data-history.js"></script>
 <script src="data-history-hy.js"></script>
-<script src="data-economy.js"></script>
-<script src="data-gk.js"></script>
+<script src="data-economy.js?v=22"></script>
+<script src="data-gk.js?v=22"></script>
 <script src="data-assembly.js"></script>
 <script src="data-biology.js"></script>
 <script src="data-treaties.js"></script>
 <script src="data-artmap.js"></script>
 <script src="data-raj.js"></script>
 <script src="data-congress.js"></script>
-<script src="data-early.js"></script>
-<script src="data-daily.js"></script>
+<script src="data-early.js?v=22"></script>
+<script src="data-daily.js?v=22"></script>
 <script src="app.js"></script>
 </body>
 </html>
