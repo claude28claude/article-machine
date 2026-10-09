@@ -309,13 +309,13 @@ written: twelve independent checkers took one slice each (Jainism, the Mughal
 pages, the Booker and cup holders, the five GK packs, the Economy additions
 and the code), checked every row against sources, and every error they claimed
 went to two more checkers told to disprove it. A row was changed only when
-both agreed. That pass corrected 25 facts, including Humayun's exile (about a
+both agreed. That pass corrected 26 facts, including Humayun's exile (about a
 year in Persia, not most of fifteen), the date of the two-number mansab (about
 1595, not the 1570s), Roe and the Surat factory (the factory dated from 1613;
 Roe won wider rights), the "largest mosque" (the Taj-ul-Masajid at Bhopal is
 bigger than the Jama Masjid), the JCB Prize (discontinued in 2025), and four
 older Five Year Plan notes that contradicted the site's own figures. It also
-added 36 high-yield facts the pages were missing, from Saraighat and Lachit
+added 38 high-yield facts the pages were missing, from Saraighat and Lachit
 Borphukan to SITE, EDUSAT and the classical-language status of Prakrit and Pali.
 
 ## Adding another subject
