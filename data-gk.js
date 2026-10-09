@@ -285,6 +285,153 @@ packs: [
  ]},
 
 /* =================================================================== */
+/* Cups and trophies, sport by sport. The static half: which cup belongs to
+   which sport, when it began and who it is named after. Who holds each one
+   this year is current affairs and lives in the dated study sets instead,
+   so this pack does not go stale when a final is played.               */
+{id:"cups", n:"Cups and trophies, sport by sport", hy:1,
+ w:"Every cup SSC asks about, filed under its sport: when it began, who it is named after, and India's record in it.",
+ intro:"The question is almost always 'the X Cup is associated with which sport'. The marks are lost on the cups whose names give nothing away (Ezra, Corbillon, Bermuda) and on the ones that sound like the wrong sport: the Durand Cup is football, not hockey; the Beighton Cup is hockey, not football; the Irani Cup is cricket, not anything Persian.",
+ notes:[
+  "==Durand Cup== (football, ==1888==, Shimla): the ==oldest football tournament in Asia==.",
+  "==Beighton Cup== (hockey, ==1895==, Kolkata): the ==oldest hockey tournament in the world==.",
+  "==Thomas Cup== men's team, ==Uber Cup== women's team, ==Sudirman Cup== mixed team: all ==badminton==. India won the Thomas Cup for the ==first time in 2022==.",
+  "==Swaythling Cup== (men) and ==Corbillon Cup== (women): ==table tennis==.",
+  "==Davis Cup== men's team and ==Billie Jean King Cup== (formerly the Fed Cup) women's team: ==tennis==.",
+  "==Ryder Cup== (USA against Europe), ==Walker Cup== (amateurs): ==golf==.",
+  "==Ranji Trophy== first-class, ==Irani Cup== Ranji champion against Rest of India, ==Duleep Trophy== zonal: all ==cricket==.",
+  "==Santosh Trophy== = national football championship for states; ==Subroto Cup== = schools football.",
+  "==Ezra Cup== = ==polo==; ==Bermuda Bowl== = ==bridge==; ==America's Cup== = ==yachting==; ==Stanley Cup== = ice hockey.",
+  "==Anderson-Tendulkar Trophy== = India against England Tests in England, from ==2025==, in place of the Pataudi Trophy.",
+  "==Border-Gavaskar Trophy== = India against Australia Tests; ==The Ashes== = England against Australia."
+ ],
+ blocks:[
+  {h:"Cricket: the ICC tournaments",
+   note:"Who holds each one now is in the latest dated study set.",
+   rows:[
+    ["ICC Men's Cricket World Cup (ODI)","Since ==1975==, England. India won ==1983== (Kapil Dev, at Lord's) and ==2011== (M.S. Dhoni, at the Wankhede). Australia have won the most, six"],
+    ["ICC Men's T20 World Cup","Since ==2007==. India won 2007, 2024 and 2026, the first side to win it three times"],
+    ["ICC Champions Trophy","Since 1998, first called the ICC KnockOut. India won 2002 (shared with Sri Lanka), 2013 and 2025"],
+    ["ICC World Test Championship","Final since 2021: New Zealand 2021, Australia 2023, South Africa 2025. India lost the first two finals"],
+    ["ICC Women's Cricket World Cup","Since ==1973==, two years before the men's. India's first title was in 2025"],
+    ["ICC Women's T20 World Cup","Since 2009. Australia have won it the most"],
+    ["Asia Cup","Since 1984. India have won it the most"],
+    ["ICC Under-19 World Cup","Since 1988. India are the most successful side"]
+   ]},
+  {h:"Cricket: the bilateral trophies",
+   rows:[
+    ["The Ashes","England against Australia, Tests, since 1882-83. The trophy is a small urn"],
+    ["Border-Gavaskar Trophy","India against Australia, Tests, since 1996-97"],
+    ["Anderson-Tendulkar Trophy","India against England, Tests in England, from 2025, replacing the Pataudi Trophy. The winning captain gets the Pataudi Medal"],
+    ["Anthony de Mello Trophy","India against England, Tests in India"],
+    ["Freedom Trophy (Gandhi-Mandela Trophy)","India against South Africa, Tests"],
+    ["Frank Worrell Trophy","Australia against West Indies, Tests"],
+    ["Chappell-Hadlee Trophy","Australia against New Zealand, ODIs"],
+    ["Trans-Tasman Trophy","Australia against New Zealand, Tests"],
+    ["Basil D'Oliveira Trophy","England against South Africa, Tests"],
+    ["Richards-Botham Trophy","England against West Indies, Tests, since 2020, replacing the Wisden Trophy"],
+    ["Benaud-Qadir Trophy","Australia against Pakistan, Tests, since 2022"]
+   ]},
+  {h:"Cricket: India's domestic trophies",
+   rows:[
+    ["Ranji Trophy","The first-class championship, since 1934-35. Named after K.S. ==Ranjitsinhji==. Mumbai have won it the most"],
+    ["Irani Cup","The Ranji champion against a Rest of India side, since 1959-60. Named after Z.R. Irani"],
+    ["Duleep Trophy","Zonal first-class, since 1961-62. Named after K.S. Duleepsinhji, Ranjitsinhji's nephew"],
+    ["Vijay Hazare Trophy","The one-day championship of the state sides"],
+    ["Deodhar Trophy","Zonal one-day. Named after D.B. Deodhar"],
+    ["Syed Mushtaq Ali Trophy","The T20 championship of the state sides"],
+    ["Cooch Behar Trophy and Vinoo Mankad Trophy","Under-19: multi-day and one-day"],
+    ["C.K. Nayudu Trophy","Under-23"],
+    ["Vizzy Trophy and Rohinton Baria Trophy","Inter-university cricket"],
+    ["Indian Premier League","Since 2008. Mumbai Indians and Chennai Super Kings have five titles each"],
+    ["Women's Premier League","Since 2023"]
+   ]},
+  {h:"Football",
+   rows:[
+    ["FIFA World Cup","Since ==1930==, Uruguay. The first trophy was the Jules Rimet Trophy, stolen in Brazil in 1983 and never recovered. Brazil have five titles. 2026 was the first with 48 teams and three hosts"],
+    ["UEFA European Championship","The Henri Delaunay Trophy"],
+    ["Copa America","Since 1916: the oldest international continental tournament"],
+    ["AFC Asian Cup","Asia's championship, since 1956"],
+    ["SAFF Championship","South Asia. India have won it the most"],
+    ["Durand Cup","Since ==1888==, started at Shimla by Sir Mortimer Durand, the Foreign Secretary of British India (the Durand Line is named after him). The ==oldest football tournament in Asia==. The winner receives three trophies: the Durand Cup, the Shimla Trophy and the President's Cup"],
+    ["IFA Shield","Since 1893, Kolkata. In 1911 Mohun Bagan beat the East Yorkshire Regiment barefoot, the first Indian side to win it"],
+    ["Rovers Cup","Since 1891, Mumbai"],
+    ["Santosh Trophy","The national championship for state teams, since 1941. Named after Sir Manmatha Nath Roy Chowdhury, Maharaja of Santosh. West Bengal have won it the most"],
+    ["Subroto Cup","Inter-school football, since 1960. Named after Air Marshal Subroto Mukerjee, the first Indian chief of the Air Force"],
+    ["Federation Cup","Since 1977; now the Super Cup"],
+    ["Dr. B.C. Roy Trophy","The junior national championship"],
+    ["DCM Trophy, Sait Nagjee Trophy, Bordoloi Trophy","Delhi, Kozhikode and Guwahati"],
+    ["Indian Super League and I-League","Since 2014 and 2007"]
+   ]},
+  {h:"Hockey",
+   rows:[
+    ["FIH Hockey World Cup","Men's since ==1971==. India won it once, in ==1975== at Kuala Lumpur, under Ajit Pal Singh. Germany and Pakistan have four titles each"],
+    ["FIH Pro League","Since 2019"],
+    ["Sultan Azlan Shah Cup","Ipoh, Malaysia, since 1983"],
+    ["Asia Cup","India won it in 2003, 2007, 2017 and 2025, the last at Rajgir, Bihar"],
+    ["Asian Champions Trophy","Since 2011"],
+    ["Beighton Cup","Since ==1895==, Kolkata: the ==oldest hockey tournament in the world=="],
+    ["Aga Khan Cup","Since 1896, Mumbai"],
+    ["Obaidullah Khan Gold Cup","Bhopal"],
+    ["Rangaswamy Cup","The national championship"],
+    ["Nehru Trophy, Murugappa Gold Cup, Scindia Gold Cup","Delhi, Chennai and Gwalior"],
+    ["Lady Ratan Tata Trophy and Indira Gandhi Gold Cup","Women's hockey"],
+    ["Hockey India League","Since 2013; revived in 2024-25"]
+   ]},
+  {h:"Badminton",
+   rows:[
+    ["Thomas Cup","The ==men's== team world championship, since 1948-49. Given by Sir George Thomas. India won it for the ==first time in 2022==, at Bangkok"],
+    ["Uber Cup","The ==women's== team world championship, since 1956-57. Given by Betty Uber"],
+    ["Sudirman Cup","The ==mixed== team world championship, since 1989. Named after Dick Sudirman of Indonesia"],
+    ["All England Open","Since 1899, the oldest badminton tournament. Indian winners: Prakash Padukone (1980) and Pullela Gopichand (2001)"],
+    ["BWF World Championships","P.V. Sindhu, 2019, the first Indian world champion"]
+   ]},
+  {h:"Tennis",
+   rows:[
+    ["Davis Cup","The ==men's== team competition, since 1900. Given by Dwight F. Davis"],
+    ["Billie Jean King Cup","The ==women's== team competition, since 1963 as the Federation Cup; renamed in 2020"],
+    ["Hopman Cup","Mixed teams, Perth, since 1989"],
+    ["Laver Cup","Europe against the Rest of the World, since 2017"],
+    ["United Cup","Mixed teams, Australia, since 2023"],
+    ["Australian Open","Hard court, Melbourne, January"],
+    ["French Open (Roland Garros)","Clay, Paris. The men's trophy is the Coupe des Mousquetaires"],
+    ["Wimbledon","Grass, London. The oldest tournament, 1877, and the only Grand Slam on grass. The women's trophy is the Venus Rosewater Dish"],
+    ["US Open","Hard court, Flushing Meadows, New York"]
+   ]},
+  {h:"Table tennis, golf and chess",
+   rows:[
+    ["Swaythling Cup","Table tennis: the men's team world championship, since 1926. Given by Lady Swaythling"],
+    ["Corbillon Cup","Table tennis: the women's team world championship, since 1934. Given by Marcel Corbillon"],
+    ["Ryder Cup","Golf: USA against Europe, men, since 1927. Given by Samuel Ryder"],
+    ["Solheim Cup","Golf: USA against Europe, women"],
+    ["Walker Cup and Curtis Cup","Golf: amateur men and amateur women, USA against Great Britain and Ireland"],
+    ["Presidents Cup","Golf: USA against an International side from outside Europe"],
+    ["Golf's majors","The Masters (Augusta, the green jacket), the PGA Championship (Wanamaker Trophy), the US Open, and The Open (the oldest, 1860; the Claret Jug)"],
+    ["Hamilton-Russell Cup and Vera Menchik Cup","Chess: the open and the women's team trophies of the Chess Olympiad. India won both at Budapest in 2024"],
+    ["Chess World Championship","D. Gukesh became the youngest undisputed champion, at 18, in Singapore on 12 December 2024"]
+   ]},
+  {h:"The cups whose names give nothing away",
+   rows:[
+    ["Ezra Cup and Radha Mohan Cup","Polo"],
+    ["Bermuda Bowl","Contract bridge, the world team championship"],
+    ["America's Cup","Yachting, since 1851: the oldest international sporting trophy"],
+    ["Stanley Cup","Ice hockey, the NHL"],
+    ["Webb Ellis Cup","Rugby union: the Rugby World Cup trophy, named after William Webb Ellis"],
+    ["Calcutta Cup","Rugby: England against Scotland, since 1879. Made from the melted silver rupees of the Calcutta Football Club"],
+    ["Val Barker Trophy","Boxing: the most stylish boxer at the Olympic Games"],
+    ["Wanamaker Trophy","Golf: the PGA Championship"],
+    ["Larry O'Brien Trophy","Basketball: the NBA championship"]
+   ]},
+  {h:"The multi-sport games",
+   rows:[
+    ["Asian Games","First held in New Delhi in 1951. 2026: Aichi-Nagoya, Japan. 2030: Doha"],
+    ["Commonwealth Games","First held at Hamilton, Canada, in 1930, as the British Empire Games. 2026: Glasgow. 2030, the centenary Games: Ahmedabad"],
+    ["Olympic Games","2028: Los Angeles. 2032: Brisbane. India has bid for 2036"],
+    ["Khelo India Games","India's national youth games, since 2018"]
+   ]}
+ ]},
+
+/* =================================================================== */
 {id:"firsts", n:"First in India", hy:1,
  w:"The office-holders, the achievements and the events that came first.",
  intro:"A list, and there is no clever way through it. The pairs worth watching are the ones where 'first' and 'first woman' are different people, and the ones where 'first Indian' and 'first' are different people.",
@@ -1146,6 +1293,143 @@ packs: [
     ["Chief of Defence Staff","Created in 2019; General Bipin Rawat was the first"],
     ["Field Marshals","Sam Manekshaw (1973) and K.M. Cariappa (1986). Arjan Singh was made Marshal of the Indian Air Force in 2002"],
     ["Service days","Army Day 15 January, Navy Day 4 December, Air Force Day 8 October"]
+   ]}
+ ]},
+
+/* =================================================================== */
+/* ISRO in full. The "space" pack above keeps the dozen facts for quick
+   revision; this is every mission an exam asks about, in order. Missions
+   that have flown are static facts. The last two tables are dated, because
+   ISRO's schedule moves, and each says what was true on 10 October 2026.  */
+{id:"isro", n:"ISRO and the space missions", hy:1,
+ w:"Every ISRO mission SSC asks about, in order, from a sounding rocket at Thumba to SpaDeX, NISAR and Gaganyaan, with the centres, the rockets and the people.",
+ intro:"Three question types: which mission did what first, which rocket carried it, and where an ISRO centre is. The firsts are the marks: Aryabhata the first satellite, Rohini the first on an Indian rocket, Mangalyaan the first to reach Mars at the first attempt, Chandrayaan-3 the first near the lunar south pole, SpaDeX the first Indian docking. Learn the date beside each one.",
+ notes:[
+  "ISRO founded ==15 August 1969==. Before it: ==INCOSPAR== (1962) under ==Vikram Sarabhai==, the father of the Indian space programme. Department of Space and Space Commission: ==1972==.",
+  "First rocket launch: ==21 November 1963==, from ==Thumba==, near Thiruvananthapuram, an American Nike-Apache.",
+  "First satellite ==Aryabhata==, ==19 April 1975==, launched by the ==Soviet Union==.",
+  "First satellite on an Indian rocket: ==Rohini RS-1== on ==SLV-3==, 18 July 1980; project director ==A.P.J. Abdul Kalam==.",
+  "==Chandrayaan-1== (22 October 2008, PSLV-C11): confirmed ==water molecules== on the Moon.",
+  "==Mangalyaan== (Mars Orbiter Mission): launched 5 November 2013, in Mars orbit ==24 September 2014==, India ==first to succeed at Mars on the first attempt==.",
+  "==Chandrayaan-3==: Vikram landed ==23 August 2023== near the ==lunar south pole== at the ==Shiv Shakti point==. 23 August is ==National Space Day==.",
+  "==Aditya-L1== (2 September 2023): India's first solar mission, at the ==L1== point.",
+  "==SpaDeX== docking, ==16 January 2025==: India the ==fourth country== to dock in orbit, after the USA, Russia and China.",
+  "==Shubhanshu Shukla==: first Indian on the ==International Space Station== (Axiom-4, June-July 2025), and the second Indian in space after ==Rakesh Sharma== (1984).",
+  "==NISAR== (30 July 2025, GSLV-F16): the first joint ==ISRO-NASA== Earth-observation satellite.",
+  "World Space Week runs ==4 to 10 October== every year: from Sputnik (4 October 1957) to the Outer Space Treaty entering into force (10 October 1967)."
+ ],
+ blocks:[
+  {h:"The organisation",
+   rows:[
+    ["INCOSPAR","Indian National Committee for Space Research, 1962, under the Department of Atomic Energy, chaired by Vikram Sarabhai"],
+    ["ISRO","Founded 15 August 1969. Headquarters: Antariksh Bhavan, Bengaluru"],
+    ["Department of Space and Space Commission","1972. The Department reports directly to the Prime Minister"],
+    ["Chairman","V. Narayanan, from January 2025. Before him: S. Somanath (2022-25) and K. Sivan (2018-22)"],
+    ["Antrix Corporation","ISRO's first commercial arm, 1992"],
+    ["NewSpace India Limited (NSIL)","The commercial arm since 2019; runs demand-driven launches"],
+    ["IN-SPACe","Indian National Space Promotion and Authorisation Centre, 2020, Ahmedabad: authorises and promotes private space companies"],
+    ["Indian Space Policy","2023: opened every part of the space sector to private firms"]
+   ]},
+  {h:"The centres and where they are",
+   rows:[
+    ["Vikram Sarabhai Space Centre (VSSC)","Thiruvananthapuram. Launch vehicles; the largest ISRO centre"],
+    ["Satish Dhawan Space Centre (SDSC SHAR)","Sriharikota, Andhra Pradesh. The launch port, with two launch pads; named after Satish Dhawan in 2002"],
+    ["U R Rao Satellite Centre (URSC)","Bengaluru. Designs and builds satellites; formerly the ISRO Satellite Centre (ISAC)"],
+    ["Space Applications Centre (SAC)","Ahmedabad. Payloads and applications"],
+    ["Liquid Propulsion Systems Centre (LPSC)","Valiamala, Thiruvananthapuram, and Bengaluru"],
+    ["ISRO Propulsion Complex (IPRC)","Mahendragiri, Tamil Nadu. Engine and stage testing"],
+    ["National Remote Sensing Centre (NRSC)","Hyderabad"],
+    ["Indian Institute of Remote Sensing (IIRS)","Dehradun"],
+    ["ISTRAC","Bengaluru. Tracking and the mission operations complex"],
+    ["Master Control Facility","Hassan, Karnataka, and Bhopal. Controls the geostationary satellites"],
+    ["Physical Research Laboratory (PRL)","Ahmedabad. Founded 1947 by Vikram Sarabhai; the 'cradle of space sciences'"],
+    ["National Atmospheric Research Laboratory","Gadanki, Andhra Pradesh"],
+    ["Human Space Flight Centre (HSFC)","Bengaluru. Runs Gaganyaan"],
+    ["Indian Institute of Space Science and Technology (IIST)","Thiruvananthapuram, 2007"],
+    ["Kulasekarapattinam","Thoothukudi, Tamil Nadu. The second spaceport, being built for the SSLV"]
+   ]},
+  {h:"The rockets",
+   rows:[
+    ["SLV-3","The first Indian launch vehicle. Failed in 1979; put Rohini RS-1 in orbit on 18 July 1980. Project director A.P.J. Abdul Kalam"],
+    ["ASLV","Augmented Satellite Launch Vehicle, 1987-94"],
+    ["PSLV","Polar Satellite Launch Vehicle, ISRO's workhorse. First flight failed in 1993; first success 15 October 1994. Four stages, alternating solid and liquid. PSLV-C37 placed ==104 satellites== in orbit on 15 February 2017, a record at the time"],
+    ["GSLV","Geosynchronous Satellite Launch Vehicle, from 2001, with a cryogenic upper stage. The first flight with an Indian-built cryogenic stage to succeed was GSLV-D5, January 2014"],
+    ["LVM3","Launch Vehicle Mark 3, formerly GSLV Mk III: the heaviest. Carried Chandrayaan-2 and Chandrayaan-3. The crew-rated version, HLVM3, is for Gaganyaan"],
+    ["SSLV","Small Satellite Launch Vehicle, up to 500 kg to low orbit. First flight failed (2022); SSLV-D2 succeeded in 2023; SSLV-D3 flew EOS-08 on 16 August 2024"],
+    ["RLV-TD","Reusable Launch Vehicle technology demonstrator. The Pushpak landing experiments, 2023-24"],
+    ["Vikram-S","Skyroot Aerospace, 18 November 2022: the first rocket built by an Indian private company (Mission Prarambh, sub-orbital)"],
+    ["Agnibaan SOrTeD","Agnikul Cosmos, 30 May 2024: a 3D-printed semi-cryogenic engine, from India's first private launch pad, Dhanush, at Sriharikota"]
+   ]},
+  {h:"The missions in order, 1963 to 2019",
+   rows:[
+    ["21 November 1963","First rocket launch, from Thumba: an American Nike-Apache sounding rocket"],
+    ["19 April 1975","==Aryabhata==, the first Indian satellite, launched by the Soviet Union"],
+    ["1979","Bhaskara-I, the first Earth-observation satellite, also Soviet-launched"],
+    ["18 July 1980","==Rohini RS-1==, the first satellite on an Indian rocket (SLV-3)"],
+    ["1981","APPLE, the first experimental communication satellite, launched by Ariane"],
+    ["1982","INSAT-1A, the first of the INSAT series"],
+    ["3 April 1984","==Rakesh Sharma==, the first Indian in space, on Soyuz T-11 to the Salyut 7 station: 'saare jahan se achha'"],
+    ["1988","IRS-1A, the first Indian remote-sensing satellite"],
+    ["22 October 2008","==Chandrayaan-1==, PSLV-C11. Its Moon Impact Probe struck near the south pole; NASA's Moon Mineralogy Mapper on board confirmed water molecules"],
+    ["5 November 2013","==Mangalyaan==, PSLV-C25. Reached Mars orbit on 24 September 2014: first Asian country at Mars, and first anywhere to succeed at the first attempt"],
+    ["2013-2018","IRNSS, seven satellites, named ==NavIC==: India's own regional navigation system"],
+    ["28 September 2015","==AstroSat==, India's first dedicated multi-wavelength space observatory"],
+    ["15 February 2017","PSLV-C37: ==104 satellites== in one launch"],
+    ["5 May 2017","GSAT-9, the South Asia Satellite, a gift to neighbouring countries"],
+    ["27 March 2019","==Mission Shakti==: DRDO's anti-satellite test. India the fourth country with the capability"],
+    ["22 July 2019","==Chandrayaan-2==, on LVM3-M1. The orbiter works; the Vikram lander crashed on 7 September 2019. The crash site is the Tiranga point"]
+   ]},
+  {h:"The missions since 2020",
+   note:"Firm for every mission that has flown. As of 10 October 2026.",
+   rows:[
+    ["28 February 2021","PSLV-C51 carries Amazonia-1, Brazil's satellite: NSIL's first dedicated commercial launch"],
+    ["October 2022 and March 2023","LVM3 launches 36 OneWeb satellites each time"],
+    ["14 July 2023","==Chandrayaan-3== on LVM3-M4. Vikram landed on ==23 August 2023== near the south pole; the Pragyan rover drove off it. Landing site: the Shiv Shakti point"],
+    ["2 September 2023","==Aditya-L1== on PSLV-C57. Reached its halo orbit around the L1 point on 6 January 2024"],
+    ["21 October 2023","TV-D1: first test of the Gaganyaan crew escape system"],
+    ["1 January 2024","==XPoSat==, PSLV-C58: India's first X-ray polarimetry satellite"],
+    ["17 February 2024","INSAT-3DS, GSLV-F14: weather satellite"],
+    ["16 August 2024","SSLV-D3 flies EOS-08: the SSLV's development flights are complete"],
+    ["5 December 2024","PSLV-C59 launches the European Space Agency's ==Proba-3==, two satellites flying in formation to study the Sun's corona"],
+    ["30 December 2024","==SpaDeX==, PSLV-C60: two satellites, Chaser and Target. Docked on ==16 January 2025=="],
+    ["29 January 2025","GSLV-F15 carries NVS-02, a NavIC satellite: the ==100th launch from Sriharikota==. The satellite was stranded short of its orbit when its engine valves failed to open"],
+    ["18 May 2025","PSLV-C61 / EOS-09: ==failed==, a pressure drop in the third stage. ISRO's 101st launch"],
+    ["25 June to 15 July 2025","==Axiom-4==: ==Shubhanshu Shukla== flies to the International Space Station on a SpaceX Falcon 9, the first Indian aboard it"],
+    ["30 July 2025","==NISAR==, GSLV-F16: NASA-ISRO Synthetic Aperture Radar, the first joint mission of the two agencies, carrying L-band and S-band radars"],
+    ["2 November 2025","LVM3-M5 / CMS-03: about 4,400 kg, the heaviest communication satellite launched from India"],
+    ["24 December 2025","LVM3-M6 lifts BlueBird Block-2 for the American company AST SpaceMobile: about 6,100 kg, the heaviest payload an Indian rocket has carried"],
+    ["12 January 2026","PSLV-C62 / EOS-N1: ==failed== near the end of the third stage. The second PSLV failure in a row"],
+    ["4 September 2026","GSLV-F17 places EOS-05 in orbit"]
+   ]},
+  {h:"What is coming",
+   note:"Plans, not facts, and they move. As announced by 10 October 2026.",
+   rows:[
+    ["Gaganyaan G1","The first uncrewed orbital flight, with the half-humanoid robot ==Vyommitra==, on HLVM3. Scheduled for the last quarter of 2026; not flown as of 10 October 2026"],
+    ["Gaganyaan crewed flight","Not before 2027: three astronauts, about 400 km up, for up to three days"],
+    ["The astronaut-designates","Group Captains Prasanth Balakrishnan Nair, Ajit Krishnan, Angad Pratap and Shubhanshu Shukla, named on 27 February 2024"],
+    ["Bharatiya Antariksh Station","India's own space station: first module targeted for 2028, the full station by 2035"],
+    ["An Indian on the Moon","Target 2040"],
+    ["Chandrayaan-4","Lunar sample return, approved in September 2024"],
+    ["Chandrayaan-5 (LUPEX)","A lunar polar mission with Japan's JAXA"],
+    ["Venus Orbiter Mission (Shukrayaan)","Approved in September 2024"],
+    ["Next Generation Launch Vehicle","A partly reusable heavy rocket, approved in September 2024"]
+   ]},
+  {h:"The people",
+   rows:[
+    ["Vikram Sarabhai","Father of the Indian space programme; founded PRL and INCOSPAR"],
+    ["Satish Dhawan","Chairman 1972-84; the Sriharikota centre is named after him"],
+    ["U.R. Rao","Led Aryabhata; the satellite centre is named after him"],
+    ["A.P.J. Abdul Kalam","Project director of SLV-3; later the 'Missile Man' at DRDO and President of India"],
+    ["G. Madhavan Nair","Chairman at Chandrayaan-1"],
+    ["K. Radhakrishnan","Chairman at Mangalyaan"],
+    ["K. Sivan","Chairman at Chandrayaan-2"],
+    ["S. Somanath","Chairman at Chandrayaan-3 and Aditya-L1"],
+    ["Muthayya Vanitha","Project director of Chandrayaan-2"],
+    ["Ritu Karidhal","Mission director of Chandrayaan-2"],
+    ["Nigar Shaji","Project director of Aditya-L1"],
+    ["Rakesh Sharma","First Indian citizen in space, 1984"],
+    ["Kalpana Chawla","First woman of Indian origin in space, 1997, on the US space shuttle; died in the Columbia disaster, 2003"],
+    ["Shubhanshu Shukla","First Indian on the International Space Station, 2025"]
    ]}
  ]},
 

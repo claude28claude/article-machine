@@ -2166,6 +2166,233 @@ SUBJECTS.push({
 });
 
 /* =========================================================================
+   SUBJECT: ANCIENT AND MEDIEVAL HISTORY
+
+   Jainism and its councils, and the Mughals. Modern History here begins
+   with the Company's charter in 1600, and stretching it back two thousand
+   years would make its name mean nothing, so what came before is a subject
+   of its own. It sits next to Modern History on the bar because a reader
+   revising one is usually revising the other.
+   ========================================================================= */
+
+var EARLY = window.EARLY || {};
+var earlyTopicById = {}, emperorById = {};
+(EARLY.topics   || []).forEach(function (t) { earlyTopicById[t.id] = t; });
+(EARLY.emperors || []).forEach(function (e) { emperorById[e.id] = e; });
+
+var EARLY_ERAS = [
+  ['ancient',  'Ancient India'],
+  ['medieval', 'Medieval India: the Mughals']
+];
+
+function earlyRows(t) {
+  return t.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
+}
+function earlyShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+/* `trail` is a list of [label, href]; the last item is where you are and
+   has no href. */
+function earlyCrumb(trail) {
+  if (!trail || !trail.length) return '<div class="crumb">Ancient &amp; Medieval</div>';
+  return '<div class="crumb"><a href="#/early">Ancient &amp; Medieval</a>' +
+    trail.map(function (x) {
+      return ' → ' + (x[1] ? '<a href="' + x[1] + '">' + esc(x[0]) + '</a>' : esc(x[0]));
+    }).join('') + '</div>';
+}
+
+/* 1526-30 inside one century, 1759-1806 across two: "1759-06" would read as
+   a reign that ended before it began. */
+function yrSpan(a, b) {
+  var sa = String(a), sb = String(b);
+  return sa + '–' + (sa.slice(0, 2) === sb.slice(0, 2) ? sb.slice(2) : sb);
+}
+
+function greatEmperors() {
+  return (EARLY.emperors || []).filter(function (e) { return e.kind !== 'later'; });
+}
+
+function emperorRow(e) {
+  return '<a class="arow hy" href="#/early/emperor/' + encodeURIComponent(e.id) + '">' +
+    '<span class="no range">' + yrSpan(e.from, e.to) + '</span>' +
+    '<span class="tx"><b>' + esc(e.n) + '</b><i>' + esc(shorten(e.w, 150)) + '</i></span>' +
+    '<span class="tag">' + (e.kind === 'sur' ? '<span class="chip">Sur dynasty</span>' : '') +
+    '</span></a>';
+}
+
+function earlyHome() {
+  var topics = EARLY.topics || [];
+  var total = topics.reduce(function (a, t) { return a + earlyRows(t); }, 0);
+  var h = earlyCrumb([]) +
+    pageH1('Before the Company',
+      'Jainism and its councils from ancient India, and the Mughal empire from Babur to ' +
+      'Bahadur Shah Zafar. Modern History on this site begins in 1600; this is what came before it.');
+
+  h += '<div class="figs">' + fig(topics.length, 'topics') +
+    fig(greatEmperors().length, 'emperors in detail') + fig(total, 'facts') +
+    fig((EARLY.confusions || []).length, 'confused pairs') + '</div>';
+
+  EARLY_ERAS.forEach(function (era) {
+    var list = topics.filter(function (t) { return t.era === era[0]; });
+    if (!list.length) return;
+    h += '<div class="block"><h3>' + esc(era[1]) + '</h3><div class="grid">' +
+      (era[0] === 'medieval'
+        ? '<a class="pcard" href="#/early/mughals"><div class="pn">1526–1857</div>' +
+          '<div class="pt">The Mughal emperors, in order</div>' +
+          '<div class="pr">Babur to Aurangzeb in full, Sher Shah, and the later Mughals</div></a>'
+        : '') +
+      list.map(function (t) {
+        return '<a class="pcard" href="#/early/topic/' + encodeURIComponent(t.id) + '">' +
+          '<div class="pn">' + esc(t.n) + '</div><div class="pt">' + esc(t.w) + '</div>' +
+          '<div class="pr">' + t.blocks.length + ' tables · ' + earlyRows(t) + ' facts · ' +
+          (t.notes || []).length + ' SSC notes</div></a>';
+      }).join('') + '</div></div>';
+  });
+
+  h += '<div class="block"><h3>The traps</h3><div class="grid">' +
+    '<a class="pcard" href="#/early/confusions"><div class="pn">' +
+    (EARLY.confusions || []).length + '</div><div class="pt">Confused pairs</div>' +
+    '<div class="pr">The two councils at Pataliputra, the three Panipats, four tombs and their builders.</div></a>' +
+    '</div></div>';
+
+  return earlyShell(h);
+}
+
+function earlyTopicPage(id) {
+  var t = earlyTopicById[id];
+  if (!t) return earlyShell(earlyCrumb([['Not found']]) +
+    '<div class="empty"><b>No such topic</b>Nothing on this site is filed under that name.</div>');
+
+  var list = EARLY.topics || [], i = list.indexOf(t);
+  var h = earlyCrumb([[t.n]]) + pageH1(t.n, t.w);
+  if (t.intro) h += '<p class="plain stack">' + prose(t.intro) + '</p>';
+  h += notesBlock(t.notes, 'the page in ' + (t.notes || []).length + ' lines');
+  h += t.blocks.map(factsBlock).join('');
+  if (t.era === 'medieval') {
+    h += '<div class="block"><h3>Reign by reign</h3><div class="grid">' +
+      '<a class="pcard" href="#/early/mughals"><div class="pn">The emperors</div>' +
+      '<div class="pt">Babur to Bahadur Shah Zafar</div>' +
+      '<div class="pr">Each great Mughal on a page of his own</div></a></div></div>';
+  }
+
+  var prev = list[i - 1], next = list[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/early/topic/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Previous</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/early/topic/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">Next</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+  return earlyShell(h);
+}
+
+function emperorsPage() {
+  var later = (EARLY.emperors || []).filter(function (e) { return e.kind === 'later'; });
+  var h = earlyCrumb([['The Mughal emperors']]) +
+    pageH1('The Mughal emperors',
+      'Six great Mughals from 1526 to 1707, the Sur interlude in the middle of them, and the ' +
+      'fourteen decades of decline that ended with an emperor exiled to Rangoon.');
+  h += notesBlock(EARLY.mughalNotes, 'the dynasty in ' + (EARLY.mughalNotes || []).length + ' lines');
+  h += '<div class="block"><h3>The great Mughals, and Sher Shah</h3>' +
+    greatEmperors().map(emperorRow).join('') + '</div>';
+  h += factsBlock({ h: 'After Aurangzeb',
+    note: 'The later Mughals are asked for one fact each, so each gets one line.',
+    rows: later.map(function (e) { return [e.n + ', ' + yrSpan(e.from, e.to), e.w]; }) });
+  h += '<div class="block"><h3>The Mughals by topic</h3><div class="grid">' +
+    (EARLY.topics || []).filter(function (t) { return t.era === 'medieval'; }).map(function (t) {
+      return '<a class="pcard" href="#/early/topic/' + encodeURIComponent(t.id) + '">' +
+        '<div class="pn">' + esc(t.n) + '</div><div class="pt">' + esc(t.w) + '</div></a>';
+    }).join('') + '</div></div>';
+  return earlyShell(h);
+}
+
+function emperorPage(id) {
+  var e = emperorById[id];
+  if (!e || e.kind === 'later') return earlyShell(earlyCrumb([['The Mughal emperors', '#/early/mughals'], ['Not found']]) +
+    '<div class="empty"><b>No page for that name</b>The later Mughals are listed one line each on ' +
+    '<a href="#/early/mughals">the emperors page</a>.</div>');
+
+  var all = greatEmperors(), i = all.indexOf(e);
+  var h = earlyCrumb([['The Mughal emperors', '#/early/mughals'], [e.n]]) +
+    '<div class="arthead"><div class="big">' + e.from + '<span style="font-size:.5em">' +
+    yrSpan(e.from, e.to).slice(4) + '</span></div><div class="ht">' +
+    '<h1>' + esc(e.n) + '</h1>' +
+    '<div class="chips">' + (e.kind === 'sur' ? '<span class="chip">Sur dynasty</span>'
+                                               : '<span class="chip live">Mughal emperor</span>') +
+    (e.full ? '<span class="chip amd">' + esc(e.full) + '</span>' : '') + '</div></div></div>';
+
+  h += notesBlock(e.notes, 'the reign in ' + (e.notes || []).length + ' lines');
+  h += '<div class="block"><h3>Who he was</h3><p class="plain">' + prose(e.w) + '</p></div>';
+  h += factsBlock({ h: 'Life', rows: [['Reigned', yrSpan(e.from, e.to)], ['Born', e.born],
+                                      ['Died', e.died], ['Buried', e.tomb]].filter(function (r) { return r[1]; }) });
+  h += '<div class="block"><h3>What happened in his reign</h3><ul class="trail">' +
+    (e.key || []).map(function (k, j) {
+      return '<li><span class="an">' + (j + 1) + '</span><span class="ad">' + prose(k, 2) + '</span></li>';
+    }).join('') + '</ul></div>';
+
+  var prev = all[i - 1], next = all[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/early/emperor/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Before</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/early/emperor/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">After</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+  return earlyShell(h);
+}
+
+function earlyConfusions() {
+  var h = earlyCrumb([['Confused pairs']]) +
+    pageH1('The pairs that get mixed up',
+      'Two councils in one city, three battles on one field, and four tombs not one of which ' +
+      'was built by the person inside it.');
+  h += (EARLY.confusions || []).map(cmpBlock).join('');
+  return earlyShell(h);
+}
+
+function earlyRoute(seg) {
+  switch (seg[0] || '') {
+    case '':           return render(earlyHome());
+    case 'topic':      return render(earlyTopicPage(seg[1]));
+    case 'mughals':    return render(emperorsPage());
+    case 'emperor':    return render(emperorPage(seg[1]));
+    case 'confusions': return render(earlyConfusions());
+    default:           return notFound('That address does not exist in Ancient and Medieval History.');
+  }
+}
+
+SUBJECTS.push({
+  id: 'early',
+  name: 'Ancient and Medieval History',
+  short: 'Ancient & Medieval',
+  blurb: 'Jainism and the Jain councils, and the Mughal empire from Babur to Bahadur Shah Zafar: the battles, the administration, the buildings and the books.',
+  tabs: [
+    { href: '#/early',            label: 'Topics',          match: ['', 'topic'] },
+    { href: '#/early/mughals',    label: 'Mughal emperors', match: ['mughals', 'emperor'] },
+    { href: '#/early/confusions', label: 'Confused pairs',  match: ['confusions'] }
+  ],
+  stats: function () {
+    var total = (EARLY.topics || []).reduce(function (a, t) { return a + earlyRows(t); }, 0);
+    return [(EARLY.topics || []).length + ' topics', greatEmperors().length + ' emperors',
+            total + ' facts'];
+  },
+  topics: function () {
+    var out = (EARLY.topics || []).map(function (t) {
+      return { t: t.n, href: '#/early/topic/' + encodeURIComponent(t.id), w: t.w,
+               k: t.blocks.map(function (b) { return b.h; }).join(' ') +
+                  (t.era === 'medieval' ? ' mughal mughals medieval' : ' ancient'),
+               n: earlyRows(t) + ' facts' };
+    });
+    out.splice(1, 0, { t: 'The Mughal emperors, 1526 to 1857', href: '#/early/mughals',
+      n: greatEmperors().length + ' in detail',
+      w: 'Babur, Humayun, Sher Shah, Akbar, Jahangir, Shah Jahan and Aurangzeb, each on a page, and the later Mughals in a line each.',
+      k: 'mughal mughals babur humayun akbar jahangir shah jahan aurangzeb sher shah suri bahadur shah zafar medieval' });
+    out.push({ t: 'Ancient and Medieval - confused pairs', href: '#/early/confusions',
+               n: (EARLY.confusions || []).length + ' pairs',
+               w: 'The two councils at Pataliputra, the three Panipats, and four tombs with four builders.' });
+    return out;
+  },
+  route: earlyRoute
+});
+
+/* =========================================================================
    SHARED RENDERERS
 
    Three of the four subjects are written rather than extracted, and they
@@ -2180,26 +2407,52 @@ function pageH1(t, sub) {
          esc(t) + '</h1>' + (sub ? '<p class="sub">' + esc(sub) + '</p>' : '');
 }
 
+/* ------------------------------------------------------------ highlights
+
+   The SSC notes. Everywhere else on the site emphasis is a change of
+   typeface, applied by rule. A highlighted note is different: it is a
+   one-line answer, and inside it ONE phrase is the thing the question
+   asks for. A rule cannot know which phrase that is, so the data says so,
+   by wrapping it in ==double equals==. The marker never appears in the
+   text the reader sees and never reaches the search results.
+
+   The highlight is a low band of yellow behind the words rather than a
+   solid block, so it reads as marked on the dark ground without glaring. */
+function hiMark(html) {
+  return String(html).replace(/==([\s\S]+?)==/g, '<mark class="hi">$1</mark>');
+}
+function unmark(s) { return String(s == null ? '' : s).replace(/==/g, ''); }
+
+/* A box of highlighted one-liners: the page reduced to what to write down. */
+function notesBlock(notes, title) {
+  if (!notes || !notes.length) return '';
+  return '<aside class="ssc"><div class="ssch"><span class="sscl">SSC notes</span>' +
+    (title ? '<span class="ssct">' + esc(title) + '</span>' : '') + '</div><ol>' +
+    notes.map(function (n) { return '<li>' + hiMark(prose(n, 2)) + '</li>'; }).join('') +
+    '</ol></aside>';
+}
+
 /* A confused pair: a heading, two or more labelled rows, and the note that
    says which one the question is actually asking about. */
 function cmpBlock(c) {
   return '<div class="cmp"><div class="cmph">' + esc(c.k) + '</div>' +
     c.rows.map(function (r) {
       return '<div class="cmpr"><div class="cmpk">' + esc(r[0]) + '</div>' +
-             '<div class="cmpv">' + prose(r[1], 2) + '</div></div>';
+             '<div class="cmpv">' + hiMark(prose(r[1], 2)) + '</div></div>';
     }).join('') +
-    (c.note ? '<div class="cmpn">' + prose(c.note, 2) + '</div>' : '') + '</div>';
+    (c.note ? '<div class="cmpn">' + hiMark(prose(c.note, 2)) + '</div>' : '') + '</div>';
 }
 
 /* A table of facts. Modern History calls the group `g` and its rows `items`;
    Economy and Static GK call them `h` and `rows`. Both are accepted rather
-   than rewriting two data files to agree on a letter. */
+   than rewriting two data files to agree on a letter. A row may carry a
+   ==highlight== on the part of it that is the answer. */
 function factsBlock(g) {
   var items = g.items || g.rows || [];
   return '<div class="block"><h3>' + esc(g.g || g.h || '') + '</h3>' +
-    (g.note ? '<p class="foot before">' + esc(g.note) + '</p>' : '') +
+    (g.note ? '<p class="foot before">' + hiMark(esc(g.note)) + '</p>' : '') +
     '<dl class="facts">' + items.map(function (it) {
-      return '<dt>' + esc(it[0]) + '</dt><dd>' + esc(it[1]) + '</dd>';
+      return '<dt>' + hiMark(esc(it[0])) + '</dt><dd>' + hiMark(esc(it[1])) + '</dd>';
     }).join('') + '</dl></div>';
 }
 
@@ -2281,8 +2534,26 @@ function econHome() {
     fig((ECON.topics || []).length, 'standing topics') +
     fig((ECON.confusions || []).length, 'confused pairs') + '</div>';
 
+  h += notesBlock(ECON.planNotes, 'all fifteen in ' + (ECON.planNotes || []).length + ' lines');
+
   h += '<div class="block"><h3>The plans, in order</h3>' +
     (ECON.plans || []).map(econPlanRow).join('') + '</div>';
+
+  /* Built from the plans themselves rather than stored, so the summary can
+     never disagree with the pages it summarises. */
+  h += factsBlock({ h: 'At a glance', note: 'One line each: years, model where there was one, focus, and growth.',
+    rows: (ECON.plans || []).map(function (p) {
+      var head = (p.kind === 'plan' ? ordinal(p.no) + ' Plan' : p.n) + ', ' + p.from + '\u2013' + String(p.to).slice(2);
+      var bits = [];
+      if (p.model) bits.push(p.model);
+      bits.push(p.theme);
+      if (p.kind === 'plan') bits.push(econRate(p));
+      return [head, bits.join(' \u00b7 ')];
+    }) });
+
+  h += factsBlock({ h: 'Which plan was it?',
+    note: 'The question is usually put this way round: a scheme, an Act or an event, and the plan it fell in.',
+    rows: ECON.planMatch || [] });
 
   h += '<div class="block"><h3>Start here</h3><div class="grid">' +
     '<a class="pcard" href="#/economy/reforms"><div class="pn">1991</div>' +
@@ -2316,6 +2587,9 @@ function econPlanPage(id) {
         '<span class="chip live">Plan ' + p.no + '</span>') +
       (p.model ? '<span class="chip amd">' + esc(p.model) + '</span>' : '') +
     '</div></div></div>';
+
+  h += notesBlock(p.ssc, p.kind === 'plan' ? 'the plan in ' + (p.ssc || []).length + ' lines'
+                                            : 'the gap in ' + (p.ssc || []).length + ' lines');
 
   h += '<div class="block"><h3>What it was for</h3>' +
     '<p class="plain">' + prose(p.theme) + '</p>' +
@@ -2356,6 +2630,8 @@ function econPlanPage(id) {
 function econReform() {
   var r = ECON.reform || {};
   var h = econCrumb('1991') + pageH1(r.title || '1991', r.lede || '');
+  h += notesBlock(r.notes, '1991 in ' + (r.notes || []).length + ' lines');
+  if (r.dates) h += factsBlock({ h: 'The dates, in order', rows: r.dates });
 
   h += '<div class="block"><h3>' + esc((r.crisis || {}).h || 'How the crisis built') + '</h3>' +
     '<p class="plain">' + prose((r.crisis || {}).w || '') + '</p>' +
@@ -2371,6 +2647,7 @@ function econReform() {
       }).join('') + '</dl></div>';
   });
 
+  if (r.terms) h += factsBlock({ h: 'The words the questions use', rows: r.terms });
   h += factsBlock({ h: 'The committees behind the reforms', rows: r.committees || [] });
   h += factsBlock({ h: 'What followed, and what did not',
                     note: 'The criticisms are here alongside the achievements, because both are asked.',
@@ -2450,9 +2727,11 @@ SUBJECTS.push({
     var out = [
       { t: 'The Five Year Plans', href: '#/economy',
         n: (ECON.plans || []).length + ' plans and gaps',
-        w: 'Every plan from 1951 to 2017 — its model, its target, what it achieved and what happened in it.' },
+        w: 'Every plan from 1951 to 2017 — its model, its target, what it achieved and what happened in it — with SSC notes, a one-line-each table, and which scheme fell in which plan.',
+        k: 'harrod domar mahalanobis gadgil formula garibi hatao rolling plan plan holiday annual plans nabard irdp which plan at a glance ssc notes' },
       { t: 'The 1991 reforms', href: '#/economy/reforms', n: 'liberalisation, privatisation, globalisation',
-        w: 'The balance of payments crisis, the gold flown to London, and the three kinds of change that followed.' }
+        w: 'The balance of payments crisis, the gold flown to London, the dates in order, and the three kinds of change that followed.',
+        k: 'lpg new economic policy nep narasimha rao manmohan singh gold devaluation stabilisation structural adjustment fera fema sebi narasimham chelliah' }
     ];
     (ECON.topics || []).forEach(function (t) {
       out.push({ t: t.n, href: '#/economy/topic/' + encodeURIComponent(t.id), w: t.w,
@@ -2469,12 +2748,19 @@ SUBJECTS.push({
 
 /* =========================================================================
    SUBJECT: STATIC GENERAL KNOWLEDGE
-   Eighteen packs of the material that does not change from year to year.
+   Twenty packs of the material that does not change from year to year.
    ========================================================================= */
 
 var GKD = window.GK || {};
 var gkPackById = {};
 (GKD.packs || []).forEach(function (p) { gkPackById[p.id] = p; });
+
+var GK_SEE_ALSO = {
+  sports: ['cups',   'Every cup and trophy, sport by sport, is in'],
+  cups:   ['sports', 'Players on a side, the terms of each game and the Olympic milestones are in'],
+  space:  ['isro',   'Every ISRO mission in order, the centres, the rockets and what is coming next are in'],
+  isro:   ['space',  'The nuclear programme, the missiles and the armed forces are in']
+};
 
 function gkRows(p) {
   return p.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
@@ -2486,8 +2772,8 @@ function gkHome() {
   var total = (GKD.packs || []).reduce(function (a, p) { return a + gkRows(p); }, 0);
   var h = '<div class="crumb">Static GK</div>' +
     pageH1('The facts that do not move',
-      'Eighteen packs of static general knowledge — chosen because the answer is the same this year as ' +
-      'last. Current affairs are deliberately not here: they go stale, and mixing them in is how a ' +
+      (GKD.packs || []).length + ' packs of static general knowledge — chosen because the answer is the same this year as ' +
+      'last. Current affairs are kept apart, in the dated study sets: they go stale, and mixing them in is how a ' +
       'study file quietly stops being true.');
 
   h += '<div class="figs">' + fig((GKD.packs || []).length, 'packs') +
@@ -2512,6 +2798,14 @@ function gkPackPage(id) {
   var h = '<div class="crumb"><a href="#/gk">Static GK</a> → ' + esc(p.n) + '</div>' +
     pageH1(p.n, p.w);
   if (p.intro) h += '<p class="plain stack">' + prose(p.intro) + '</p>';
+  h += notesBlock(p.notes, 'the pack in ' + (p.notes || []).length + ' lines');
+  /* The short pack and the full one on the same ground point at each
+     other, so a reader on the revision version knows the full one exists. */
+  var see = GK_SEE_ALSO[p.id];
+  if (see && gkPackById[see[0]]) {
+    h += '<p class="why stack">' + esc(see[1]) + ' <a href="#/gk/pack/' + see[0] + '">' +
+      esc(gkPackById[see[0]].n) + '</a>.</p>';
+  }
   h += p.blocks.map(factsBlock).join('');
 
   var prev = packs[i - 1], next = packs[i + 1];
@@ -2545,7 +2839,7 @@ SUBJECTS.push({
   id: 'gk',
   name: 'Static General Knowledge',
   short: 'Static GK',
-  blurb: 'National symbols, dances, awards, sports, rivers and dams, parks, heritage sites, days, books, headquarters, science and the states.',
+  blurb: 'National symbols, dances, awards, sports and every cup by sport, rivers and dams, parks, heritage sites, days, books, headquarters, science, ISRO\'s missions and the states.',
   tabs: [
     { href: '#/gk',             label: 'All packs',      match: ['', 'pack'] },
     { href: '#/gk/confusions',  label: 'Confused pairs', match: ['confusions'] }
@@ -2678,6 +2972,161 @@ SUBJECTS.push({
                  w: 'Anopheles against Aedes, kwashiorkor against marasmus, and mellitus against insipidus.' }]);
   },
   route: bioRoute
+});
+
+/* =========================================================================
+   SUBJECT: DAILY STUDY SETS
+
+   One page per study day, labelled with its date. Current affairs live
+   here, because here a date can be put on them; the rest of each set is a
+   revision sheet for what was added to the site that day, built from notes
+   that already live on the subject pages rather than copied out of them.
+
+   Each set is also a section of its own in the strip at the top of the
+   page, so "10 October" is one tap from anywhere in the subject.
+   ========================================================================= */
+
+var DAILY = window.DAILY || {};
+var DAILY_SETS = DAILY.sets || [];
+var dailyById = {};
+DAILY_SETS.forEach(function (d) { dailyById[d.id] = d; });
+
+/* A recap part names the notes it shows by address, so the set and the page
+   it summarises can never disagree. */
+function dailyNotesFrom(key) {
+  if (key === 'econ.reform') return (ECON.reform || {}).notes;
+  if (key === 'econ.plans')  return ECON.planNotes;
+  if (key === 'early.mughals') return EARLY.mughalNotes;
+  var m = /^(gk|early)\.(.+)$/.exec(key || '');
+  if (!m) return null;
+  return ((m[1] === 'gk' ? gkPackById : earlyTopicById)[m[2]] || {}).notes;
+}
+
+function dailyNotes(part) {
+  return part.notes || dailyNotesFrom(part.from) || [];
+}
+
+function dailyShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function dailyHome() {
+  var h = '<div class="crumb">Daily sets</div>' +
+    pageH1('Daily study sets',
+      'One page for each study day, labelled with its date. The current affairs live here, where a ' +
+      'date can be put on them; the rest of each set is a sheet of highlighted SSC notes for what was ' +
+      'added that day, with a link to the full page.');
+  h += '<div class="block"><h3>The sets, newest first</h3>' +
+    DAILY_SETS.map(function (d) {
+      var n = d.parts.reduce(function (a, p) { return a + dailyNotes(p).length; }, 0);
+      return '<a class="arow hy" href="#/daily/' + encodeURIComponent(d.id) + '">' +
+        '<span class="no range">' + esc(d.d) + '</span>' +
+        '<span class="tx"><b>' + esc(d.d + ' ' + d.y) + '</b><i>' + esc(d.w) + '</i></span>' +
+        '<span class="tag"><span class="chip live">' + n + ' notes</span></span></a>';
+    }).join('') + '</div>';
+  return dailyShell(h);
+}
+
+function dailyPart(part) {
+  var h = '<section class="setpart" id="part-' + esc(part.id) + '">' +
+    '<p class="eyebrow">' + esc(part.tag || '') + '</p>' +
+    '<h2>' + esc(part.h) + '</h2>' +
+    (part.w ? '<p class="sub">' + esc(part.w) + '</p>' : '');
+  h += notesBlock(dailyNotes(part), part.from ? 'revise these first' : '');
+  (part.blocks || []).forEach(function (b) { h += factsBlock(b); });
+  if (part.cmp && part.cmp.length) {
+    h += '<div class="block"><h3>The pairs that get mixed up</h3>' +
+      part.cmp.map(cmpBlock).join('') + '</div>';
+  }
+  if (part.links && part.links.length) {
+    h += '<div class="setlinks">' + part.links.map(function (l) {
+      return '<a class="pill" href="' + l[0] + '">' + esc(l[1]) + ' →</a>';
+    }).join('') + '</div>';
+  }
+  return h + '</section>';
+}
+
+function dailySetPage(id) {
+  var d = dailyById[id];
+  if (!d) return dailyShell('<div class="crumb"><a href="#/daily">Daily sets</a></div>' +
+    '<div class="empty"><b>No set for that date</b>The sets that exist are listed on ' +
+    '<a href="#/daily">the Daily sets page</a>.</div>');
+
+  var i = DAILY_SETS.indexOf(d);
+  var notes = d.parts.reduce(function (a, p) { return a + dailyNotes(p).length; }, 0);
+  var h = '<div class="crumb"><a href="#/daily">Daily sets</a> → ' + esc(d.d) + '</div>' +
+    '<span class="datebadge">Study set · ' + esc(d.d + ' ' + d.y) + '</span>' +
+    pageH1(d.d, d.w);
+  if (d.intro) h += '<p class="plain stack">' + prose(d.intro) + '</p>';
+  h += '<div class="figs">' + fig(d.parts.length, 'parts') + fig(notes, 'highlighted notes') +
+    fig(d.parts.filter(function (p) { return !p.from; }).length, 'current-affairs parts') + '</div>';
+
+  /* Contents. Buttons rather than links: the address is the router's, so an
+     in-page anchor would be read as a route. */
+  h += '<div class="listtabs stack">' + d.parts.map(function (p) {
+    return '<button type="button" onclick="location.hash=\'#/daily/' + esc(d.id) + '/' +
+      esc(p.id) + '\'">' + esc(p.h) + '</button>';
+  }).join('') + '</div>';
+
+  h += d.parts.map(dailyPart).join('');
+
+  var newer = DAILY_SETS[i - 1], older = DAILY_SETS[i + 1];
+  h += '<div class="nextprev">' +
+    (older ? '<a href="#/daily/' + encodeURIComponent(older.id) + '">' +
+      '<span class="d">Earlier set</span><span class="t">' + esc(older.d) + '</span></a>' : '<span></span>') +
+    (newer ? '<a class="r" href="#/daily/' + encodeURIComponent(newer.id) + '">' +
+      '<span class="d">Later set</span><span class="t">' + esc(newer.d) + '</span></a>' : '<span></span>') +
+    '</div>';
+  return dailyShell(h);
+}
+
+/* #/daily/10-october/booker opens the set at that part. render() has just
+   put the page at the top, so this scroll happens on the page the reader
+   asked for, and it is instant for the same reason jumpToTop is. */
+function scrollToPart(partId) {
+  var el = document.getElementById('part-' + partId);
+  if (!el) return;
+  var head = document.querySelector('header.top');
+  var off = head ? head.getBoundingClientRect().height : 0;
+  var root = document.documentElement, prev = root.style.scrollBehavior;
+  root.style.scrollBehavior = 'auto';
+  window.scrollTo(0, el.getBoundingClientRect().top + window.pageYOffset - off - 12);
+  root.style.scrollBehavior = prev;
+}
+
+function dailyRoute(seg) {
+  if (!seg[0]) return render(dailyHome());
+  render(dailySetPage(seg[0]));
+  if (seg[1]) scrollToPart(seg[1]);
+}
+
+SUBJECTS.push({
+  id: 'daily',
+  name: 'Daily study sets',
+  short: 'Daily sets',
+  blurb: 'One page per study day, labelled with its date: the current affairs that go stale, and highlighted SSC notes for everything added that day.',
+  tabs: [{ href: '#/daily', label: 'All sets', match: [''] }].concat(DAILY_SETS.map(function (d) {
+    return { href: '#/daily/' + d.id, label: d.d, match: [d.id] };
+  })),
+  stats: function () {
+    return [DAILY_SETS.length + (DAILY_SETS.length === 1 ? ' set' : ' sets'),
+            DAILY_SETS.reduce(function (a, d) {
+              return a + d.parts.reduce(function (b, p) { return b + dailyNotes(p).length; }, 0);
+            }, 0) + ' notes'];
+  },
+  topics: function () {
+    var out = [];
+    DAILY_SETS.forEach(function (d) {
+      out.push({ t: d.d + ' ' + d.y, href: '#/daily/' + d.id, w: d.w,
+                 n: d.parts.length + ' parts',
+                 k: d.parts.map(function (p) { return p.h; }).join(' ') + ' daily set current affairs' });
+      d.parts.filter(function (p) { return !p.from; }).forEach(function (p) {
+        out.push({ t: p.h + ' (' + d.d + ')', href: '#/daily/' + d.id + '/' + p.id, w: p.w,
+                   n: dailyNotes(p).length + ' notes',
+                   k: (p.blocks || []).map(function (b) { return b.h; }).join(' ') + ' current affairs ' + d.d });
+      });
+    });
+    return out;
+  },
+  route: dailyRoute
 });
 
 /* ----------------------------------------------------------------- index
@@ -2924,6 +3373,40 @@ function indexPage() {
     idxGroup('Sections', bioSections, true) +
     idxGroup('The topics', bioItems));
 
+  /* ------------------------------------------------- Ancient and Medieval */
+  var earlySections = count([
+    { t: 'Every topic, listed', href: '#/s/early' },
+    { t: 'The topics', href: '#/early' },
+    { t: 'The Mughal emperors', href: '#/early/mughals' },
+    { t: 'Confused pairs', href: '#/early/confusions' }
+  ]);
+  var earlyItems = count((EARLY.topics || []).map(function (t) {
+    return { t: t.n, href: '#/early/topic/' + encodeURIComponent(t.id), n: earlyRows(t) + ' facts' };
+  }));
+  var empItems = count(greatEmperors().map(function (e) {
+    return { t: e.n, href: '#/early/emperor/' + encodeURIComponent(e.id), n: yrSpan(e.from, e.to) };
+  }));
+
+  h += idxSection('Ancient and Medieval History',
+    (EARLY.topics || []).length + ' topics \u00b7 ' + greatEmperors().length + ' emperors',
+    idxGroup('Sections', earlySections, true) +
+    idxGroup('The topics', earlyItems) +
+    idxGroup('The emperors', empItems));
+
+  /* ----------------------------------------------------------- Daily sets */
+  var dailyItems = count([{ t: 'Every set', href: '#/daily' }].concat(DAILY_SETS.map(function (d) {
+    return { t: d.d + ' ' + d.y, href: '#/daily/' + d.id, n: d.parts.length + ' parts' };
+  })));
+  var dailyParts = count([].concat.apply([], DAILY_SETS.map(function (d) {
+    return d.parts.map(function (p) {
+      return { t: p.h, href: '#/daily/' + d.id + '/' + p.id, n: d.d };
+    });
+  })));
+
+  h += idxSection('Daily study sets', DAILY_SETS.length + (DAILY_SETS.length === 1 ? ' set' : ' sets'),
+    idxGroup('The sets', dailyItems, true) +
+    idxGroup('Every part of every set', dailyParts));
+
   h += '<p class="foot">' + total + ' pages listed. Every one of them is also ' +
     'reachable from the search box at the top, which looks inside the pages as well ' +
     'as at their names.</p></div>';
@@ -2945,9 +3428,10 @@ function aboutPage() {
   '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s5);font-weight:600">' +
   'How this was built, and what to trust</h1>' +
 
-  '<p class="plain">Five subjects: the Constitution of India — including the Constituent ' +
-  'Assembly that wrote it — Modern History, the Indian Economy, Static General Knowledge ' +
-  'and Biology. They are organised by topic rather than by subject, because a reader ' +
+  '<p class="plain">' + SUBJECTS.length + ' subjects: the Constitution of India — including the Constituent ' +
+  'Assembly that wrote it — Modern History, Ancient and Medieval History, the Indian Economy, ' +
+  'Static General Knowledge, Biology, and the Daily study sets, one dated page per study day. ' +
+  'They are organised by topic rather than by subject, because a reader ' +
   'arrives knowing what they need to revise rather than which subject it belongs to.</p>' +
 
   '<div class="block"><h3>The Constitution: where the text comes from</h3>' +
@@ -2969,7 +3453,8 @@ function aboutPage() {
   'that Act, and shows nothing where it does not. A missing date is deliberate.</p></div>' +
 
   '<div class="block"><h3>The other subjects are written, not extracted</h3>' +
-  '<p class="plain">Modern History, the Indian Economy, Static GK, Biology and the account ' +
+  '<p class="plain">Modern History, Ancient and Medieval History, the Indian Economy, Static GK, ' +
+  'Biology, the Daily sets and the account ' +
   'of the Constituent Assembly have no equivalent single government document behind them, ' +
   'so they are written from the established record rather than lifted from a source. That is a weaker guarantee than the ' +
   'Constitution\'s, and it is stated rather than hidden: the head of each data file says ' +
@@ -3055,9 +3540,19 @@ function aboutPage() {
   'removes a word: strip the marks from any paragraph on this site and you get back exactly ' +
   'the text that was written. The official text of the Constitution is not marked at all.</p></div>' +
 
+  '<div class="block"><h3>The one place with a highlighter</h3>' +
+  '<p class="plain">The SSC notes are different. Each is a one-line answer, and inside it one ' +
+  'phrase is what an answer sheet wants, so that phrase is <mark class="hi">highlighted</mark>. ' +
+  'A rule cannot know which phrase that is, so the highlight is written into the data by hand, ' +
+  'and the boxes sit at the top of the pages that have them: every new topic, every Five Year ' +
+  'Plan, the 1991 reforms, every Mughal emperor and each daily set.</p>' +
+  '<p class="why">Current affairs are kept to the Daily sets, where each page carries its date. ' +
+  'A Booker winner or a cup holder changes every year; on a dated page an old answer reads as ' +
+  'old rather than as wrong.</p></div>' +
+
   '<div class="block"><h3>Offline, and installable as an app</h3>' +
-  '<p class="plain">All five subjects are loaded into your browser the first time you open ' +
-  'the page — about 1.6 MB in total, once, fonts and all. After that the site works with no network at ' +
+  '<p class="plain">Every subject is loaded into your browser the first time you open ' +
+  'the page — about 1.8 MB in total, once, fonts and all. After that the site works with no network at ' +
   'all: on a train, on a plane, or with the data switched off.</p>' +
   '<p class="plain stack">You can also install it, so it gets its own icon and opens in its ' +
   'own window without the browser bars. In Chrome and Edge the button below installs it in ' +
@@ -3162,8 +3657,9 @@ function buildIndex() {
       kind: 'plan', id: p.id, no: String(p.from), title: p.n,
       sub: p.theme + (p.kind === 'plan' ? ' \u00b7 target ' + p.tgt + '%' : ''),
       near: (p.n + ' ' + p.theme + ' ' + p.w).toLowerCase(),
-      hay: (p.n + ' ' + p.from + ' ' + p.to + ' ' + p.theme + ' ' + p.w + ' ' +
-            (p.model || '') + ' ' + (p.key || []).join(' ') + ' ' + (p.note || '')).toLowerCase(),
+      hay: unmark(p.n + ' ' + p.from + ' ' + p.to + ' ' + p.theme + ' ' + p.w + ' ' +
+            (p.model || '') + ' ' + (p.key || []).join(' ') + ' ' + (p.note || '') + ' ' +
+            (p.ssc || []).join(' ')).toLowerCase(),
       href: '#/economy/plan/' + encodeURIComponent(p.id), num: ''
     });
   });
@@ -3199,8 +3695,21 @@ function buildIndex() {
               return p.k + ' ' + p.w + ' ' + p.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ');
             }).join(' ') + ' ' +
             (ECON.reform.committees || []).map(function (r) { return r[0] + ' ' + r[1]; }).join(' ') + ' ' +
-            (ECON.reform.after || []).map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+            (ECON.reform.after || []).map(function (r) { return r[0] + ' ' + r[1]; }).join(' ') + ' ' +
+            unmark((ECON.reform.notes || []).join(' ')) + ' ' +
+            (ECON.reform.dates || []).concat(ECON.reform.terms || []).map(function (r) {
+              return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
       href: '#/economy/reforms', num: ''
+    });
+  }
+  if (ECON.planMatch) {
+    searchIndex.push({
+      kind: 'plan', id: 'plan-match', no: '', title: 'Which plan was it?',
+      sub: 'Schemes, Acts and events matched to the Five Year Plan they fell in',
+      near: 'which plan five year plan scheme',
+      hay: ('which plan five year plans at a glance ' + unmark((ECON.planNotes || []).join(' ')) + ' ' +
+            ECON.planMatch.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+      href: '#/economy', num: ''
     });
   }
 
@@ -3220,7 +3729,7 @@ function buildIndex() {
       searchIndex.push({
         kind: 'static gk', id: p.id + '-' + i, no: '', title: b.h, sub: p.n,
         near: b.h.toLowerCase(),
-        hay: (b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+        hay: unmark(b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
         href: href, num: ''
       });
     });
@@ -3288,6 +3797,82 @@ function buildIndex() {
     });
   });
 
+
+  /* Ancient and Medieval History: every topic and every table inside it,
+     every emperor with his reign in the haystack, and the confused pairs. */
+  function rowsText(rows) {
+    return (rows || []).map(function (r) { return r[0] + ' ' + r[1]; }).join(' ');
+  }
+  (EARLY.topics || []).forEach(function (t) {
+    var href = '#/early/topic/' + encodeURIComponent(t.id);
+    searchIndex.push({
+      kind: t.era === 'medieval' ? 'medieval' : 'ancient', id: 'e-' + t.id, no: '', title: t.n, sub: t.w,
+      near: (t.n + ' ' + t.w).toLowerCase(),
+      hay: unmark(t.n + ' ' + t.w + ' ' + (t.intro || '') + ' ' + (t.notes || []).join(' ') + ' ' +
+            t.blocks.map(function (b) { return b.h + ' ' + rowsText(b.rows); }).join(' ')).toLowerCase(),
+      href: href, num: ''
+    });
+    t.blocks.forEach(function (b, i) {
+      searchIndex.push({
+        kind: t.era === 'medieval' ? 'medieval' : 'ancient', id: 'e-' + t.id + '-' + i, no: '',
+        title: b.h, sub: t.n, near: b.h.toLowerCase(),
+        hay: unmark(b.h + ' ' + (b.note || '') + ' ' + rowsText(b.rows)).toLowerCase(),
+        href: href, num: ''
+      });
+    });
+  });
+  (EARLY.emperors || []).forEach(function (e) {
+    searchIndex.push({
+      kind: 'mughal', id: 'emp-' + e.id, no: String(e.from), title: e.n,
+      sub: (e.kind === 'sur' ? 'Sur dynasty' : 'Mughal emperor') + ' · ' + yrSpan(e.from, e.to),
+      near: (e.n + ' ' + (e.full || '')).toLowerCase(),
+      hay: unmark(e.n + ' ' + (e.full || '') + ' mughal emperor ' + e.from + ' ' + e.to + ' ' + e.w + ' ' +
+            (e.key || []).join(' ') + ' ' + (e.notes || []).join(' ') + ' ' + (e.born || '') + ' ' +
+            (e.tomb || '')).toLowerCase(),
+      href: e.kind === 'later' ? '#/early/mughals' : '#/early/emperor/' + encodeURIComponent(e.id), num: ''
+    });
+  });
+  (EARLY.confusions || []).forEach(function (c, i) {
+    searchIndex.push({
+      kind: 'medieval', id: 'ecmp-' + i, no: '', title: c.k,
+      sub: 'Ancient and Medieval · confused pair', near: c.k.toLowerCase(),
+      hay: unmark(c.k + ' ' + (c.note || '') + ' ' + rowsText(c.rows)).toLowerCase(),
+      href: '#/early/confusions', num: ''
+    });
+  });
+
+  /* The daily sets: each current-affairs table on its own, so "Szalay" or
+     "Thomas Cup 2026" lands on the part of the set that holds it. */
+  DAILY_SETS.forEach(function (d) {
+    d.parts.forEach(function (p) {
+      var href = '#/daily/' + d.id + '/' + p.id;
+      searchIndex.push({
+        kind: 'daily set', id: d.id + '-' + p.id, no: d.d, title: p.h, sub: d.d + ' ' + d.y + ' · ' + (p.w || ''),
+        near: p.h.toLowerCase(),
+        hay: unmark(p.h + ' ' + (p.w || '') + ' ' + d.d + ' ' + dailyNotes(p).join(' ')).toLowerCase(),
+        href: href, num: ''
+      });
+      (p.blocks || []).forEach(function (b, i) {
+        searchIndex.push({
+          kind: 'daily set', id: d.id + '-' + p.id + '-' + i, no: d.d, title: b.h, sub: d.d + ' · ' + p.h,
+          near: b.h.toLowerCase(),
+          hay: unmark(b.h + ' ' + (b.note || '') + ' ' + rowsText(b.rows) + ' ' + p.h).toLowerCase(),
+          href: href, num: ''
+        });
+      });
+    });
+  });
+
+  /* GK packs may carry SSC notes; keep them reachable. */
+  (GKD.packs || []).forEach(function (p) {
+    if (!p.notes) return;
+    searchIndex.push({
+      kind: 'static gk', id: p.id + '-notes', no: '', title: p.n + ': SSC notes', sub: p.w,
+      near: (p.n + ' ssc notes').toLowerCase(),
+      hay: unmark(p.n + ' ssc notes ' + p.notes.join(' ')).toLowerCase(),
+      href: '#/gk/pack/' + encodeURIComponent(p.id), num: ''
+    });
+  });
 
   /* Every Congress session, by year, by place and by president — those are
      the three ways a question can name the same thing, so all three have to
@@ -3456,6 +4041,9 @@ function runSearch(raw) {
           near = r.near || '';
       if (t.indexOf(q) >= 0) score += 120;
       if (t.indexOf(q) === 0) score += 60;
+      /* The page that IS the query beats a table that merely starts with it:
+         "akbar" is the emperor, before "Akbar's nine jewels". */
+      if (t === q) score += 150;
       /* A phrase like "basic structure" or "President's rule" is in no
          heading — it lives in the explanation and in the case holdings. Rank
          a whole-phrase hit there above a record that merely contains the

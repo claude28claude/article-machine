@@ -1,7 +1,7 @@
 # The Article Machine
 
-Five subjects for the Indian exam track, in plain English, organised by
-**topic** rather than by subject. Searchable across all five, works offline,
+Seven subjects for the Indian exam track, in plain English, organised by
+**topic** rather than by subject. Searchable across all of them, works offline,
 installable.
 
 **The Constitution of India** — every article, what it actually means, the
@@ -17,28 +17,41 @@ as different topics.
 **Modern History** — 1600 to 1950: the timeline, the Acts, the people and the
 movements.
 
-**Indian Economy** — every Five Year Plan and every gap between them, the 1991
-reforms in full, and eight standing topics: planning bodies, banking, the
+**Ancient and Medieval History** — what came before 1600: Jainism and the two
+Jain councils (with the Buddhist councils beside them, because Pataliputra
+hosted one of each), and the Mughal empire from Babur to Bahadur Shah Zafar,
+with a page for each great Mughal and topic pages for the battles, the
+administration, Akbar's religious policy, the buildings and the books.
+
+**Indian Economy** — every Five Year Plan and every gap between them, each with
+its own SSC notes, a one-line-each table and a scheme-to-plan lookup; the 1991
+reforms in full, with the dates in order and the vocabulary; and eight standing topics: planning bodies, banking, the
 Budget and GST, poverty and schemes, agriculture, national income, who
 publishes which report, and the international bodies.
 
-**Static General Knowledge** — eighteen packs of the facts that do not change:
-national symbols, dance, awards, sports, firsts, superlatives, rivers and dams,
-national parks, World Heritage Sites, monuments, important days, books,
-headquarters, science, the human body, space and defence, the states, and the
-world.
+**Static General Knowledge** — twenty packs of the facts that do not change:
+national symbols, dance, awards, sports, every cup and trophy by sport, firsts,
+superlatives, rivers and dams, national parks, World Heritage Sites, monuments,
+important days, books, headquarters, science, the human body, space and
+defence, ISRO and every space mission in order, the states, and the world.
 
 **Biology** — three topics done in full rather than in summary: diseases,
 nutrients, and the glands and their hormones.
 
+**Daily study sets** — one page per study day, labelled with its date. The
+current affairs live here, where a date can be put on them (the first set,
+**10 October**, carries the Booker Prize of the last four years and the
+current holder of every cup); the rest of each set is a sheet of highlighted
+SSC notes for what was added to the site that day.
+
 There are two front doors, because a reader arrives with one of two
 questions. `#/` is a **filterable list of every topic** — for when you know
 what you want. `#/index` is **the whole site as an outline**: every subject,
-every section, and every one of the 985 individual pages, folded shut so you
+every section, and every one of the 1,151 individual pages, folded shut so you
 can see the shape at a glance and open only the part you are working through.
 
 The front page is a **filterable list of every topic on the site**. A reader
-arrives knowing what they need to revise, not which of five subjects it lives
+arrives knowing what they need to revise, not which of seven subjects it lives
 in, so `#/` asks that question first and every subject sits one click behind
 it.
 
@@ -175,9 +188,9 @@ number reads as stale rather than as wrong.
 
 | | |
 |---|---|
-| Packs | **18** |
-| Tables | **83** |
-| Facts | **942** |
+| Packs | **20** |
+| Tables | **100** |
+| Facts | **1,123** |
 | Confused pairs | **10** |
 
 The **Important days** pack alone carries 151 rows: every date month by month
@@ -219,6 +232,68 @@ and every disorder that follows from too much or too little.
 not a worm. Malaria is protozoan. Bile contains no enzyme. Vitamin D is really
 a hormone, because the body makes its own. Night blindness is curable and
 colour blindness is not.
+
+## The SSC notes
+
+A box of one-line answers at the top of every new topic, every Five Year Plan,
+the 1991 reforms, every Mughal emperor and every daily set. Inside each line
+the phrase an answer sheet wants is **highlighted**: a low band of yellow
+behind the words, at a quarter strength so it marks without glaring on the
+dark ground.
+
+It is the one place the site uses a highlighter, and it cannot be applied by
+rule, because a rule cannot know which phrase in a sentence is the answer. So
+the data says so, with a double-equals marker:
+
+```js
+"First Jain council: ==Pataliputra==, c. ==300 BCE==, presided over by ==Sthulabhadra==."
+```
+
+`hiMark()` turns each pair into `<mark class="hi">`, and `unmark()` strips
+the markers from everything that goes into the search index, so a reader never
+sees one. `factsBlock` and `cmpBlock` honour the marker too, so a table row can
+highlight the part of it that is the answer. `notesBlock(notes, title)` renders
+a box; a page that has no `notes` simply shows none.
+
+## Ancient and Medieval History
+
+`data-early.js` — six topics, the Mughal emperors, and the confused pairs.
+
+| | |
+|---|---|
+| Topics | **6** — Jainism and the councils; Mughal battles; administration and revenue; Akbar's religious policy; architecture and painting; books, writers and travellers |
+| Emperors | **7** in full (Babur to Aurangzeb, with Sher Shah), and the **9** later Mughals a line each |
+| Tables | **28**, 188 facts |
+| SSC notes | **82** |
+| Confused pairs | **11** — two councils at Pataliputra, three Panipats, four tombs and four builders |
+
+**Where the date moves, both are given.** The second Jain council is 512 CE in
+the books SSC follows and 453 or 454 CE in others, because tradition dates it
+from Mahavira's death and that date is itself disputed. Akbar's "nine jewels"
+is a later tradition, and the page says so. "Gadgil Yojana" for the Third Plan
+is flagged as a coaching-book label: the Gadgil formula came in 1969.
+
+## The daily study sets
+
+`data-daily.js` — one entry per study day, newest first. A set holds two kinds
+of part:
+
+- a **full** part carries its own `notes` and `blocks`. Current affairs live
+  here and nowhere else: the Booker Prize 2022 to 2025 with the International
+  Booker beside it and the 2026 shortlist, and the latest holder of every cup;
+- a **recap** part carries `from: "gk.cups"`, `"econ.reform"`,
+  `"early.jainism"` and so on: the address of notes that already live on a
+  subject page. The set shows those notes and links to the page. Nothing is
+  copied, so the two cannot drift apart.
+
+Each set is its own section in the strip at the top of the subject, so
+**10 October** is one tap from anywhere in it, and `#/daily/10-october/booker`
+opens the set at that part. To add tomorrow's, put one more entry at the top
+of `sets`; it reaches the strip, the hub, the index and the search on its own.
+
+Every current-affairs row says what date it is true as of. The Booker 2026
+winner is due on 9 November 2026 and Gaganyaan G1 has not flown as of 10
+October 2026; both are written so that they read as dated, not as wrong.
 
 ## Adding another subject
 
@@ -293,11 +368,13 @@ of them so a reader can check what a summary lost.
 | `data-history.js` | Modern History: eras, timeline, Acts, people, movements |
 | `data-history-hy.js` | Modern History's exam layer |
 | `data-economy.js` | The plans, the 1991 reforms, the standing topics, the exam layer |
-| `data-gk.js` | 18 packs of static general knowledge, 850 facts |
+| `data-gk.js` | 20 packs of static general knowledge, 1,123 facts |
 | `data-assembly.js` | The Constituent Assembly: story, dates, committees, people, debates |
 | `data-biology.js` | Diseases, nutrients, and glands and hormones |
 | `data-treaties.js` | The treaties of modern Indian history, and the agreements since 1947 |
 | `data-artmap.js` | The Constitution indexed by subject, and the courts article by article |
+| `data-early.js` | Ancient and Medieval History: Jainism and its councils, and the Mughals |
+| `data-daily.js` | The dated daily study sets: current affairs, and recaps of what was added |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline |
 | `fonts/*.woff2` | Literata, Inter and IBM Plex Mono, latin subsets, 139 KB in total |
@@ -328,7 +405,7 @@ The navigation is the Answer Key's, ported:
 
 | | |
 |---|---|
-| **The bar** | One row in the header, the same on every page: Index · Constitution · History · Economy · Static GK · Biology · About. The subject you are in is underlined in yellow, so any subject is one tap from anywhere. |
+| **The bar** | One row in the header, the same on every page: Index · Constitution · History · Ancient & Medieval · Economy · Static GK · Biology · Daily sets · About. The subject you are in is underlined in yellow, so any subject is one tap from anywhere. |
 | **A subject's page** — `#/s/<id>` | What the bar opens. Every topic in the subject, numbered, with a line on what each covers, and the subject's sections in a rail beside them (a strip across the top on a phone). |
 | **The section strip** | Across the top of every page inside a subject; the section you are in is underlined in purple. Its first item is the subject itself and leads back to its topics. |
 | **The index** — `#/` | Every subject as a card, every topic inside it, and a filter. The full page-by-page outline is one link away at `#/index`. |
@@ -463,7 +540,7 @@ Then open <http://localhost:8137>. It is also registered in the workspace
 
 - The **front page filters topics** by name and description. If nothing
   matches, it hands the query to the deep search rather than dead-ending.
-- `/` focuses the search box. It searches all four subjects: article numbers,
+- `/` focuses the search box. It searches every subject: article numbers,
   headings, the plain-English notes, the official text, case names, amendment
   subjects, history events, plans, and every table of facts — down to the
   individual table, so "lactometer" reaches "Instruments and what they measure".
