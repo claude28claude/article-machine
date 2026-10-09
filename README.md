@@ -1,6 +1,6 @@
 # The Article Machine
 
-Seven subjects for the Indian exam track, in plain English, organised by
+Eight subjects for the Indian exam track, in plain English, organised by
 **topic** rather than by subject. Searchable across all of them, works offline,
 installable.
 
@@ -41,6 +41,11 @@ world.
 **Biology** — three topics done in full rather than in summary: diseases,
 nutrients, and the glands and their hormones.
 
+**Advanced Maths** — every SSC formula for algebra, geometry, mensuration,
+trigonometry and coordinate geometry, with a recall drill that hides each
+formula until you have produced it, 164 practice questions with worked
+solutions, and 23 diagrams; profit, loss and mixture kept separate.
+
 **Daily study sets** — one page per study day, labelled with its date. The
 current affairs live here, where a date can be put on them (the first set,
 **10 October**, carries the Booker Prize of the last four years and the
@@ -54,7 +59,7 @@ every section, and every one of the 1,151 individual pages, folded shut so you
 can see the shape at a glance and open only the part you are working through.
 
 The front page is a **filterable list of every topic on the site**. A reader
-arrives knowing what they need to revise, not which of seven subjects it lives
+arrives knowing what they need to revise, not which of eight subjects it lives
 in, so `#/` asks that question first and every subject sits one click behind
 it.
 
@@ -236,6 +241,72 @@ not a worm. Malaria is protozoan. Bile contains no enzyme. Vitamin D is really
 a hormone, because the body makes its own. Night blindness is curable and
 colour blindness is not.
 
+## Advanced Maths
+
+| | |
+|---|---|
+| Chapters | **11** — nine advance, two arithmetic |
+| Formulas | **344**, each with a prompt, the formula and a note |
+| Practice questions | **164**, four options, worked solution |
+| Diagrams | **23** inline SVG figures |
+
+**The first subject that is not a thing to read.** The other five answer *what
+is the rule*; this one answers *do I actually know the rule*, which is a
+different question and needs a different page. So every chapter has three
+views:
+
+| View | Address | What it does |
+|---|---|---|
+| The sheet | `#/maths/chapter/<id>` | Every formula open. The reference view |
+| The recall drill | `#/maths/recall/<id>` | One prompt at a time, formula hidden until you ask. You mark whether you had it |
+| The practice | `#/maths/practice/<id>` | Four options, the answer the moment you choose, and a named error for each wrong one |
+
+**Why every formula carries a prompt.** A formula sheet you read is a formula
+sheet you believe you know. Each row has three fields: `p` is the prompt you
+are asked cold, `f` is the formula, `d` is what it is for and where the trap
+is. The drill shows only `p`. That is the difference between revising and
+checking.
+
+**The boundary is the SSC paper, not a syllabus.** No calculus, no matrices,
+no determinants, no vectors, no complex numbers, no conic section past the
+plain circle — because CGL, CHSL, CPO and MTS do not ask them. What is in:
+algebra, triangles, circles, quadrilaterals and polygons, mensuration 2D,
+mensuration 3D, trigonometry, height and distance, coordinate geometry. Then,
+in a band of their own because they are arithmetic rather than advance maths:
+profit, loss and discount, and mixture and alligation.
+
+**Every circle theorem is drawn.** A theorem you can recite and cannot
+recognise in a figure is not usable, and the figure is how it is asked. The
+thirteen circle diagrams and ten others are inline SVG whose every stroke
+comes from a palette variable, so they recolour with the site rather than
+being twenty-three pictures to redraw.
+
+**Rows are tagged where it matters.** `t:"trick"` marks a shortcut that turns
+a three-step question into one line — `a + b + c = 0` so `a³ + b³ + c³ = 3abc`,
+complementary angles so `h = √(ab)`. `t:"trap"` marks what candidates
+reliably get backwards: the sum of the squares of a parallelogram's diagonals,
+the sign in a successive-discount formula, the difference of the radii in a
+frustum's slant height against the sum in its curved surface, the false weight
+in the denominator of a dishonest-dealer gain.
+
+**The distractors are not filler.** Every wrong option is a real error — the
+sign flipped, the square forgotten, the sector taken for the segment, the
+slant height swapped for the vertical one — and the solution says which one
+you made. Answer positions are evenly spread across A, B, C and D (41 each),
+so the position carries no information.
+
+**What is remembered, and where.** The marks you give yourself in a drill
+(`am.maths.recall.v1`) and the questions you get wrong (`am.maths.wrong.v1`)
+go to `localStorage` on the device and nowhere else. Every read and write is
+wrapped, so the pages work identically with site data blocked — the review
+list simply says it is empty. The review page at `#/maths/review` is built
+from those two stores and nothing else.
+
+**Two things deliberately not done.** There is no timer, because a formula you
+can only produce against a clock is not yet learnt. And nothing is scored
+across chapters into a single number, because a percentage hides which chapter
+is weak and which chapter is weak is the only thing these pages are for.
+
 ## The SSC notes
 
 A box of one-line answers at the top of every new topic, every Five Year Plan,
@@ -394,6 +465,8 @@ of them so a reader can check what a summary lost.
 | `data-gk.js` | 22 packs of static general knowledge, 1,364 facts |
 | `data-assembly.js` | The Constituent Assembly: story, dates, committees, people, debates |
 | `data-biology.js` | Diseases, nutrients, and glands and hormones |
+| `data-maths.js` | Advanced Maths: 11 chapters, 344 formulas with prompts, 23 SVG diagrams |
+| `data-maths-mcq.js` | The 164 practice questions, four options and a worked solution each |
 | `data-treaties.js` | The treaties of modern Indian history, and the agreements since 1947 |
 | `data-artmap.js` | The Constitution indexed by subject, and the courts article by article |
 | `data-early.js` | Ancient and Medieval History: Jainism and its councils, and the Mughals |

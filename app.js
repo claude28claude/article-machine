@@ -2979,6 +2979,698 @@ SUBJECTS.push({
 });
 
 /* =========================================================================
+   SUBJECT: ADVANCED MATHS
+
+   The sixth subject, and the first one that is not a thing to read. The
+   other five answer "what is the rule"; this one answers "do I actually
+   know the rule", which is a different question and needs a different
+   page. So every chapter has three views:
+
+     the sheet     every formula with its prompt and its note, open. This
+                   is the reference view - what you read.
+     the recall    the prompt alone, one at a time, with the formula hidden
+                   until you ask for it. You mark whether you had it. This
+                   is the only view that can tell you something you did not
+                   already know.
+     the practice  four options, one right, a worked line for the answer and
+                   a named error for each wrong one. SSC asks the formulas
+                   through questions, so the last step is questions.
+
+   WHAT IS REMEMBERED AND WHERE. The marks you give yourself in the recall
+   drill, and the questions you get wrong in practice, are kept in
+   localStorage under the keys below - on the device, never sent anywhere,
+   and the site works identically with storage blocked (every read and write
+   is wrapped). The Review page is built entirely from those two stores: it
+   is the list of what you have told the site you do not know yet.
+
+   TWO THINGS DELIBERATELY NOT DONE. There is no timer, because a formula
+   you can only produce against a clock is not yet learnt and a clock at
+   this stage teaches guessing. And nothing here is scored across chapters
+   into a single number - a percentage hides which chapter is weak, which is
+   the only thing the page is for.
+   ========================================================================= */
+
+var MATH  = window.MATHS || {};
+var MATHQ = (window.MATHS_MCQ || {}).banks || {};
+var mathChap = {};
+(MATH.chapters || []).forEach(function (c) { mathChap[c.id] = c; });
+
+var MATH_BANDS = [
+  ['advanced', 'Advanced maths',
+   'The eight chapters that make up the advance block of Tier-1 and almost all of Tier-2 Section-1.'],
+  ['arith', 'Profit and mixture',
+   'Arithmetic, not advance maths - kept in its own band so that revising one does not silently mean revising the other.']
+];
+
+function mathRows(c) {
+  return c.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
+}
+function mathQcount(id) { return (MATHQ[id] || []).length; }
+function mathBandChaps(band) {
+  return (MATH.chapters || []).filter(function (c) { return c.band === band; });
+}
+function mathAllRows() {
+  return (MATH.chapters || []).reduce(function (a, c) { return a + mathRows(c); }, 0);
+}
+function mathAllQs() {
+  return Object.keys(MATHQ).reduce(function (a, k) { return a + MATHQ[k].length; }, 0);
+}
+function mathAllFigs() {
+  return (MATH.chapters || []).reduce(function (a, c) { return a + (c.figs || []).length; }, 0);
+}
+
+/* ------------------------------------------------------------- the stores
+
+   Two keys, both optional. A browser in private mode, or one with site data
+   blocked, throws on the first localStorage access - so every read returns a
+   default and every write fails silently. Nothing on these pages depends on
+   a store having worked. */
+
+var MK_RECALL = 'am.maths.recall.v1';   /* { "<chapter>|<block>|<row>": "know" | "again" } */
+var MK_WRONG  = 'am.maths.wrong.v1';    /* { "<chapter>|<index>": 1 } */
+
+function mathGet(key) {
+  try {
+    var raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) || {}) : {};
+  } catch (e) { return {}; }
+}
+function mathPut(key, obj) {
+  try { localStorage.setItem(key, JSON.stringify(obj)); } catch (e) { /* fine */ }
+}
+function mathMark(key, id, value) {
+  var all = mathGet(key);
+  if (value === null) delete all[id]; else all[id] = value;
+  mathPut(key, all);
+}
+
+/* How a chapter is doing, read off the recall store. */
+function mathProgress(c) {
+  var marks = mathGet(MK_RECALL), know = 0, again = 0;
+  c.blocks.forEach(function (b, bi) {
+    b.rows.forEach(function (r, ri) {
+      var v = marks[c.id + '|' + bi + '|' + ri];
+      if (v === 'know') know++; else if (v === 'again') again++;
+    });
+  });
+  return { know: know, again: again, total: mathRows(c) };
+}
+
+function mathShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function mathCrumb(c, here) {
+  return '<div class="crumb"><a href="#/maths">Advanced Maths</a>' +
+    (c ? ' → <a href="#/maths/chapter/' + encodeURIComponent(c.id) + '">' + esc(c.short || c.n) + '</a>' : '') +
+    (here ? ' → ' + esc(here) : '') + '</div>';
+}
+
+/* The three-way switch that sits at the top of every chapter page. It is
+   not subTabs(): these are three different ACTIVITIES on the same chapter,
+   not three views of one list, and they deserve a label each. */
+function mathModes(id, active) {
+  var modes = [['chapter', 'The sheet', 'every formula, open'],
+               ['recall',  'Recall drill', 'prompt first, formula hidden'],
+               ['practice','Practice', mathQcount(id) + ' questions']];
+  return '<div class="mmodes">' + modes.map(function (m) {
+    var on = m[0] === active;
+    return '<a class="mmode' + (on ? ' on' : '') + '" href="#/maths/' + m[0] + '/' +
+      encodeURIComponent(id) + '"' + (on ? ' aria-current="page"' : '') + '>' +
+      '<b>' + esc(m[1]) + '</b><i>' + esc(m[2]) + '</i></a>';
+  }).join('') + '</div>';
+}
+
+/* A figure. The SVG is written in the data file and goes in as-is - it is
+   ours, not user input, and escaping it would print the markup. */
+function mathFig(f) {
+  return '<figure class="mfig" id="fig-' + esc(f.id) + '">' + f.svg +
+    '<figcaption>' + esc(f.cap) + '</figcaption></figure>';
+}
+
+function mathTag(t) {
+  if (t === 'trick') return '<span class="chip mtrick">shortcut</span>';
+  if (t === 'trap')  return '<span class="chip mtrap">commonly wrong</span>';
+  return '';
+}
+
+/* ------------------------------------------------------------------- home */
+
+function mathHome() {
+  var h = '<div class="crumb">Advanced Maths</div>' +
+    pageH1('The formulas, and whether you actually have them',
+      'Eleven chapters. Each one in three views: the sheet to read, the recall drill that hides the ' +
+      'formula until you have produced it, and the practice questions that ask it the way SSC asks it.');
+
+  h += '<div class="figs">' + fig((MATH.chapters || []).length, 'chapters') +
+    fig(mathAllRows(), 'formulas') + fig(mathAllQs(), 'questions') +
+    fig(mathAllFigs(), 'diagrams') + '</div>';
+
+  var wrong = Object.keys(mathGet(MK_WRONG)).length;
+  var marks = mathGet(MK_RECALL);
+  var again = Object.keys(marks).filter(function (k) { return marks[k] === 'again'; }).length;
+  if (wrong || again) {
+    h += '<div class="mresume"><b>Where you left off</b>' +
+      '<span>' + again + ' formula' + (again === 1 ? '' : 's') + ' flagged as needing work, and ' +
+      wrong + ' question' + (wrong === 1 ? '' : 's') + ' got wrong.</span>' +
+      '<a class="pill big" href="#/maths/review">Open the review list →</a></div>';
+  }
+
+  MATH_BANDS.forEach(function (b) {
+    var chaps = mathBandChaps(b[0]);
+    if (!chaps.length) return;
+    h += '<div class="block"><h3>' + esc(b[1]) + '</h3>' +
+      '<p class="foot before">' + esc(b[2]) + '</p><div class="grid">' +
+      chaps.map(function (c) {
+        var p = mathProgress(c);
+        var bar = p.total ? Math.round(100 * p.know / p.total) : 0;
+        return '<a class="pcard mcard" href="#/maths/chapter/' + encodeURIComponent(c.id) + '">' +
+          '<div class="pn">' + esc(c.n) + '</div>' +
+          '<div class="pt">' + esc(c.w) + '</div>' +
+          '<div class="pr">' + mathRows(c) + ' formulas · ' + mathQcount(c.id) + ' questions' +
+          ((c.figs || []).length ? ' · ' + c.figs.length + ' diagrams' : '') + '</div>' +
+          (p.know || p.again
+            ? '<div class="mbar" role="img" aria-label="' + bar + ' per cent marked known">' +
+              '<span style="width:' + bar + '%"></span></div>' +
+              '<div class="pr">' + p.know + ' known · ' + p.again + ' to work on</div>'
+            : '') +
+          '</a>';
+      }).join('') + '</div></div>';
+  });
+
+  h += '<p class="foot">Nothing here is timed and nothing is scored into one number. ' +
+    'A single percentage would hide which chapter is weak, and which chapter is weak is the ' +
+    'only thing these pages are for. The marks you give yourself stay on this device.</p>';
+
+  return mathShell(h);
+}
+
+/* --------------------------------------------------------- the sheet view */
+
+function mathChapterPage(id) {
+  var c = mathChap[id];
+  if (!c) return notFound('There is no such chapter in Advanced Maths.');
+  var chaps = MATH.chapters || [], i = chaps.indexOf(c);
+  var p = mathProgress(c);
+
+  var h = mathCrumb(null, c.n) + pageH1(c.n, c.w) + mathModes(id, 'chapter');
+
+  if (c.intro) h += '<p class="plain stack">' + esc(c.intro) + '</p>';
+
+  h += '<div class="figs">' + fig(mathRows(c), 'formulas') +
+    fig(c.blocks.length, 'groups') + fig(mathQcount(id), 'questions') +
+    (p.know ? fig(p.know, 'marked known') : '') + '</div>';
+
+  /* A jump list, because a sheet of seventy formulas is a page you scroll
+     past rather than a page you use. */
+  if (c.blocks.length > 2) {
+    h += '<nav class="mjump" aria-label="Groups in this chapter"><span class="lbl">In this chapter</span>' +
+      c.blocks.map(function (b, bi) {
+        return '<button type="button" data-jump="mb-' + bi + '">' + esc(b.h) + '</button>';
+      }).join('') + '</nav>';
+  }
+
+  if ((c.figs || []).length) {
+    h += '<div class="block"><h3>The diagrams</h3>' +
+      '<p class="foot before">Each theorem in this chapter is drawn once, in the position the ' +
+      'paper draws it. A theorem you can recite and cannot recognise in a figure is not yet usable.</p>' +
+      '<div class="mfigs">' + c.figs.map(mathFig).join('') + '</div></div>';
+  }
+
+  h += c.blocks.map(function (b, bi) {
+    return '<div class="block" id="mb-' + bi + '"><h3>' + esc(b.h) + '</h3>' +
+      (b.note ? '<p class="foot before">' + esc(b.note) + '</p>' : '') +
+      '<div class="msheet">' + b.rows.map(function (r) {
+        return '<div class="mrow">' +
+          '<div class="mp">' + esc(r.p) + (r.t ? ' ' + mathTag(r.t) : '') + '</div>' +
+          '<div class="mf">' + esc(r.f) + '</div>' +
+          '<div class="md">' + esc(r.d) + '</div></div>';
+      }).join('') + '</div></div>';
+  }).join('');
+
+  h += '<div class="stack"><a class="pill big" href="#/maths/recall/' + encodeURIComponent(id) +
+    '">Now hide them and see what you have →</a></div>';
+
+  var prev = chaps[i - 1], next = chaps[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/maths/chapter/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Previous</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/maths/chapter/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">Next</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+
+  render(mathShell(h));
+  mathWireJump();
+}
+
+/* The jump list scrolls rather than navigating, because a real #hash would
+   fight the router - every address on this site begins #/. */
+function mathWireJump() {
+  var nav = main.querySelector('.mjump');
+  if (!nav) return;
+  nav.addEventListener('click', function (e) {
+    var a = e.target.closest('button[data-jump]');
+    if (!a) return;
+    var el = document.getElementById(a.getAttribute('data-jump'));
+    if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  });
+}
+
+/* -------------------------------------------------------- the recall drill
+
+   One prompt on the screen, the formula hidden, and two buttons once it is
+   shown. Deliberately one at a time: a page of cards with the answers a
+   scroll away is read, not recalled, and reading is what the sheet is for.
+
+   The order is the chapter's own by default. "Shuffle" matters more here
+   than it looks - a formula you only know in position is not known, and the
+   x + 1/x block in particular teaches itself in sequence if you let it. */
+
+var mathDrill = null;
+
+function mathRecallPage(id) {
+  var c = mathChap[id];
+  if (!c) return notFound('There is no such chapter in Advanced Maths.');
+
+  var flat = [];
+  c.blocks.forEach(function (b, bi) {
+    b.rows.forEach(function (r, ri) {
+      flat.push({ r: r, h: b.h, key: c.id + '|' + bi + '|' + ri });
+    });
+  });
+
+  mathDrill = { id: id, all: flat, list: flat.slice(), i: 0, shuffled: false, onlyFlagged: false };
+
+  render(mathShell(mathCrumb(null, c.n) +
+    pageH1(c.n + ' — recall drill',
+      'The prompt first. Produce the formula in your head, out loud or on paper, and only then show it. ' +
+      'Marking honestly is the entire value of this page.') +
+    mathModes(id, 'recall') +
+    '<div id="mdrill"></div>'));
+  mathDrawDrill();
+}
+
+function mathDrawDrill() {
+  var box = document.getElementById('mdrill');
+  if (!box || !mathDrill) return;
+  var d = mathDrill, marks = mathGet(MK_RECALL);
+
+  var know = 0, again = 0;
+  d.all.forEach(function (x) {
+    if (marks[x.key] === 'know') know++; else if (marks[x.key] === 'again') again++;
+  });
+
+  var head = '<div class="mdhead">' +
+    '<div class="mdstat"><b>' + know + '</b> known <b>' + again + '</b> to work on <b>' +
+      (d.all.length - know - again) + '</b> untouched</div>' +
+    '<div class="listtabs">' +
+      '<button type="button" data-act="shuffle" aria-pressed="' + d.shuffled + '">Shuffle</button>' +
+      '<button type="button" data-act="flagged" aria-pressed="' + d.onlyFlagged + '">' +
+        'Only what I flagged (' + again + ')</button>' +
+      '<button type="button" data-act="reset">Clear this chapter’s marks</button>' +
+    '</div></div>';
+
+  if (!d.list.length) {
+    box.innerHTML = head + '<div class="empty"><b>Nothing flagged in this chapter</b>' +
+      'Turn the filter off to run the whole chapter again.</div>';
+    mathWireDrill();
+    return;
+  }
+
+  if (d.i >= d.list.length) {
+    box.innerHTML = head +
+      '<div class="mdone"><b>End of the run</b>' +
+      '<span>' + d.list.length + ' prompt' + (d.list.length === 1 ? '' : 's') + ' seen. ' +
+      (again ? again + ' still flagged — run them again, or go and see them asked as questions.'
+             : 'Nothing left flagged in this chapter.') + '</span>' +
+      '<div class="stack"><button class="pill big" type="button" data-act="restart">Run it again</button> ' +
+      '<a class="pill big" href="#/maths/practice/' + encodeURIComponent(d.id) + '">Practice questions →</a></div></div>';
+    mathWireDrill();
+    return;
+  }
+
+  var it = d.list[d.i], mark = marks[it.key] || '';
+  var pct = Math.round(100 * d.i / d.list.length);
+
+  box.innerHTML = head +
+    '<div class="mprog"><span style="width:' + pct + '%"></span></div>' +
+    '<div class="mcount">' + (d.i + 1) + ' of ' + d.list.length + ' · ' + esc(it.h) + '</div>' +
+    '<div class="mdcard">' +
+      '<div class="mdp">' + esc(it.r.p) + (it.r.t ? ' ' + mathTag(it.r.t) : '') + '</div>' +
+      (mark ? '<div class="mdwas">You marked this “' +
+        (mark === 'know' ? 'known' : 'needs work') + '” last time.</div>' : '') +
+      '<div id="mdans" hidden>' +
+        '<div class="mdf">' + esc(it.r.f) + '</div>' +
+        '<div class="mdd">' + esc(it.r.d) + '</div>' +
+      '</div>' +
+      '<div class="mdacts" id="mdacts">' +
+        '<button class="pill big" type="button" data-act="show">Show the formula</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="mdnav">' +
+      '<button type="button" data-act="back"' + (d.i ? '' : ' disabled') + '>Back</button>' +
+      '<button type="button" data-act="skip">Skip</button>' +
+    '</div>';
+
+  mathWireDrill();
+}
+
+function mathWireDrill() {
+  var box = document.getElementById('mdrill');
+  if (!box || box.getAttribute('data-wired')) return;
+  box.setAttribute('data-wired', '1');
+  box.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-act]');
+    if (!btn) return;
+    var act = btn.getAttribute('data-act'), d = mathDrill;
+    if (!d) return;
+
+    if (act === 'show') {
+      var ans = document.getElementById('mdans');
+      if (ans) ans.hidden = false;
+      var acts = document.getElementById('mdacts');
+      if (acts) acts.innerHTML =
+        '<button class="pill big mgood" type="button" data-act="know">I had it</button>' +
+        '<button class="pill big mbad" type="button" data-act="again">I did not — flag it</button>';
+      return;
+    }
+    if (act === 'know' || act === 'again') {
+      mathMark(MK_RECALL, d.list[d.i].key, act);
+      d.i++;
+      mathDrawDrill();
+      return;
+    }
+    if (act === 'skip')    { d.i++; mathDrawDrill(); return; }
+    if (act === 'back')    { if (d.i) d.i--; mathDrawDrill(); return; }
+    if (act === 'restart') { d.i = 0; mathDrawDrill(); return; }
+    if (act === 'shuffle') {
+      d.shuffled = !d.shuffled;
+      mathRebuildDrill();
+      return;
+    }
+    if (act === 'flagged') {
+      d.onlyFlagged = !d.onlyFlagged;
+      mathRebuildDrill();
+      return;
+    }
+    if (act === 'reset') {
+      var marks = mathGet(MK_RECALL);
+      d.all.forEach(function (x) { delete marks[x.key]; });
+      mathPut(MK_RECALL, marks);
+      d.onlyFlagged = false;
+      mathRebuildDrill();
+      return;
+    }
+  });
+}
+
+function mathRebuildDrill() {
+  var d = mathDrill;
+  if (!d) return;
+  var marks = mathGet(MK_RECALL);
+  d.list = d.all.filter(function (x) {
+    return !d.onlyFlagged || marks[x.key] === 'again';
+  });
+  if (d.shuffled) {
+    for (var j = d.list.length - 1; j > 0; j--) {
+      var k = Math.floor(Math.random() * (j + 1)), t = d.list[j];
+      d.list[j] = d.list[k]; d.list[k] = t;
+    }
+  }
+  d.i = 0;
+  mathDrawDrill();
+}
+
+/* ----------------------------------------------------------- the practice
+
+   One question, four options, and the answer the moment you choose - not at
+   the end. A score at the end of twenty questions tells you a number; the
+   solution the moment you are wrong tells you which step you missed, and
+   that is the only part worth having.
+
+   Every wrong answer is written to the store, so the Review page can show
+   the list later. A question answered right a second time clears it. */
+
+var mathQuiz = null;
+
+function mathPracticePage(id) {
+  var c = mathChap[id];
+  if (!c) return notFound('There is no such chapter in Advanced Maths.');
+  var bank = MATHQ[id] || [];
+
+  if (!bank.length) {
+    return render(mathShell(mathCrumb(null, c.n) + pageH1(c.n + ' — practice', '') +
+      mathModes(id, 'practice') +
+      '<div class="empty"><b>No questions in this chapter yet</b>' +
+      'The formula sheet and the recall drill are both there.</div>'));
+  }
+
+  var order = [];
+  for (var j = 0; j < bank.length; j++) order.push(j);
+  for (var m = order.length - 1; m > 0; m--) {
+    var k = Math.floor(Math.random() * (m + 1)), t = order[m];
+    order[m] = order[k]; order[k] = t;
+  }
+
+  mathQuiz = { id: id, order: order, i: 0, right: 0, wrong: [], answered: false };
+
+  render(mathShell(mathCrumb(null, c.n) +
+    pageH1(c.n + ' — practice',
+      bank.length + ' questions in the SSC shape, in a different order each time. Every wrong option is ' +
+      'a real error rather than filler, and the solution names which one you made.') +
+    mathModes(id, 'practice') +
+    '<div id="mquiz"></div>'));
+  mathDrawQuiz();
+}
+
+function mathDrawQuiz() {
+  var box = document.getElementById('mquiz');
+  if (!box || !mathQuiz) return;
+  var q = mathQuiz, bank = MATHQ[q.id] || [];
+
+  if (q.i >= q.order.length) {
+    var pct = Math.round(100 * q.right / q.order.length);
+    box.innerHTML = '<div class="mdone"><b>' + q.right + ' right out of ' + q.order.length +
+      '</b><span>' + pct + ' per cent. ' +
+      (q.wrong.length
+        ? 'The ' + q.wrong.length + ' you missed are below, and they are kept on the review page too.'
+        : 'Nothing missed. Shuffle the recall drill and try the chapter cold.') + '</span>' +
+      '<div class="stack"><button class="pill big" type="button" data-act="again">Run it again</button> ' +
+      '<a class="pill big" href="#/maths/recall/' + encodeURIComponent(q.id) + '">Back to the drill</a> ' +
+      '<a class="pill big" href="#/maths/review">The whole review list →</a></div></div>' +
+      (q.wrong.length ? '<div class="block"><h3>What you missed</h3>' +
+        q.wrong.map(function (qi) { return mathWrongCard(q.id, qi); }).join('') + '</div>' : '');
+    mathWireQuiz();
+    return;
+  }
+
+  var qi = q.order[q.i], it = bank[qi];
+  var pct2 = Math.round(100 * q.i / q.order.length);
+
+  box.innerHTML =
+    '<div class="mprog"><span style="width:' + pct2 + '%"></span></div>' +
+    '<div class="mcount">Question ' + (q.i + 1) + ' of ' + q.order.length +
+      ' · ' + q.right + ' right so far</div>' +
+    '<div class="mq"><div class="mqq">' + esc(it.q) + '</div>' +
+    '<div class="mqo" id="mqo">' + it.o.map(function (o, oi) {
+      return '<button type="button" class="mopt" data-pick="' + oi + '">' +
+        '<span class="ml">' + 'ABCD'.charAt(oi) + '</span><span class="mt">' + esc(o) + '</span></button>';
+    }).join('') + '</div>' +
+    '<div id="mqs"></div></div>';
+
+  mathWireQuiz();
+}
+
+function mathWrongCard(chId, qi) {
+  var it = (MATHQ[chId] || [])[qi];
+  if (!it) return '';
+  var ch = mathChap[chId];
+  return '<div class="mwrong"><div class="mqq">' + esc(it.q) + '</div>' +
+    '<div class="mans">' + esc('ABCD'.charAt(it.a)) + ' · ' + esc(it.o[it.a]) + '</div>' +
+    '<div class="mqsol">' + esc(it.s) + '</div>' +
+    (ch ? '<div class="pr"><a href="#/maths/chapter/' + encodeURIComponent(chId) + '">' +
+      esc(ch.n) + '</a></div>' : '') + '</div>';
+}
+
+function mathWireQuiz() {
+  var box = document.getElementById('mquiz');
+  if (!box || box.getAttribute('data-wired')) return;
+  box.setAttribute('data-wired', '1');
+  box.addEventListener('click', function (e) {
+    var q = mathQuiz;
+    if (!q) return;
+
+    var next = e.target.closest('[data-act]');
+    if (next) {
+      var act = next.getAttribute('data-act');
+      if (act === 'next')  { q.i++; q.answered = false; mathDrawQuiz(); return; }
+      if (act === 'again') { mathPracticePage(q.id); return; }
+      return;
+    }
+
+    var opt = e.target.closest('.mopt');
+    if (!opt || q.answered) return;
+    q.answered = true;
+
+    var qi = q.order[q.i], it = (MATHQ[q.id] || [])[qi];
+    var pick = parseInt(opt.getAttribute('data-pick'), 10);
+    var ok = pick === it.a;
+
+    var buttons = box.querySelectorAll('.mopt');
+    for (var j = 0; j < buttons.length; j++) {
+      var bi = parseInt(buttons[j].getAttribute('data-pick'), 10);
+      buttons[j].disabled = true;
+      if (bi === it.a) buttons[j].className = 'mopt right';
+      else if (bi === pick) buttons[j].className = 'mopt wrong';
+      else buttons[j].className = 'mopt dim';
+    }
+
+    if (ok) {
+      q.right++;
+      mathMark(MK_WRONG, q.id + '|' + qi, null);
+    } else {
+      q.wrong.push(qi);
+      mathMark(MK_WRONG, q.id + '|' + qi, 1);
+    }
+
+    var sol = document.getElementById('mqs');
+    if (sol) sol.innerHTML =
+      '<div class="mqsol' + (ok ? ' ok' : '') + '">' +
+      '<b>' + (ok ? 'Right.' : 'Not that one — the answer is ' + esc('ABCD'.charAt(it.a)) +
+        ', ' + esc(it.o[it.a]) + '.') + '</b> ' + esc(it.s) + '</div>' +
+      '<div class="stack"><button class="pill big" type="button" data-act="next">' +
+      (q.i + 1 >= q.order.length ? 'See the score' : 'Next question') + '</button></div>';
+  });
+}
+
+/* -------------------------------------------------------------- the review
+
+   Built from nothing but the two stores: the formulas you flagged and the
+   questions you got wrong. If both are empty the page says so rather than
+   inventing a list, because an empty review list is the correct output and
+   not an error state. */
+
+function mathReviewPage() {
+  var marks = mathGet(MK_RECALL), wrongs = mathGet(MK_WRONG);
+
+  var flagged = [];
+  (MATH.chapters || []).forEach(function (c) {
+    c.blocks.forEach(function (b, bi) {
+      b.rows.forEach(function (r, ri) {
+        if (marks[c.id + '|' + bi + '|' + ri] === 'again') {
+          flagged.push({ c: c, b: b, r: r });
+        }
+      });
+    });
+  });
+
+  var missed = [];
+  Object.keys(wrongs).forEach(function (k) {
+    var bits = k.split('|'), chId = bits[0], qi = parseInt(bits[1], 10);
+    if (mathChap[chId] && (MATHQ[chId] || [])[qi]) missed.push({ id: chId, qi: qi });
+  });
+  missed.sort(function (a, b) { return a.id < b.id ? -1 : a.id > b.id ? 1 : a.qi - b.qi; });
+
+  var h = '<div class="crumb"><a href="#/maths">Advanced Maths</a> → Review</div>' +
+    pageH1('What you have told the site you do not know',
+      'Every formula you flagged in a recall drill and every question you got wrong, across all eleven ' +
+      'chapters. Nothing on this page was chosen for you.');
+
+  h += '<div class="figs">' + fig(flagged.length, 'formulas flagged') +
+    fig(missed.length, 'questions missed') + '</div>';
+
+  if (!flagged.length && !missed.length) {
+    h += '<div class="empty"><b>The list is empty</b>' +
+      'Either nothing has been flagged yet, or this browser is not keeping site data. ' +
+      'Run a recall drill and flag what you miss — this page is built from those marks and nothing else.' +
+      '<div class="stack"><a class="pill" href="#/maths">Pick a chapter</a></div></div>';
+    return render(mathShell(h));
+  }
+
+  if (flagged.length) {
+    /* Grouped by chapter, because "weak in algebra" is a useful sentence and
+       "weak in forty scattered formulas" is not. */
+    var byChap = {};
+    flagged.forEach(function (x) {
+      (byChap[x.c.id] = byChap[x.c.id] || { c: x.c, rows: [] }).rows.push(x);
+    });
+    h += '<div class="block"><h3>The formulas you flagged</h3>' +
+      '<p class="foot before">In chapter order, with the group each one came from. ' +
+      'Clearing a mark here is the same as marking it known in the drill.</p>' +
+      Object.keys(byChap).map(function (k) {
+        var g = byChap[k];
+        return '<div class="mrevgrp"><div class="mrevh"><a href="#/maths/recall/' +
+          encodeURIComponent(g.c.id) + '">' + esc(g.c.n) + '</a>' +
+          '<span>' + g.rows.length + ' flagged</span></div>' +
+          '<div class="msheet">' + g.rows.map(function (x) {
+            return '<div class="mrow"><div class="mp">' + esc(x.r.p) + '</div>' +
+              '<div class="mf">' + esc(x.r.f) + '</div>' +
+              '<div class="md">' + esc(x.r.d) + '</div></div>';
+          }).join('') + '</div></div>';
+      }).join('') + '</div>';
+  }
+
+  if (missed.length) {
+    h += '<div class="block"><h3>The questions you got wrong</h3>' +
+      '<p class="foot before">A question leaves this list the next time you answer it correctly.</p>' +
+      missed.map(function (x) { return mathWrongCard(x.id, x.qi); }).join('') + '</div>';
+  }
+
+  h += '<div class="stack"><button class="pill big" type="button" id="mclear">' +
+    'Clear everything on this page</button></div>';
+
+  render(mathShell(h));
+
+  var btn = document.getElementById('mclear');
+  if (btn) btn.addEventListener('click', function () {
+    mathPut(MK_RECALL, {});
+    mathPut(MK_WRONG, {});
+    mathReviewPage();
+  });
+}
+
+/* ------------------------------------------------------------------ route */
+
+function mathsRoute(seg) {
+  switch (seg[0] || '') {
+    case '':         return render(mathHome());
+    case 'chapter':  return mathChapterPage(seg[1]);
+    case 'recall':   return mathRecallPage(seg[1]);
+    case 'practice': return mathPracticePage(seg[1]);
+    case 'review':   return mathReviewPage();
+    default:         return notFound('That address does not exist in Advanced Maths.');
+  }
+}
+
+SUBJECTS.push({
+  id: 'maths',
+  name: 'Advanced Maths',
+  short: 'Maths',
+  blurb: 'Algebra, triangles, circles, polygons, mensuration 2D and 3D, trigonometry, height and distance and coordinate geometry — each with a recall drill and SSC-shaped questions. Profit, loss and mixture are kept separate.',
+  tabs: [
+    { href: '#/maths',        label: 'All chapters', match: ['', 'chapter'] },
+    { href: '#/maths/recall/algebra',   label: 'Recall drill', match: ['recall'] },
+    { href: '#/maths/practice/algebra', label: 'Practice',     match: ['practice'] },
+    { href: '#/maths/review', label: 'Review list', match: ['review'] }
+  ],
+  stats: function () {
+    return [(MATH.chapters || []).length + ' chapters', mathAllRows() + ' formulas',
+            mathAllQs() + ' questions', mathAllFigs() + ' diagrams'];
+  },
+  topics: function () {
+    return (MATH.chapters || []).map(function (c) {
+      return { t: c.n, href: '#/maths/chapter/' + encodeURIComponent(c.id), w: c.w,
+               k: c.blocks.map(function (b) { return b.h; }).join(' ') + ' ' +
+                  (c.band === 'arith' ? 'arithmetic profit mixture' : 'advance maths'),
+               n: mathRows(c) + ' formulas' };
+    }).concat([
+      { t: 'Maths — the review list', href: '#/maths/review', n: 'what you flagged',
+        w: 'Every formula you flagged in a drill and every question you got wrong, in one place.',
+        k: 'wrong answers weak formulas revision mistakes' }
+    ]);
+  },
+  route: mathsRoute
+});
+
+/* =========================================================================
    SUBJECT: DAILY STUDY SETS
 
    One page per study day, labelled with its date. Current affairs live
@@ -3380,6 +4072,38 @@ function indexPage() {
     idxGroup('Sections', bioSections, true) +
     idxGroup('The topics', bioItems));
 
+  /* --------------------------------------------------------- Advanced Maths */
+  var mathSections = count([
+    { t: 'Every chapter, listed', href: '#/s/maths' },
+    { t: 'All chapters', href: '#/maths' },
+    { t: 'The review list', href: '#/maths/review' }
+  ]);
+  var mathChapItems = count((MATH.chapters || []).map(function (c) {
+    return { t: c.n, href: '#/maths/chapter/' + encodeURIComponent(c.id),
+             n: mathRows(c) + ' formulas' };
+  }));
+  /* The drill and the practice run are separate PAGES, not views of the
+     chapter, so the outline lists them separately - otherwise two thirds of
+     this subject would be missing from a page whose whole claim is that it
+     shows everything. */
+  var mathDrillItems = count((MATH.chapters || []).map(function (c) {
+    return { t: c.n, href: '#/maths/recall/' + encodeURIComponent(c.id) };
+  }));
+  var mathQuizItems = count((MATH.chapters || []).filter(function (c) {
+    return mathQcount(c.id);
+  }).map(function (c) {
+    return { t: c.n, href: '#/maths/practice/' + encodeURIComponent(c.id),
+             n: mathQcount(c.id) + ' questions' };
+  }));
+
+  h += idxSection('Advanced Maths',
+    (MATH.chapters || []).length + ' chapters \u00b7 ' + mathAllRows() + ' formulas \u00b7 ' +
+    mathAllQs() + ' questions \u00b7 ' + mathAllFigs() + ' diagrams',
+    idxGroup('Sections', mathSections, true) +
+    idxGroup('The formula sheets', mathChapItems) +
+    idxGroup('The recall drills', mathDrillItems) +
+    idxGroup('The practice banks', mathQuizItems));
+
   /* ------------------------------------------------- Ancient and Medieval */
   var earlySections = count([
     { t: 'Every topic, listed', href: '#/s/early' },
@@ -3437,7 +4161,7 @@ function aboutPage() {
 
   '<p class="plain">' + SUBJECTS.length + ' subjects: the Constitution of India — including the Constituent ' +
   'Assembly that wrote it — Modern History, Ancient and Medieval History, the Indian Economy, ' +
-  'Static General Knowledge, Biology, and the Daily study sets, one dated page per study day. ' +
+  'Static General Knowledge, Biology, Advanced Maths, and the Daily study sets, one dated page per study day. ' +
   'They are organised by topic rather than by subject, because a reader ' +
   'arrives knowing what they need to revise rather than which subject it belongs to.</p>' +
 
@@ -3461,7 +4185,7 @@ function aboutPage() {
 
   '<div class="block"><h3>The other subjects are written, not extracted</h3>' +
   '<p class="plain">Modern History, Ancient and Medieval History, the Indian Economy, Static GK, ' +
-  'Biology, the Daily sets and the account ' +
+  'Biology, Advanced Maths, the Daily sets and the account ' +
   'of the Constituent Assembly have no equivalent single government document behind them, ' +
   'so they are written from the established record rather than lifted from a source. That is a weaker guarantee than the ' +
   'Constitution\'s, and it is stated rather than hidden: the head of each data file says ' +
@@ -3990,6 +4714,58 @@ function buildIndex() {
     });
   })();
 
+  /* Advanced Maths, indexed three ways so that the box reaches the right
+     page whatever the reader types. A chapter name reaches the sheet. A
+     GROUP name ("the x + 1/x family", "alternate segment theorem") reaches
+     the sheet too, because that is where the formula is printed. And a
+     formula's own PROMPT is in the haystack, so searching "median" or
+     "frustum" or "componendo" lands on the chapter holding it rather than
+     on nothing. */
+  (MATH.chapters || []).forEach(function (c) {
+    var href = '#/maths/chapter/' + encodeURIComponent(c.id);
+    var all = c.blocks.map(function (b) {
+      return b.h + ' ' + b.rows.map(function (r) {
+        return r.p + ' ' + r.f + ' ' + r.d;
+      }).join(' ');
+    }).join(' ');
+    searchIndex.push({
+      kind: 'maths', id: c.id, no: '', title: c.n, sub: c.w,
+      near: (c.n + ' ' + c.w + ' ' + (c.intro || '')).toLowerCase(),
+      hay: (c.n + ' ' + (c.short || '') + ' ' + c.w + ' ' + (c.intro || '') + ' ' +
+            (c.band === 'arith' ? 'arithmetic ' : 'advance maths ') + all).toLowerCase(),
+      href: href, num: ''
+    });
+    c.blocks.forEach(function (b, i) {
+      searchIndex.push({
+        kind: 'maths', id: c.id + '-' + i, no: '', title: b.h, sub: c.n,
+        near: b.h.toLowerCase(),
+        hay: (b.h + ' ' + (b.note || '') + ' ' + b.rows.map(function (r) {
+          return r.p + ' ' + r.f + ' ' + r.d;
+        }).join(' ')).toLowerCase(),
+        href: href, num: ''
+      });
+    });
+    /* The drill is a page in its own right and has to be findable by name,
+       since "algebra drill" is a thing a reader types. */
+    searchIndex.push({
+      kind: 'maths', id: c.id + '-drill', no: '', title: c.n + ' \u2014 recall drill',
+      sub: 'Formula recall, one prompt at a time',
+      near: (c.n + ' recall drill practice formulas').toLowerCase(),
+      hay: (c.n + ' recall drill flashcard test myself formulas hidden ' + c.w).toLowerCase(),
+      href: '#/maths/recall/' + encodeURIComponent(c.id), num: ''
+    });
+    if (mathQcount(c.id)) {
+      searchIndex.push({
+        kind: 'maths', id: c.id + '-mcq', no: '', title: c.n + ' \u2014 practice questions',
+        sub: mathQcount(c.id) + ' questions with worked solutions',
+        near: (c.n + ' practice questions mcq').toLowerCase(),
+        hay: (c.n + ' practice questions mcq options solutions ' +
+              (MATHQ[c.id] || []).map(function (q) { return q.q; }).join(' ')).toLowerCase(),
+        href: '#/maths/practice/' + encodeURIComponent(c.id), num: ''
+      });
+    }
+  });
+
   SCHEDULES.forEach(function (s) {
     var extra = '';
     if (s.items) extra = s.items.map(function (e) { return e.t; }).join(' ');
@@ -4348,7 +5124,7 @@ document.addEventListener('click', function (e) {
       '<div class="label tight">Install</div><h2>' + esc(d.t) + '</h2>' +
       '<ol>' + d.s.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ol>' +
       (d.n ? '<p class="note">' + esc(d.n) + '</p>' : '') +
-      '<p class="note">Once installed it opens in its own window, keeps all four subjects on ' +
+      '<p class="note">Once installed it opens in its own window, keeps every subject on ' +
       'the device, and works with no network at all.</p></div>';
     sheet.hidden = false;
     var x = sheet.querySelector('.sheetx');
