@@ -1,6 +1,6 @@
 # The Article Machine
 
-Eight subjects for the Indian exam track, in plain English, organised by
+Nine subjects for the Indian exam track, in plain English, organised by
 **topic** rather than by subject. Searchable across all of them, works offline,
 installable.
 
@@ -59,7 +59,7 @@ every section, and every one of the 1,151 individual pages, folded shut so you
 can see the shape at a glance and open only the part you are working through.
 
 The front page is a **filterable list of every topic on the site**. A reader
-arrives knowing what they need to revise, not which of eight subjects it lives
+arrives knowing what they need to revise, not which of nine subjects it lives
 in, so `#/` asks that question first and every subject sits one click behind
 it.
 
@@ -389,6 +389,52 @@ older Five Year Plan notes that contradicted the site's own figures. It also
 added 38 high-yield facts the pages were missing, from Saraighat and Lachit
 Borphukan to SITE, EDUSAT and the classical-language status of Prakrit and Pali.
 
+## Geography
+
+| | |
+|---|---|
+| Topics | **7** |
+| Facts | **260**, of which 95 are the Himalayas |
+| Confused pairs | **10** |
+| Diagrams | **2** |
+
+**Why it exists when Static GK already has rivers, states and
+superlatives.** Those packs are lists of facts to recognise: which dam is on
+which river, which state has which capital. Geography is the arrangement that
+holds the facts together, and that is what an exam tests — which range lies
+between two others, which pass joins which two places, why Tamil Nadu gets
+its rain in a different season from everywhere else. A list cannot answer any
+of those. The packs stay as the revision version; this is the full one.
+
+**The Himalayas take a third of the subject, on purpose.** Between the three
+parallel ranges, the four longitudinal divisions, the peaks, the passes, the
+glaciers, the valleys and lakes and the rivers that rise there, they carry
+more SSC geography marks than any other single topic — and the passes alone
+come up almost every sitting, so every one is listed with the two places it
+joins rather than with its height.
+
+**Three different mountains answer three different wordings.** Highest peak
+*in* India is K2, in the part of Kashmir administered by Pakistan. Highest in
+India's undisputed territory is Kanchenjunga, which sits on the Sikkim–Nepal
+border. Highest lying *wholly* within India is Nanda Devi. That one word is
+the whole question, so all three are printed together in the confused pairs.
+
+**The other six topics:** the physical divisions (with bhabar, terai, bhangar
+and khadar in the right order), the drainage system, climate and the monsoon,
+soils and natural vegetation, agriculture with minerals and industry, and the
+Earth and world geography.
+
+**Figures that move between sources are flagged.** Everest is 8,848.86 m on
+the 2020 joint Nepal–China survey and older keys still carry 8,848 m.
+Leading-producer rankings shift year to year, so a row says where the top two
+are genuinely close instead of asserting one.
+
+**Two diagrams**, both inline SVG on the palette variables: the ranges in
+cross-section south to north, and the four longitudinal divisions with the
+boundary river at each cut. They reuse the figure renderer and the stylesheet
+the Maths subject brought in, which is why the whole subject costs about a
+hundred lines of `app.js`.
+
 ## Adding another subject
 
 The site is built as a registry of subjects so an unrelated one can be added
@@ -470,6 +516,7 @@ of them so a reader can check what a summary lost.
 | `data-treaties.js` | The treaties of modern Indian history, and the agreements since 1947 |
 | `data-artmap.js` | The Constitution indexed by subject, and the courts article by article |
 | `data-early.js` | Ancient and Medieval History: Jainism and its councils, and the Mughals |
+| `data-geography.js` | Geography: 7 topics, 260 facts, the Himalayas in full, 10 confused pairs |
 | `data-daily.js` | The dated daily study sets: current affairs, and recaps of what was added |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline. A data file whose new fields app.js now reads carries a `?v=` query in `index.html` and in `ASSETS`; bump it on such a deploy, or the first visit afterwards pairs new code with old cached data |

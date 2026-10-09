@@ -3671,6 +3671,144 @@ SUBJECTS.push({
 });
 
 /* =========================================================================
+   SUBJECT: GEOGRAPHY
+
+   WHY THIS EXISTS WHEN STATIC GK ALREADY HAS RIVERS, STATES AND
+   SUPERLATIVES. Those packs are lists of facts to recognise. Geography is
+   the arrangement that holds the facts together, and an exam tests the
+   arrangement: which range lies between two others, which pass joins which
+   two places, why Tamil Nadu gets its rain in a different season from
+   everywhere else. A list cannot answer any of those. So the Static GK
+   packs stay where they are as the revision version and this is the full
+   one.
+
+   THE HIMALAYAS TAKE A THIRD OF THE SUBJECT, ON PURPOSE. Between the three
+   ranges, the four longitudinal divisions, the peaks, the passes, the
+   glaciers, the lakes and the rivers that rise there, they carry more SSC
+   geography marks than any other single topic - and the passes alone come
+   up almost every sitting.
+
+   It reuses the shared renderers: factsBlock for a table and cmpBlock for a
+   compared pair, which is why this section is a tenth the length of the
+   Maths one. The only thing it adds is a figure, and even that borrows
+   mathFig.
+   ========================================================================= */
+
+var GEO = window.GEOGRAPHY || {};
+var geoTopicById = {};
+(GEO.topics || []).forEach(function (t) { geoTopicById[t.id] = t; });
+
+function geoRows(t) {
+  return t.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
+}
+function geoAllRows() {
+  return (GEO.topics || []).reduce(function (a, t) { return a + geoRows(t); }, 0);
+}
+function geoAllFigs() {
+  return (GEO.topics || []).reduce(function (a, t) { return a + (t.figs || []).length; }, 0);
+}
+
+function geoShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function geoHome() {
+  var h = '<div class="crumb">Geography</div>' +
+    pageH1('The arrangement, not just the facts',
+      'Seven topics, and the Himalayas take the largest share of them because they take the ' +
+      'largest share of the paper. Everything here is the physical geography an SSC general ' +
+      'awareness section actually asks about, and nothing beyond it.');
+
+  h += '<div class="figs">' + fig((GEO.topics || []).length, 'topics') +
+    fig(geoAllRows(), 'facts') + fig((GEO.confusions || []).length, 'confused pairs') +
+    fig(geoAllFigs(), 'diagrams') + '</div>';
+
+  h += '<div class="block"><h3>The topics</h3><div class="grid">' +
+    (GEO.topics || []).map(function (t) {
+      return '<a class="pcard" href="#/geography/topic/' + encodeURIComponent(t.id) + '">' +
+        '<div class="pn">' + esc(t.n) + '</div><div class="pt">' + esc(t.w) + '</div>' +
+        '<div class="pr">' + t.blocks.length + ' tables · ' + geoRows(t) + ' facts' +
+        ((t.figs || []).length ? ' · ' + t.figs.length + ' diagrams' : '') + '</div></a>';
+    }).join('') + '</div></div>';
+
+  h += '<p class="foot">The Static GK packs on <a href="#/gk/pack/rivers">rivers, dams and lakes</a>, ' +
+    '<a href="#/gk/pack/states">states and capitals</a> and ' +
+    '<a href="#/gk/pack/superlatives">largest, longest, highest</a> cover the same ground as lists ' +
+    'of facts to recognise. They are the revision version; this is the full one.</p>';
+
+  return geoShell(h);
+}
+
+function geoTopicPage(id) {
+  var t = geoTopicById[id];
+  if (!t) return geoShell('<div class="crumb"><a href="#/geography">Geography</a></div>' +
+    '<div class="empty"><b>No such topic</b>Nothing on this site is filed under that name.</div>');
+
+  var topics = GEO.topics || [], i = topics.indexOf(t);
+  var h = '<div class="crumb"><a href="#/geography">Geography</a> → ' + esc(t.n) + '</div>' +
+    pageH1(t.n, t.w);
+  if (t.intro) h += '<p class="plain stack">' + esc(t.intro) + '</p>';
+
+  if ((t.figs || []).length) {
+    h += '<div class="block"><h3>The diagrams</h3><div class="mfigs">' +
+      t.figs.map(mathFig).join('') + '</div></div>';
+  }
+
+  h += t.blocks.map(factsBlock).join('');
+
+  var prev = topics[i - 1], next = topics[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/geography/topic/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Previous</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/geography/topic/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">Next</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+  return geoShell(h);
+}
+
+function geoConfusions() {
+  return geoShell('<div class="crumb"><a href="#/geography">Geography</a> → Confused pairs</div>' +
+    pageH1('The pairs that get mixed up',
+      'Three different mountains answer three different wordings of “highest peak”; bhabar and ' +
+      'terai are not bhangar and khadar; and an estuary rather than a delta is what a rift valley gives you.') +
+    (GEO.confusions || []).map(cmpBlock).join(''));
+}
+
+function geoRoute(seg) {
+  switch (seg[0] || '') {
+    case '':           return render(geoHome());
+    case 'topic':      return render(geoTopicPage(seg[1]));
+    case 'confusions': return render(geoConfusions());
+    default:           return notFound('That address does not exist in Geography.');
+  }
+}
+
+SUBJECTS.push({
+  id: 'geography',
+  name: 'Geography',
+  short: 'Geography',
+  blurb: 'The Himalayas in full — ranges, divisions, peaks, passes, glaciers and lakes — then the physical divisions, the drainage, the monsoon, the soils, agriculture and minerals, and the world geography that gets asked.',
+  tabs: [
+    { href: '#/geography',            label: 'The topics',     match: ['', 'topic'] },
+    { href: '#/geography/confusions', label: 'Confused pairs', match: ['confusions'] },
+    { href: '#/gk',                   label: '↔ Static GK', match: [] }
+  ],
+  stats: function () {
+    return [(GEO.topics || []).length + ' topics', geoAllRows() + ' facts',
+            (GEO.confusions || []).length + ' confused pairs'];
+  },
+  topics: function () {
+    return (GEO.topics || []).map(function (t) {
+      return { t: t.n, href: '#/geography/topic/' + encodeURIComponent(t.id), w: t.w,
+               k: t.blocks.map(function (b) { return b.h; }).join(' '),
+               n: geoRows(t) + ' facts' };
+    }).concat([{ t: 'Geography - confused pairs', href: '#/geography/confusions',
+                 n: (GEO.confusions || []).length + ' pairs',
+                 w: 'Which peak answers which wording, bhabar against bhangar, and why Narmada makes an estuary.',
+                 k: 'k2 kanchenjunga nanda devi bhabar terai khadar bhangar estuary delta el nino' }]);
+  },
+  route: geoRoute
+});
+
+/* =========================================================================
    SUBJECT: DAILY STUDY SETS
 
    One page per study day, labelled with its date. Current affairs live
@@ -4123,6 +4261,22 @@ function indexPage() {
     idxGroup('Sections', earlySections, true) +
     idxGroup('The topics', earlyItems) +
     idxGroup('The emperors', empItems));
+
+  /* ------------------------------------------------------------- Geography */
+  var geoSections = count([
+    { t: 'Every topic, listed', href: '#/s/geography' },
+    { t: 'The topics', href: '#/geography' },
+    { t: 'Confused pairs', href: '#/geography/confusions' }
+  ]);
+  var geoItems = count((GEO.topics || []).map(function (t) {
+    return { t: t.n, href: '#/geography/topic/' + encodeURIComponent(t.id),
+             n: geoRows(t) + ' facts' };
+  }));
+
+  h += idxSection('Geography',
+    (GEO.topics || []).length + ' topics \u00b7 ' + geoAllRows() + ' facts',
+    idxGroup('Sections', geoSections, true) +
+    idxGroup('The topics', geoItems));
 
   /* ----------------------------------------------------------- Daily sets */
   var dailyItems = count([{ t: 'Every set', href: '#/daily' }].concat(DAILY_SETS.map(function (d) {
@@ -4602,6 +4756,40 @@ function buildIndex() {
       near: (p.n + ' ssc notes').toLowerCase(),
       hay: unmark(p.n + ' ssc notes ' + p.notes.join(' ')).toLowerCase(),
       href: '#/gk/pack/' + encodeURIComponent(p.id), num: ''
+    });
+  });
+
+  /* Geography, topic then table, so that a feature named in one row - "Zoji
+     La", "karewas", "Mawsynram", "regur" - reaches the table it sits in
+     rather than only the topic that contains it. */
+  (GEO.topics || []).forEach(function (t) {
+    var href = '#/geography/topic/' + encodeURIComponent(t.id);
+    var all = t.blocks.map(function (b) {
+      return b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ');
+    }).join(' ');
+    searchIndex.push({
+      kind: 'geography', id: 'geo-' + t.id, no: '', title: t.n, sub: t.w,
+      near: (t.n + ' ' + t.w + ' ' + (t.intro || '')).toLowerCase(),
+      hay: (t.n + ' ' + t.w + ' ' + (t.intro || '') + ' ' + all).toLowerCase(),
+      href: href, num: ''
+    });
+    t.blocks.forEach(function (b, i) {
+      searchIndex.push({
+        kind: 'geography', id: 'geo-' + t.id + '-' + i, no: '', title: b.h, sub: t.n,
+        near: b.h.toLowerCase(),
+        hay: (b.h + ' ' + (b.note || '') + ' ' +
+              b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+        href: href, num: ''
+      });
+    });
+  });
+  (GEO.confusions || []).forEach(function (c, i) {
+    searchIndex.push({
+      kind: 'geography', id: 'gcmp-' + i, no: '', title: c.k,
+      sub: 'Geography \u00b7 confused pair', near: c.k.toLowerCase(),
+      hay: (c.k + ' ' + (c.note || '') + ' ' +
+            c.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+      href: '#/geography/confusions', num: ''
     });
   });
 
