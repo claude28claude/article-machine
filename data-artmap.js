@@ -390,6 +390,145 @@ groups: [
 
 /* ---------------------------------------------------------------- courts */
 
+
+/* ----------------------------------------------------- centre and state
+
+   WHY THIS SITS IN THE ARTICLE MAP RATHER THAN IN PART XI. Part XI is on
+   the site already, article by article, and that is the right shape for
+   reading article 254 once. It is the wrong shape for the question, which
+   is never "what does 254 say" but "who prevails when a state law and a
+   central law on a Concurrent subject conflict". So this is the same
+   ground indexed the way it is asked: the three divisions of power, the
+   doctrines the courts built on top of them, the Seventh Schedule with the
+   entries that actually appear, and the bodies that sit between the two
+   governments.
+
+   THE ENTRY NUMBERS IN THE SEVENTH SCHEDULE ARE THE QUESTION. A question
+   almost never asks what the Union List is; it asks which List a named
+   subject falls in, and about a dozen subjects supply nearly all of those
+   questions. Those are the ones listed, with the entry number where the
+   entry number itself is asked.                                         */
+
+centrestate: [
+
+{h:"Where the three kinds of relation live",
+ note:"Part XI splits into two chapters and Part XII carries the money. Knowing which Part a question is in places it before you have read the options.",
+ rows:[
+  ["Articles 245 to 255","Legislative relations — Part XI, Chapter I. Who may make law on what, and what happens when two laws collide."],
+  ["Articles 256 to 263","Administrative relations — Part XI, Chapter II. The Union's power to direct a state, and the machinery for disputes between states."],
+  ["Articles 268 to 293","Financial relations — Part XII. Taxes, their distribution, grants-in-aid and borrowing."],
+  ["Article 1","India as a “Union of States”, not a federation. Ambedkar's explanation: the Union is indestructible and the states have no right to secede."],
+  ["Articles 352, 356 and 360","The three emergencies, each of which shifts the balance towards the Centre — which is why they are asked inside this topic as often as inside Part XVIII."]
+ ]},
+
+{h:"Legislative relations — the articles asked by number",
+ rows:[
+  ["Article 245","Territorial extent: Parliament for the whole or any part of India, a state legislature for the whole or any part of that state. A Union law is not void merely because it has extra-territorial operation."],
+  ["Article 246","The division itself: Union List (exclusive to Parliament), State List (exclusive to the states), Concurrent List (both). Parliament's power over the Union List prevails over the Concurrent, and the Concurrent over the State List."],
+  ["Article 246A","Special provision for GST, inserted by the 101st Amendment, 2016. Both Parliament and the state legislatures may make GST law; Parliament alone has it for inter-state supply."],
+  ["Article 248","Residuary power — anything not in any of the three Lists belongs to Parliament. The opposite of the American and Australian arrangement, where residuary power rests with the states."],
+  ["Article 249","Parliament may legislate on a State List subject if the RAJYA SABHA passes a resolution by a two-thirds majority of members present and voting that it is in the national interest. Valid for one year, renewable."],
+  ["Article 250","Parliament may legislate on any State List subject while a National Emergency is in force. The law lapses six months after the emergency ends."],
+  ["Article 252","Two or more states ask Parliament to legislate for them on a State subject; the law then applies to those states and any other that later adopts it. Only Parliament may amend or repeal it."],
+  ["Article 253","Parliament may legislate on any subject, including the State List, to implement an international treaty or agreement — no state consent needed."],
+  ["Article 254","Repugnancy. If a state law conflicts with a Union law on a Concurrent subject, the Union law prevails and the state law is void to the extent of the inconsistency. Under 254(2), a state law reserved for and assented to by the President prevails IN THAT STATE — but Parliament may still override it later."],
+  ["Article 255","A want of the recommendation or previous sanction of the Governor or the President does not by itself invalidate an Act once assent has been given."],
+  ["Article 200 and 201","The Governor may reserve a Bill for the President's consideration; 201 is what the President then does. The route by which 254(2) is used."]
+ ]},
+
+{h:"The doctrines the courts built on top",
+ note:"Each one is a single idea with a name, and the question gives the situation and asks for the name.",
+ rows:[
+  ["Doctrine of territorial nexus","A state law may reach something outside the state if there is a real and sufficient connection between the state and the subject matter. Rests on article 245."],
+  ["Doctrine of pith and substance","If a law is in substance within the legislature's own List, it stands even though it incidentally touches a subject in another List. This is what keeps the Lists workable."],
+  ["Doctrine of colourable legislation","What cannot be done directly cannot be done indirectly. A legislature may not do under one entry what it has no competence to do at all."],
+  ["Doctrine of repugnancy","The 254 rule: on a Concurrent subject, the Union law prevails over an inconsistent state law."],
+  ["Doctrine of harmonious construction","Where two entries appear to overlap, read them so that both are given effect rather than letting one cancel the other."],
+  ["Doctrine of implied prohibition / occupied field","Where Parliament has covered a Concurrent subject completely, the field is occupied and a state law on it is repugnant."]
+ ]},
+
+{h:"Administrative relations",
+ rows:[
+  ["Article 256","A state must exercise its executive power so as to ensure compliance with the laws of Parliament, and the Union may give the state directions to that end."],
+  ["Article 257","The Union's executive power extends to giving a state directions so as not to impede Union executive power, and specifically on the construction and maintenance of means of communication of national or military importance and on the protection of railways."],
+  ["Article 257A","Deployment of Union armed forces in a state — inserted by the 42nd Amendment and REPEALED by the 44th. A favourite of the options."],
+  ["Article 258 and 258A","The Union may entrust functions to a state with its consent (258); a state may entrust functions to the Union (258A, inserted by the 7th Amendment, 1956)."],
+  ["Article 261","Full faith and credit to public acts, records and judicial proceedings across India."],
+  ["Article 262","Adjudication of inter-state river water disputes. Parliament may by law bar the jurisdiction of all courts, including the Supreme Court, in such a dispute — and it has, by the Inter-State River Water Disputes Act, 1956."],
+  ["Article 263","The President may establish an Inter-State Council to inquire into and advise on disputes between states and on subjects of common interest. Set up in 1990 on the Sarkaria Commission's recommendation."],
+  ["Article 365","If a state fails to comply with a Union direction, the President may hold that a situation has arisen in which the government of the state cannot be carried on in accordance with the Constitution — that is, article 356 follows."],
+  ["Article 355","The Union's DUTY to protect every state against external aggression and internal disturbance and to ensure that its government is carried on in accordance with the Constitution. It is a duty, not a power; 356 is the power."],
+  ["All-India Services","Article 312 — the Rajya Sabha may by a two-thirds resolution create a new All-India Service. The IAS and IPS serve both governments, which is itself a unitary feature."]
+ ]},
+
+{h:"Financial relations, in brief",
+ rows:[
+  ["Article 268","Duties levied by the Union but collected and appropriated by the states."],
+  ["Article 269 and 269A","Taxes levied and collected by the Union but assigned to the states (269); 269A covers inter-state GST, apportioned between the Union and the states."],
+  ["Article 270","Taxes levied and distributed between the Union and the states — the divisible pool."],
+  ["Article 275 and 282","275: statutory grants-in-aid to states in need, charged on the Consolidated Fund of India. 282: discretionary grants, by either government, for any public purpose — the article under which most centrally sponsored schemes run."],
+  ["Article 280","The Finance Commission — constituted by the President every fifth year or earlier, to recommend the distribution of taxes and the principles of grants-in-aid. A chairman and four other members."],
+  ["Article 293","State borrowing. A state may not borrow without the Union's consent if it is still indebted to the Union."],
+  ["Article 360","Financial emergency. Never yet proclaimed."]
+ ]},
+
+{h:"The Seventh Schedule — which List a subject is in",
+ note:"The lists as they stand: Union 97 entries originally and 98 now numbered, State 66 originally and 59 now in force, Concurrent 47 originally and 52 now. Entry counts move with amendments, so an exam asks which List a subject falls in far more often than it asks the count.",
+ rows:[
+  ["Union List — the ones asked","Defence, armed forces, atomic energy, foreign affairs, war and peace, citizenship, railways, airways, posts and telegraphs, currency and coinage, banking, insurance, Reserve Bank, census, elections to Parliament, inter-state trade and commerce, and the audit of Union and state accounts."],
+  ["Entry 97 of the Union List","The residuary entry — any matter not enumerated in the State or Concurrent List, including any tax not mentioned in either. Asked by number."],
+  ["State List — the ones asked","Public order, police, prisons, local government, public health and sanitation, hospitals, land and agriculture, water (supply, irrigation, drainage, embankments and water power, subject to Union List entry 56), fisheries, markets and fairs, betting and gambling, state excise, and trade and commerce within the state."],
+  ["Concurrent List — the ones asked","Criminal law and criminal procedure, preventive detention, marriage and divorce, transfer of property other than agricultural land, contracts, bankruptcy, trusts, civil procedure, forests, protection of wild animals and birds, education, labour welfare, trade unions, price control, electricity, newspapers and books, and factories."],
+  ["Which subjects MOVED to the Concurrent List","Education, forests, protection of wild animals and birds, weights and measures, and the administration of justice — all moved from the State List to the Concurrent List by the 42nd Amendment, 1976. The single most asked fact about the Seventh Schedule."],
+  ["What is NOT in any List","Nothing is meant to be — anything left over falls to Parliament under article 248 and Union List entry 97."],
+  ["Which List grew and which shrank","The Concurrent List grew and the State List shrank. Every change since 1950 has moved power towards the Centre, never away from it."],
+  ["Agriculture, land and police","All three are State List subjects, and all three are standing exam questions because the Union legislates around them so often."],
+  ["Education","Concurrent since 1976. Before that it was a State subject — so a question dated before 1976 and one dated after have different answers."],
+  ["Which Schedule is which, so the number is not confused","First: states and union territories. Fourth: seats in the Rajya Sabha. Seventh: the three Lists. Ninth: laws immune from challenge, added by the 1st Amendment. Tenth: anti-defection, added by the 52nd. Eleventh: panchayats, 29 subjects, 73rd. Twelfth: municipalities, 18 subjects, 74th."]
+ ]},
+
+{h:"The commissions and the committees on centre-state relations",
+ rows:[
+  ["Administrative Reforms Commission, 1966","Its study team on centre-state relations was under M. M. Setalvad. Recommended an Inter-State Council and the appointment of Governors who were not active politicians."],
+  ["Rajamannar Committee, 1969","Set up by the Tamil Nadu government. Wanted an Inter-State Council, abolition of the All-India Services, and the deletion of articles 356, 357 and 365."],
+  ["Anandpur Sahib Resolution, 1973","The Akali Dal's demand that the Union be confined to defence, foreign affairs, communications, currency and railways, with everything else to the states."],
+  ["West Bengal Memorandum, 1977","Wanted “Union” replaced by “federal”, Parliament's jurisdiction limited to defence, foreign affairs, currency and communications, and articles 356 and 357 repealed."],
+  ["Sarkaria Commission, 1983","Justice R. S. Sarkaria, reported 1988. Recommended a permanent Inter-State Council under article 263, that article 356 be used very sparingly and as a last resort, that the Governor be an eminent person from outside the state and not a recent politician, and that the National Development Council be reconstituted. It rejected the demand for a radical restructuring and found the existing arrangement sound."],
+  ["Punchhi Commission, 2007","Justice Madan Mohan Punchhi, reported 2010. Recommended a fixed five-year tenure for Governors with removal only by impeachment-like process, “localised emergency” so that article 356 could be applied to a district or part of a state rather than the whole, and amending articles 355 and 356."],
+  ["What actually came of it","The Inter-State Council, set up in 1990, is the one concrete institutional result."],
+  ["S. R. Bommai v. Union of India, 1994","The case that limited article 356: the proclamation is subject to judicial review, the floor of the House is the only test of a government's majority, and a dissolved assembly can be revived if the proclamation is struck down."]
+ ]},
+
+{h:"Federal and unitary, the way the question asks it",
+ note:"“Quasi-federal” is the standard answer, and the question is usually which feature belongs on which side.",
+ rows:[
+  ["The federal features","A written Constitution, supremacy of the Constitution, a rigid amending process for federal provisions, a division of powers in the Seventh Schedule, an independent judiciary and bicameralism."],
+  ["The unitary features","A strong Centre, a single Constitution for Union and states, single citizenship, a single integrated judiciary, All-India Services, Governors appointed by the Centre, emergency provisions, residuary power with Parliament, and the fact that states have no right to territorial integrity — Parliament may redraw them under articles 3 and 4 by a simple majority."],
+  ["What it is usually called","Quasi-federal, after K. C. Wheare, who called it a unitary state with subsidiary federal features. Ambedkar's own description was that the Constitution is federal in normal times and can become unitary in an emergency."],
+  ["Who said what","Wheare: quasi-federal. Granville Austin: cooperative federalism. Ivor Jennings: a federation with a strong centralising tendency. Morris-Jones: bargaining federalism."],
+  ["Why article 3 matters here","Parliament may form a new state, alter a state's area, boundary or name, by a simple majority and the ordinary procedure, after only seeking the state legislature's VIEWS — which it is not bound by. No true federation works this way, and this is the strongest single unitary feature."]
+ ]}
+],
+
+/* The page reduced to what to write down, in the same highlighted form the
+   Static GK packs use. These twelve are the ones that come back. */
+centrestateNotes: [
+  "==Article 246== divides the power: ==Union List== exclusive to Parliament, ==State List== to the states, ==Concurrent List== to both. ==Union prevails over Concurrent, Concurrent over State==.",
+  "==Residuary power is with Parliament== \u2014 ==article 248== and ==Union List entry 97==. The opposite of the ==USA and Australia==, where it rests with the states.",
+  "==Article 249==: the ==RAJYA SABHA== \u2014 not the Lok Sabha \u2014 may by a ==two-thirds== resolution let Parliament legislate on a ==State List== subject in the national interest, for ==one year==, renewable.",
+  "==Article 254==: on a ==Concurrent== subject the ==Union law prevails== and the state law is void to the extent of the inconsistency. Under ==254(2)==, a state law with the ==President's assent== prevails ==in that state== \u2014 but Parliament may still override it afterwards.",
+  "==Article 253==: Parliament may legislate on ==any== subject, State List included, to implement an ==international treaty==, and ==no state consent is needed==.",
+  "==Article 262==: ==inter-state river water disputes==. Parliament may bar ==all courts including the Supreme Court==, and it has \u2014 by the ==Inter-State River Water Disputes Act, 1956==.",
+  "==Article 263==: the ==Inter-State Council==, set up in ==1990== on the ==Sarkaria Commission's== recommendation.",
+  "==Article 355 is a DUTY== of the Union to protect a state; ==article 356 is the POWER== to take it over. ==Article 365== is the bridge: failure to comply with a Union direction.",
+  "The ==42nd Amendment, 1976== moved ==education, forests, protection of wild animals and birds, weights and measures, and administration of justice== from the ==State List to the Concurrent List==. The single most asked Seventh Schedule fact.",
+  "==Police, public order, prisons, land, agriculture and public health== are ==State List==. ==Criminal law, criminal procedure, marriage, education, forests, electricity and labour welfare== are ==Concurrent==.",
+  "==Sarkaria (1983, reported 1988)==: use ==356 sparingly==, Governor to be ==an outsider and not a recent politician==. ==Punchhi (2007, reported 2010)==: ==localised emergency== and a ==fixed tenure for Governors==.",
+  "==S. R. Bommai, 1994==: a ==356 proclamation is subject to judicial review==, and the ==floor of the House== is the only test of a majority.",
+  "==Article 3==: Parliament may ==create, rename or redraw any state by a simple majority==, after merely seeking the state legislature's ==views==, which it is ==not bound by==. The strongest unitary feature there is.",
+  "The standard label is ==quasi-federal==, from ==K. C. Wheare==. ==Granville Austin==: cooperative federalism. ==Ambedkar==: ==federal in normal times, unitary in an emergency==."
+],
+
 courts: [
 
 {h:"The Supreme Court — 124 to 147",

@@ -101,6 +101,31 @@ One small completeness fix worth noting: lists of the article 371 series
 usually run A, B, C, D and then jump to F. 371E is not missing from the
 Constitution, only from the lists, so it is here.
 
+## Centre-State relations and the Seventh Schedule
+
+At `#/high-yield/centre-state`, a tab of the Constitution's exam layer: 62
+entries across 8 tables, with 14 highlighted notes at the top.
+
+**Why it is not just Part XI.** Part XI is on the site already, article by
+article, which is the right shape for reading article 254 once and the wrong
+shape for the question — which is never "what does 254 say" but "who prevails
+when a state law and a central law on a Concurrent subject conflict". So this
+is the same ground indexed the way it is asked: the three divisions of power,
+the doctrines the courts built on top of them (territorial nexus, pith and
+substance, colourable legislation, repugnancy, occupied field), the Seventh
+Schedule entries that actually appear, and the commissions that have been
+asked to move the line — Rajamannar, Sarkaria, Punchhi — plus *S. R. Bommai*.
+
+**The Seventh Schedule twice, on purpose.** The Schedules page prints all 219
+entries of the three Lists, which is what you want when checking one. This
+page prints the dozen subjects that get asked, plus the one fact asked more
+than any other: the 42nd Amendment moved education, forests, protection of
+wild animals and birds, weights and measures, and the administration of
+justice from the State List to the Concurrent List.
+
+Every article number on the page is a link to its own article page, through
+the same linker the article map uses.
+
 ## The Constituent Assembly
 
 | | |
@@ -196,9 +221,9 @@ number reads as stale rather than as wrong.
 
 | | |
 |---|---|
-| Packs | **22** |
-| Tables | **121** |
-| Facts | **1,364** |
+| Packs | **23** |
+| Tables | **126** |
+| Facts | **1,425** |
 | Confused pairs | **10** |
 
 The **Important days** pack alone carries 151 rows: every date month by month
@@ -206,6 +231,12 @@ with the reason behind it where there is one, a chain of month anchors, a
 thirty-five-date shortlist, and the pairs built to be confused — World Hindi
 Day on 10 January against Hindi Diwas on 14 September, World Consumer Rights
 Day on 15 March against National Consumer Day on 24 December.
+
+The **Festivals and fairs** pack is the newest: the harvest festivals that all fall
+in the same fortnight of January under a dozen names, the regional new years split
+between the March group and the mid-April one, the tribal and monastery festivals
+that belong to one state and nowhere else, and the fairs asked by name. It sits
+next to the dance pack because the two are asked together.
 
 **Static means static.** Everything here was chosen because the answer is the
 same this year as last. Current affairs are deliberately excluded — they go

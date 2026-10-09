@@ -153,6 +153,108 @@ packs: [
  ]},
 
 /* =================================================================== */
+{id:"festivals", n:"Festivals and fairs", hy:1,
+ w:"The harvest festivals by state, the regional new years, the tribal and monastery festivals, and the fairs that get asked by name.",
+ intro:"Festivals are asked as a match: festival to state, or festival to what it marks. Three groups cover almost all of it. The harvest festivals, which fall in the same fortnight of January under a dozen different names and are the single most asked group. The regional new years, which are a different fortnight and a different list. And the tribal, monastery and boat festivals, which are asked because they belong to one state and nowhere else.",
+ notes:[
+  "==Mid-January harvest==, all within days of each other: ==Makar Sankranti== (north and west), ==Pongal== (Tamil Nadu, ==four days==), ==Lohri== (Punjab, ==the night before==), ==Magh Bihu== (Assam), ==Uttarayan== (Gujarat, kites), ==Poush Parbon== (Bengal).",
+  "==Three Bihus in Assam==: ==Rongali or Bohag== (April, the new year and the biggest), ==Kongali or Kati== (October, the lean one), ==Bhogali or Magh== (January, the feasting one).",
+  "==Regional new year, mostly mid-April==: ==Baisakhi== (Punjab), ==Vishu== (Kerala), ==Puthandu== (Tamil Nadu), ==Bohag Bihu== (Assam), ==Pohela Boishakh== (Bengal), ==Bihu/Naba Barsha==. But ==Ugadi and Gudi Padwa== (Karnataka, Andhra, Telangana, Maharashtra) fall in ==March or early April==, on Chaitra Shukla Pratipada.",
+  "==Onam== is ==Kerala's== harvest festival, in ==Chingam (August\\u2013September)==, for the return of ==King Mahabali==; ==Vallamkali==, the snake-boat race, belongs to it.",
+  "==Hornbill== is ==Nagaland==, ==1 to 10 December==, at ==Kisama==, the ==Festival of Festivals==. ==Hemis== is ==Ladakh== and the largest monastery festival. ==Losar== is the ==Tibetan Buddhist new year== (Ladakh, Himachal, Sikkim, Arunachal).",
+  "==Rann Utsav== is ==Gujarat==, in the ==white desert of Kutch==. ==Pushkar fair== is ==Rajasthan==, ==camels==, in ==Kartik (November)==. ==Sonepur mela== in ==Bihar== is ==Asia's largest cattle fair==.",
+  "==Kumbh Mela== rotates among ==four== sites: ==Prayagraj (Ganga, Yamuna, Sarasvati)==, ==Haridwar (Ganga)==, ==Ujjain (Shipra)== and ==Nashik (Godavari)==. It is on the ==UNESCO intangible heritage list (2017)==.",
+  "==Thrissur Pooram== is ==Kerala's== temple elephant festival. ==Pulikali==, the tiger dance, is part of ==Onam==. ==Theyyam== is ==north Kerala==.",
+  "==Chhath== is ==Bihar, Jharkhand and eastern Uttar Pradesh==, and is the only Hindu festival worshipping the ==setting sun as well as the rising one==.",
+  "==Wangala== (==Garo==, Meghalaya) is the ==hundred drums== harvest festival; ==Nongkrem== is ==Khasi==. ==Ambubachi== is at ==Kamakhya, Assam==.",
+  "==Bihu, Chhau, Durga Puja in Kolkata, Kumbh Mela, Ramlila, Vedic chanting, Kutiyattam, Mudiyettu, Kalbelia, Buddhist chanting of Ladakh, Sankirtana of Manipur, Thatheras of Jandiala Guru, Yoga, Nouroz and Garba== are on ==UNESCO's intangible cultural heritage== list. ==Garba of Gujarat== was added in ==2023==."
+ ],
+ blocks:[
+
+  {h:"The harvest festivals — almost all in the same fortnight of January",
+   note:"This is the most asked group in the whole pack, because a dozen names belong to one week and the question simply swaps the state.",
+   rows:[
+    ["Makar Sankranti","Most of north, west and central India, 14 or 15 January, marking the sun's entry into Capricorn — the only major Hindu festival fixed to the solar calendar, which is why its date barely moves."],
+    ["Pongal","Tamil Nadu, four days from mid-January: Bhogi, Thai Pongal, Mattu Pongal (for the cattle) and Kaanum Pongal."],
+    ["Lohri","Punjab and Haryana, the night before Makar Sankranti — a bonfire, and the end of the winter solstice period."],
+    ["Magh or Bhogali Bihu","Assam, January, the feasting Bihu that follows the harvest."],
+    ["Uttarayan","Gujarat — Makar Sankranti under its own name, and the international kite festival at Ahmedabad."],
+    ["Poush Parbon and Poush Sankranti","West Bengal, the same mid-January date, with the Ganga Sagar mela at Sagar island."],
+    ["Onam","Kerala, in Chingam (August or September) — not January. Ten days, for the annual return of King Mahabali. Pookalam flower carpets, Onam Sadya, Vallamkali snake-boat races and Pulikali tiger dance belong to it."],
+    ["Nuakhai","Odisha, western districts, in August or September — the first rice of the season offered to the deity."],
+    ["Baisakhi","Punjab, 13 or 14 April — harvest and the new year together, and the day the Khalsa was founded in 1699."],
+    ["Wangala","Meghalaya, the Garo hundred-drums harvest festival, for the sun god Saljong, in November."],
+    ["Ka Pomblang Nongkrem","Meghalaya, the Khasi harvest and thanksgiving festival."],
+    ["Ka Shad Suk Mynsiem","Meghalaya, the Khasi spring dance festival."]
+   ]},
+
+  {h:"The regional new years",
+   note:"Mostly mid-April, with one group in March. Which group a festival belongs to is itself a question.",
+   rows:[
+    ["Ugadi","Karnataka, Andhra Pradesh and Telangana — Chaitra Shukla Pratipada, March or early April."],
+    ["Gudi Padwa","Maharashtra and Goa, the same day as Ugadi."],
+    ["Cheti Chand","The Sindhi new year, the same day, marking the birth of Jhulelal."],
+    ["Navreh","The Kashmiri Pandit new year, also Chaitra Shukla Pratipada."],
+    ["Vishu","Kerala, mid-April — the Vishukkani, the first sight on waking."],
+    ["Puthandu","Tamil Nadu, mid-April."],
+    ["Bohag or Rongali Bihu","Assam, mid-April — the Assamese new year and the largest of the three Bihus."],
+    ["Pohela Boishakh","West Bengal and Tripura, mid-April."],
+    ["Bisu and Vishuva Sankranti","Tulu Nadu, and Odisha's Pana Sankranti, on the same mid-April date."],
+    ["Losar","The Tibetan Buddhist new year — Ladakh, Himachal, Sikkim and Arunachal, in February or March."],
+    ["Navroz","The Parsi new year, in August under the Shahenshahi calendar, and marked in Kashmir in March."],
+    ["Gudi, Ugadi, Baisakhi, Vishu and Bihu together","All are new year festivals; only Ugadi and Gudi Padwa fall in the March group, the rest in mid-April."]
+   ]},
+
+  {h:"By state — the ones that belong to one place and nowhere else",
+   rows:[
+    ["Nagaland","Hornbill Festival, 1 to 10 December at Kisama near Kohima — the Festival of Festivals, bringing all the tribes together. Also Moatsu (Ao) and Sekrenyi (Angami)."],
+    ["Ladakh","Hemis Tsechu, the largest monastery festival, for Guru Padmasambhava, with the cham masked dance. Also Losar, Dosmoche and the Ladakh Festival."],
+    ["Arunachal Pradesh","Losar, Solung (Adi), Mopin (Galo), Dree (Apatani), Nyokum (Nyishi) and Siang River Festival."],
+    ["Manipur","Lai Haraoba, Yaoshang (the Manipuri Holi, with Thabal Chongba), Ningol Chakouba and the Sangai Festival."],
+    ["Mizoram","Chapchar Kut, the spring festival with the Cheraw bamboo dance."],
+    ["Assam","Three Bihus; Ambubachi mela at the Kamakhya temple; Majuli's Raas festival."],
+    ["Odisha","Rath Yatra at Puri; Konark Dance Festival; Nuakhai; Bali Jatra at Cuttack, the sea-voyage fair."],
+    ["West Bengal","Durga Puja — on the UNESCO list since 2021 — Poila Boishakh, Gangasagar mela and Rash Yatra."],
+    ["Bihar and Jharkhand","Chhath, over four days in Kartik, with offerings to the setting and then the rising sun; Sonepur cattle fair; Sarhul (Jharkhand) and Karma."],
+    ["Rajasthan","Pushkar camel fair in Kartik; Desert Festival at Jaisalmer; Teej, Gangaur and the Elephant Festival at Jaipur."],
+    ["Gujarat","Navratri with Garba and Dandiya; Rann Utsav in the white desert of Kutch; Uttarayan kites; Modhera Dance Festival."],
+    ["Maharashtra","Ganesh Chaturthi, made a public festival by Tilak in 1893; Gudi Padwa; Ellora and Elephanta festivals."],
+    ["Kerala","Onam; Thrissur Pooram, the temple elephant festival; Theyyam in the north; Nehru Trophy boat race at Punnamada lake, Alappuzha."],
+    ["Tamil Nadu","Pongal; Natyanjali at Chidambaram; Mamallapuram Dance Festival; Jallikattu at Alanganallur during Pongal."],
+    ["Karnataka","Mysuru Dasara, the state festival, ten days, with the Jamboo Savari elephant procession; Hampi Utsav; Kambala buffalo race in coastal Karnataka."],
+    ["Punjab","Baisakhi; Lohri; Hola Mohalla at Anandpur Sahib the day after Holi; Maghi."],
+    ["Himachal Pradesh","Kullu Dussehra, which begins when the rest of India's ends; Minjar at Chamba; Lavi fair at Rampur."],
+    ["Uttarakhand","Kumbh at Haridwar; Nanda Devi Raj Jat, held once in about twelve years; Harela."],
+    ["Sikkim","Losar, Saga Dawa, Pang Lhabsol and the Losoong harvest festival."],
+    ["Goa","Carnival before Lent; Shigmo, the Goan spring festival; the Feast of St Francis Xavier in December."],
+    ["Madhya Pradesh and Chhattisgarh","Khajuraho Dance Festival; Tansen Samaroh at Gwalior; Bastar Dussehra, which runs about seventy-five days."],
+    ["Jammu and Kashmir","Tulip Festival at Srinagar; Navreh; Shikara Festival on the Dal."]
+   ]},
+
+  {h:"The fairs and the melas",
+   rows:[
+    ["Kumbh Mela","The largest religious gathering in the world, rotating among Prayagraj, Haridwar, Ujjain and Nashik. Ardh Kumbh every six years, Purna Kumbh every twelve, Maha Kumbh at Prayagraj after twelve Purna Kumbhs. On the UNESCO intangible heritage list since 2017."],
+    ["Pushkar fair","Rajasthan, in Kartik — camels and livestock, around the Pushkar lake and the Brahma temple, one of very few Brahma temples anywhere."],
+    ["Sonepur mela","Bihar, at the confluence of the Ganga and the Gandak in Kartik — Asia's largest cattle fair."],
+    ["Gangasagar mela","West Bengal, at Sagar island where the Hooghly meets the sea, on Makar Sankranti."],
+    ["Surajkund crafts mela","Haryana, February — the international crafts fair."],
+    ["Hemis and Tawang festivals","Monastery festivals of Ladakh and Arunachal."],
+    ["Bali Jatra","Cuttack, Odisha, on Kartik Purnima — commemorating the old sea trade with Bali and Java."],
+    ["Ambubachi mela","Kamakhya temple, Guwahati, in June."]
+   ]},
+
+  {h:"The national festivals and the ones fixed by the calendar",
+   rows:[
+    ["The three national festivals","Republic Day, 26 January; Independence Day, 15 August; Gandhi Jayanti, 2 October. These are the only three gazetted national holidays."],
+    ["Fixed to the solar calendar","Makar Sankranti (14 or 15 January) and Baisakhi (13 or 14 April). Every other major Hindu festival follows the lunar calendar and so moves by a few weeks a year."],
+    ["Eid and the Islamic calendar","The Hijri calendar is purely lunar and about eleven days shorter than the solar year, so Eid-ul-Fitr and Eid-ul-Adha move backwards through the seasons. Muharram marks the start of the Islamic year."],
+    ["Buddha Purnima","Vaisakh Purnima — birth, enlightenment and death of the Buddha on the same day."],
+    ["Mahavir Jayanti and Paryushana","The Jain festivals; Paryushana ends with Samvatsari and the asking of forgiveness."],
+    ["Guru Nanak Jayanti","Kartik Purnima, November — Gurpurab."],
+    ["Navroz and Pateti","Parsi. Pateti is the day of repentance before the Parsi new year."]
+   ]}
+ ]},
+
 {id:"awards", n:"Awards and honours", hy:1,
  w:"Civilian, gallantry, literary, film and sporting awards, in order of precedence.",
  intro:"Two things are asked about awards: the order of precedence, and the firsts. The order is fixed and short enough to learn outright. Note that the Bharat Ratna is not a title within the meaning of Article 18 — the Supreme Court has held so — but it still cannot be used as a prefix or suffix to the recipient's name.",

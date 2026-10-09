@@ -129,7 +129,11 @@ var SUBJECTS = [{
         n: amapCount('groups') + ' indexed entries',
         w: 'The Constitution indexed by subject instead of by number, with every article number a link.',
         k: 'which article covers index list ranges parts schedules directive principles emergency panchayat municipality language' },
-      { t: 'The courts, article by article', href: '#/high-yield/courts',
+      { t: 'Centre-State relations and the Seventh Schedule', href: '#/high-yield/centre-state',
+      n: (AMAP.centrestate || []).reduce(function (a, b) { return a + b.rows.length; }, 0) + ' entries',
+      w: 'Who may legislate on what, what happens when two laws collide, which List a subject is in, and the commissions that tried to move the line.',
+      k: 'union list state list concurrent list seventh schedule 246 248 249 254 262 263 residuary repugnancy pith and substance sarkaria punchhi bommai quasi federal 42nd amendment education forests' },
+    { t: 'The courts, article by article', href: '#/high-yield/courts',
         n: amapCount('courts') + ' entries',
         w: 'Supreme Court 124 to 147 and High Courts 214 to 231 in full, the five writs, and the tribunals.',
         k: 'supreme court high court writ habeas corpus mandamus certiorari prohibition quo warranto slp review judicial tribunal district judge' },
@@ -986,7 +990,7 @@ function hyCount(kind, t) {
 
 function hyShell(active, body) {
   var tabs = [['', 'Overview'], ['articles', 'Articles'], ['map', 'Article map'],
-              ['courts', 'Courts'], ['cases', 'Cases'],
+              ['courts', 'Courts'], ['centre-state', 'Centre and State'], ['cases', 'Cases'],
               ['amendments', 'Amendments'], ['confusions', 'Confused pairs'],
               ['facts', 'Quick facts']];
   return '<div class="wrap artpage">' +
@@ -1316,6 +1320,7 @@ function highYieldPage(slug) {
   if (slug === 'facts')      return render(hyFacts());
   if (slug === 'map')        return render(hyArticleMap());
   if (slug === 'courts')     return render(hyCourts());
+  if (slug === 'centre-state') return render(hyCentreState());
   return notFound('No such high-yield section.');
 }
 
@@ -1357,6 +1362,31 @@ function hyCourts() {
   return hyShell('courts', h);
 }
 
+
+/* Centre-State relations, indexed the way the question asks rather than the
+   way Part XI is numbered. Part XI is already on the site article by
+   article, which is the right shape for reading article 254 once and the
+   wrong shape for answering "who prevails on a Concurrent subject". Every
+   number goes through factsBlockLinked, so a row is one tap from the text.
+
+   The Seventh Schedule gets a block of its own here as well as its own page
+   under Schedules. The Schedules page prints all 219 entries, which is what
+   you want when checking one; this prints the dozen subjects that actually
+   get asked, which is what you want the night before. */
+function hyCentreState() {
+  var rows = (AMAP.centrestate || []).reduce(function (a, b) { return a + b.rows.length; }, 0);
+  var h = '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
+    'Centre and State, and the Seventh Schedule</h1>' +
+    '<p class="sub">The three divisions of power, the doctrines the courts built on them, which List a ' +
+    'subject falls in, and the commissions that have been asked to change the balance.</p>' +
+    '<div class="figs">' + fig(rows, 'entries') + fig(3, 'Lists') +
+      fig((AMAP.centrestateNotes || []).length, 'notes to write down') + '</div>';
+  h += notesBlock(AMAP.centrestateNotes, 'the ones that come back');
+  h += (AMAP.centrestate || []).map(factsBlockLinked).join('');
+  h += '<p class="foot">The Seventh Schedule in full \u2014 all three Lists, every entry \u2014 is on its own ' +
+    '<a href="#/schedule/7">Schedule page</a>. This page is the shortlist.</p>';
+  return hyShell('centre-state', h);
+}
 
 /* =========================================================================
    THE CONSTITUENT ASSEMBLY
@@ -4154,6 +4184,7 @@ function indexPage() {
     { t: 'The exam layer', href: '#/high-yield' },
     { t: 'The article map', href: '#/high-yield/map' },
     { t: 'The courts, article by article', href: '#/high-yield/courts' },
+    { t: 'Centre and State, and the Seventh Schedule', href: '#/high-yield/centre-state' },
     { t: 'The Constituent Assembly', href: '#/assembly' },
     { t: 'The amendments', href: '#/amendments', n: String(AMENDMENTS.length) },
     { t: 'The Schedules', href: '#/schedules', n: String(SCHEDULES.length) },
@@ -4183,6 +4214,7 @@ function indexPage() {
     { t: 'Articles, in three tiers', href: '#/high-yield/articles' },
     { t: 'The article map', href: '#/high-yield/map' },
     { t: 'The courts', href: '#/high-yield/courts' },
+    { t: 'Centre and State', href: '#/high-yield/centre-state' },
     { t: 'Cases', href: '#/high-yield/cases' },
     { t: 'Amendments', href: '#/high-yield/amendments' },
     { t: 'Confused pairs', href: '#/high-yield/confusions' },
@@ -5073,12 +5105,14 @@ function buildIndex() {
      SUBJECT reaches its article number - the reverse of what the article
      entries above do, and the whole point of the map. */
   (function () {
-    var view = { framework: 'map', groups: 'map', courts: 'courts' };
+    var view = { framework: 'map', groups: 'map', courts: 'courts',
+                 centrestate: 'centre-state' };
     Object.keys(view).forEach(function (key) {
       (AMAP[key] || []).forEach(function (b, i) {
         searchIndex.push({
           kind: 'article map', id: key + '-' + i, no: '', title: b.h,
-          sub: key === 'courts' ? 'The courts, article by article' : 'The article map',
+          sub: key === 'courts' ? 'The courts, article by article'
+             : key === 'centrestate' ? 'Centre and State' : 'The article map',
           near: b.h.toLowerCase(),
           hay: (b.h + ' ' + (b.note || '') + ' ' +
                 b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
