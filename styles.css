@@ -356,6 +356,54 @@ nav.tabs a[aria-current="page"]{color:var(--gold);border-bottom-color:var(--gold
 mark{background:rgba(var(--gold-rgb),.24);color:var(--ink);border-radius:2px;padding:0 1px}
 
 /* ==========================================================================
+   THE SSC NOTES
+
+   The one place on the site that does use a highlighter, because here the
+   reader asked for one: a box of one-line answers, and inside each line the
+   phrase an answer sheet wants. The band sits low behind the words, like a
+   pen stroke, and at a quarter strength so it marks without glaring on the
+   dark ground. box-decoration-break keeps the band whole when a highlighted
+   phrase wraps onto a second line on a phone.
+   ========================================================================== */
+mark.hi{
+  background:linear-gradient(transparent 14%,rgba(var(--gold-rgb),.24) 14%,
+             rgba(var(--gold-rgb),.24) 90%,transparent 90%);
+  color:var(--ink);padding:0 .14em;border-radius:2px;font-weight:600;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+}
+mark.hi .num,mark.hi .kw{color:var(--ink)}
+.ssc{
+  margin:var(--s6) 0 0;max-width:74ch;padding:var(--s4) var(--s5) var(--s3);
+  background:rgba(var(--gold-rgb),.05);border:1px solid rgba(var(--gold-rgb),.26);
+  border-left:3px solid var(--gold);border-radius:var(--r-lg);
+}
+.ssch{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);align-items:baseline;margin-bottom:var(--s3)}
+.sscl{
+  font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--gold);
+}
+.ssct{font-family:var(--serif);font-size:var(--t-h4);font-weight:600;color:var(--ink)}
+.ssc ol{margin:0;padding-left:1.5em}
+.ssc li{font-size:var(--t-body);line-height:1.62;margin:0 0 var(--s3);padding-left:var(--s1)}
+.ssc li::marker{color:var(--gold);font-family:var(--mono);font-size:.82em}
+.ssc a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(var(--gold-rgb),.4)}
+
+/* A dated study set: each part is a section with its own heading band. */
+.setpart{margin-top:var(--s8);padding-top:var(--s5);border-top:1px solid var(--line)}
+.setpart:first-of-type{margin-top:var(--s6)}
+.setpart > h2{
+  font-family:var(--serif);font-size:var(--t-h3);font-weight:600;margin:var(--s2) 0 var(--s2);
+}
+.setpart > .eyebrow{margin:0}
+.setpart > .sub{margin:0 0 var(--s2)}
+.setlinks{display:flex;flex-wrap:wrap;gap:var(--s2);margin-top:var(--s4)}
+.datebadge{
+  display:inline-block;font-family:var(--mono);font-size:var(--t-tiny);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--bg);background:var(--gold);border-radius:var(--r-pill);
+  padding:3px 12px;margin-bottom:var(--s3);
+}
+
+/* ==========================================================================
    HERO
    ========================================================================== */
 
