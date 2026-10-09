@@ -29,11 +29,14 @@ reforms in full, with the dates in order and the vocabulary; and eight standing 
 Budget and GST, poverty and schemes, agriculture, national income, who
 publishes which report, and the international bodies.
 
-**Static General Knowledge** — twenty packs of the facts that do not change:
-national symbols, dance, awards, sports, every cup and trophy by sport, firsts,
-superlatives, rivers and dams, national parks, World Heritage Sites, monuments,
-important days, books, headquarters, science, the human body, space and
-defence, ISRO and every space mission in order, the states, and the world.
+**Static General Knowledge** — twenty-two packs of the facts that do not change:
+national symbols, dance, awards, sports, every cup and trophy by sport, Paris
+2024 (the Olympics and the Paralympics), firsts, superlatives, rivers and dams,
+national parks, World Heritage Sites, monuments, important days, books and
+authors (with the autobiographies, pen names and the latest literary prizes),
+headquarters, international organisations in full, science, the human body,
+space and defence, ISRO and every space mission in order, the states, and the
+world.
 
 **Biology** — three topics done in full rather than in summary: diseases,
 nutrients, and the glands and their hormones.
@@ -188,9 +191,9 @@ number reads as stale rather than as wrong.
 
 | | |
 |---|---|
-| Packs | **20** |
-| Tables | **100** |
-| Facts | **1,123** |
+| Packs | **22** |
+| Tables | **121** |
+| Facts | **1,345** |
 | Confused pairs | **10** |
 
 The **Important days** pack alone carries 151 rows: every date month by month
@@ -291,6 +294,10 @@ Each set is its own section in the strip at the top of the subject, so
 opens the set at that part. To add tomorrow's, put one more entry at the top
 of `sets`; it reaches the strip, the hub, the index and the search on its own.
 
+The 10 October set also recaps three packs added the same day: books and
+authors (with the 2026 Nobel and the 60th Jnanpith), Paris 2024, and
+international organisations.
+
 Every current-affairs row says what date it is true as of. The Booker 2026
 winner is due on 9 November 2026 and Gaganyaan G1 has not flown as of 10
 October 2026; both are written so that they read as dated, not as wrong.
@@ -368,7 +375,7 @@ of them so a reader can check what a summary lost.
 | `data-history.js` | Modern History: eras, timeline, Acts, people, movements |
 | `data-history-hy.js` | Modern History's exam layer |
 | `data-economy.js` | The plans, the 1991 reforms, the standing topics, the exam layer |
-| `data-gk.js` | 20 packs of static general knowledge, 1,123 facts |
+| `data-gk.js` | 22 packs of static general knowledge, 1,345 facts |
 | `data-assembly.js` | The Constituent Assembly: story, dates, committees, people, debates |
 | `data-biology.js` | Diseases, nutrients, and glands and hormones |
 | `data-treaties.js` | The treaties of modern Indian history, and the agreements since 1947 |

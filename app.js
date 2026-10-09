@@ -2748,7 +2748,7 @@ SUBJECTS.push({
 
 /* =========================================================================
    SUBJECT: STATIC GENERAL KNOWLEDGE
-   Twenty packs of the material that does not change from year to year.
+   Twenty-two packs of the material that does not change from year to year.
    ========================================================================= */
 
 var GKD = window.GK || {};
@@ -2759,7 +2759,11 @@ var GK_SEE_ALSO = {
   sports: ['cups',   'Every cup and trophy, sport by sport, is in'],
   cups:   ['sports', 'Players on a side, the terms of each game and the Olympic milestones are in'],
   space:  ['isro',   'Every ISRO mission in order, the centres, the rockets and what is coming next are in'],
-  isro:   ['space',  'The nuclear programme, the missiles and the armed forces are in']
+  isro:   ['space',  'The nuclear programme, the missiles and the armed forces are in'],
+  hq:     ['orgs',   'The UN\'s organs, every agency with its year, the groupings and who heads what are in'],
+  orgs:   ['hq',     'The one-line headquarters list, with the Indian institutions, is in'],
+  'paris-2024': ['sports', 'Every Indian Olympic milestone before Paris is in'],
+  books:  ['awards', 'The other awards and honours, civilian to sporting, are in']
 };
 
 function gkRows(p) {
@@ -2839,7 +2843,7 @@ SUBJECTS.push({
   id: 'gk',
   name: 'Static General Knowledge',
   short: 'Static GK',
-  blurb: 'National symbols, dances, awards, sports and every cup by sport, rivers and dams, parks, heritage sites, days, books, headquarters, science, ISRO\'s missions and the states.',
+  blurb: 'National symbols, dances, awards, sports and every cup by sport, Paris 2024, rivers and dams, parks, heritage sites, days, books and authors, international organisations, science, ISRO\'s missions and the states.',
   tabs: [
     { href: '#/gk',             label: 'All packs',      match: ['', 'pack'] },
     { href: '#/gk/confusions',  label: 'Confused pairs', match: ['confusions'] }

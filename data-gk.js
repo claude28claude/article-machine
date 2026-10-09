@@ -432,6 +432,104 @@ packs: [
  ]},
 
 /* =================================================================== */
+/* Paris 2024. A finished event, so static from here on: the medals will
+   not change. Kept as its own pack because SSC asks it as a set: who won
+   which of India's six, the fourth places, the flag bearers and the
+   firsts of the Games themselves.                                      */
+{id:"paris-2024", n:"Paris 2024: the Olympics and Paralympics", hy:1,
+ w:"India's six Olympic medals and the six near-misses, Vinesh Phogat's disqualification, the Games' firsts, and India's record 29 Paralympic medals.",
+ intro:"The Olympic medals are asked by name, event and colour, and all six fit on one line: one silver (Neeraj Chopra) and five bronze (Manu Bhaker twice, Swapnil Kusale, the hockey team, Aman Sehrawat). The Paralympics are asked as the record they set: 29 medals, beating Tokyo's 19.",
+ notes:[
+  "The ==XXXIII Olympiad==, Paris, ==26 July to 11 August 2024==. Paris's ==third== Games (1900, 1924, 2024), level with London.",
+  "India: ==6 medals==, ==1 silver and 5 bronze==, no gold; ==71st== on the medal table.",
+  "==Neeraj Chopra==: ==silver==, javelin, ==89.45 m==. Gold to Pakistan's ==Arshad Nadeem==, ==92.97 m==, an Olympic record.",
+  "==Manu Bhaker==: two bronzes, ==10 m air pistol== and the ==mixed team== with ==Sarabjot Singh==: the first Indian with two medals at one Games since independence.",
+  "==Swapnil Kusale==: bronze, ==50 m rifle three positions==, India's first medal in the event.",
+  "Men's ==hockey==: bronze, beating ==Spain 2-1==; captain ==Harmanpreet Singh==; goalkeeper ==P.R. Sreejesh== retired after it.",
+  "==Aman Sehrawat==: bronze, wrestling, ==57 kg== freestyle; at 21 the ==youngest Indian Olympic medallist==.",
+  "==Vinesh Phogat== reached the 50 kg wrestling final and was ==disqualified== for weighing about ==100 g== over; the Court of Arbitration for Sport rejected her appeal.",
+  "Flag bearers: opening ==P.V. Sindhu== and ==Sharath Kamal==; closing ==Manu Bhaker== and ==P.R. Sreejesh==.",
+  "Firsts: an opening ceremony on the ==Seine==, outside a stadium; ==breaking== made its debut; equal numbers of men and women athletes. Mascot: the ==Phryges==.",
+  "Medal table: ==USA== first (40 gold, 126 in all), ==China== second (also 40 gold).",
+  "Paralympics, 28 August to 8 September 2024: India ==29 medals== (==7 gold==, 9 silver, 13 bronze), ==18th==, its best ever.",
+  "Next: ==Los Angeles 2028==, ==Brisbane 2032==."
+ ],
+ blocks:[
+  {h:"The Games",
+   rows:[
+    ["Edition","The XXXIII Olympiad, the Games of the 33rd Olympiad"],
+    ["Dates","26 July to 11 August 2024"],
+    ["Host","Paris, for the third time: 1900, 1924, 2024. London is the only other city with three (1908, 1948, 2012)"],
+    ["Opening ceremony","On the river Seine, the first held outside a stadium"],
+    ["Slogan","'Games Wide Open' (Ouvrons grand les Jeux)"],
+    ["Mascot","The Phryges, after the Phrygian cap of the French Revolution"],
+    ["New sport","Breaking (breakdancing), for Paris only; it is not on the Los Angeles programme"],
+    ["Gender parity","The first Games with equal numbers of male and female athletes"],
+    ["Medal table","1. USA (40 gold, 44 silver, 42 bronze, 126 in all); 2. China (40 gold, 91 in all); 3. Japan; 4. Australia; 5. France"]
+   ]},
+  {h:"India's six medals",
+   rows:[
+    ["Silver: Neeraj Chopra","Men's javelin, 89.45 m. The gold went to Arshad Nadeem of Pakistan with 92.97 m, an Olympic record. With his Tokyo gold, Chopra became the first Indian athlete in track and field with two Olympic medals"],
+    ["Bronze: Manu Bhaker","Women's 10 m air pistol: India's first medal of the Games, and the first Olympic medal by an Indian woman shooter"],
+    ["Bronze: Manu Bhaker and Sarabjot Singh","10 m air pistol mixed team, beating South Korea. Bhaker became the first Indian since independence to win two medals at a single Games"],
+    ["Bronze: Swapnil Kusale","Men's 50 m rifle three positions; India's first medal in the event"],
+    ["Bronze: men's hockey","Beat Spain 2-1 in the bronze match. Captain Harmanpreet Singh, the tournament's top scorer. Back-to-back medals after Tokyo's bronze, for the first time since 1972. P.R. Sreejesh retired after it"],
+    ["Bronze: Aman Sehrawat","Men's freestyle wrestling, 57 kg. At 21 years and 24 days, the youngest Indian to win an Olympic medal"]
+   ]},
+  {h:"The near-misses",
+   note:"India finished fourth six times. These are asked as often as the medals.",
+   rows:[
+    ["Manu Bhaker","Fourth, women's 25 m pistol: one shot from a third medal"],
+    ["Arjun Babuta","Fourth, men's 10 m air rifle"],
+    ["Lakshya Sen","Fourth, men's badminton singles: the first Indian man to reach an Olympic badminton semi-final"],
+    ["Mirabai Chanu","Fourth, women's 49 kg weightlifting; she won silver at Tokyo"],
+    ["Dhiraj Bommadevara and Ankita Bhakat","Fourth, archery mixed team: India's best Olympic archery result"],
+    ["Anant Jeet Singh Naruka and Maheshwari Chauhan","Fourth, skeet mixed team"],
+    ["Vinesh Phogat","Reached the women's 50 kg wrestling final, the first Indian woman wrestler to do so, then was disqualified for being about 100 g over the weight limit on the morning of the final. The Court of Arbitration for Sport dismissed her appeal for a shared silver. She announced her retirement"]
+   ]},
+  {h:"India's team",
+   rows:[
+    ["Size","117 athletes"],
+    ["Chef de mission","Gagan Narang, the London 2012 bronze medallist in shooting"],
+    ["Opening ceremony flag bearers","P.V. Sindhu and Sharath Kamal"],
+    ["Closing ceremony flag bearers","Manu Bhaker and P.R. Sreejesh"],
+    ["Place on the medal table","71st"],
+    ["India's Olympic total after Paris","41 medals, 10 of them gold: eight in hockey, Abhinav Bindra's in 2008 and Neeraj Chopra's in 2021"]
+   ]},
+  {h:"The Paris 2024 Paralympics",
+   rows:[
+    ["Dates","28 August to 8 September 2024"],
+    ["India's medals","==29==: 7 gold, 9 silver, 13 bronze. The best ever, beating Tokyo's 19. 18th on the medal table"],
+    ["Opening ceremony flag bearers","Sumit Antil and Bhagyashri Jadhav"],
+    ["Closing ceremony flag bearers","Harvinder Singh and Preethi Pal"],
+    ["Gold: Avani Lekhara","Women's 10 m air rifle standing SH1, defending her Tokyo title: the first Indian woman with two Paralympic golds. Mona Agarwal took bronze in the same event"],
+    ["Gold: Nitesh Kumar","Men's badminton singles SL3"],
+    ["Gold: Sumit Antil","Men's javelin F64, defending his Tokyo title, with a Paralympic record"],
+    ["Gold: Harvinder Singh","Men's individual recurve archery: India's first Paralympic gold in archery"],
+    ["Gold: Dharambir","Men's club throw F51"],
+    ["Gold: Praveen Kumar","Men's high jump T64"],
+    ["Gold: Navdeep Singh","Men's javelin F41, upgraded from silver after the winner was disqualified"],
+    ["Preethi Pal","Two bronzes, 100 m and 200 m T35: India's first Paralympic medals on the track"]
+   ]},
+  {h:"The Games to come",
+   rows:[
+    ["2026 Winter Olympics","Milan and Cortina d'Ampezzo, Italy, held in February 2026"],
+    ["2028 Summer Olympics","Los Angeles: its third Games. Cricket returns, as T20, for the first time since 1900"],
+    ["2030 Winter Olympics","The French Alps"],
+    ["2032 Summer Olympics","Brisbane, Australia"],
+    ["2036","India has bid, with Ahmedabad"]
+   ]},
+  {h:"The Olympic movement",
+   rows:[
+    ["International Olympic Committee","Founded 1894 by Pierre de Coubertin; headquarters Lausanne. President Kirsty Coventry, from June 2025"],
+    ["First modern Games","Athens, 1896"],
+    ["The rings","Five, for the five inhabited continents joined by the movement; designed by Coubertin in 1913"],
+    ["The motto","'Citius, Altius, Fortius' (faster, higher, stronger); 'Communiter' (together) was added in 2021"],
+    ["India's first","Norman Pritchard won two silvers in athletics in 1900. India's first official team went in 1920; the first gold was hockey at Amsterdam, 1928"]
+   ]}
+ ]},
+
+/* =================================================================== */
 {id:"firsts", n:"First in India", hy:1,
  w:"The office-holders, the achievements and the events that came first.",
  intro:"A list, and there is no clever way through it. The pairs worth watching are the ones where 'first' and 'first woman' are different people, and the ones where 'first Indian' and 'first' are different people.",
@@ -959,12 +1057,16 @@ packs: [
 
 /* =================================================================== */
 {id:"books", n:"Books and their authors", hy:1,
- w:"Classical works, the writings of the national movement, and the modern prize-winners.",
- intro:"Autobiographies are the most-asked group, because the title rarely names the person. The second group worth learning cold is the classical Sanskrit and court literature, where the author-to-patron chain is itself a question.",
+ w:"Classical works, the writings of the national movement, the autobiographies, the pen names, and the literary prizes with their latest winners.",
+ intro:"Autobiographies are the most-asked group, because the title rarely names the person. The second group worth learning cold is the classical Sanskrit and court literature, where the author-to-patron chain is itself a question. The third is the prizes: who won the latest Nobel and Jnanpith is current affairs, so that table carries its date.",
+ notes:["==The Story of My Experiments with Truth==: ==Gandhi==, written in ==Gujarati== and translated by Mahadev Desai.", "==The Discovery of India==: ==Nehru==, written in ==Ahmednagar Fort== prison in 1944.", "==Gita Rahasya==: ==Tilak==, written in ==Mandalay== jail. ==Poverty and Un-British Rule in India==: ==Dadabhai Naoroji==, the drain theory.", "==Anandamath==: ==Bankim Chandra Chattopadhyay==, the source of ==Vande Mataram==.", "==Gitanjali==: ==Tagore==, ==Nobel Prize 1913==, still the only Indian winner of the literature prize.", "==Wings of Fire==: ==A.P.J. Abdul Kalam==, with Arun Tiwari. ==India Wins Freedom==: ==Maulana Azad==.", "==Arthashastra==: ==Kautilya==. ==Indica==: ==Megasthenes==, Seleucus's envoy to Chandragupta Maurya. ==Ashtadhyayi==: ==Panini==.", "Sports: ==Playing It My Way== (Tendulkar), ==The Race of My Life== (Milkha Singh), ==Unbreakable== (Mary Kom), ==A Shot at History== (Abhinav Bindra), ==Golden Girl== (P.T. Usha).", "Pen names: ==Premchand== = Dhanpat Rai Srivastava; ==Nirala== = Suryakant Tripathi; ==Dinkar== = Ramdhari Singh; ==Gulzar== = Sampooran Singh Kalra; ==Mark Twain== = Samuel Clemens.", "Nobel Literature ==2026==: ==Anne Carson== (Canada), announced ==8 October 2026==. ==2025==: ==Laszlo Krasznahorkai== (Hungary). ==2024==: ==Han Kang== (South Korea).", "Jnanpith: first ==G. Sankara Kurup== (1965, Malayalam); 60th (2025) ==R. Vairamuthu== (Tamil); 59th ==Vinod Kumar Shukla== (Hindi); 58th ==Gulzar== and ==Rambhadracharya==.", "Pulitzer winners of Indian origin: ==Jhumpa Lahiri== (2000, ==Interpreter of Maladies==) and ==Siddhartha Mukherjee== (2011, The Emperor of All Maladies)."],
  blocks:[
   {h:"Classical and medieval",
    rows:[
     ["Arthashastra","Kautilya, also called Chanakya"],
+    ["Indica","Megasthenes, the Greek envoy of Seleucus Nicator to Chandragupta Maurya's court"],
+    ["Ashtadhyayi","Panini: the grammar of Sanskrit"],
+    ["Natyashastra","Bharata Muni: the treatise on drama, dance and music"],
     ["Rajatarangini","Kalhana — a history of the kings of Kashmir"],
     ["Abhijnanashakuntalam, Meghadutam, Raghuvamsha","Kalidasa"],
     ["Mudrarakshasa","Vishakhadatta"],
@@ -1027,7 +1129,84 @@ packs: [
     ["The Social Contract","Jean-Jacques Rousseau"],
     ["War and Peace","Leo Tolstoy"],
     ["Mein Kampf","Adolf Hitler"],
-    ["A Brief History of Time","Stephen Hawking"]
+    ["A Brief History of Time","Stephen Hawking"],
+    ["Long Walk to Freedom","Nelson Mandela"],
+    ["A Promised Land","Barack Obama; Becoming is Michelle Obama's"],
+    ["I Am Malala","Malala Yousafzai"],
+    ["Freedom at Midnight","Larry Collins and Dominique Lapierre"]
+   ]},
+  {h:"Autobiographies of sportspersons",
+   note:"The most reliable question in the topic: the title never names the person.",
+   rows:[
+    ["Playing It My Way","Sachin Tendulkar"],
+    ["Sunny Days","Sunil Gavaskar"],
+    ["Straight from the Heart","Kapil Dev"],
+    ["A Century Is Not Enough","Sourav Ganguly"],
+    ["281 and Beyond","V.V.S. Laxman"],
+    ["The Test of My Life","Yuvraj Singh"],
+    ["Believe","Suresh Raina"],
+    ["Imperfect","Sanjay Manjrekar"],
+    ["The Race of My Life","Milkha Singh, with his daughter Sonia Sanwalka"],
+    ["Golden Girl","P.T. Usha"],
+    ["Unbreakable","Mary Kom"],
+    ["A Shot at History","Abhinav Bindra"],
+    ["Playing to Win","Saina Nehwal"],
+    ["Ace Against Odds","Sania Mirza"],
+    ["Mind Master","Viswanathan Anand"]
+   ]},
+  {h:"Leaders' autobiographies and memoirs",
+   rows:[
+    ["The Story of My Experiments with Truth","M.K. Gandhi, in Gujarati (Satya na Prayogo), translated by Mahadev Desai"],
+    ["Wings of Fire","A.P.J. Abdul Kalam with Arun Tiwari; Turning Points is its sequel"],
+    ["My Truth","Indira Gandhi"],
+    ["The Dramatic Decade, The Turbulent Years, The Coalition Years","Pranab Mukherjee"],
+    ["My Presidential Years","R. Venkataraman"],
+    ["Matters of Discretion","I.K. Gujral"],
+    ["The Insider","P.V. Narasimha Rao: a novel drawn from his own political life"],
+    ["Exam Warriors","Narendra Modi"],
+    ["The India Way (2020) and Why Bharat Matters (2024)","S. Jaishankar"],
+    ["An Uncertain Glory","Jean Dreze and Amartya Sen"]
+   ]},
+  {h:"Pen names",
+   rows:[
+    ["Premchand","Dhanpat Rai Srivastava"],
+    ["Nirala","Suryakant Tripathi"],
+    ["Dinkar","Ramdhari Singh"],
+    ["Agyeya","Sachchidananda Hirananda Vatsyayan"],
+    ["Bachchan","Harivansh Rai Srivastava"],
+    ["Gulzar","Sampooran Singh Kalra"],
+    ["Firaq Gorakhpuri","Raghupati Sahay"],
+    ["Mirza Ghalib","Mirza Asadullah Baig Khan"],
+    ["Sahir Ludhianvi","Abdul Hayee"],
+    ["Kaifi Azmi","Syed Athar Hussain Rizvi"],
+    ["Bhanusimha","Rabindranath Tagore, as a young poet"],
+    ["Kalki","R. Krishnamurthy, the Tamil novelist"],
+    ["Mark Twain","Samuel Langhorne Clemens"],
+    ["George Orwell","Eric Arthur Blair"],
+    ["George Eliot","Mary Ann Evans"],
+    ["Lewis Carroll","Charles Lutwidge Dodgson"],
+    ["O. Henry","William Sydney Porter"],
+    ["Voltaire","Francois-Marie Arouet"],
+    ["Boz","Charles Dickens"],
+    ["Saki","Hector Hugh Munro"]
+   ]},
+  {h:"The literary prizes and their latest winners",
+   note:"The winners change every year. As of 10 October 2026; the Booker Prize is in the 10 October daily set.",
+   rows:[
+    ["Nobel Prize in Literature","Rabindranath Tagore, 1913, for Gitanjali: the first non-European winner and still the only Indian"],
+    ["Nobel Literature 2026","==Anne Carson==, Canadian poet and classicist, announced ==8 October 2026=="],
+    ["Nobel Literature 2025","Laszlo Krasznahorkai, Hungary"],
+    ["Nobel Literature 2024","Han Kang, South Korea: the first Asian woman to win"],
+    ["Nobel Literature 2023 and 2022","Jon Fosse (Norway) and Annie Ernaux (France)"],
+    ["Jnanpith Award","Given by the Bharatiya Jnanpith since 1965: 11 lakh rupees and a bronze statue of Vagdevi (Saraswati). The first winner was G. Sankara Kurup (Malayalam, for Odakkuzhal); the first woman, Ashapoorna Devi (Bengali, 1976)"],
+    ["60th Jnanpith (2025)","==R. Vairamuthu==, Tamil poet and lyricist: the third Tamil winner, after Akilan (1975) and D. Jayakanthan (2002)"],
+    ["59th Jnanpith (2024)","Vinod Kumar Shukla, Hindi: the first winner from Chhattisgarh"],
+    ["58th Jnanpith (2023)","Gulzar (Urdu) and Jagadguru Rambhadracharya (Sanskrit)"],
+    ["Sahitya Akademi Award","The Sahitya Akademi was founded on 12 March 1954; its award, given since 1955, covers 24 languages"],
+    ["Saraswati Samman","K.K. Birla Foundation, since 1991. The first winner was Harivansh Rai Bachchan"],
+    ["Vyas Samman","K.K. Birla Foundation, since 1991, for Hindi"],
+    ["Pulitzer Prize","Columbia University, since 1917. Indian-origin winners: Gobind Behari Lal (1937, journalism), Jhumpa Lahiri (2000, Interpreter of Maladies), Siddhartha Mukherjee (2011, The Emperor of All Maladies)"],
+    ["JCB Prize for Literature","Since 2018, for a work of fiction by an Indian writer: 25 lakh rupees"]
    ]}
  ]},
 
@@ -1106,6 +1285,172 @@ packs: [
     ["Central Rice Research Institute","Cuttack"],
     ["National Dairy Research Institute","Karnal"],
     ["Physical Research Laboratory","Ahmedabad"]
+   ]}
+ ]},
+
+/* =================================================================== */
+/* International organisations in full. The "hq" pack above keeps the
+   one-line headquarters list for quick revision; this is the topic: the UN
+   and its parts, every specialised agency, the groupings India is in and
+   the ones it is not, and the Nobel Peace Prizes the bodies have won. Who
+   heads each body changes, so that table carries its date.               */
+{id:"orgs", n:"International organisations", hy:1,
+ w:"The UN and its six organs, every specialised agency with its headquarters and year, the regional groupings and India's place in each, and who heads what as of October 2026.",
+ intro:"Four question types: where a body sits, when it was founded, who is in it, and who heads it. The headquarters are the easiest marks once the exceptions are learnt (UNEP and UN-Habitat in Nairobi, IMO in London, ICAO in Montreal, UPU in Bern, UN Tourism in Madrid). Membership questions turn on the recent changes: Timor-Leste into ASEAN, Belarus into the SCO, Finland and Sweden into NATO, the African Union into the G20, and the BRICS expansion.",
+ notes:[
+  "UN Charter signed ==26 June 1945== at ==San Francisco==; in force ==24 October 1945==, now ==UN Day==. Members: ==193==, the latest ==South Sudan== (2011).",
+  "Six principal organs: General Assembly, Security Council, ECOSOC, Trusteeship Council, ==International Court of Justice== and Secretariat. Only the ICJ sits outside New York, at ==The Hague==.",
+  "Security Council: ==5 permanent== members with a veto (USA, UK, France, Russia, China) and ==10 elected== for ==two years==. India has been elected ==eight times==, most recently ==2021-22==.",
+  "Six official languages: English, French, Russian, Chinese, Spanish and ==Arabic== (added 1973). Hindi is ==not== one.",
+  "The ==oldest== UN agency is the ==ITU== (1865, Geneva); then the ==UPU== (1874, Bern). The ==ILO== (1919) predates the UN itself.",
+  "In ==Nairobi==: ==UNEP== and ==UN-Habitat==. In ==Rome==: FAO, IFAD, WFP. In ==Vienna==: IAEA, UNIDO, OPEC. ==ICAO== in Montreal, ==IMO== in London, ==UN Tourism== in Madrid.",
+  "Secretary-General ==Antonio Guterres== (Portugal), the ninth, serves to ==31 December 2026==; his successor is being chosen by Security Council straw polls.",
+  "UNGA 81st session president: ==Khalilur Rahman== (Bangladesh), from September 2026. ==Vijaya Lakshmi Pandit== (1953) was the first woman to preside.",
+  "==SAARC==: 1985, Dhaka; secretariat ==Kathmandu==; 8 members. ==BIMSTEC==: 1997; secretariat ==Dhaka==; 7 members.",
+  "==ASEAN==: 1967, Bangkok; secretariat ==Jakarta==; ==Timor-Leste== became the ==11th== member in October 2025. India is a dialogue partner, not a member.",
+  "==BRICS== added Egypt, Ethiopia, Iran and the UAE in 2024 and ==Indonesia== in 2025. India chaired it in 2026: the 18th summit, ==New Delhi==, 12-13 September 2026.",
+  "==SCO==: 2001, secretariat ==Beijing==; India and Pakistan joined ==2017==, Iran 2023, ==Belarus== 2024 (the 10th).",
+  "==International Solar Alliance==: launched by ==India and France== at COP21, Paris, 2015; headquarters ==Gurugram==, the first international body based in India.",
+  "Nobel Peace Prize three times: the ==Red Cross== (ICRC: 1917, 1944, 1963). Twice: ==UNHCR== (1954, 1981)."
+ ],
+ blocks:[
+  {h:"The United Nations",
+   rows:[
+    ["The idea","The Atlantic Charter (1941) and the Declaration by United Nations (1 January 1942), which India signed. The name is Franklin D. Roosevelt's"],
+    ["The Charter","Drafted at the San Francisco Conference and signed on ==26 June 1945== by 50 countries; Poland signed later as the 51st original member. India was an original member, two years before independence"],
+    ["In force","==24 October 1945==, celebrated as UN Day"],
+    ["Headquarters","New York, on land given by John D. Rockefeller Jr. European offices in Geneva and Vienna, and an office in Nairobi"],
+    ["Members","193. The newest is South Sudan (2011). Two observer states: the Holy See and Palestine"],
+    ["Official languages","Six: Arabic, Chinese, English, French, Russian, Spanish. Arabic was added in 1973"],
+    ["The League of Nations","The predecessor: 1920 to 1946, Geneva, proposed by Woodrow Wilson. The United States never joined"]
+   ]},
+  {h:"The six principal organs",
+   rows:[
+    ["General Assembly","All 193 members, one vote each. Important questions need a two-thirds majority. A new president every September, rotating among regions"],
+    ["Security Council","15 members: 5 permanent with a veto (the P5: USA, UK, France, Russia, China) and 10 elected for two years. Its decisions bind every member"],
+    ["Economic and Social Council (ECOSOC)","54 members elected for three years. Coordinates the agencies and funds"],
+    ["Trusteeship Council","Suspended in 1994 after Palau, the last trust territory, became independent"],
+    ["International Court of Justice","==The Hague==, the only principal organ outside New York. 15 judges elected for nine years by the General Assembly and the Security Council. Settles disputes between states"],
+    ["Secretariat","Headed by the Secretary-General, appointed by the General Assembly on the Security Council's recommendation for five years"]
+   ]},
+  {h:"The Secretaries-General",
+   rows:[
+    ["1. Trygve Lie","Norway, 1946-52"],
+    ["2. Dag Hammarskjold","Sweden, 1953-61. Killed in an air crash in Africa in 1961; awarded the Nobel Peace Prize after his death"],
+    ["3. U Thant","Burma (Myanmar), 1961-71. The first from Asia"],
+    ["4. Kurt Waldheim","Austria, 1972-81"],
+    ["5. Javier Perez de Cuellar","Peru, 1982-91"],
+    ["6. Boutros Boutros-Ghali","Egypt, 1992-96. The first from Africa"],
+    ["7. Kofi Annan","Ghana, 1997-2006. Nobel Peace Prize 2001, shared with the UN"],
+    ["8. Ban Ki-moon","South Korea, 2007-16"],
+    ["9. Antonio Guterres","Portugal, from 1 January 2017. His second term ends on 31 December 2026"],
+    ["The 2026 race","As of 10 October 2026 the Security Council has held four straw polls and recommended nobody. Rebeca Grynspan of Costa Rica led the fourth, on 29 September"]
+   ]},
+  {h:"India and the UN",
+   rows:[
+    ["Original member","Signed the Declaration by United Nations in 1942 and the Charter in 1945"],
+    ["Security Council","Elected eight times: first 1950-51, most recently 2021-22. India seeks a permanent seat, with the G4 (Brazil, Germany, Japan)"],
+    ["First woman president of the General Assembly","Vijaya Lakshmi Pandit, 8th session, 1953"],
+    ["Peacekeeping","One of the largest troop contributors since the 1950s. India sent the first all-woman police unit, to Liberia, in 2007"],
+    ["International Day of Yoga","21 June, declared by the General Assembly in December 2014 on India's proposal"],
+    ["International Year of Millets","2023, on India's proposal"]
+   ]},
+  {h:"The specialised agencies",
+   note:"Fifteen bodies with their own members and budgets, tied to the UN by agreement.",
+   rows:[
+    ["International Telecommunication Union (ITU)","Geneva, ==1865==. The oldest UN agency; began as the International Telegraph Union"],
+    ["Universal Postal Union (UPU)","==Bern==, 1874. World Post Day, 9 October, marks its founding"],
+    ["International Labour Organization (ILO)","Geneva, ==1919==, under the Treaty of Versailles: older than the UN. The only ==tripartite== body: governments, employers and workers. Nobel Peace Prize 1969"],
+    ["Food and Agriculture Organization (FAO)","==Rome==, 16 October 1945. World Food Day is 16 October"],
+    ["UNESCO","==Paris==, 1945 (constitution signed 16 November 1945, in force 1946). Keeps the World Heritage List"],
+    ["International Civil Aviation Organization (ICAO)","==Montreal==. Chicago Convention 1944; at work from 1947"],
+    ["World Health Organization (WHO)","Geneva, ==7 April 1948==, World Health Day"],
+    ["World Meteorological Organization (WMO)","Geneva, 1950. World Meteorological Day, 23 March"],
+    ["International Maritime Organization (IMO)","==London==. Convention 1948, in force 1958"],
+    ["World Intellectual Property Organization (WIPO)","Geneva, 1967"],
+    ["International Fund for Agricultural Development (IFAD)","Rome, 1977"],
+    ["UN Industrial Development Organization (UNIDO)","Vienna, 1966"],
+    ["UN Tourism","==Madrid==, 1975. Known as the UNWTO until 2024"],
+    ["International Monetary Fund","Washington DC; agreed at Bretton Woods, 1944"],
+    ["World Bank Group","Washington DC; agreed at Bretton Woods, 1944"]
+   ]},
+  {h:"Funds, programmes and related bodies",
+   rows:[
+    ["UNICEF","New York, 11 December 1946; set up for children after the war. Nobel Peace Prize 1965"],
+    ["UNHCR","Geneva, 14 December 1950: the UN refugee agency. Nobel Peace Prize ==1954 and 1981=="],
+    ["World Food Programme (WFP)","Rome, 1961. Nobel Peace Prize 2020"],
+    ["UN Development Programme (UNDP)","New York, 1965. Publishes the Human Development Index"],
+    ["UN Environment Programme (UNEP)","==Nairobi==, 1972, after the Stockholm Conference. World Environment Day, 5 June"],
+    ["UN-Habitat","Nairobi, 1978"],
+    ["UN Population Fund (UNFPA)","New York, 1969. Publishes the State of World Population report"],
+    ["UNCTAD","Geneva, 1964: trade and development"],
+    ["UN Women","New York, 2010"],
+    ["UNAIDS","Geneva, 1996"],
+    ["International Atomic Energy Agency (IAEA)","==Vienna==, 1957. Reports to the General Assembly and the Security Council. Nobel Peace Prize 2005"],
+    ["World Trade Organization","Geneva, 1 January 1995. Not a UN agency, though it works with the UN"],
+    ["Organisation for the Prohibition of Chemical Weapons (OPCW)","The Hague, 1997. Nobel Peace Prize 2013"],
+    ["Intergovernmental Panel on Climate Change (IPCC)","Geneva, 1988, set up by WMO and UNEP. Nobel Peace Prize 2007"],
+    ["International Criminal Court","The Hague, 2002, under the Rome Statute of 1998. Not a UN body, and ==India is not a member=="]
+   ]},
+  {h:"Groupings India belongs to",
+   rows:[
+    ["SAARC","South Asian Association for Regional Cooperation. Founded ==8 December 1985 at Dhaka==; secretariat ==Kathmandu==. Eight members: Afghanistan (from 2007), Bangladesh, Bhutan, India, Maldives, Nepal, Pakistan, Sri Lanka. No summit since 2014"],
+    ["BIMSTEC","Bay of Bengal Initiative for Multi-Sectoral Technical and Economic Cooperation. ==Bangkok Declaration, 6 June 1997==; secretariat ==Dhaka==. Seven members: Bangladesh, Bhutan, India, Myanmar, Nepal, Sri Lanka, Thailand"],
+    ["BRICS","Brazil, Russia, India, China (first summit 2009) and South Africa (2010); Egypt, Ethiopia, Iran and the UAE from 2024; Indonesia from 2025. Saudi Arabia was invited and its status is unsettled. India chaired it in 2026 and hosted the ==18th summit in New Delhi, 12-13 September 2026=="],
+    ["New Development Bank","The BRICS bank, 2015, ==Shanghai=="],
+    ["SCO","Shanghai Cooperation Organisation, ==15 June 2001==; secretariat ==Beijing==, anti-terror centre (RATS) in Tashkent. India and Pakistan joined in ==2017==, Iran in 2023, Belarus in 2024"],
+    ["G20","1999, for finance ministers; leaders' summits since 2008. India's presidency in 2023: 'Vasudhaiva Kutumbakam: One Earth, One Family, One Future', and the ==African Union== admitted as a permanent member at New Delhi. South Africa hosted in 2025, the first summit in Africa; the USA holds it in 2026"],
+    ["Quad","India, the USA, Japan and Australia. Proposed 2007, revived 2017; first leaders' summit 2021"],
+    ["Commonwealth","London Declaration, 1949, which let republics such as India stay in. Secretariat at Marlborough House, London. 56 members; Gabon and Togo joined in 2022"],
+    ["Non-Aligned Movement","First summit ==Belgrade, 1961==. Founders: Nehru, Nasser, Tito, Sukarno and Nkrumah. Rooted in the Bandung Conference (1955). 120 members, no permanent secretariat"],
+    ["Indian Ocean Rim Association","1997; secretariat Ebene, Mauritius"],
+    ["International Solar Alliance","Launched by India and France at COP21, Paris, 30 November 2015; headquarters ==Gurugram=="],
+    ["Coalition for Disaster Resilient Infrastructure","2019, New Delhi"]
+   ]},
+  {h:"Groupings India is not in",
+   rows:[
+    ["ASEAN","Association of Southeast Asian Nations: Bangkok Declaration, ==8 August 1967==; secretariat ==Jakarta==. Eleven members since ==Timor-Leste== joined in October 2025. India is a dialogue partner (the Act East policy)"],
+    ["G7","USA, UK, France, Germany, Italy, Japan and Canada, with the EU. It was the G8 from 1997 until Russia was suspended in 2014. India attends as a guest"],
+    ["NATO","4 April 1949, Washington; headquarters ==Brussels==. 32 members: Finland joined in 2023 and Sweden in 2024. Article 5: an attack on one is an attack on all"],
+    ["European Union","Maastricht Treaty 1992, in force 1993; Brussels. 27 members since the UK left on 31 January 2020. 21 use the euro since Bulgaria joined on 1 January 2026"],
+    ["African Union","2002, replacing the Organisation of African Unity (1963); ==Addis Ababa==. 55 members"],
+    ["OPEC","1960, Baghdad; headquarters ==Vienna==. Founders: Iran, Iraq, Kuwait, Saudi Arabia and Venezuela"],
+    ["OECD","1961, Paris. India is a key partner, not a member"],
+    ["APEC","1989; secretariat Singapore"],
+    ["Gulf Cooperation Council","1981, Riyadh. Six members"],
+    ["Arab League","1945, Cairo"],
+    ["Organisation of Islamic Cooperation","1969; Jeddah. 57 members"]
+   ]},
+  {h:"Non-governmental and sporting bodies",
+   rows:[
+    ["International Committee of the Red Cross","Geneva, 1863, founded by Henri Dunant, the first Nobel Peace laureate (1901). Nobel Peace Prize ==three times==: 1917, 1944, 1963"],
+    ["Amnesty International","London, 1961. Nobel Peace Prize 1977"],
+    ["Greenpeace","1971; headquarters Amsterdam"],
+    ["WWF","1961; Gland, Switzerland"],
+    ["IUCN","1948; Gland. Keeps the Red List of threatened species"],
+    ["World Economic Forum","1971; Cologny, Geneva. The Davos meeting"],
+    ["Transparency International","1993; Berlin. Publishes the Corruption Perceptions Index"],
+    ["Interpol","1923; ==Lyon==, France"],
+    ["International Olympic Committee","1894, founded by Pierre de Coubertin; ==Lausanne=="],
+    ["FIFA","1904; Zurich"],
+    ["International Cricket Council","1909; Dubai"]
+   ]},
+  {h:"Who heads what",
+   note:"These change. As of 10 October 2026.",
+   rows:[
+    ["UN Secretary-General","Antonio Guterres (Portugal), to 31 December 2026"],
+    ["President of the UN General Assembly","Khalilur Rahman (Bangladesh), 81st session, from September 2026; Annalena Baerbock (Germany) presided over the 80th"],
+    ["WHO","Tedros Adhanom Ghebreyesus (Ethiopia)"],
+    ["UNESCO","Khaled El-Enany (Egypt), from 15 November 2025: the first Arab to lead it"],
+    ["UNHCR","Barham Salih (Iraq), from 1 January 2026"],
+    ["UNDP","Alexander De Croo (Belgium), from December 2025"],
+    ["IMF","Kristalina Georgieva (Bulgaria)"],
+    ["World Bank","Ajay Banga (born in India), from June 2023"],
+    ["WTO","Ngozi Okonjo-Iweala (Nigeria), in her second term"],
+    ["IAEA","Rafael Grossi (Argentina), also a candidate for Secretary-General"],
+    ["International Olympic Committee","Kirsty Coventry (Zimbabwe), from June 2025: the first woman and the first African"],
+    ["International Cricket Council","Jay Shah, chairman from December 2024"],
+    ["NATO","Secretary General Mark Rutte (Netherlands), from October 2024"]
    ]}
  ]},
 

@@ -707,7 +707,7 @@ topics: [
    ]},
   {h:"Regional and plurilateral groups",
    rows:[
-    ["BRICS","Brazil, Russia, India, China and South Africa. The term BRIC was Jim O'Neill's, in 2001; South Africa joined in 2010. The New Development Bank, headquartered in Shanghai, is its bank"],
+    ["BRICS","Brazil, Russia, India, China and South Africa, the original five: the term BRIC was Jim O'Neill's, in 2001, and South Africa joined in 2010. Egypt, Ethiopia, Iran and the UAE joined in January 2024 and Indonesia in January 2025; Saudi Arabia was invited and its status is unsettled. India chaired it in 2026. The New Development Bank, headquartered in Shanghai, is its bank"],
     ["Asian Development Bank","1966, headquartered in Manila"],
     ["Asian Infrastructure Investment Bank","2016, headquartered in Beijing. India is the second largest shareholder"],
     ["SAARC","1985, headquartered in Kathmandu — eight members"],

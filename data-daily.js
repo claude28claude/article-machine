@@ -30,8 +30,8 @@ window.DAILY = {
 sets: [
 
 {id:"10-october", d:"10 October", y:2026,
- w:"The Booker Prize of the last four years, who holds each cup now, and the SSC notes on the 1991 reforms, the Five Year Plans, sports and their cups, the Jain councils, ISRO's missions and the Mughals.",
- intro:"Two parts here are current affairs and live only on this page: the Booker Prize and the current holders of each cup. The other six are revision sheets for topics that were added or deepened on the site today; each gives the highlighted notes and a link to the full page.",
+ w:"The Booker Prize of the last four years, books and authors with the 2026 Nobel, who holds each cup now, Paris 2024, international organisations, and the SSC notes on the 1991 reforms, the Five Year Plans, sports and their cups, the Jain councils, ISRO's missions and the Mughals.",
+ intro:"Two parts here are current affairs and live only on this page: the Booker Prize and the current holders of each cup. The rest are revision sheets for topics that were added or deepened on the site today; each gives the highlighted notes and a link to the full page.",
  parts:[
 
   /* ---------------------------------------------------------- full part */
@@ -109,6 +109,11 @@ sets: [
       ["Anita Desai","Her mother: ==shortlisted three times==, never won"]]}
    ]},
 
+  /* --------------------------------------------------------- recap part */
+  {id:"books", tag:"Static GK \u00b7 books", h:"Books and authors", from:"gk.books",
+   w:"The autobiographies, the books of the national movement, the pen names, and the prizes with their latest winners: Anne Carson took the Nobel two days before this set, and R. Vairamuthu the 60th Jnanpith.",
+   links:[["#/gk/pack/books","Every book and author"],["#/gk/pack/awards","Awards and honours"]]},
+
   /* ---------------------------------------------------------- full part */
   {id:"cups-now", tag:"Current affairs · sports", h:"Who holds the cup now",
    w:"The latest winner of every cup SSC asks about, as of 10 October 2026. Which cup belongs to which sport is in Static GK; who won it this year is here.",
@@ -163,6 +168,14 @@ sets: [
    ]},
 
   /* --------------------------------------------------------- recap parts */
+  {id:"olympics", tag:"Static GK \u00b7 sports", h:"Paris 2024", from:"gk.paris-2024",
+   w:"India's six Olympic medals and six fourth places, Vinesh Phogat's disqualification, the Games' firsts, and the record 29 Paralympic medals.",
+   links:[["#/gk/pack/paris-2024","Paris 2024 in full"],["#/gk/pack/sports","India's earlier Olympic milestones"]]},
+
+  {id:"orgs", tag:"Static GK \u00b7 world", h:"International organisations", from:"gk.orgs",
+   w:"The UN and its organs, every specialised agency with its headquarters and year, the groupings India is and is not in, and who heads what.",
+   links:[["#/gk/pack/orgs","International organisations in full"],["#/gk/pack/hq","The one-line headquarters list"]]},
+
   {id:"reforms", tag:"Indian Economy", h:"The 1991 reforms", from:"econ.reform",
    w:"The crisis, the gold, the devaluation, 24 July 1991, and the committees. The full page now carries the dates in order and the words the questions use.",
    links:[["#/economy/reforms","The 1991 reforms in full"]]},
