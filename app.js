@@ -3671,6 +3671,141 @@ SUBJECTS.push({
 });
 
 /* =========================================================================
+   SUBJECT: THE NEW CRIMINAL LAWS
+
+   WHY A SUBJECT RATHER THAN A STATIC GK PACK. Because the questions are
+   about numbers. Since 2024 a general awareness paper has asked which
+   Sanhita replaced which Code, which section now carries murder, and what
+   section 152 created in place of sedition. A pack of three names answers
+   none of that - and an answer that still says "IPC 302" is simply wrong
+   for any offence on or after 1 July 2024.
+
+   WHY IT SITS BESIDE THE CONSTITUTION RATHER THAN INSIDE IT. The
+   Constitution subject is one document, extracted from the Government's own
+   publication and printed word for word. These three are a different kind
+   of thing: a reading of three new Acts, written from the police handbooks
+   and the standard commentaries, with the places where those commentaries
+   disagree named rather than smoothed over. Keeping them apart keeps the
+   claim each subject makes about its own reliability honest.
+
+   It reuses factsBlock and cmpBlock, so the whole subject is about ninety
+   lines here and lives in its data file.
+   ========================================================================= */
+
+var LAW = window.LAWS || {};
+var lawTopicById = {};
+(LAW.topics || []).forEach(function (t) { lawTopicById[t.id] = t; });
+
+function lawRows(t) {
+  return t.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
+}
+function lawAllRows() {
+  return (LAW.topics || []).reduce(function (a, t) { return a + lawRows(t); }, 0);
+}
+
+function lawShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function lawHome() {
+  var h = '<div class="crumb">The new criminal laws</div>' +
+    pageH1('Three Acts, one date, and a great many new numbers',
+      'The Bharatiya Nyaya Sanhita, the Bharatiya Nagarik Suraksha Sanhita and the Bharatiya ' +
+      'Sakshya Adhiniyam replaced the Indian Penal Code, the Code of Criminal Procedure and the ' +
+      'Indian Evidence Act on 1 July 2024. The exam asks them by section number, so the numbers ' +
+      'are the content.');
+
+  h += '<div class="figs">' + fig(3, 'Acts') + fig((LAW.topics || []).length, 'topics') +
+    fig(lawAllRows(), 'provisions') + fig((LAW.confusions || []).length, 'confused pairs') + '</div>';
+
+  h += '<div class="block"><h3>The topics</h3><div class="grid">' +
+    (LAW.topics || []).map(function (t) {
+      return '<a class="pcard" href="#/laws/topic/' + encodeURIComponent(t.id) + '">' +
+        '<div class="pn">' + esc(t.n) + '</div><div class="pt">' + esc(t.w) + '</div>' +
+        '<div class="pr">' + t.blocks.length + ' tables · ' + lawRows(t) + ' rows</div></a>';
+    }).join('') + '</div></div>';
+
+  /* The reliability note belongs on the landing page, not buried in a
+     topic, because it governs how to read every number behind it. */
+  h += '<div class="block"><h3>How firm each statement is</h3>' +
+    '<p class="plain">The names of the three Acts, what each replaced, the dates and the rule ' +
+    'that the date of the <em>offence</em> decides which law applies do not move. The section ' +
+    'counts — 358, 531 and 170 against 511, 484 and 167 — are consistent across the official ' +
+    'handbooks. Chapter counts vary between secondary sources, so where one is given the row says ' +
+    'it is the commonly cited figure. Where commentaries genuinely disagree, which is the case for ' +
+    'the undertrial fraction in BNSS 479 and the investigation deadlines in BNSS 193, the row gives ' +
+    'both readings rather than picking one quietly. This is a list of provisions an exam asks you ' +
+    'to name, not legal advice and not a bare act.</p></div>';
+
+  return lawShell(h);
+}
+
+function lawTopicPage(id) {
+  var t = lawTopicById[id];
+  if (!t) return lawShell('<div class="crumb"><a href="#/laws">The new criminal laws</a></div>' +
+    '<div class="empty"><b>No such topic</b>Nothing on this site is filed under that name.</div>');
+
+  var topics = LAW.topics || [], i = topics.indexOf(t);
+  var h = '<div class="crumb"><a href="#/laws">The new criminal laws</a> → ' + esc(t.n) + '</div>' +
+    pageH1(t.n, t.w);
+  if (t.intro) h += '<p class="plain stack">' + esc(t.intro) + '</p>';
+  h += t.blocks.map(factsBlock).join('');
+
+  var prev = topics[i - 1], next = topics[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/laws/topic/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Previous</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/laws/topic/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">Next</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+  return lawShell(h);
+}
+
+function lawConfusions() {
+  return lawShell('<div class="crumb"><a href="#/laws">The new criminal laws</a> → Confused pairs</div>' +
+    pageH1('The pairs that get mixed up',
+      'Which Sanhita replaced which Code, why 302 is now the wrong answer, whether sedition was ' +
+      'renumbered or repealed, and whether BNSS 479 says half or one third.') +
+    (LAW.confusions || []).map(cmpBlock).join(''));
+}
+
+function lawRoute(seg) {
+  switch (seg[0] || '') {
+    case '':           return render(lawHome());
+    case 'topic':      return render(lawTopicPage(seg[1]));
+    case 'confusions': return render(lawConfusions());
+    default:           return notFound('That address does not exist in the criminal laws.');
+  }
+}
+
+SUBJECTS.push({
+  id: 'laws',
+  name: 'The new criminal laws',
+  short: 'Criminal laws',
+  blurb: 'The Bharatiya Nyaya Sanhita, Nagarik Suraksha Sanhita and Sakshya Adhiniyam that replaced the IPC, the CrPC and the Evidence Act on 1 July 2024 — the dates, the counts, the new offences, and the section numbers an exam asks for.',
+  tabs: [
+    { href: '#/laws',            label: 'The topics',     match: ['', 'topic'] },
+    { href: '#/laws/topic/mapping', label: 'IPC → BNS', match: [] },
+    { href: '#/laws/confusions', label: 'Confused pairs', match: ['confusions'] },
+    { href: '#/constitution',    label: '↔ Constitution', match: [] }
+  ],
+  stats: function () {
+    return ['3 Acts', (LAW.topics || []).length + ' topics', lawAllRows() + ' provisions',
+            (LAW.confusions || []).length + ' confused pairs'];
+  },
+  topics: function () {
+    return (LAW.topics || []).map(function (t) {
+      return { t: t.n, href: '#/laws/topic/' + encodeURIComponent(t.id), w: t.w,
+               k: t.blocks.map(function (b) { return b.h; }).join(' ') +
+                  ' bns bnss bsa ipc crpc evidence act criminal law 2023 2024',
+               n: lawRows(t) + ' rows' };
+    }).concat([{ t: 'The criminal laws - confused pairs', href: '#/laws/confusions',
+                 n: (LAW.confusions || []).length + ' pairs',
+                 w: 'Which Sanhita replaced which Code, why 302 is the wrong answer now, and whether sedition was renumbered or repealed.',
+                 k: 'sedition 124a 152 murder 302 103 section counts community service 479' }]);
+  },
+  route: lawRoute
+});
+
+/* =========================================================================
    SUBJECT: GEOGRAPHY
 
    WHY THIS EXISTS WHEN STATIC GK ALREADY HAS RIVERS, STATES AND
@@ -4262,6 +4397,22 @@ function indexPage() {
     idxGroup('The topics', earlyItems) +
     idxGroup('The emperors', empItems));
 
+  /* --------------------------------------------------- The criminal laws */
+  var lawSections = count([
+    { t: 'Every topic, listed', href: '#/s/laws' },
+    { t: 'The topics', href: '#/laws' },
+    { t: 'IPC to BNS mapping', href: '#/laws/topic/mapping' },
+    { t: 'Confused pairs', href: '#/laws/confusions' }
+  ]);
+  var lawItems = count((LAW.topics || []).map(function (t) {
+    return { t: t.n, href: '#/laws/topic/' + encodeURIComponent(t.id), n: lawRows(t) + ' rows' };
+  }));
+
+  h += idxSection('The new criminal laws',
+    '3 Acts \u00b7 ' + lawAllRows() + ' provisions',
+    idxGroup('Sections', lawSections, true) +
+    idxGroup('The topics', lawItems));
+
   /* ------------------------------------------------------------- Geography */
   var geoSections = count([
     { t: 'Every topic, listed', href: '#/s/geography' },
@@ -4756,6 +4907,41 @@ function buildIndex() {
       near: (p.n + ' ssc notes').toLowerCase(),
       hay: unmark(p.n + ' ssc notes ' + p.notes.join(' ')).toLowerCase(),
       href: '#/gk/pack/' + encodeURIComponent(p.id), num: ''
+    });
+  });
+
+  /* The criminal laws, topic then table, so that a bare section number -
+     "152", "BNS 103", "479" - reaches the table that explains it. The old
+     IPC numbers are in the haystack too, because that is what a reader who
+     learnt the law before 2024 will type. */
+  (LAW.topics || []).forEach(function (t) {
+    var href = '#/laws/topic/' + encodeURIComponent(t.id);
+    var all = t.blocks.map(function (b) {
+      return b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ');
+    }).join(' ');
+    searchIndex.push({
+      kind: 'criminal law', id: 'law-' + t.id, no: '', title: t.n, sub: t.w,
+      near: (t.n + ' ' + t.w + ' ' + (t.intro || '')).toLowerCase(),
+      hay: (t.n + ' ' + t.w + ' ' + (t.intro || '') + ' bns bnss bsa ipc crpc ' + all).toLowerCase(),
+      href: href, num: ''
+    });
+    t.blocks.forEach(function (b, i) {
+      searchIndex.push({
+        kind: 'criminal law', id: 'law-' + t.id + '-' + i, no: '', title: b.h, sub: t.n,
+        near: b.h.toLowerCase(),
+        hay: (b.h + ' ' + (b.note || '') + ' ' +
+              b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+        href: href, num: ''
+      });
+    });
+  });
+  (LAW.confusions || []).forEach(function (c, i) {
+    searchIndex.push({
+      kind: 'criminal law', id: 'lcmp-' + i, no: '', title: c.k,
+      sub: 'Criminal laws \u00b7 confused pair', near: c.k.toLowerCase(),
+      hay: (c.k + ' ' + (c.note || '') + ' ' +
+            c.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+      href: '#/laws/confusions', num: ''
     });
   });
 

@@ -1,6 +1,6 @@
 # The Article Machine
 
-Nine subjects for the Indian exam track, in plain English, organised by
+Ten subjects for the Indian exam track, in plain English, organised by
 **topic** rather than by subject. Searchable across all of them, works offline,
 installable.
 
@@ -59,7 +59,7 @@ every section, and every one of the 1,151 individual pages, folded shut so you
 can see the shape at a glance and open only the part you are working through.
 
 The front page is a **filterable list of every topic on the site**. A reader
-arrives knowing what they need to revise, not which of nine subjects it lives
+arrives knowing what they need to revise, not which of ten subjects it lives
 in, so `#/` asks that question first and every subject sits one click behind
 it.
 
@@ -389,6 +389,45 @@ older Five Year Plan notes that contradicted the site's own figures. It also
 added 38 high-yield facts the pages were missing, from Saraighat and Lachit
 Borphukan to SITE, EDUSAT and the classical-language status of Prakrit and Pali.
 
+## The new criminal laws
+
+| | |
+|---|---|
+| Acts | **3** |
+| Topics | **5** |
+| Provisions listed | **125** |
+| Confused pairs | **7** |
+
+**Why a subject and not a Static GK pack.** Because the questions are about
+numbers. Since 2024 a general awareness paper has asked which Sanhita
+replaced which Code, which section now carries murder, and what section 152
+created in place of sedition. A pack of three names answers none of that —
+and an answer that still says "IPC 302" is simply wrong for any offence on or
+after 1 July 2024.
+
+**What replaced what.** Bharatiya Nyaya Sanhita → Indian Penal Code (the
+offences). Bharatiya Nagarik Suraksha Sanhita → Code of Criminal Procedure
+(the procedure). Bharatiya Sakshya Adhiniyam → Indian Evidence Act (the
+evidence). The commonest error is pairing Nagarik Suraksha with the penal
+code because the name sounds as though it should be about crime.
+
+**Three levels of firmness, and the rows say which.** The names, what each
+replaced, the dates and the rule that the date of the *offence* decides which
+law applies do not move. The section counts — 358, 531 and 170 against 511,
+484 and 167 — are consistent across the official handbooks. Chapter counts
+vary between secondary sources more than they should, so a row that gives one
+says it is the commonly cited figure. And where commentaries genuinely
+disagree — the undertrial fraction in BNSS 479 and the investigation
+deadlines in BNSS 193 — the row gives both readings rather than picking one
+quietly.
+
+**The fifth topic is the IPC → BNS mapping**, limited to the sections famous
+enough to be asked: 302 → 103, 420 → 318, 498A → 85, 376 → 64, 124A →
+repealed and not renumbered. Nothing is gained by trying to learn all 358.
+
+**It is not legal advice and not a bare act.** It is the list of provisions an
+exam asks you to name. The authoritative text of all three is on India Code.
+
 ## Geography
 
 | | |
@@ -517,6 +556,7 @@ of them so a reader can check what a summary lost.
 | `data-artmap.js` | The Constitution indexed by subject, and the courts article by article |
 | `data-early.js` | Ancient and Medieval History: Jainism and its councils, and the Mughals |
 | `data-geography.js` | Geography: 7 topics, 260 facts, the Himalayas in full, 10 confused pairs |
+| `data-laws.js` | The BNS, BNSS and BSA: dates, counts, the new offences, and the IPC mapping |
 | `data-daily.js` | The dated daily study sets: current affairs, and recaps of what was added |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline. A data file whose new fields app.js now reads carries a `?v=` query in `index.html` and in `ASSETS`; bump it on such a deploy, or the first visit afterwards pairs new code with old cached data |
