@@ -99,8 +99,8 @@ chapters: [
     {p:"Expand (a + b + c)\u00b3 using the three brackets",
      f:"(a + b + c)\u00b3 = a\u00b3 + b\u00b3 + c\u00b3 + 3(a + b)(b + c)(c + a)",
      d:"Not the long multinomial expansion \u2014 this grouped form is the one that is actually usable in the paper."},
-    {p:"Factorise a\u00b3 + b\u00b3 + c\u00b3 \u2212 3abc when a + b + c = 0", f:"a\u00b3 + b\u00b3 + c\u00b3 = 3abc", t:"trick",
-     d:"The highest-yield single line in SSC algebra. The moment the three terms add to zero, the sum of cubes is 3abc and the question is over."}
+    {p:"When is a\u00b3 + b\u00b3 + c\u00b3 = 3abc?", f:"When a + b + c = 0, or when a = b = c", t:"trick",
+     d:"Read it off the factorisation in the row above: the difference is (a + b + c)(a\u00b2 + b\u00b2 + c\u00b2 \u2212 ab \u2212 bc \u2212 ca), and the second bracket is half the sum of (a\u2212b)\u00b2, (b\u2212c)\u00b2 and (c\u2212a)\u00b2, so it vanishes only when all three are equal. Both limbs count \u2014 options that offer only a + b + c = 0 are testing whether you know the other one exists."}
    ]},
 
   {h:"When a + b + c = 0",
@@ -151,8 +151,8 @@ chapters: [
      d:"From AM \u2265 GM. For x < 0 the maximum is \u22122 at x = \u22121. SSC asks for the range: x + 1/x can never lie strictly between \u22122 and 2."},
     {p:"x + 1/x = 2 means x = ?", f:"x = 1.  And x + 1/x = \u22122 means x = \u22121", t:"trick",
      d:"These two are not formulas to apply, they are values to recognise. If a question hands you x + 1/x = 2, substitute x = 1 and the rest of the expression is arithmetic."},
-    {p:"x\u00b3 + 1/x\u00b3 = 0 means x\u00b2 + 1/x\u00b2 = ?", f:"x + 1/x = 0 is impossible for real x; the intended answer uses x\u2074 = \u22121",
-     d:"Treat this one with care \u2014 SSC versions of it usually intend x\u00b3 = \u22121/x\u00b3, giving x\u2076 = \u22121, and the expression asked is designed to come out to a clean number anyway."}
+    {p:"x + 1/x = \u221a3 means x\u00b3 + 1/x\u00b3 = ?", f:"= 0,  because (\u221a3)\u00b3 \u2212 3(\u221a3) = 3\u221a3 \u2212 3\u221a3 = 0", t:"trick",
+     d:"The one value of x + 1/x that makes the cube vanish, and SSC sets it often because the zero looks like a mistake. Run it the other way and the question is broken: x\u00b3 + 1/x\u00b3 = 0 forces x + 1/x to be 0 or \u00b1\u221a3, and no real x gives any of those, since x + 1/x is at least 2 in size."}
    ]},
 
   {h:"Surds, indices and nested roots",

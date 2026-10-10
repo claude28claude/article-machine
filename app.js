@@ -5113,8 +5113,14 @@ function buildIndex() {
           kind: 'article map', id: key + '-' + i, no: '', title: b.h,
           sub: key === 'courts' ? 'The courts, article by article'
              : key === 'centrestate' ? 'Centre and State' : 'The article map',
-          near: b.h.toLowerCase(),
+          /* "centre state" without the hyphen is how it gets typed, and the
+             hyphenated form in the headings does not match it, so the whole
+             topic was unreachable by its own name. */
+          near: (b.h + (key === 'centrestate'
+            ? ' centre state centre-state center state union state relations federalism seventh schedule'
+            : '')).toLowerCase(),
           hay: (b.h + ' ' + (b.note || '') + ' ' +
+                (key === 'centrestate' ? 'centre state centre-state center state relations federalism ' : '') +
                 b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
           href: '#/high-yield/' + view[key], num: ''
         });
@@ -5180,10 +5186,18 @@ function buildIndex() {
     if (s.lists) Object.keys(s.lists).forEach(function (k) {
       extra += ' ' + k + ' ' + s.lists[k].map(function (e) { return e.t; }).join(' ');
     });
+    /* A reader types "schedule 7" or "7th schedule" far more often than
+       "seventh schedule", and the digit appears nowhere in the Schedule's own
+       name, so without these aliases the commonest query for this page misses
+       it entirely. The List names go into `near` as well as `hay` so that
+       "union list" ranks the Seventh Schedule near the article that creates
+       it rather than fifty entries below. */
+    var listNames = s.lists ? Object.keys(s.lists).join(' ') : '';
+    var alias = 'schedule ' + s.n + ' ' + ordinal(s.n) + ' schedule schedule ' + ordinal(s.n);
     searchIndex.push({
       kind: 'schedule', id: s.n, no: ORD[s.n], title: s.name + ' — ' + s.sub,
-      sub: s.stat, near: (s.sub + ' ' + s.p).toLowerCase(),
-      hay: (s.name + ' ' + s.sub + ' ' + s.p + ' ' + extra).toLowerCase(),
+      sub: s.stat, near: (s.sub + ' ' + listNames + ' ' + alias + ' ' + s.p).toLowerCase(),
+      hay: (s.name + ' ' + alias + ' ' + s.sub + ' ' + s.p + ' ' + extra).toLowerCase(),
       href: '#/schedule/' + s.n, num: ''
     });
   });

@@ -572,7 +572,7 @@ of them so a reader can check what a summary lost.
 | `app.js` | Hash router, topic hub, cross-subject search, and every view |
 | `data-articles.js` | The 506 articles: heading, Part, official text, amendment trail |
 | `data-amendments.js` | The 106 amendments and the articles each touched |
-| `data-schedules.js` | The 12 Schedules, including all 220 entries of the three Lists |
+| `data-schedules.js` | The 12 Schedules, including all 219 printed entries of the three Lists |
 | `data-cases.js` | 91 landmark judgments, keyed to articles |
 | `data-highyield.js` | The Constitution's exam layer: tiers, confused pairs, quick facts |
 | `data-history.js` | Modern History: eras, timeline, Acts, people, movements |
