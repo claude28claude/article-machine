@@ -1,0 +1,668 @@
+@unit u3 | 3 | Strings in depth
+@zen Beautiful is better than ugly.
+@summary Pick out characters and slices, clean up messy text with string methods, and format output exactly with f-strings.
+
+@lesson 3.1 | Indexing and slicing | 25
+@goal Get single characters and pieces out of a string using positions, including negative ones.
+
+A string is a **sequence**: characters in a fixed order, each at a numbered position called an **index**. Python counts from **0**, not 1.
+
+```text
+ P   Y   T   H   O   N
+ 0   1   2   3   4   5
+-6  -5  -4  -3  -2  -1
+```
+
+Square brackets after a string pick out one character:
+
+```py
+word = "PYTHON"
+print(word[0])
+print(word[3])
+print(word[-1])
+print(word[-2])
+```
+
+Negative indexes count from the end: `-1` is always the last character, whatever the length. That's handy when you don't know how long the text is.
+
+Asking for a position that doesn't exist is an error:
+
+```py error
+word = "PYTHON"
+print(word[6])
+```
+
+The last index is always `len(word) - 1`, which is 5 here.
+
+## Slicing: taking a piece
+
+`text[start:stop]` gives the characters from `start` **up to but not including** `stop`.
+
+```py
+exam = "SSC CGL 2026"
+print(exam[0:3])
+print(exam[4:7])
+print(exam[8:12])
+```
+
+Leave out a side to go all the way to that end:
+
+```py
+exam = "SSC CGL 2026"
+print(exam[:3])
+print(exam[8:])
+print(exam[-4:])
+```
+
+A third number is the **step**. A step of `-1` walks backwards, which reverses the string:
+
+```py
+code = "ABCDEFGH"
+print(code[::2])
+print(code[::-1])
+```
+
+:::tip
+A good way to remember the stop rule: `text[:3]` is the first 3 characters, and `text[3:]` is everything else. The two slices fit together with no gap and no overlap.
+:::
+
+## Strings can't be changed in place
+
+Strings are **immutable**: once made, they can't be edited. You build a new string instead.
+
+```py error
+city = "Jaipur"
+city[0] = "N"
+```
+
+```py
+city = "Jaipur"
+new_city = "N" + city[1:]
+print(new_city)
+```
+
+:::predict
+```py
+s = "Constitution"
+print(s[0], s[-1], s[3:6])
+```
+- C n stit
+- o n sti
++ C n sti
+= Index 0 is C, index -1 is the last letter n, and s[3:6] takes positions 3, 4 and 5: s, t, i.
+:::
+
+:::predict
+```py
+print("Mumbai"[::-1])
+```
++ iabmuM
+- Mumbai
+- iabmum
+- M
+= A step of -1 reads the string from the end to the start, so it comes out reversed, with the capital M last.
+:::
+
+:::recall
+Q: What index does the first character of a string have?
+A: 0. The last character is at index -1, or len(text) - 1.
+Q: What does `text[2:5]` give?
+A: The characters at positions 2, 3 and 4. The stop position is not included.
+Q: How do you reverse a string?
+A: Slice with a step of -1: `text[::-1]`.
+:::
+
+@exercise 3.1a | Initials
+Print the initials of `first` and `last` with a dot after each:
+
+```text
+P.V.
+```
+
+Get the letters by indexing, so the code works for any names.
+
+```starter
+first = "Priya"
+last = "Verma"
+
+```
+
+```solution
+first = "Priya"
+last = "Verma"
+print(first[0] + "." + last[0] + ".")
+```
+
+```test
+check_out("P.V.")
+check("[0]" in src, "You used indexing", "Get each first letter with [0] instead of typing P and V.")
+```
+
+:::hints
+- `first[0]` is the first letter of first.
+- Join the pieces with `+`: letter, dot, letter, dot.
+:::
+
+@exercise 3.1b | Backwards
+Print the word stored in `word` reversed, using a slice:
+
+```text
+noitutitsnoC
+```
+
+```starter
+word = "Constitution"
+
+```
+
+```solution
+word = "Constitution"
+print(word[::-1])
+```
+
+```test
+check_out("noitutitsnoC")
+check("::-1" in src, "You reversed it with a slice", "Use the slice [::-1].")
+```
+
+:::hints
+- A slice has three parts: start, stop and step.
+- Leave start and stop empty and use a step of -1.
+:::
+
+@exercise 3.1c | Read a roll number
+Roll numbers here follow a pattern: `SSC`, then a 4-digit year, then `CGL`, then a seat number. From `roll`, print:
+
+```text
+Year: 2026
+Seat: 1047
+```
+
+Use slicing on `roll`. The year is always at positions 3 to 6, and the seat number is everything after `CGL` (the last 4 characters).
+
+```starter
+roll = "SSC2026CGL1047"
+
+```
+
+```solution
+roll = "SSC2026CGL1047"
+print("Year:", roll[3:7])
+print("Seat:", roll[-4:])
+```
+
+```test
+check_out("Year: 2026\nSeat: 1047")
+check(has("Slice"), "You sliced the roll number", "Take the pieces out of roll with slices like roll[3:7].")
+```
+
+:::hints
+- The year starts at index 3. Which index is just after it ends?
+- `roll[3:7]` gives 4 characters starting at position 3.
+- The last 4 characters are `roll[-4:]`.
+:::
+
+@lesson 3.2 | String methods | 25
+@goal Clean, search and reshape text with the most useful string methods.
+
+A **method** is a function that belongs to a value. You call it with a dot: `value.method()`. Strings come with dozens of them.
+
+```py
+name = "aman sharma"
+print(name.upper())
+print(name.title())
+print(name.capitalize())
+print("SSC CGL".lower())
+```
+
+## Methods return new strings
+
+Strings can't change, so a method never edits the original. It gives you a **new** string, and you must store it if you want to keep it:
+
+```py
+name = "  Riya  "
+name.strip()
+print("[" + name + "]")
+name = name.strip()
+print("[" + name + "]")
+```
+
+`strip()` removes spaces (and newlines) from both ends. Use it on almost every piece of text a user types: people add stray spaces all the time.
+
+## Searching
+
+```py
+article = "Equality before law and equal protection of laws"
+print(article.count("law"))
+print(article.find("before"))
+print(article.find("liberty"))
+print(article.startswith("Equal"))
+print(article.endswith("laws"))
+```
+
+- `count(x)` says how many times `x` appears.
+- `find(x)` gives the index where `x` first starts, or `-1` if it isn't there.
+- `startswith` and `endswith` answer yes or no (`True` or `False`; more on those in Unit 4).
+
+The `in` operator also checks whether one string contains another:
+
+```py
+print("CGL" in "SSC CGL 2026")
+print("CHSL" in "SSC CGL 2026")
+```
+
+## Replacing and checking
+
+```py
+date = "18-10-2026"
+print(date.replace("-", "/"))
+print("2026".isdigit())
+print("20x6".isdigit())
+print("Python".isalpha())
+```
+
+## Splitting into words
+
+`split()` breaks text into a list of words. Lists get a whole unit later (Unit 6); for now, `len(text.split())` counts words:
+
+```py
+line = "Right to Equality is in Part III"
+print(line.split())
+print(len(line.split()))
+```
+
+Methods can be **chained**: each one works on the result of the one before.
+
+```py
+raw = "   jAIPUR  "
+print(raw.strip().title())
+```
+
+:::predict
+```py
+s = "banana"
+print(s.count("a"), s.find("n"), s.upper())
+```
+- 3 1 BANANA
++ 3 2 BANANA
+- 2 2 BANANA
+- 3 2 banana
+= There are three a's. The first n is at index 2 (b is 0, a is 1). upper() returns the capitals.
+:::
+
+:::quiz
+? `name = "  dev "` then `name.strip()` is called on its own line. What is `name` afterwards?
++ "  dev " (unchanged)
+- "dev"
+- "  dev"
+- An error
+= String methods return a new string and never change the original. Without `name = name.strip()`, the result is thrown away.
+:::
+
+:::recall
+Q: Why does `name.strip()` on its own line seem to do nothing?
+A: Methods return a new string; strings can't be changed in place. Write `name = name.strip()` to keep the result.
+Q: What does `text.find("x")` return when "x" isn't in the text?
+A: -1.
+Q: How do you count the words in a sentence?
+A: `len(sentence.split())`. split() breaks the text at spaces into a list of words.
+:::
+
+@exercise 3.2a | Clean up a name
+Users type names in messy ways. Clean `raw` so the program prints:
+
+```text
+Priya Verma
+```
+
+Use string methods, not a new hand-typed string.
+
+```starter
+raw = "   pRiYa vErMa  "
+
+```
+
+```solution
+raw = "   pRiYa vErMa  "
+clean = raw.strip().title()
+print(clean)
+```
+
+```test
+check_out("Priya Verma")
+check(calls("strip") and calls("title"), "You used strip() and title()", "Clean raw with methods: strip() for the spaces and title() for the capitals.")
+```
+
+:::hints
+- Which method removes spaces from both ends?
+- Which method makes each word start with a capital and the rest lowercase?
+- Chain them: `raw.strip().title()`.
+:::
+
+@exercise 3.2b | Word count
+Print how many words are in `sentence`. The answer here is `8`, but make Python count them.
+
+```starter
+sentence = "Equality before law and equal protection of laws"
+
+```
+
+```solution
+sentence = "Equality before law and equal protection of laws"
+print(len(sentence.split()))
+```
+
+```test
+check_out("8")
+check(calls("split"), "You used split()", "Break the sentence into words with split(), then count them with len().")
+```
+
+:::hints
+- `sentence.split()` gives the list of words.
+- `len()` counts the items in that list.
+:::
+
+@exercise 3.2c | Email username
+Print the part of `email` before the `@`:
+
+```text
+aman.sharma
+```
+
+Find the position of `@` with a method, then slice up to it, so the code works for any email.
+
+```starter
+email = "aman.sharma@example.com"
+
+```
+
+```solution
+email = "aman.sharma@example.com"
+at = email.find("@")
+print(email[:at])
+```
+
+```test
+check_out("aman.sharma")
+check(calls("find") or calls("index") or calls("split") or calls("partition"), "You located the @ with a method", "Use email.find(\"@\") to get the position of the @.")
+```
+
+:::hints
+- `email.find("@")` gives the index of the @ sign.
+- A slice `email[:n]` gives everything before position n.
+:::
+
+@lesson 3.3 | f-strings and formatting | 25
+@goal Build text with f-strings and format numbers with decimals, separators and alignment.
+
+Joining text with `+` and `str()` gets clumsy fast. **f-strings** are the modern way: put an `f` before the quotes and write any variable or expression inside `{ }`.
+
+```py
+name = "Aman"
+marks = 145
+print(f"{name} scored {marks} marks")
+print(f"Next year: {2026 + 1}")
+print(f"Shouting: {name.upper()}")
+```
+
+No `str()` needed: the f-string converts values to text for you.
+
+## Format numbers
+
+After the value, a colon starts a **format spec**:
+
+```py
+pct = 72.4567
+fees = 1234567
+print(f"{pct:.2f}")
+print(f"{pct:.1f}%")
+print(f"{fees:,}")
+print(f"{7:03d}")
+```
+
+| Spec | Meaning | Example |
+| --- | --- | --- |
+| `.2f` | 2 decimal places | `72.46` |
+| `,` | thousands separator | `1,234,567` |
+| `03d` | whole number, padded with zeros to width 3 | `007` |
+| `<10` | left-align in 10 characters | `Tea       ` |
+| `>8` | right-align in 8 characters | `   25.00` |
+| `^20` | centre in 20 characters | `     Title     ` |
+
+:::note
+Python's `,` uses international grouping (1,234,567). The Indian lakh style (12,34,567) isn't built in; you'd write a small function for it, which is a good exercise after Unit 8.
+:::
+
+## Line things up
+
+Widths make tables:
+
+```py
+print(f"{'Subject':<12}{'Marks':>6}")
+print(f"{'English':<12}{88:>6}")
+print(f"{'Reasoning':<12}{92:>6}")
+print(f"{'GK':<12}{71:>6}")
+```
+
+You can combine alignment and decimals: `{price:>8.2f}` means right-aligned in 8 characters with 2 decimal places.
+
+## A debugging shortcut
+
+Add `=` inside the braces to print the expression **and** its value:
+
+```py
+score = 135.0
+attempted = 90
+print(f"{score=}, {attempted=}")
+```
+
+:::predict
+```py
+x = 3.14159
+print(f"Pi is about {x:.2f}")
+```
+- Pi is about 3.14159
++ Pi is about 3.14
+- Pi is about 3.1
+- Pi is about {x:.2f}
+= `.2f` formats the float with exactly 2 decimal places, rounding as it goes.
+:::
+
+:::recall
+Q: How do you put a variable inside an f-string?
+A: Prefix the string with f and put the variable in braces: `f"Hi {name}"`.
+Q: What does `{x:.2f}` do inside an f-string?
+A: Shows x as a float with exactly 2 decimal places.
+Q: What do `<10` and `>10` mean in a format spec?
+A: Left-align or right-align the value in a space 10 characters wide.
+:::
+
+@exercise 3.3a | Switch to an f-string
+Print this line using **one f-string** with the variables `name`, `marks` and `total`:
+
+```text
+Aman scored 145 out of 200
+```
+
+```starter
+name = "Aman"
+marks = 145
+total = 200
+print(name + " scored " + str(marks) + " out of " + str(total))
+```
+
+```solution
+name = "Aman"
+marks = 145
+total = 200
+print(f"{name} scored {marks} out of {total}")
+```
+
+```test
+check_out("Aman scored 145 out of 200")
+check(has("JoinedStr"), "You used an f-string", "Rewrite the print with f\"...{name}...\".")
+check("str(" not in src, "No str() needed any more", "f-strings convert numbers for you, so you can drop str().")
+```
+
+:::hints
+- Start with `print(f"`.
+- Put each variable inside braces: `{name}`.
+:::
+
+@exercise 3.3b | Canteen bill
+Print this bill exactly, using f-strings with alignment and 2 decimal places. Item names are left-aligned in 10 characters; prices are right-aligned in 8 with 2 decimals.
+
+```text
+Tea          10.00
+Samosa       15.00
+Total        25.00
+```
+
+```starter
+tea = 10
+samosa = 15
+total = tea + samosa
+
+```
+
+```solution
+tea = 10
+samosa = 15
+total = tea + samosa
+print(f"{'Tea':<10}{tea:>8.2f}")
+print(f"{'Samosa':<10}{samosa:>8.2f}")
+print(f"{'Total':<10}{total:>8.2f}")
+```
+
+```test
+check_out("Tea          10.00\nSamosa       15.00\nTotal        25.00")
+check(has("JoinedStr"), "You used f-strings", "Use f-strings with a format spec such as {tea:>8.2f}.")
+```
+
+:::hints
+- Put the item name inside the braces as a string: `{'Tea':<10}`.
+- The price spec combines alignment and decimals: `{tea:>8.2f}`.
+- Each line is one f-string with two pairs of braces.
+:::
+
+@exercise 3.3c | Accuracy line
+`correct` is 72 and `attempted` is 90. Print the accuracy with one decimal place and a percent sign:
+
+```text
+Accuracy: 80.0%
+```
+
+```starter
+correct = 72
+attempted = 90
+
+```
+
+```solution
+correct = 72
+attempted = 90
+accuracy = correct / attempted * 100
+print(f"Accuracy: {accuracy:.1f}%")
+```
+
+```test
+check_out("Accuracy: 80.0%")
+check(has("JoinedStr"), "You used an f-string")
+```
+
+:::hints
+- Accuracy is `correct / attempted * 100`.
+- `{accuracy:.1f}` shows one decimal place; the `%` goes after the closing brace.
+:::
+
+@lesson 3.4 | Project: Admit card generator | 35 | project
+@goal Use slicing, string methods and f-strings together to turn raw input into a neat document.
+
+Exam admit cards turn a few typed details into a clean, standard layout. Your program will do the same. When the user types `aman sharma`, `2026104732` and `jaipur`, it prints:
+
+```text
+========================================
+           SSC CGL ADMIT CARD
+========================================
+Name   : Aman Sharma
+Roll   : 2026104732
+Centre : JAIPUR
+Year   : 2026
+Code   : AS-4732
+========================================
+```
+
+## The rules
+
+- The title is centred in 40 characters: `"SSC CGL ADMIT CARD".center(40)`.
+- **Name** in title case. **Centre** in capitals.
+- **Year** is the first 4 digits of the roll number.
+- **Code** is the two initials in capitals, a dash, and the last 4 digits of the roll number. The second initial is the letter just after the space: `name.find(" ")` tells you where the space is.
+
+Labels are padded to the same width so the colons line up: `f"{'Name':<7}: {name}"` pads "Name" to 7 characters.
+
+Remember to `strip()` the inputs: the user might add spaces.
+
+:::recall
+Q: How do you centre text in a width of 40 characters?
+A: `text.center(40)`, or the f-string spec `{text:^40}`.
+Q: How do you find the letter just after the first space in `name`?
+A: `name[name.find(" ") + 1]`.
+:::
+
+@exercise 3.4a | Build the admit card | project
+Write the admit card program from the lesson. With the input `aman sharma`, `2026104732`, `jaipur` it must print the card exactly as shown in the lesson (the prompts you show before each input can say anything).
+
+```starter
+name = input("Name: ").strip()
+roll = input("Roll number: ").strip()
+centre = input("Centre: ").strip()
+
+print("=" * 40)
+```
+
+```solution
+name = input("Name: ").strip()
+roll = input("Roll number: ").strip()
+centre = input("Centre: ").strip()
+
+name = name.title()
+first_initial = name[0]
+second_initial = name[name.find(" ") + 1]
+code = f"{first_initial}{second_initial}-{roll[-4:]}"
+
+print("=" * 40)
+print("SSC CGL ADMIT CARD".center(40))
+print("=" * 40)
+print(f"{'Name':<7}: {name}")
+print(f"{'Roll':<7}: {roll}")
+print(f"{'Centre':<7}: {centre.upper()}")
+print(f"{'Year':<7}: {roll[:4]}")
+print(f"{'Code':<7}: {code}")
+print("=" * 40)
+```
+
+```stdin
+aman sharma
+2026104732
+jaipur
+```
+
+```test
+for line in ["SSC CGL ADMIT CARD", "Name   : Aman Sharma", "Roll   : 2026104732", "Centre : JAIPUR", "Year   : 2026", "Code   : AS-4732"]:
+    check_has(line)
+check(out.count("=" * 40) >= 3, "Three lines of 40 = signs", "Print '=' * 40 above the title, under it, and at the end.")
+check("           SSC CGL ADMIT CARD" in out, "The title is centred in 40 characters", "Use \"SSC CGL ADMIT CARD\".center(40).")
+o = run("  riya verma \n2025998812\ndelhi")
+check_has("Name   : Riya Verma", "Works for Riya Verma (with extra spaces typed)", got=o)
+check_has("Centre : DELHI", "Centre in capitals for Delhi", got=o)
+check_has("Year   : 2025", "Year taken from the roll number", got=o)
+check_has("Code   : RV-8812", "Code RV-8812 for Riya", got=o)
+```
+
+:::hints
+- Title-case the name first: `name = name.title()`. Then the initials are already capitals.
+- The second initial: `name[name.find(" ") + 1]`.
+- The year is `roll[:4]` and the last four digits are `roll[-4:]`.
+- Line up the labels with `f"{'Name':<7}: {name}"`.
+:::

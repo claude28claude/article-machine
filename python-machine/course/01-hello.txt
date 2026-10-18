@@ -1,0 +1,509 @@
+@phase 1 | Foundations | How Python thinks: values, decisions and loops
+@unit u1 | 1 | Hello, Python
+@zen Readability counts.
+@summary Run your first programs, read error messages without fear, and make print() do exactly what you want.
+
+@lesson 1.1 | Your first program | 20
+@goal Run a Python program, change it, and know what each part of `print("Hello")` does.
+
+A program is a list of instructions. Python reads them from the top of the file to the bottom, one line at a time, and does what each line says. That's all a program is, whether it has three lines or three million.
+
+Here is the most famous first program in the world. Press **Run** under it.
+
+```py
+print("Hello, World!")
+```
+
+You just ran real Python. The same Python 3.13 that runs on servers at Google is running inside this page, so everything you learn here works everywhere.
+
+## What each part means
+
+- `print` is a **function**: a named action that Python already knows. This one shows things on the screen.
+- The brackets `( )` hold what you hand to the function. Programmers say you **pass** it a value.
+- The quotes `" "` mark **text**. Python calls a piece of text a **string**. The quotes are not printed; they only tell Python where the text starts and ends.
+
+Each `print()` puts its text on a new line, and Python runs the lines in order:
+
+```py
+print("Line one")
+print("Line two")
+print("Line three")
+```
+
+## Text and numbers are different
+
+Numbers don't need quotes. Without quotes, Python treats `2 + 3` as maths and works it out. With quotes, it is just text and gets printed exactly as written.
+
+```py
+print(2 + 3)
+print("2 + 3")
+print(365 * 24)
+```
+
+`*` means multiply. So Python is also a very good calculator: `365 * 24` is the number of hours in a year.
+
+:::predict
+```py
+print("10 + 5")
+print(10 + 5)
+```
+- 15\n15
++ 10 + 5\n15
+- 10 + 5\n10 + 5
+= The first line has quotes, so it is text and prints exactly as written. The second has no quotes, so Python calculates 10 + 5 first.
+:::
+
+## Comments
+
+A line that starts with `#` is a **comment**. Python skips it completely. Comments are notes for humans, including you in three weeks.
+
+```py
+# This program greets the reader
+print("Namaste!")  # a comment can also sit at the end of a line
+```
+
+:::tip
+Try the bench on the right: press **Edit** on any example to copy it there, change it, and run it again. Breaking examples on purpose is one of the fastest ways to learn.
+:::
+
+:::quiz
+? Which line prints the word Hello?
+- print(Hello)
++ print("Hello")
+- Print("Hello")
+- print "Hello"
+= Text needs quotes, so `print(Hello)` fails. Python is case-sensitive, so `Print` with a capital P is not the same as `print`. And in Python 3 the brackets are required.
+:::
+
+:::recall
+Q: What does `print()` do?
+A: It shows the value inside the brackets on the screen, then moves to a new line.
+Q: What is the difference between `print("2 + 3")` and `print(2 + 3)`?
+A: With quotes it is text, so it prints `2 + 3` exactly. Without quotes Python calculates and prints `5`.
+Q: What does `#` do in Python?
+A: It starts a comment. Python ignores the rest of the line, so you can leave notes for humans.
+:::
+
+@exercise 1.1a | Say hello
+Write a program that prints exactly this line:
+
+```text
+Hello, Python!
+```
+
+Capital letters, the comma and the exclamation mark all count.
+
+```starter
+# Write your code below this line
+```
+
+```solution
+print("Hello, Python!")
+```
+
+```test
+check_out("Hello, Python!")
+```
+
+:::hints
+- Use the `print()` function with the text inside the brackets.
+- Text needs quotes around it: `print("...")`.
+- Check every character: capital H, capital P, a comma after Hello, and `!` at the end.
+:::
+
+@exercise 1.1b | Your study motto
+Print these three lines, in this order:
+
+```text
+I am learning Python.
+I practise every day.
+One hour at a time.
+```
+
+```starter
+# Three lines need three print() calls
+```
+
+```solution
+print("I am learning Python.")
+print("I practise every day.")
+print("One hour at a time.")
+```
+
+```test
+check_out("I am learning Python.\nI practise every day.\nOne hour at a time.")
+```
+
+:::hints
+- Each `print()` prints one line, so you need three of them.
+- Each line of text goes inside its own quotes.
+- Watch the full stop at the end of each line.
+:::
+
+@exercise 1.1c | Let Python do the maths
+How many minutes are there in a week? Make **Python** work it out: print the result of `7 * 24 * 60`. Don't type the answer yourself.
+
+The program should print one number.
+
+```starter
+# 7 days, 24 hours a day, 60 minutes an hour
+```
+
+```solution
+print(7 * 24 * 60)
+```
+
+```test
+check_out("10080")
+check(has("BinOp"), "Python does the multiplication", "It looks like you typed the answer. Put the calculation 7 * 24 * 60 inside print() instead.")
+```
+
+:::hints
+- `*` is the multiplication sign in Python.
+- Numbers don't need quotes. With quotes Python would print the text, not the answer.
+- Put the whole calculation inside the brackets: `print(7 * 24 * 60)`.
+:::
+
+@lesson 1.2 | Errors are messages | 20
+@goal Read an error message calmly and fix the three mistakes every beginner makes.
+
+Every programmer sees errors all day. An error is not a failure; it is Python telling you exactly what it didn't understand. Professionals don't make fewer errors than you will. They just read the messages faster.
+
+Run this example. It crashes on purpose.
+
+```py error
+print("Hello)
+```
+
+## How to read an error
+
+Python's message has three parts:
+
+1. `File "main.py", line 1` says **where**. Here, line 1.
+2. The line of code itself, with `^` marks pointing at the spot where Python got confused.
+3. The last line says **what**: the error type and a short explanation. Here it is `SyntaxError: unterminated string literal`. A string literal is text in quotes, and *unterminated* means it never ended: the closing quote is missing.
+
+:::tip
+Always read the **last line first**. Then jump to the line number. If the line looks fine, check the line just before it: the real mistake is often a little earlier than where Python noticed it.
+:::
+
+## The three classic mistakes
+
+**1. SyntaxError: Python can't read the line.** Usually a missing quote, bracket, colon or comma.
+
+```py error
+print("Good morning"
+```
+
+**2. NameError: Python doesn't know that name.** Usually a typo, a wrong capital letter, or text without quotes.
+
+```py error
+pront("Hi")
+```
+
+Python 3.13 even suggests the fix: `Did you mean: 'print'?`. Here is the same error from forgetting quotes:
+
+```py error
+print(Hello)
+```
+
+Without quotes, Python thinks `Hello` is the name of something you created earlier. It isn't, so: NameError.
+
+**3. IndentationError: unexpected spaces at the start of a line.** In Python, spaces at the start of a line mean something (you'll see why in Unit 4), so you can't add them at random.
+
+```py error
+print("one")
+ print("two")
+```
+
+## A routine for any error
+
+1. Read the last line: what kind of error is it?
+2. Go to the line number it names.
+3. Look at the `^` and just before it.
+4. Fix one thing, then run again.
+
+If you are still stuck, the error box under the console has a plain-English note, and the tutor can explain the error for your exact code.
+
+:::predict
+```py
+print(hello)
+```
+- hello
+- SyntaxError
++ NameError
+- IndentationError
+= Without quotes, `hello` is a name, and nothing called hello exists, so Python raises a NameError.
+:::
+
+:::quiz
+? What is wrong with `print("Hi there"`?
+- The text needs single quotes
++ The closing bracket is missing
+- print must have a capital P
+- Nothing, it works
+= Every opening bracket needs a closing one. Python reaches the end of the line still waiting for `)`, so it reports a SyntaxError.
+:::
+
+:::recall
+Q: When you get an error, which part of the message do you read first?
+A: The last line. It names the error type and what went wrong. Then go to the line number shown above it.
+Q: What usually causes a SyntaxError?
+A: Code Python can't read: a missing quote, bracket, colon or comma.
+Q: What does a NameError mean?
+A: Python doesn't know that name: a typo, a wrong capital letter, or text that is missing its quotes.
+:::
+
+@exercise 1.2a | Fix the quotes
+This program has one bug. Fix it so it prints:
+
+```text
+Python is fun
+```
+
+```starter
+print("Python is fun)
+```
+
+```solution
+print("Python is fun")
+```
+
+```test
+check_out("Python is fun")
+```
+
+:::hints
+- Run it first and read the last line of the error.
+- Every opening quote needs a closing quote.
+- Add `"` after the word fun, before the bracket.
+:::
+
+@exercise 1.2b | Fix the names
+Two bugs this time. The program should print:
+
+```text
+Learning
+every day
+```
+
+```starter
+Print("Learning")
+pritn("every day")
+```
+
+```solution
+print("Learning")
+print("every day")
+```
+
+```test
+check_out("Learning\nevery day")
+```
+
+:::hints
+- Run it, fix the first error, then run again to find the second.
+- Python is case-sensitive: `Print` and `print` are different names.
+- Check the spelling of print on line 2, letter by letter.
+:::
+
+@exercise 1.2c | Fix three things
+Three different kinds of mistake are hiding here. Fix them all so the program prints:
+
+```text
+Read the last line first.
+Then go to the line number.
+Fix one thing at a time.
+```
+
+```starter
+print("Read the last line first.")
+  print("Then go to the line number.")
+print("Fix one thing at a time."
+```
+
+```solution
+print("Read the last line first.")
+print("Then go to the line number.")
+print("Fix one thing at a time.")
+```
+
+```test
+check_out("Read the last line first.\nThen go to the line number.\nFix one thing at a time.")
+```
+
+:::hints
+- Python stops at the first error it finds. Fix that one, run again, repeat.
+- Line 2 starts with spaces that shouldn't be there.
+- Count the brackets on the last line.
+:::
+
+@lesson 1.3 | Printing like a pro | 25
+@goal Print several values at once, control what goes between and after them, and put special characters in text.
+
+## Several values in one print
+
+Give `print()` several values separated by commas. It prints them in order with a space between each:
+
+```py
+print("SSC CGL", 2026)
+print("Questions:", 100, "Marks:", 200)
+```
+
+Notice that the numbers have no quotes, yet they print fine. `print()` accepts text and numbers in the same call.
+
+## sep: what goes between
+
+`sep=` (short for separator) replaces the space that `print()` puts between values:
+
+```py
+print(18, 10, 2026, sep="/")
+print("a", "b", "c", sep="")
+print("Python", "is", "fun", sep="...")
+```
+
+## end: what comes after
+
+After printing, `print()` normally moves to a new line. `end=` replaces that newline with anything you like:
+
+```py
+print("Loading", end="...")
+print("done!")
+```
+
+Both `sep` and `end` are **keyword arguments**: you write the name, an `=`, then the value. You'll meet them all over Python.
+
+## Special characters
+
+Some characters can't be typed directly inside a string, so Python uses a backslash `\` to write them. These are called **escape sequences**.
+
+| Write | You get |
+| --- | --- |
+| `\n` | a new line |
+| `\t` | a tab (a wide gap) |
+| `\"` | a double quote inside double quotes |
+| `\\` | one backslash |
+
+```py
+print("Line one\nLine two")
+print("Name:\tAman")
+print("She said \"start today\".")
+```
+
+There is an easier way to put quotes inside text: Python accepts single quotes `'...'` or double quotes `"..."` for strings, so use one kind outside and the other inside:
+
+```py
+print('She said "start today".')
+print("It's day one.")
+```
+
+For text that spans many lines, triple quotes keep the line breaks exactly as you type them:
+
+```py
+print("""Beautiful is better than ugly.
+Simple is better than complex.""")
+```
+
+:::predict
+```py
+print("Hi", end=" ")
+print("there", "friend", sep="-")
+```
+- Hi\nthere-friend
++ Hi there-friend
+- Hi there friend
+- Hi-there-friend
+= The first print ends with a space instead of a new line, so the second print continues on the same line. That second print puts a dash between its two values.
+:::
+
+:::quiz
+? Which call prints `2026-10-18`?
+- print("2026", "10", "18")
++ print(2026, 10, 18, sep="-")
+- print(2026, 10, 18, end="-")
+- print(2026-10-18)
+= `sep="-"` puts a dash between the values. Without quotes, `2026-10-18` is a subtraction, which prints 1998.
+:::
+
+:::recall
+Q: What does `sep=` do in `print()`?
+A: It sets what goes between the values. The default is one space, so `print(1, 2, sep="-")` prints `1-2`.
+Q: What does `end=` do in `print()`?
+A: It sets what is printed after the last value. The default is a new line.
+Q: How do you put a new line inside a string?
+A: Write `\n`. For example `print("a\nb")` prints a and b on separate lines.
+:::
+
+@exercise 1.3a | Date stamp
+Print today's date as `18/10/2026` using **one** `print()` call with three separate numbers, `18`, `10` and `2026`, and the right `sep`.
+
+```starter
+print(18, 10, 2026)
+```
+
+```solution
+print(18, 10, 2026, sep="/")
+```
+
+```test
+check_out("18/10/2026")
+check("sep" in src, "You used sep=", "Use sep= to put the slashes between the three numbers.")
+```
+
+:::hints
+- Right now Python puts a space between the numbers. Which keyword argument changes that?
+- Add `sep="/"` inside the brackets, after the last number.
+:::
+
+@exercise 1.3b | The Zen in one line of code
+Print these three lines from *The Zen of Python* using **one single** `print()` call:
+
+```text
+Readability counts.
+Simple is better than complex.
+Errors should never pass silently.
+```
+
+```starter
+# One print() call, three lines of output
+```
+
+```solution
+print("Readability counts.\nSimple is better than complex.\nErrors should never pass silently.")
+```
+
+```test
+check_out("Readability counts.\nSimple is better than complex.\nErrors should never pass silently.")
+check(src.count("print(") == 1, "You used only one print()", "This one is about new lines inside a string, so use a single print() call.")
+```
+
+:::hints
+- `\n` inside a string starts a new line.
+- Put all three sentences in one string, joined by `\n`.
+- Triple quotes `"""..."""` also work, with real line breaks inside.
+:::
+
+@exercise 1.3c | Quotes inside text
+Print this line exactly, including both kinds of quote mark:
+
+```text
+She said "Python is easy" and it's true.
+```
+
+```starter
+print("She said "Python is easy" and it's true.")
+```
+
+```solution
+print('She said "Python is easy" and it\'s true.')
+```
+
+```test
+check_out("She said \"Python is easy\" and it's true.")
+```
+
+:::hints
+- Run the starter first. Why does Python get confused by the quotes in the middle?
+- You can escape a quote with a backslash: `\"` inside double quotes, or `\'` inside single quotes.
+- One way: `print("She said \"Python is easy\" and it's true.")`
+:::

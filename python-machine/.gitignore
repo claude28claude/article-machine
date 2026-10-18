@@ -1,0 +1,6 @@
+# Downloaded by fetch-vendor.sh, built by build.js, written by the tests.
+vendor/
+dist/
+shots/
+test/fonts/*.woff2
+node_modules/

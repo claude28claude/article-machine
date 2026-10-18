@@ -1,0 +1,536 @@
+@phase 3 | Real programs | Handle errors, write Pythonic code, use the standard library, and work with files and data
+@unit u9 | 9 | Errors and debugging
+@zen Errors should never pass silently.
+@summary Read full tracebacks, catch the errors you expect with try and except, raise your own, and debug methodically.
+
+@lesson 9.1 | Exceptions and tracebacks | 20
+@goal Read a multi-line traceback through several function calls and name the common exception types.
+
+When something goes wrong while a program runs, Python **raises an exception**: it stops normal execution and reports what happened. Unless something catches it, the program ends with a **traceback**.
+
+When the error happens inside functions, the traceback lists every call that led there, oldest first:
+
+```py error
+def average(marks):
+    return sum(marks) / len(marks)
+
+def report(name, marks):
+    return f"{name}: {average(marks)}"
+
+print(report("Dev", []))
+```
+
+Read it from the **bottom up**:
+
+1. Last line: `ZeroDivisionError: division by zero`. That's what happened.
+2. Just above: the line where it happened, inside `average`.
+3. Above that: who called `average` (`report`), and above that, who called `report`.
+
+The bug isn't always on the last line shown. Here `average` is fine; the real question is why `report` was given an empty list. The traceback gives you the whole chain so you can decide where the fix belongs.
+
+## The exceptions you'll meet most
+
+| Exception | Typical cause |
+| --- | --- |
+| `SyntaxError` | the code can't be read: missing colon, bracket, quote |
+| `NameError` | a name that doesn't exist: typo, or used before it's created |
+| `TypeError` | wrong type: `"5" + 5`, calling something that isn't a function, wrong number of arguments |
+| `ValueError` | right type, bad value: `int("abc")` |
+| `IndexError` | list position out of range |
+| `KeyError` | dictionary key not found |
+| `AttributeError` | no such method: `[1, 2].push(3)` |
+| `ZeroDivisionError` | dividing by zero |
+| `FileNotFoundError` | opening a file that isn't there |
+
+Exceptions are organised in families. Most of them belong to the big family called `Exception`, which matters in the next lesson.
+
+```py error
+def greet(name):
+    return "Hi " + name
+
+greet()
+```
+
+That's a `TypeError` too: the function needs one argument and got none. The message says exactly which one is missing.
+
+:::predict
+```py
+data = {"a": 1}
+values = [10, 20]
+print(values[data["a"]])
+```
+- 10
++ 20
+- KeyError
+- IndexError
+= data["a"] is 1, so this is values[1], which is 20. Nothing goes wrong.
+:::
+
+:::predict
+```py
+values = [10, 20]
+print(values[len(values)])
+```
+- 20
+- KeyError
++ IndexError
+- TypeError
+= len(values) is 2, but the last index is 1. Asking for position 2 raises IndexError.
+:::
+
+:::recall
+Q: In which direction should you read a traceback?
+A: Bottom up: the last line says what happened, the lines above show where, and the earlier entries show the chain of calls that led there.
+Q: What is the difference between TypeError and ValueError?
+A: TypeError means the wrong type of value (like adding a string to a number). ValueError means the right type but an unusable value (like int("abc")).
+Q: What raises a KeyError?
+A: Looking up a dictionary key that doesn't exist with square brackets.
+:::
+
+@exercise 9.1a | Name that error
+Each line in `snippets` would crash if run on its own. Fill in the dictionary `answers` with the exception name each one raises (as text, like `"KeyError"`). Then the program prints them.
+
+```starter
+# 1: int("twelve")
+# 2: [1, 2, 3][5]
+# 3: {"a": 1}["b"]
+# 4: "total: " + 5
+# 5: undefined_name + 1
+answers = {
+    1: "",
+    2: "",
+    3: "",
+    4: "",
+    5: "",
+}
+print(answers)
+```
+
+```solution
+answers = {
+    1: "ValueError",
+    2: "IndexError",
+    3: "KeyError",
+    4: "TypeError",
+    5: "NameError",
+}
+print(answers)
+```
+
+```test
+need("answers")
+real = {1: "ValueError", 2: "IndexError", 3: "KeyError", 4: "TypeError", 5: "NameError"}
+for k, v in real.items():
+    got = var("answers").get(k, "").strip()
+    check(got == v, f"Snippet {k}", f"You wrote {got!r}. Run the snippet in the scratchpad to see the real error.")
+```
+
+:::hints
+- Paste each snippet into a scratch run if you're unsure: the last line of the error names it.
+- int() of non-number text is a bad value of the right type.
+- Adding text and a number is a type problem.
+:::
+
+@exercise 9.1b | Follow the traceback
+This program crashes. Read the traceback, find the real cause and fix it so it prints:
+
+```text
+Aman: 81.0
+Riya: 79.0
+```
+
+Change only the data, not the functions: one student's marks were typed as text.
+
+```starter
+def average(marks):
+    return sum(marks) / len(marks)
+
+def line(name, marks):
+    return f"{name}: {average(marks)}"
+
+students = {"Aman": [72, 90], "Riya": [80, "78"]}
+for name, marks in students.items():
+    print(line(name, marks))
+```
+
+```solution
+def average(marks):
+    return sum(marks) / len(marks)
+
+def line(name, marks):
+    return f"{name}: {average(marks)}"
+
+students = {"Aman": [72, 90], "Riya": [80, 78]}
+for name, marks in students.items():
+    print(line(name, marks))
+```
+
+```test
+check_out("Aman: 81.0\nRiya: 79.0")
+check("def average(marks):\n    return sum(marks) / len(marks)" in src, "The functions are unchanged")
+```
+
+:::hints
+- The last line says `unsupported operand type(s) for +: 'int' and 'str'`. Where could a str hide?
+- Look at Riya's marks: one of them has quotes.
+:::
+
+@lesson 9.2 | try and except | 25
+@goal Catch the errors you expect, keep the program running, and avoid hiding the errors you don't.
+
+Some errors aren't bugs in your code at all: the user typed `twelve` instead of `12`, or a file is missing. For those, Python lets you **catch** the exception and decide what happens:
+
+```py
+text = "twelve"
+try:
+    age = int(text)
+    print("Age:", age)
+except ValueError:
+    print("That isn't a whole number.")
+print("The program carries on.")
+```
+
+- The `try` block runs normally.
+- If an exception of the named type happens inside it, Python jumps straight to the matching `except` block.
+- If no exception happens, the `except` block is skipped.
+
+## Ask again until the input is valid
+
+This is the pattern you'll use most:
+
+```py
+while True:
+    try:
+        age = int(input("Age: "))
+        break
+    except ValueError:
+        print("Please type a number, like 24.")
+print("Thanks, you are", age)
+```
+
+```stdin
+twenty
+24
+```
+
+## Catch specific exceptions
+
+Name the exceptions you expect. You can handle different ones differently:
+
+```py
+def safe_divide(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError:
+        return None
+    except TypeError:
+        return "numbers only"
+
+print(safe_divide(10, 2))
+print(safe_divide(10, 0))
+print(safe_divide(10, "x"))
+```
+
+:::warn
+Never write a bare `except:` (or `except Exception:`) around big blocks of code. It catches **everything**, including your own typos, and hides them. The program then fails silently somewhere later, which is far harder to debug. *Errors should never pass silently.*
+:::
+
+## else and finally
+
+```py
+def read_number(text):
+    try:
+        n = float(text)
+    except ValueError:
+        print("Not a number:", text)
+    else:
+        print("Got", n)          # runs only if no exception
+    finally:
+        print("Checked", repr(text))  # runs no matter what
+
+read_number("3.5")
+read_number("abc")
+```
+
+`finally` is for clean-up that must happen whether things worked or not, such as closing a connection. You'll see the neater `with` statement for files in Unit 12.
+
+## Getting the message
+
+`except ValueError as e:` gives you the exception object, so you can show or log its message:
+
+```py
+try:
+    int("12a")
+except ValueError as e:
+    print("Problem:", e)
+```
+
+:::predict
+```py
+try:
+    print("A")
+    x = 1 / 0
+    print("B")
+except ZeroDivisionError:
+    print("C")
+print("D")
+```
+- A\nB\nC\nD
++ A\nC\nD
+- A\nC
+- C\nD
+= A prints, then 1 / 0 raises, so B is skipped and the except block prints C. After the try statement the program continues with D.
+:::
+
+:::recall
+Q: What happens to the rest of a try block after an exception is raised inside it?
+A: It's skipped: Python jumps to the matching except block.
+Q: Why is a bare `except:` a bad idea?
+A: It catches every error, including bugs like typos, and hides them.
+Q: When does a `finally` block run?
+A: Always, whether or not an exception happened.
+:::
+
+@exercise 9.2a | Safe conversion
+Write `safe_int(text)` that returns the text converted to an int, or `None` if it isn't a valid whole number. Use try and except.
+
+```starter
+def safe_int(text):
+    pass
+```
+
+```solution
+def safe_int(text):
+    try:
+        return int(text)
+    except ValueError:
+        return None
+```
+
+```test
+need("safe_int", "function")
+expect('safe_int("42")', 42)
+expect('safe_int(" 7 ")', 7)
+expect('safe_int("abc")', None)
+expect('safe_int("3.5")', None)
+expect('safe_int("-12")', -12)
+check(has("Try"), "You used try/except")
+check("except:" not in src.replace(" ", ""), "You caught a specific exception", "Write except ValueError: rather than a bare except:.")
+```
+
+:::hints
+- Put `return int(text)` inside the try block.
+- `int()` raises ValueError for bad text; return None in that except block.
+:::
+
+@exercise 9.2b | Ask until valid
+Ask for the number of questions attempted until the user types a whole number between 0 and 100. For text that isn't a number print `Please type a whole number`; for numbers outside 0 to 100 print `Must be between 0 and 100`. Then print `Attempted: 85`.
+
+```starter
+while True:
+    text = input("Questions attempted: ")
+
+```
+
+```solution
+while True:
+    text = input("Questions attempted: ")
+    try:
+        attempted = int(text)
+    except ValueError:
+        print("Please type a whole number")
+        continue
+    if 0 <= attempted <= 100:
+        break
+    print("Must be between 0 and 100")
+print("Attempted:", attempted)
+```
+
+```stdin
+eighty
+150
+85
+```
+
+```test
+check_has("Please type a whole number", "Text is rejected")
+check_has("Must be between 0 and 100", "150 is rejected")
+check_has("Attempted: 85", "85 is accepted")
+o = run("100")
+check_has("Attempted: 100", "100 is accepted straight away", got=o)
+check("Please" not in o and "Must" not in o, "No complaints for valid input", f"Your output:\n{o}")
+check_has("Attempted: 0", "0 is accepted", got=run("-1\n0"))
+```
+
+:::hints
+- Inside the loop, convert with int() inside try. On ValueError, print the message and `continue`.
+- After a successful conversion, check the range: `break` if it's fine, otherwise print the range message.
+- Print the result after the loop.
+:::
+
+@lesson 9.3 | raise, assert and debugging | 25
+@goal Raise your own exceptions for bad input, check assumptions with assert, and debug with a method instead of guessing.
+
+## raise: refuse bad input loudly
+
+Your functions can raise exceptions too. If a function is given something it can't sensibly handle, raising an error is better than returning a wrong answer quietly:
+
+```py
+def percentage(obtained, maximum):
+    if maximum <= 0:
+        raise ValueError("maximum must be greater than 0")
+    if not 0 <= obtained <= maximum:
+        raise ValueError(f"obtained must be between 0 and {maximum}")
+    return round(obtained / maximum * 100, 1)
+
+print(percentage(157, 200))
+try:
+    percentage(250, 200)
+except ValueError as e:
+    print("Refused:", e)
+```
+
+Pick the exception that fits: `ValueError` for a bad value, `TypeError` for a wrong type.
+
+## assert: check your own assumptions
+
+`assert condition, "message"` raises an `AssertionError` if the condition is False. Use it to check things that should **always** be true if your code is correct, and as a tiny test:
+
+```py
+def cgl_score(correct, wrong):
+    return correct * 2 - wrong * 0.5
+
+assert cgl_score(68, 12) == 130.0
+assert cgl_score(0, 0) == 0
+print("All checks passed")
+```
+
+That's how the professional testing you'll meet in Unit 15 starts: a function plus a few statements that must hold.
+
+## Debugging with a method
+
+When code misbehaves, don't change things at random. Work like a detective:
+
+1. **Reproduce**: find the smallest input that shows the bug.
+2. **Read** the traceback, bottom up.
+3. **Inspect**: print the values involved (`print(f"{x=}")`), or press **Step through** and watch them.
+4. **Hypothesise**: say out loud what you think is wrong. Explaining code to someone, even a rubber duck on your desk, often reveals the bug. Programmers really do call this *rubber duck debugging*.
+5. **Fix one thing** and test again.
+
+```py
+def average(marks):
+    total = 0
+    for m in marks:
+        total = m          # bug: should add
+    return total / len(marks)
+
+result = average([10, 20, 30])
+print(f"{result=}")        # 10.0, but the average should be 20.0
+```
+
+Step through that example and watch `total`: you'll see the bug on the second loop round.
+
+:::predict
+```py
+def check_age(age):
+    if age < 0:
+        raise ValueError("negative age")
+    return "ok"
+
+try:
+    print(check_age(20))
+    print(check_age(-1))
+    print(check_age(30))
+except ValueError as e:
+    print("error:", e)
+```
+- ok\nerror: negative age\nok
++ ok\nerror: negative age
+- error: negative age
+- ok\nok
+= The first call prints ok. The second raises, so Python jumps to except and never runs the third call.
+:::
+
+:::recall
+Q: When should a function raise an exception instead of returning a value?
+A: When it's given input it can't handle correctly; a loud error is better than a quietly wrong answer.
+Q: What does `assert x > 0, "msg"` do?
+A: Raises AssertionError with "msg" if x > 0 is False; does nothing if it's True.
+Q: Name the five debugging steps.
+A: Reproduce, read the traceback, inspect values, form a hypothesis, fix one thing and retest.
+:::
+
+@exercise 9.3a | Validate the input
+Write `set_attempts(n)` that returns `n` if it's an int from 0 to 100. Otherwise it should **raise**:
+
+- `TypeError` if n isn't an int (for example `"50"` or `50.5`),
+- `ValueError` if it's an int outside 0 to 100.
+
+```starter
+def set_attempts(n):
+    pass
+```
+
+```solution
+def set_attempts(n):
+    if type(n) is not int:
+        raise TypeError("attempts must be a whole number")
+    if not 0 <= n <= 100:
+        raise ValueError("attempts must be between 0 and 100")
+    return n
+```
+
+```test
+need("set_attempts", "function")
+expect("set_attempts(50)", 50)
+expect("set_attempts(0)", 0)
+expect("set_attempts(100)", 100)
+expect_raises("set_attempts(101)", ValueError)
+expect_raises("set_attempts(-1)", ValueError)
+expect_raises('set_attempts("50")', TypeError)
+expect_raises("set_attempts(50.5)", TypeError)
+```
+
+:::hints
+- `type(n) is not int` is True for strings and floats.
+- Check the type first, then the range, and `raise` the right exception with a short message.
+:::
+
+@exercise 9.3b | Find the bug
+`count_passed` should count marks of 40 or more, but it gives the wrong answer. Use **Step through** (or a debugging print) to find the bug, and fix it. The program should print `3`.
+
+```starter
+def count_passed(marks):
+    count = 0
+    for m in marks:
+        if m > 40:
+            count += 1
+        return count
+
+print(count_passed([40, 75, 12, 39, 88]))
+```
+
+```solution
+def count_passed(marks):
+    count = 0
+    for m in marks:
+        if m >= 40:
+            count += 1
+    return count
+
+print(count_passed([40, 75, 12, 39, 88]))
+```
+
+```test
+check_out("3")
+need("count_passed", "function")
+expect("count_passed([40, 75, 12, 39, 88])", 3)
+expect("count_passed([])", 0)
+expect("count_passed([39, 41])", 1)
+```
+
+:::hints
+- There are two bugs. Step through and watch when the function returns.
+- Is the return inside the loop? It should come after the loop finishes.
+- Is 40 counted? "40 or more" means `>=`.
+:::

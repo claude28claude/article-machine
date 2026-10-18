@@ -1,0 +1,10 @@
+https://fonts.gstatic.com/s/atkinsonhyperlegiblemono/v8/tss4AoFBci4C4gvhPXrt3wjT1MqSzhA4t7IIcncBiwKjhFyRHQ.woff2
+https://fonts.gstatic.com/s/atkinsonhyperlegiblemono/v8/tss4AoFBci4C4gvhPXrt3wjT1MqSzhA4t7IIcncBiwKthFw.woff2
+https://fonts.gstatic.com/s/atkinsonhyperlegiblenext/v7/NaP6cYPdHfdVxJw0IfIP0lvYFqijb-UxCtm5_wdGseiMhXSWUJ7iyGKiJPfJ9-N-9Tg.woff2
+https://fonts.gstatic.com/s/atkinsonhyperlegiblenext/v7/NaP6cYPdHfdVxJw0IfIP0lvYFqijb-UxCtm5_wdGseiMhXSWUJ7iyGKiJPfJ9-Nw9TgvEQ.woff2
+https://fonts.gstatic.com/s/atkinsonhyperlegiblenext/v7/NaPNcYPdHfdVxJw0IfIP0lvYFqijb-UxCtm5_wdGseiHn3qmpQ.woff2
+https://fonts.gstatic.com/s/atkinsonhyperlegiblenext/v7/NaPNcYPdHfdVxJw0IfIP0lvYFqijb-UxCtm5_wdGseiJn3o.woff2
+https://fonts.gstatic.com/s/recursive/v44/8vI-7wMr0mhh-RQChyHEH06TlXhq_gukbQr6Mk1QuAIcyEwG_X-dpEfaE5YaERmK-CImKsvxvU-MXGX2fSqasNfUlT-ZnJ97.woff2
+https://fonts.gstatic.com/s/recursive/v44/8vI-7wMr0mhh-RQChyHEH06TlXhq_gukbQr6Mk1QuAIcyEwG_X-dpEfaE5YaERmK-CImKsvxvU-MXGX2fSqasNfUlT6ZnJ97.woff2
+https://fonts.gstatic.com/s/recursive/v44/8vI-7wMr0mhh-RQChyHEH06TlXhq_gukbQr6Mk1QuAIcyEwG_X-dpEfaE5YaERmK-CImKsvxvU-MXGX2fSqasNfUlTGZnA.woff2
+https://fonts.gstatic.com/s/recursive/v44/8vI-7wMr0mhh-RQChyHEH06TlXhq_gukbQr6Mk1QuAIcyEwG_X-dpEfaE5YaERmK-CImKsvxvU-MXGX2fSqasNfUlTyZnJ97.woff2

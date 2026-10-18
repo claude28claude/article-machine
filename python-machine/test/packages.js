@@ -1,0 +1,30 @@
+// Runs a pandas + matplotlib program in the bench to check package loading in the worker.
+const { chromium } = require("./pw");
+const path = require("path");
+const fs = require("fs");
+const PM = path.join(__dirname, "..");
+const fontCss = fs.readFileSync(path.join(__dirname, "fonts/fonts.css"), "utf8");
+(async () => {
+  const base = process.argv[2];
+  const browser = await chromium.launch();
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark" });
+  await context.route("https://cdn.jsdelivr.net/npm/codemirror@5.65.16/**", (r) => r.fulfill({ path: path.join(PM, "vendor/codemirror", r.request().url().split("codemirror@5.65.16/")[1]), contentType: "application/javascript" }));
+  await context.route("https://fonts.googleapis.com/**", (r) => r.fulfill({ body: fontCss, contentType: "text/css" }));
+  await context.route("https://fonts.gstatic.com/**", (r) => r.fulfill({ path: path.join(__dirname, "fonts", r.request().url().replace("https://fonts.gstatic.com/", "").replace(/\//g, "_")), contentType: "font/woff2" }));
+  const page = await context.newPage();
+  const logs = [];
+  page.on("console", (m) => { if (m.type() === "error") logs.push("console: " + m.text()); });
+  page.on("pageerror", (e) => logs.push("pageerror: " + e.message));
+  await page.goto(base + "index.html#l-1.1");
+  await page.waitForFunction(() => /Python 3/.test(document.querySelector("#engine").textContent), null, { timeout: 60000 });
+  await page.evaluate(() => { document.querySelector(".CodeMirror").CodeMirror.setValue('import pandas as pd\nimport matplotlib.pyplot as plt\ndf = pd.DataFrame({"subject": ["Polity", "Maths", "GK"], "minutes": [150, 135, 20]})\nprint(df.sort_values("minutes", ascending=False))\ndf.plot.bar(x="subject", y="minutes", legend=False, title="Minutes by subject")\nplt.show()'); });
+  const t0 = Date.now();
+  await page.click('[data-act="run"]');
+  await page.waitForSelector("#b-out img.chart", { timeout: 120000 });
+  console.log("chart shown after", Date.now() - t0, "ms");
+  console.log((await page.textContent("#b-out")).slice(0, 200));
+  await page.locator("#b-out").scrollIntoViewIfNeeded();
+  await page.screenshot({ path: path.join(PM, "shots/10-pandas.png") });
+  console.log("logs:", logs.join("\n") || "none");
+  await browser.close();
+})().catch((e) => { console.error("FAILED", e); process.exit(1); });

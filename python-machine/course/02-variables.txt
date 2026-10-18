@@ -1,0 +1,890 @@
+@unit u2 | 2 | Variables and types
+@zen Explicit is better than implicit.
+@summary Store values in variables, do maths with whole and decimal numbers, mix text and numbers safely, and read input from the keyboard.
+
+@lesson 2.1 | Variables | 25
+@goal Create variables, change them, and choose names that make code readable.
+
+So far every value was typed straight into `print()`. Real programs need to **remember** values: a score, a name, a total. A **variable** is a name that points at a value.
+
+```py
+exam = "SSC CGL"
+year = 2026
+print(exam, year)
+```
+
+Read `=` as "store" or "now refers to", **not** "equals". `year = 2026` means: make the name `year` point at the value `2026`. From then on, writing `year` anywhere means 2026.
+
+## Variables can change
+
+That's why they're called variables. A new assignment makes the name point at a new value; the old value is forgotten.
+
+```py
+score = 120
+print(score)
+score = 145
+print(score)
+```
+
+Python always works out the right side of `=` first, then stores the result in the name on the left. So this is perfectly normal Python:
+
+```py
+count = 10
+count = count + 5
+print(count)
+```
+
+Line 2 means: take the current `count` (10), add 5, and store the result (15) back in `count`. Press **Step through** on that example and watch the value change in the variables table.
+
+## Shortcuts for updating
+
+Updating a variable is so common that Python has short forms:
+
+```py
+xp = 100
+xp += 20   # same as xp = xp + 20
+xp -= 5    # same as xp = xp - 5
+xp *= 2    # same as xp = xp * 2
+print(xp)
+```
+
+## Naming rules
+
+- Names use letters, digits and underscores, and **can't start with a digit**: `mark1` works, `1mark` doesn't.
+- Names are **case-sensitive**: `Score` and `score` are two different variables.
+- Python's own words (`for`, `if`, `class`, `print`...) shouldn't be used as names.
+- By convention Python uses **snake_case**: lowercase words joined by underscores, like `total_marks` or `days_left`.
+
+Good names make code read like English. Compare `x = 87` with `english_marks = 87`. Six months from now you'll thank yourself.
+
+```py error
+1st_place = "Riya"
+```
+
+:::predict
+```py
+a = 5
+b = a
+a = 10
+print(b)
+```
+- 10
++ 5
+- a
+- 15
+= `b = a` copies the value that `a` points at right now, which is 5. Changing `a` afterwards doesn't change `b`.
+:::
+
+:::quiz
+? Which is a valid variable name in Python?
+- 2nd_attempt
+- total marks
++ total_marks
+- class
+= Names can't start with a digit or contain spaces, and `class` is one of Python's own keywords. `total_marks` follows the snake_case convention.
+:::
+
+:::recall
+Q: What does `=` mean in Python?
+A: Assignment: work out the value on the right, then make the name on the left point at it. It is not "equals" in the maths sense.
+Q: What does `x += 3` do?
+A: It adds 3 to x and stores the result back in x. It is short for `x = x + 3`.
+Q: What naming style does Python use for variables?
+A: snake_case: lowercase words joined by underscores, like `total_marks`.
+:::
+
+@exercise 2.1a | Exam card
+Create two variables: `exam` holding the text `SSC CGL` and `year` holding the number `2026`. Then print them on one line so the output is:
+
+```text
+SSC CGL 2026
+```
+
+```starter
+# Create the two variables here
+
+
+# Then print them
+```
+
+```solution
+exam = "SSC CGL"
+year = 2026
+print(exam, year)
+```
+
+```test
+need("exam")
+need("year")
+check(var("exam") == "SSC CGL", "exam holds the text SSC CGL", f"exam is {var('exam')!r}")
+check(var("year") == 2026 and type(var("year")) is int, "year holds the number 2026 (no quotes)", f"year is {var('year')!r}")
+check_out("SSC CGL 2026")
+```
+
+:::hints
+- Text goes in quotes, numbers don't: `year = 2026`.
+- `print()` puts a space between values separated by commas.
+:::
+
+@exercise 2.1b | Swap two values
+`first` holds `"Physics"` and `second` holds `"Maths"`. Swap them, so `first` holds `"Maths"` and `second` holds `"Physics"`. Do it with variables, not by typing the words again.
+
+The last line prints them so you can see the result.
+
+```starter
+first = "Physics"
+second = "Maths"
+
+# Swap the values here (don't type "Physics" or "Maths" again)
+
+
+print(first, second)
+```
+
+```solution
+first = "Physics"
+second = "Maths"
+
+temp = first
+first = second
+second = temp
+
+print(first, second)
+```
+
+```test
+check_out("Maths Physics")
+check(src.count('"Physics"') + src.count("'Physics'") == 1 and src.count('"Maths"') + src.count("'Maths'") == 1, "You swapped using variables", "Don't type the words again. Use a third variable to hold one value while you move the other.")
+```
+
+:::hints
+- If you write `first = second` straight away, the word Physics is lost. You need somewhere to keep it.
+- Use a third variable, often called `temp`: `temp = first`.
+- Then `first = second`, then `second = temp`. Step through it to watch the values move.
+:::
+
+@exercise 2.1c | Streak counter
+Start a variable `streak` at `0`. Then add `1` to it **three times**, each time with `+=`. Finally print it. The output should be `3`.
+
+```starter
+streak = 0
+# Add 1 three times using +=
+
+
+print(streak)
+```
+
+```solution
+streak = 0
+streak += 1
+streak += 1
+streak += 1
+print(streak)
+```
+
+```test
+check_out("3")
+check(src.count("+=") >= 3, "You used += three times", "Update streak with streak += 1, three times.")
+```
+
+:::hints
+- `streak += 1` adds one to streak.
+- Write that line three times, before the print.
+:::
+
+@lesson 2.2 | Numbers and maths | 25
+@goal Calculate with whole and decimal numbers, use `//`, `%` and `**`, and control the order of operations.
+
+Python has two main kinds of number:
+
+- **int** (integer): a whole number like `7`, `-3` or `2026`.
+- **float**: a number with a decimal point like `7.5`, `0.25` or `-1.0`.
+
+```py
+marks = 145
+average = 72.5
+print(type(marks))
+print(type(average))
+```
+
+`type()` tells you what kind of value something is. You'll use it a lot when debugging.
+
+## The operators
+
+| Operator | Meaning | Example | Result |
+| --- | --- | --- | --- |
+| `+` | add | `7 + 2` | `9` |
+| `-` | subtract | `7 - 2` | `5` |
+| `*` | multiply | `7 * 2` | `14` |
+| `/` | divide | `7 / 2` | `3.5` |
+| `//` | floor divide (whole part) | `7 // 2` | `3` |
+| `%` | remainder (modulo) | `7 % 2` | `1` |
+| `**` | power | `7 ** 2` | `49` |
+
+```py
+print(7 / 2)
+print(7 // 2)
+print(7 % 2)
+print(2 ** 10)
+```
+
+`/` always gives a float, even when the answer is whole: `10 / 2` is `5.0`.
+
+## // and % are a team
+
+`//` tells you how many whole times something fits; `%` tells you what's left over. Together they convert units:
+
+```py
+total_minutes = 135
+hours = total_minutes // 60
+minutes = total_minutes % 60
+print(hours, "hours", minutes, "minutes")
+```
+
+`%` is also the standard way to test whether a number is even: `n % 2` is 0 for even numbers and 1 for odd ones.
+
+## Order of operations
+
+Python follows the same order as school maths (BODMAS): brackets first, then powers, then `*` `/` `//` `%`, then `+` `-`. When in doubt, add brackets. They make your intention clear to readers too.
+
+```py
+print(2 + 3 * 4)
+print((2 + 3) * 4)
+```
+
+## Rounding
+
+`round(x, n)` rounds to `n` decimal places. `abs(x)` gives the distance from zero.
+
+```py
+print(round(72.3456, 2))
+print(round(7.5))
+print(abs(-12))
+```
+
+:::warn
+Floats are stored in binary, so some decimals can't be exact: `0.1 + 0.2` gives `0.30000000000000004`. This happens in every programming language. Use `round()` when you display money or marks.
+:::
+
+```py
+print(0.1 + 0.2)
+print(round(0.1 + 0.2, 2))
+```
+
+:::real
+SSC CGL Tier 1 gives **2 marks** for a correct answer and takes away **0.5** for a wrong one. That's one line of Python: `score = correct * 2 - wrong * 0.5`. Because 0.5 is a float, the score comes out as a float too.
+:::
+
+:::predict
+```py
+print(17 // 5, 17 % 5)
+```
+- 3.4 2
++ 3 2
+- 3 3
+- 3.4 0.4
+= 5 fits into 17 three whole times (that's `//`), with 2 left over (that's `%`).
+:::
+
+:::predict
+```py
+print(10 / 5)
+```
+- 2
++ 2.0
+- 2.5
+- 5
+= The `/` operator always returns a float, so even an exact division prints with `.0`.
+:::
+
+:::recall
+Q: What is the difference between `/` and `//`?
+A: `/` is normal division and always gives a float (`7 / 2` is `3.5`). `//` is floor division and keeps only the whole part (`7 // 2` is `3`).
+Q: What does `%` do?
+A: It gives the remainder after division. `17 % 5` is `2`. `n % 2 == 0` means n is even.
+Q: What does `**` do?
+A: Power. `2 ** 3` is 8.
+:::
+
+@exercise 2.2a | Minutes to hours
+`study_minutes` is `200`. Using `//` and `%`, print how many hours and minutes that is, exactly like this:
+
+```text
+3 hours 20 minutes
+```
+
+```starter
+study_minutes = 200
+
+```
+
+```solution
+study_minutes = 200
+hours = study_minutes // 60
+minutes = study_minutes % 60
+print(hours, "hours", minutes, "minutes")
+```
+
+```test
+check_out("3 hours 20 minutes")
+check("//" in src and "%" in src, "You used // and %", "Work the numbers out with // and %, don't type them.")
+```
+
+:::hints
+- `200 // 60` gives the whole hours.
+- `200 % 60` gives the minutes left over.
+- `print(hours, "hours", minutes, "minutes")` puts spaces between the parts for you.
+:::
+
+@exercise 2.2b | SSC CGL score
+A candidate got `68` questions right and `12` wrong. With +2 for each right answer and -0.5 for each wrong one, store the result in a variable called `score` and print it.
+
+```starter
+correct = 68
+wrong = 12
+
+```
+
+```solution
+correct = 68
+wrong = 12
+score = correct * 2 - wrong * 0.5
+print(score)
+```
+
+```test
+need("score")
+check(var("score") == 130.0, "score is 130.0", f"score is {var('score')!r}. Check: 68 * 2 - 12 * 0.5")
+check_out("130.0")
+```
+
+:::hints
+- Right answers: `correct * 2`. Wrong answers: `wrong * 0.5`.
+- Subtract the second from the first and store it: `score = ...`.
+- The answer prints as `130.0` because 0.5 is a float.
+:::
+
+@exercise 2.2c | Average of three mock tests
+Three mock test scores are `142`, `151.5` and `138`. Calculate the average, store it in `average`, and print it **rounded to 2 decimal places**.
+
+Expected output:
+
+```text
+143.83
+```
+
+```starter
+test1 = 142
+test2 = 151.5
+test3 = 138
+
+```
+
+```solution
+test1 = 142
+test2 = 151.5
+test3 = 138
+average = (test1 + test2 + test3) / 3
+print(round(average, 2))
+```
+
+```test
+need("average")
+check(abs(var("average") - 143.8333333) < 0.001, "average is the mean of the three scores", f"average is {var('average')!r}. Did you put brackets around the sum before dividing?")
+check_out("143.83")
+```
+
+:::hints
+- Add the three scores, then divide by 3. Which happens first without brackets?
+- `(test1 + test2 + test3) / 3`
+- `round(average, 2)` gives two decimal places.
+:::
+
+@lesson 2.3 | Text and types | 25
+@goal Join and repeat text, measure it with `len()`, and convert between text and numbers on purpose.
+
+Text values are called **strings** (type `str`). You can build strings from other strings:
+
+```py
+first = "Sachin"
+last = "Tendulkar"
+print(first + " " + last)
+print("=" * 20)
+print(len("Constitution"))
+```
+
+- `+` joins (concatenates) strings.
+- `*` repeats a string.
+- `len()` counts the characters, spaces included.
+
+## Text and numbers don't mix automatically
+
+`"5"` (a string) and `5` (an int) look alike but are different types. Python refuses to guess what you mean when you combine them:
+
+```py error
+age = 25
+print("Age: " + age)
+```
+
+That's a `TypeError`: you can only `+` a string to another string. You have three fixes, and each is useful:
+
+```py
+age = 25
+print("Age: " + str(age))   # convert the number to text
+print("Age:", age)           # let print() join them with a space
+```
+
+## Converting on purpose
+
+| Function | Turns into | Example |
+| --- | --- | --- |
+| `str(x)` | text | `str(25)` is `"25"` |
+| `int(x)` | whole number | `int("42")` is `42`, `int(7.9)` is `7` |
+| `float(x)` | decimal number | `float("3.5")` is `3.5` |
+
+```py
+a = "10"
+b = "20"
+print(a + b)
+print(int(a) + int(b))
+```
+
+The first line joins two pieces of text; the second adds two numbers. Same characters, completely different meaning: that's why types matter.
+
+`int()` fails if the text isn't a whole number. Remember this error; you'll meet it with user input:
+
+```py error
+int("twelve")
+```
+
+:::tip
+When something behaves strangely, print its type: `print(type(x))`. Half of all beginner bugs are a number that is secretly a string.
+:::
+
+:::predict
+```py
+print("3" * 3)
+print(3 * 3)
+```
+- 9\n9
++ 333\n9
+- 333\n333
+- 9\n333
+= A string times a number repeats the string. A number times a number is multiplication.
+:::
+
+:::quiz
+? What is `len("SSC CGL")`?
+- 6
++ 7
+- 3
+- 2
+= `len()` counts every character, including the space in the middle: S, S, C, space, C, G, L.
+:::
+
+:::recall
+Q: Why does `"Age: " + 25` fail?
+A: `+` can't join a string and an int. Convert first with `str(25)`, or pass both to `print()` separated by a comma.
+Q: What do `int()`, `float()` and `str()` do?
+A: They convert a value: to a whole number, to a decimal number, or to text.
+Q: What does `len()` return for a string?
+A: The number of characters in it, including spaces.
+:::
+
+@exercise 2.3a | Make a username
+Join `name` and `year` into one username with no space, and print it:
+
+```text
+aman2026
+```
+
+`year` is a number, so you'll need a conversion.
+
+```starter
+name = "aman"
+year = 2026
+
+```
+
+```solution
+name = "aman"
+year = 2026
+username = name + str(year)
+print(username)
+```
+
+```test
+check_out("aman2026")
+check(calls("str") or "f\"" in src or "f'" in src, "You converted the number to text", "Use str(year) to turn the number into text before joining.")
+```
+
+:::hints
+- `name + year` gives a TypeError. Run it to see.
+- `str(year)` turns 2026 into the text "2026".
+- `print(name + str(year))`
+:::
+
+@exercise 2.3b | Fix the TypeError
+This program crashes. Fix it so it prints:
+
+```text
+Total marks: 155
+```
+
+```starter
+english = 80
+maths = 75
+print("Total marks: " + english + maths)
+```
+
+```solution
+english = 80
+maths = 75
+print("Total marks: " + str(english + maths))
+```
+
+```test
+check_out("Total marks: 155")
+```
+
+:::hints
+- First add the two numbers, then turn the result into text.
+- Careful: `str(english) + str(maths)` would give "8075". Add first.
+- `print("Total marks: " + str(english + maths))`, or use a comma in print.
+:::
+
+@exercise 2.3c | Underline a title
+Print `title`, then on the next line a row of `-` characters exactly as long as the title. Use `len()` and `*` so it works for any title.
+
+For the title `Indian Polity` the output is:
+
+```text
+Indian Polity
+-------------
+```
+
+```starter
+title = "Indian Polity"
+
+```
+
+```solution
+title = "Indian Polity"
+print(title)
+print("-" * len(title))
+```
+
+```test
+check_out("Indian Polity\n-------------")
+check(calls("len"), "You used len()", "Count the characters with len(title) instead of typing the dashes.")
+```
+
+:::hints
+- `len(title)` is the number of characters in the title.
+- A string times a number repeats it: `"-" * 5` is `-----`.
+:::
+
+@lesson 2.4 | Input from the keyboard | 25
+@goal Read what the user types with `input()`, convert it, and build small interactive programs.
+
+`input()` pauses the program, waits for the user to type something and press Enter, and gives you what they typed **as a string**.
+
+```py
+name = input("What is your name? ")
+print("Welcome,", name)
+```
+
+```stdin
+Aman
+```
+
+Run it in the bench: a box appears under the output where you type your answer. The text inside the brackets is the **prompt**, shown before the user types. End it with a space so the answer doesn't stick to it.
+
+## input() always gives you text
+
+This is the number one input bug. Even if the user types `25`, you get the string `"25"`:
+
+```py error
+age = input("Age: ")
+print(age + 1)
+```
+
+```stdin
+25
+```
+
+Convert it straight away when you need a number:
+
+```py
+age = int(input("Age: "))
+print("Next year you will be", age + 1)
+```
+
+```stdin
+25
+```
+
+`int(input(...))` reads from the inside out: `input()` runs first and returns text, then `int()` turns that text into a number. Use `float(input(...))` for decimals like a percentage.
+
+## A complete small program
+
+Most programs follow the same shape: **input, process, output**.
+
+```py
+# input
+correct = int(input("Correct answers: "))
+wrong = int(input("Wrong answers: "))
+# process
+score = correct * 2 - wrong * 0.5
+# output
+print("Your score is", score)
+```
+
+```stdin
+70
+10
+```
+
+:::warn
+If the user types `twelve` where your program does `int(input())`, the program crashes with a ValueError. In Unit 9 you'll learn to catch that and ask again politely.
+:::
+
+:::quiz
+? The user types `7` at `x = input()`. What is `x`?
+- The int 7
++ The string "7"
+- The float 7.0
+- Nothing until you convert it
+= `input()` always returns a string. Convert it with `int()` or `float()` before doing maths.
+:::
+
+:::recall
+Q: What type of value does `input()` return?
+A: Always a string, even if the user types digits.
+Q: How do you read a whole number from the user?
+A: Wrap the input in int(): `n = int(input("Number: "))`.
+Q: What three steps do most simple programs follow?
+A: Input, process, output: read the data, calculate, then print the result.
+:::
+
+@exercise 2.4a | Greeting
+Ask for the user's name with `input()` and greet them. When the user types `Aman`, the program must print:
+
+```text
+Hello, Aman!
+```
+
+Any prompt text is fine.
+
+```starter
+name = input("Your name: ")
+```
+
+```solution
+name = input("Your name: ")
+print("Hello, " + name + "!")
+```
+
+```stdin
+Aman
+```
+
+```test
+check_has("Hello, Aman!", "Greets Aman correctly")
+check_has("Hello, Riya!", "Works for any name, like Riya", got=run("Riya"))
+```
+
+:::hints
+- You already have the name in the variable `name`.
+- Join the parts with `+`: `"Hello, " + name + "!"`.
+- A comma in print would add a space before the `!`, so `+` is easier here.
+:::
+
+@exercise 2.4b | Add two numbers
+Read two whole numbers from the user and print their sum in this form:
+
+```text
+Sum: 9
+```
+
+when the user types `4` and then `5`.
+
+```starter
+a = input("First number: ")
+b = input("Second number: ")
+print("Sum:", a + b)
+```
+
+```solution
+a = int(input("First number: "))
+b = int(input("Second number: "))
+print("Sum:", a + b)
+```
+
+```stdin
+4
+5
+```
+
+```test
+check_has("Sum: 9", "4 + 5 gives Sum: 9")
+check_has("Sum: 300", "100 + 200 gives Sum: 300", got=run("100\n200"))
+```
+
+:::hints
+- Run the starter with 4 and 5. Why does it print 45?
+- `input()` gives text, and text + text joins. Convert each one with `int()`.
+- `a = int(input("First number: "))`
+:::
+
+@exercise 2.4c | Percentage calculator
+Ask for **marks obtained** and **maximum marks**, then print the percentage rounded to 1 decimal place, like this:
+
+```text
+Percentage: 72.5
+```
+
+for 145 out of 200.
+
+```starter
+# Read the two numbers, then calculate marks / maximum * 100
+
+```
+
+```solution
+marks = float(input("Marks obtained: "))
+maximum = float(input("Maximum marks: "))
+percentage = marks / maximum * 100
+print("Percentage:", round(percentage, 1))
+```
+
+```stdin
+145
+200
+```
+
+```test
+check_has("Percentage: 72.5", "145 out of 200 gives 72.5")
+check_has("Percentage: 88.3", "53 out of 60 gives 88.3", got=run("53\n60"))
+```
+
+:::hints
+- Read both values with `float(input(...))` (or `int`).
+- The formula is `marks / maximum * 100`.
+- `round(percentage, 1)` keeps one decimal place.
+:::
+
+@lesson 2.5 | Project: Mock test score card | 40 | project
+@goal Combine variables, maths, conversion and input into one complete, useful program.
+
+Time to build something you could actually use. A **score card** for an SSC CGL Tier 1 mock test: 100 questions, 2 marks for each right answer, 0.5 taken away for each wrong one, nothing for questions left blank.
+
+Here is what the finished program does when the user types `Aman`, `72` and `18`:
+
+```text
+Name: Aman
+Correct answers: 72
+Wrong answers: 18
+========================================
+MOCK TEST SCORE CARD: AMAN
+Attempted: 90 of 100
+Score: 135.0 out of 200
+Accuracy: 80.0 percent
+Left blank: 10
+========================================
+```
+
+The first three lines are the prompts and the user's answers; your program prints the rest.
+
+## Plan before you type
+
+Professional programmers sketch the steps first. Here they are:
+
+1. **Input**: read the name, the number correct, and the number wrong.
+2. **Process**:
+   - attempted = correct + wrong
+   - score = correct times 2, minus wrong times 0.5
+   - accuracy = correct divided by attempted, times 100, rounded to 1 decimal place
+   - blank = 100 minus attempted
+3. **Output**: print the card. `name.upper()` gives the name in capitals; you'll learn more tricks like that in Unit 3.
+
+Build it **one step at a time**: write the input lines, run, then add one calculation, run, and so on. Running often means each new bug is in the line you just wrote.
+
+:::tip
+Stuck on a step? Press **Step through** to watch every variable. Or ask the tutor about your code: it gives hints, not answers.
+:::
+
+:::recall
+Q: What should you do before writing a program?
+A: Plan the steps: what goes in, what you calculate, and what comes out.
+Q: Why run your code after every few lines?
+A: So when something breaks, the bug is almost certainly in the lines you just added.
+:::
+
+@exercise 2.5a | Build the score card | project
+Write the score card program described in the lesson. With the input `Aman`, `72`, `18` the output must contain exactly these lines:
+
+```text
+========================================
+MOCK TEST SCORE CARD: AMAN
+Attempted: 90 of 100
+Score: 135.0 out of 200
+Accuracy: 80.0 percent
+Left blank: 10
+========================================
+```
+
+The `=` line is 40 characters long. Use `"=" * 40`.
+
+```starter
+# 1. Input
+name = input("Name: ")
+
+# 2. Process
+
+# 3. Output
+print("=" * 40)
+```
+
+```solution
+name = input("Name: ")
+correct = int(input("Correct answers: "))
+wrong = int(input("Wrong answers: "))
+
+attempted = correct + wrong
+score = correct * 2 - wrong * 0.5
+accuracy = round(correct / attempted * 100, 1)
+blank = 100 - attempted
+
+print("=" * 40)
+print("MOCK TEST SCORE CARD: " + name.upper())
+print("Attempted:", attempted, "of 100")
+print("Score:", score, "out of 200")
+print("Accuracy:", accuracy, "percent")
+print("Left blank:", blank)
+print("=" * 40)
+```
+
+```stdin
+Aman
+72
+18
+```
+
+```test
+for line in ["MOCK TEST SCORE CARD: AMAN", "Attempted: 90 of 100", "Score: 135.0 out of 200", "Accuracy: 80.0 percent", "Left blank: 10"]:
+    check_has(line)
+check(out.count("=" * 40) >= 2, "Two lines of 40 = signs", "Print '=' * 40 before and after the card.")
+o = run("Riya\n60\n25")
+check_has("MOCK TEST SCORE CARD: RIYA", "Works for another student (Riya)", got=o)
+check_has("Score: 107.5 out of 200", "Riya's score is 107.5", got=o)
+check_has("Accuracy: 70.6 percent", "Riya's accuracy is 70.6", got=o)
+check_has("Left blank: 15", "Riya left 15 blank", got=o)
+```
+
+:::hints
+- Read correct and wrong with `int(input(...))`.
+- accuracy is `round(correct / attempted * 100, 1)`.
+- For the title line, join text and the capital name: `"MOCK TEST SCORE CARD: " + name.upper()`.
+- Use commas in print for lines that mix text and numbers: `print("Attempted:", attempted, "of 100")`.
+:::

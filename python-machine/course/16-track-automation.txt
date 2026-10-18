@@ -1,0 +1,913 @@
+@phase 5 | Tracks | Specialise for your goals: automation, data and AI, interviews, and web apps
+@unit uA | A | Automation
+@summary Make Python do your boring work: organise folders, generate documents in bulk, pull data from web pages, and run bots on a schedule.
+
+@lesson A.1 | Files and folders with pathlib | 25
+@goal Walk through folders, sort files by type, and rename or move hundreds of files in one go.
+
+Automation starts with files: the messy Downloads folder, 300 photos called `IMG_4821.jpg`, a folder of reports to sort. The modern tool is `pathlib`.
+
+This lesson's workspace has a messy folder:
+
+```file downloads/syllabus.pdf
+(pdf)
+```
+
+```file downloads/Article 21 notes.pdf
+(pdf)
+```
+
+```file downloads/IMG_0007.jpg
+(photo)
+```
+
+```file downloads/IMG_0003.JPG
+(photo)
+```
+
+```file downloads/marks.csv
+name,total
+Aman,157
+```
+
+```file downloads/todo.txt
+Revise Polity
+```
+
+```file downloads/anthem.mp3
+(audio)
+```
+
+## Paths
+
+A `Path` represents a file or folder location. The `/` operator joins parts, and it works on Windows and Mac alike:
+
+```py
+from pathlib import Path
+
+folder = Path("downloads")
+notes = folder / "todo.txt"
+print(notes, notes.exists())
+print(notes.name, notes.stem, notes.suffix)
+print(notes.read_text(encoding="utf-8"))
+```
+
+| Attribute or method | Gives |
+| --- | --- |
+| `p.name` | `todo.txt` |
+| `p.stem` / `p.suffix` | `todo` / `.txt` |
+| `p.parent` | the folder containing it |
+| `p.exists()`, `p.is_file()`, `p.is_dir()` | True or False |
+| `p.read_text()` / `p.write_text(s)` | read or write the whole file |
+| `p.iterdir()` | everything directly inside a folder |
+| `p.glob("*.pdf")` / `p.rglob("*.pdf")` | matching files here / in all subfolders |
+| `p.mkdir(parents=True, exist_ok=True)` | create a folder (no error if it exists) |
+| `p.rename(new_path)` | rename or move |
+
+## Looking through a folder
+
+```py
+from pathlib import Path
+
+for item in sorted(Path("downloads").iterdir()):
+    kind = "folder" if item.is_dir() else item.suffix.lower()
+    print(f"{item.name:<22} {kind}")
+
+print([p.name for p in Path("downloads").glob("*.pdf")])
+```
+
+## Moving files
+
+```py
+from pathlib import Path
+
+folder = Path("downloads")
+pdfs = folder / "pdf"
+pdfs.mkdir(exist_ok=True)
+for p in folder.glob("*.pdf"):
+    p.rename(pdfs / p.name)
+print(sorted(x.name for x in pdfs.iterdir()))
+```
+
+:::warn
+Automation that moves or renames files can make a mess at the speed of a computer. On your laptop, always try a script on a **copy** of the folder first, and print what it **would** do before letting it do it (a "dry run").
+:::
+
+`shutil` handles the rest: `shutil.copy(src, dst)`, `shutil.move(src, dst)` (also across drives), and `shutil.rmtree(folder)` to delete a whole folder, which deserves extra care.
+
+:::recall
+Q: How do you join folder and file names with pathlib?
+A: With `/`: `Path("downloads") / "notes.txt"`.
+Q: What are a path's stem and suffix?
+A: For `notes.txt`, the stem is `notes` and the suffix is `.txt`.
+Q: Why do a dry run before an automation that moves files?
+A: To see exactly what it would do before it does it, since mistakes happen at computer speed.
+:::
+
+@exercise A.1a | Count by type
+Write `count_by_type(folder)` that returns a dictionary of file extension (lowercase, without the dot) to how many files have it, with keys sorted alphabetically. Files without an extension count as `"none"`. For this lesson's folder:
+
+```text
+{'csv': 1, 'jpg': 2, 'mp3': 1, 'pdf': 2, 'txt': 1}
+```
+
+```starter
+from pathlib import Path
+
+def count_by_type(folder):
+    pass
+
+print(count_by_type("downloads"))
+```
+
+```solution
+from pathlib import Path
+
+def count_by_type(folder):
+    counts = {}
+    for p in Path(folder).iterdir():
+        if p.is_file():
+            ext = p.suffix.lower().lstrip(".") or "none"
+            counts[ext] = counts.get(ext, 0) + 1
+    return dict(sorted(counts.items()))
+
+print(count_by_type("downloads"))
+```
+
+```test
+reset_files()
+need("count_by_type", "function")
+expect('count_by_type("downloads")', {"csv": 1, "jpg": 2, "mp3": 1, "pdf": 2, "txt": 1})
+from pathlib import Path as _P
+(_P("downloads") / "README").write_text("x")
+expect('count_by_type("downloads")', {"csv": 1, "jpg": 2, "mp3": 1, "none": 1, "pdf": 2, "txt": 1})
+```
+
+:::hints
+- Loop over `Path(folder).iterdir()` and skip anything that isn't a file.
+- `p.suffix.lower().lstrip(".")` gives `pdf`; an empty suffix means no extension.
+- `dict(sorted(counts.items()))` sorts by key.
+:::
+
+@exercise A.1b | Tidy the folder
+Write `organize(folder)` that moves every file in `folder` into a subfolder named after its lowercase extension (`pdf/`, `jpg/`, ...; files with no extension go to `other/`). Return how many files were moved. Leave existing subfolders alone.
+
+```starter
+from pathlib import Path
+
+def organize(folder):
+    pass
+```
+
+```solution
+from pathlib import Path
+
+def organize(folder):
+    folder = Path(folder)
+    moved = 0
+    for p in list(folder.iterdir()):
+        if not p.is_file():
+            continue
+        name = p.suffix.lower().lstrip(".") or "other"
+        target = folder / name
+        target.mkdir(exist_ok=True)
+        p.rename(target / p.name)
+        moved += 1
+    return moved
+```
+
+```test
+reset_files()
+need("organize", "function")
+n = organize("downloads")
+check(n == 7, "Moves all 7 files", f"returned {n}")
+from pathlib import Path as _P
+d = _P("downloads")
+tree = {sub.name: sorted(f.name for f in sub.iterdir()) for sub in d.iterdir() if sub.is_dir()}
+check(tree.get("pdf") == ["Article 21 notes.pdf", "syllabus.pdf"], "PDFs are in pdf/", f"folders: {tree}")
+check(tree.get("jpg") == ["IMG_0003.JPG", "IMG_0007.jpg"], "Both photos (any case) are in jpg/", f"folders: {tree}")
+check(not any(p.is_file() for p in d.iterdir()), "No loose files are left", f"left: {[p.name for p in d.iterdir() if p.is_file()]}")
+check(organize("downloads") == 0, "Running it again moves nothing")
+```
+
+:::hints
+- Take a `list(...)` of `iterdir()` first, because you're changing the folder while looping.
+- For each file, make the subfolder with `mkdir(exist_ok=True)` and `p.rename(target / p.name)`.
+:::
+
+@exercise A.1c | Rename the photos
+Write `rename_photos(folder, prefix)` that renames every `.jpg` file (any capitalisation) in `folder`, in alphabetical order of their current names, to `prefix_001.jpg`, `prefix_002.jpg`, ... and returns the list of new names.
+
+```starter
+from pathlib import Path
+
+def rename_photos(folder, prefix):
+    pass
+```
+
+```solution
+from pathlib import Path
+
+def rename_photos(folder, prefix):
+    folder = Path(folder)
+    photos = sorted(p for p in folder.iterdir() if p.is_file() and p.suffix.lower() == ".jpg")
+    new_names = []
+    for n, p in enumerate(photos, start=1):
+        new_name = f"{prefix}_{n:03d}.jpg"
+        p.rename(folder / new_name)
+        new_names.append(new_name)
+    return new_names
+```
+
+```test
+reset_files()
+need("rename_photos", "function")
+names = rename_photos("downloads", "trip")
+check(names == ["trip_001.jpg", "trip_002.jpg"], "Returns the new names in order", f"returned {names}")
+from pathlib import Path as _P
+left = sorted(p.name for p in _P("downloads").iterdir())
+check("trip_001.jpg" in left and "trip_002.jpg" in left and "IMG_0003.JPG" not in left, "The files were really renamed", f"folder now has: {left}")
+```
+
+:::hints
+- Collect the photos with a filter on `p.suffix.lower() == ".jpg"` and sort them.
+- `enumerate(photos, start=1)` numbers them; `f"{prefix}_{n:03d}.jpg"` pads the number to 3 digits.
+:::
+
+@lesson A.2 | Documents in bulk | 25
+@goal Generate personalised messages and files from a spreadsheet, and merge many CSV files into one.
+
+A lot of office work is "the same document, a hundred times, with different names in it". That's a loop over rows plus a template.
+
+```file candidates.csv
+name,roll,centre,exam_date
+Aman Sharma,2026104732,Jaipur,14 November 2026
+Riya Verma,2026998812,Delhi,15 November 2026
+Dev Mehta,2026551207,Pune,14 November 2026
+```
+
+## Templates
+
+An f-string works when the values are already in variables. When the template lives in a file or a setting, use `str.format` with named fields, or `string.Template`:
+
+```py
+template = "Dear {name}, your exam is on {exam_date} at {centre}. Roll number: {roll}."
+row = {"name": "Aman Sharma", "exam_date": "14 November 2026", "centre": "Jaipur", "roll": "2026104732"}
+print(template.format(**row))
+```
+
+`**row` spreads the dictionary into named arguments (Unit 10), so every `{field}` is filled from the matching key.
+
+## A message for every row
+
+```py
+import csv
+
+template = "Dear {name}, your exam is on {exam_date} at {centre}. Roll number: {roll}."
+with open("candidates.csv", encoding="utf-8", newline="") as f:
+    for row in csv.DictReader(f):
+        print(template.format(**row))
+```
+
+## One file per person
+
+```py
+import csv
+from pathlib import Path
+
+out = Path("letters")
+out.mkdir(exist_ok=True)
+with open("candidates.csv", encoding="utf-8", newline="") as f:
+    for row in csv.DictReader(f):
+        text = f"To: {row['name']}\nCentre: {row['centre']}\nDate: {row['exam_date']}\n"
+        (out / f"{row['roll']}.txt").write_text(text, encoding="utf-8")
+print(sorted(p.name for p in out.iterdir()))
+```
+
+:::real
+On your laptop, the same loop fills Word documents (`pip install python-docx`), Excel sheets (`openpyxl`) or emails (`smtplib` from the standard library, with an app password stored in an environment variable). The pattern never changes: rows in, template, files or messages out.
+:::
+
+:::recall
+Q: What does `template.format(**row)` do?
+A: Fills each `{field}` in the template with the value of the matching key in the dictionary row.
+Q: What is the bulk-document pattern?
+A: Loop over the rows of a data source, fill a template for each, and write or send the result.
+:::
+
+@exercise A.2a | Personal message
+Write `make_message(row)` that returns this text for a row dictionary from `candidates.csv`:
+
+```text
+Dear Aman Sharma, your exam is on 14 November 2026 at Jaipur. Roll number: 2026104732.
+```
+
+```starter
+TEMPLATE = "Dear {name}, your exam is on {exam_date} at {centre}. Roll number: {roll}."
+
+def make_message(row):
+    pass
+```
+
+```solution
+TEMPLATE = "Dear {name}, your exam is on {exam_date} at {centre}. Roll number: {roll}."
+
+def make_message(row):
+    return TEMPLATE.format(**row)
+```
+
+```test
+need("make_message", "function")
+expect('make_message({"name": "Aman Sharma", "roll": "2026104732", "centre": "Jaipur", "exam_date": "14 November 2026"})', "Dear Aman Sharma, your exam is on 14 November 2026 at Jaipur. Roll number: 2026104732.")
+expect('make_message({"name": "Riya", "roll": "1", "centre": "Delhi", "exam_date": "15 November 2026"})', "Dear Riya, your exam is on 15 November 2026 at Delhi. Roll number: 1.")
+```
+
+:::hints
+- The template's `{name}`, `{exam_date}` and so on match the row's keys.
+- `TEMPLATE.format(**row)` fills every field from the dictionary.
+:::
+
+@exercise A.2b | Write the letters
+Write `write_letters(csv_path, out_folder)` that creates `out_folder` if needed and writes one file per candidate named `<roll>.txt`, containing exactly the message from the previous exercise plus a newline. Return the number of files written.
+
+```starter
+import csv
+from pathlib import Path
+
+TEMPLATE = "Dear {name}, your exam is on {exam_date} at {centre}. Roll number: {roll}."
+
+def write_letters(csv_path, out_folder):
+    pass
+```
+
+```solution
+import csv
+from pathlib import Path
+
+TEMPLATE = "Dear {name}, your exam is on {exam_date} at {centre}. Roll number: {roll}."
+
+def write_letters(csv_path, out_folder):
+    out = Path(out_folder)
+    out.mkdir(parents=True, exist_ok=True)
+    count = 0
+    with open(csv_path, encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            (out / f"{row['roll']}.txt").write_text(TEMPLATE.format(**row) + "\n", encoding="utf-8")
+            count += 1
+    return count
+```
+
+```test
+reset_files()
+need("write_letters", "function")
+n = write_letters("candidates.csv", "letters")
+check(n == 3, "Writes 3 letters", f"returned {n}")
+check(file_text("letters/2026998812.txt") == "Dear Riya Verma, your exam is on 15 November 2026 at Delhi. Roll number: 2026998812.\n", "Riya's letter is right", f"got {file_text('letters/2026998812.txt')!r}")
+check(write_letters("candidates.csv", "out/deep/letters") == 3, "Creates nested folders when needed")
+```
+
+:::hints
+- `Path(out_folder).mkdir(parents=True, exist_ok=True)` creates the folder (and any parents).
+- Loop with `csv.DictReader` and write each file with `write_text`.
+:::
+
+@exercise A.2c | Merge the monthly reports
+The folder `reports` has one CSV per month, all with the same columns. Write `merge_reports(folder, out_path)` that writes a single CSV containing every row, with an extra **first** column `source` holding the file's stem (`aug`, `sep`), files in alphabetical order. Return the number of data rows written.
+
+```file reports/aug.csv
+subject,minutes
+Polity,300
+Maths,240
+```
+
+```file reports/sep.csv
+subject,minutes
+Polity,280
+GK,120
+History,150
+```
+
+```starter
+import csv
+from pathlib import Path
+
+def merge_reports(folder, out_path):
+    pass
+```
+
+```solution
+import csv
+from pathlib import Path
+
+def merge_reports(folder, out_path):
+    rows = []
+    header = None
+    for path in sorted(Path(folder).glob("*.csv")):
+        with open(path, encoding="utf-8", newline="") as f:
+            reader = csv.DictReader(f)
+            header = header or reader.fieldnames
+            for row in reader:
+                rows.append({"source": path.stem, **row})
+    with open(out_path, "w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["source"] + list(header or []))
+        writer.writeheader()
+        writer.writerows(rows)
+    return len(rows)
+```
+
+```test
+reset_files()
+need("merge_reports", "function")
+n = merge_reports("reports", "all.csv")
+check(n == 5, "Writes 5 data rows", f"returned {n}")
+text = (file_text("all.csv") or "").replace("\r\n", "\n").strip()
+check(text == "source,subject,minutes\naug,Polity,300\naug,Maths,240\nsep,Polity,280\nsep,GK,120\nsep,History,150", "all.csv has the source column and every row", f"all.csv:\n{text}")
+```
+
+:::hints
+- `sorted(Path(folder).glob("*.csv"))` gives the files in order; `path.stem` is the month name.
+- Read with DictReader and build new dictionaries with `{"source": path.stem, **row}`.
+- Write with `csv.DictWriter`, fieldnames `["source"] + header`, then `writeheader()` and `writerows(rows)`.
+:::
+
+@lesson A.3 | Data from web pages | 25
+@goal Understand how programs fetch web pages and APIs, and extract data from HTML with BeautifulSoup.
+
+## Fetching (on your laptop)
+
+The `requests` library downloads pages and talks to APIs. It needs the internet, so this part runs on your laptop:
+
+```py norun
+import requests
+
+r = requests.get("https://api.github.com/repos/python/cpython", timeout=10)
+print(r.status_code)              # 200 means OK
+data = r.json()                   # APIs usually answer in JSON
+print(data["stargazers_count"])
+```
+
+Prefer an **API** when a site offers one: you get clean JSON, and it's the intended way in. **Scraping** HTML is the fallback, and it comes with rules: read the site's terms and its `robots.txt`, keep requests slow and few, and never collect personal data.
+
+## Parsing HTML
+
+Once you have a page's HTML (from `requests`, or a saved file), **BeautifulSoup** turns it into a searchable tree. This lesson has two saved pages:
+
+```file news.html
+<html><body>
+<h1>Exam updates</h1>
+<div class="item"><h2><a href="/notices/cgl-2026">CGL 2026 tier 1 dates announced</a></h2><p>Posted 12 Oct</p></div>
+<div class="item"><h2><a href="/notices/chsl-answer-key">CHSL answer key released</a></h2><p>Posted 9 Oct</p></div>
+<div class="item"><h2><a href="https://example.org/syllabus.pdf">New syllabus PDF</a></h2><p>Posted 2 Oct</p></div>
+</body></html>
+```
+
+```file results.html
+<table id="results">
+<tr><th>Name</th><th>Roll</th><th>Marks</th></tr>
+<tr><td>Aman Sharma</td><td>2026104732</td><td>157</td></tr>
+<tr><td>Riya Verma</td><td>2026998812</td><td>171.5</td></tr>
+<tr><td>Dev Mehta</td><td>2026551207</td><td>142</td></tr>
+</table>
+```
+
+```py
+from bs4 import BeautifulSoup
+
+with open("news.html", encoding="utf-8") as f:
+    soup = BeautifulSoup(f.read(), "html.parser")
+
+print(soup.h1.text)
+for h2 in soup.find_all("h2"):
+    link = h2.find("a")
+    print(link.text, "->", link["href"])
+```
+
+| Method | Finds |
+| --- | --- |
+| `soup.find("tag")` | the first matching element (or None) |
+| `soup.find_all("tag")` | every matching element |
+| `soup.select("div.item h2")` | elements matching a CSS selector |
+| `el.text` / `el.get_text(strip=True)` | the text inside |
+| `el["href"]` / `el.get("href")` | an attribute |
+
+## Tables to rows
+
+```py
+from bs4 import BeautifulSoup
+
+with open("results.html", encoding="utf-8") as f:
+    soup = BeautifulSoup(f.read(), "html.parser")
+
+rows = soup.find("table").find_all("tr")
+header = [th.get_text(strip=True) for th in rows[0].find_all("th")]
+for tr in rows[1:]:
+    cells = [td.get_text(strip=True) for td in tr.find_all("td")]
+    print(dict(zip(header, cells)))
+```
+
+Links like `/notices/cgl-2026` are **relative**. `urllib.parse.urljoin(base, href)` turns them into full addresses.
+
+:::recall
+Q: When should you use an API instead of scraping HTML?
+A: Whenever the site offers one: the data is clean JSON and it's the intended way to access it.
+Q: What is the difference between find and find_all in BeautifulSoup?
+A: find returns the first matching element (or None); find_all returns a list of every match.
+Q: How do you turn a relative link into a full URL?
+A: `urljoin(page_url, href)` from urllib.parse.
+:::
+
+@exercise A.3a | Headlines
+Write `headlines(path)` returning the text of every `h2` on the page, in order.
+
+```starter
+from bs4 import BeautifulSoup
+
+def headlines(path):
+    pass
+```
+
+```solution
+from bs4 import BeautifulSoup
+
+def headlines(path):
+    with open(path, encoding="utf-8") as f:
+        soup = BeautifulSoup(f.read(), "html.parser")
+    return [h2.get_text(strip=True) for h2 in soup.find_all("h2")]
+```
+
+```test
+need("headlines", "function")
+expect('headlines("news.html")', ["CGL 2026 tier 1 dates announced", "CHSL answer key released", "New syllabus PDF"])
+```
+
+:::hints
+- Parse the file with `BeautifulSoup(text, "html.parser")`.
+- `soup.find_all("h2")`, and `get_text(strip=True)` on each.
+:::
+
+@exercise A.3b | Table to records
+Write `table_rows(path)` that returns the results table as a list of dictionaries keyed by the header cells, with `Marks` converted to a float.
+
+```starter
+from bs4 import BeautifulSoup
+
+def table_rows(path):
+    pass
+```
+
+```solution
+from bs4 import BeautifulSoup
+
+def table_rows(path):
+    with open(path, encoding="utf-8") as f:
+        soup = BeautifulSoup(f.read(), "html.parser")
+    rows = soup.find("table").find_all("tr")
+    header = [th.get_text(strip=True) for th in rows[0].find_all("th")]
+    records = []
+    for tr in rows[1:]:
+        record = dict(zip(header, [td.get_text(strip=True) for td in tr.find_all("td")]))
+        record["Marks"] = float(record["Marks"])
+        records.append(record)
+    return records
+```
+
+```test
+need("table_rows", "function")
+expect('table_rows("results.html")', [
+    {"Name": "Aman Sharma", "Roll": "2026104732", "Marks": 157.0},
+    {"Name": "Riya Verma", "Roll": "2026998812", "Marks": 171.5},
+    {"Name": "Dev Mehta", "Roll": "2026551207", "Marks": 142.0},
+])
+```
+
+:::hints
+- The first `tr` holds the `th` header cells; the rest hold `td` cells.
+- `dict(zip(header, cells))` makes each record; then convert `record["Marks"]` with `float()`.
+:::
+
+@exercise A.3c | Full links
+Write `all_links(path, base)` returning every link `href` on the page as a full URL, using `urljoin` with `base`.
+
+```starter
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
+
+def all_links(path, base):
+    pass
+```
+
+```solution
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
+
+def all_links(path, base):
+    with open(path, encoding="utf-8") as f:
+        soup = BeautifulSoup(f.read(), "html.parser")
+    return [urljoin(base, a["href"]) for a in soup.find_all("a", href=True)]
+```
+
+```test
+need("all_links", "function")
+expect('all_links("news.html", "https://ssc.example.in/news/")', ["https://ssc.example.in/notices/cgl-2026", "https://ssc.example.in/notices/chsl-answer-key", "https://example.org/syllabus.pdf"])
+```
+
+:::hints
+- `soup.find_all("a", href=True)` finds links that have an href.
+- `urljoin(base, href)` leaves full URLs alone and completes relative ones.
+:::
+
+@lesson A.4 | Bots and schedules | 25
+@goal Write the "brain" of a chat bot as a testable function, and run scripts automatically every day.
+
+## A bot is a function
+
+Strip away the messaging app and a bot is a function: text in, reply out. Write and test that function first; connecting it to Telegram or WhatsApp is the easy part.
+
+```py
+ARTICLES = {14: "Equality before law", 21: "Protection of life and personal liberty"}
+
+def reply(text):
+    parts = text.strip().split()
+    if not parts:
+        return "Say something!"
+    command, args = parts[0].lower(), parts[1:]
+    if command == "/article" and len(args) == 1 and args[0].isdigit():
+        return ARTICLES.get(int(args[0]), "Not in my notes")
+    return "Try /article 21"
+
+for message in ["/article 21", "/article 99", "hello"]:
+    print(message, "->", reply(message))
+```
+
+## Connecting it to Telegram (on your laptop)
+
+1. In Telegram, message **@BotFather**, send `/newbot`, and follow the steps. It gives you a **token**: treat it like a password.
+2. `pip install python-telegram-bot`, and store the token in an environment variable `TELEGRAM_TOKEN`.
+3. Wrap your function:
+
+```py norun
+import os
+from telegram import Update
+from telegram.ext import Application, ContextTypes, MessageHandler, filters
+
+from brain import reply   # your tested function, in brain.py
+
+
+async def on_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(reply(update.message.text))
+
+
+app = Application.builder().token(os.environ["TELEGRAM_TOKEN"]).build()
+app.add_handler(MessageHandler(filters.TEXT, on_message))
+app.run_polling()
+```
+
+(`async` and `await` let one program wait for many messages at once; you can use them here without knowing the details.)
+
+## Running scripts on a schedule
+
+| System | How |
+| --- | --- |
+| Windows | **Task Scheduler**: Create Basic Task, choose Daily and a time, action "Start a program": your venv's `python.exe`, with your script's path as the argument |
+| Mac / Linux | **cron**: run `crontab -e` and add a line like `30 7 * * * /home/you/project/.venv/bin/python /home/you/project/digest.py` (07:30 every day) |
+
+For a script that must decide "is it time yet?", `datetime` does the maths:
+
+```py
+from datetime import datetime, timedelta
+
+now = datetime(2026, 10, 18, 21, 15)
+run_at = now.replace(hour=7, minute=30, second=0, microsecond=0)
+if run_at <= now:
+    run_at += timedelta(days=1)
+print("Next run:", run_at)
+```
+
+:::recall
+Q: Why write a bot's logic as a plain function first?
+A: It can be tested instantly with plain strings, before any messaging app is involved.
+Q: Where should a bot token or API key be stored?
+A: In an environment variable, never in the code.
+Q: What does the cron line `30 7 * * *` mean?
+A: Run at minute 30 of hour 7 (07:30), every day.
+:::
+
+@exercise A.4a | The bot's brain
+Write `reply(text)` handling these commands (case-insensitive command word, extra spaces ignored):
+
+- `/start` returns `Welcome! Commands: /score CORRECT WRONG, /article NUMBER`
+- `/score 68 12` returns `Score: 130.0` (SSC marking: +2, -0.5)
+- `/article 21` returns the heading from `ARTICLES`, or `Not in my notes`
+- anything else returns `Commands: /score CORRECT WRONG, /article NUMBER`
+
+Wrong arguments (missing, or not whole numbers) also get the commands line.
+
+```starter
+ARTICLES = {
+    14: "Equality before law",
+    21: "Protection of life and personal liberty",
+    32: "Remedies for enforcement of rights conferred by this Part",
+}
+
+def reply(text):
+    pass
+```
+
+```solution
+ARTICLES = {
+    14: "Equality before law",
+    21: "Protection of life and personal liberty",
+    32: "Remedies for enforcement of rights conferred by this Part",
+}
+HELP = "Commands: /score CORRECT WRONG, /article NUMBER"
+
+def reply(text):
+    parts = text.strip().split()
+    if not parts:
+        return HELP
+    command, args = parts[0].lower(), parts[1:]
+    if command == "/start":
+        return "Welcome! " + HELP
+    if command == "/score" and len(args) == 2 and all(a.isdigit() for a in args):
+        correct, wrong = int(args[0]), int(args[1])
+        return f"Score: {correct * 2 - wrong * 0.5}"
+    if command == "/article" and len(args) == 1 and args[0].isdigit():
+        return ARTICLES.get(int(args[0]), "Not in my notes")
+    return HELP
+```
+
+```test
+need("reply", "function")
+H = "Commands: /score CORRECT WRONG, /article NUMBER"
+expect('reply("/start")', "Welcome! " + H)
+expect('reply("/score 68 12")', "Score: 130.0")
+expect('reply("  /SCORE   70  20 ")', "Score: 130.0")
+expect('reply("/article 21")', "Protection of life and personal liberty")
+expect('reply("/article 999")', "Not in my notes")
+expect('reply("/score 68")', H)
+expect('reply("/score ten 2")', H)
+expect('reply("hello")', H)
+expect('reply("")', H)
+```
+
+:::hints
+- Split the text into words; the first is the command, the rest are its arguments.
+- Check the argument count and `isdigit()` before converting with int().
+- Keep the help text in one variable so every fallback returns the same line.
+:::
+
+@exercise A.4b | Next daily run
+Write `next_run(now, hour, minute)` that returns the next `datetime` at that time of day: today if it's still ahead of `now`, otherwise tomorrow. Seconds and microseconds are 0.
+
+```starter
+from datetime import datetime, timedelta
+
+def next_run(now, hour, minute):
+    pass
+```
+
+```solution
+from datetime import datetime, timedelta
+
+def next_run(now, hour, minute):
+    run_at = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+    if run_at <= now:
+        run_at += timedelta(days=1)
+    return run_at
+```
+
+```test
+need("next_run", "function")
+expect("next_run(datetime(2026, 10, 18, 6, 0), 7, 30)", __import__("datetime").datetime(2026, 10, 18, 7, 30))
+expect("next_run(datetime(2026, 10, 18, 21, 15), 7, 30)", __import__("datetime").datetime(2026, 10, 19, 7, 30))
+expect("next_run(datetime(2026, 12, 31, 23, 0), 7, 30)", __import__("datetime").datetime(2027, 1, 1, 7, 30))
+expect("next_run(datetime(2026, 10, 18, 7, 30), 7, 30)", __import__("datetime").datetime(2026, 10, 19, 7, 30))
+```
+
+:::hints
+- `now.replace(hour=..., minute=..., second=0, microsecond=0)` gives today at that time.
+- If that's not after now, add `timedelta(days=1)`. Month and year changes are handled for you.
+:::
+
+@lesson A.5 | Project: Daily revision digest | 45 | project
+@goal Combine files, dates, sorting and text building into a script you can schedule every morning.
+
+Every morning, a script reads your study log and tells you what you've been neglecting. Here's the log:
+
+```file study_log.csv
+date,subject,minutes
+2026-10-05,Polity,60
+2026-10-08,GK,20
+2026-10-11,History,40
+2026-10-12,Maths,45
+2026-10-14,Polity,50
+2026-10-15,Python,60
+2026-10-16,Maths,30
+2026-10-17,Python,45
+```
+
+Write `digest(log_path, subjects, today)` that returns this text for the subjects `["Polity", "History", "Geography", "Maths", "GK", "Python"]` and today = 18 October 2026:
+
+```text
+Revision digest for 18 October 2026
+1. Geography: never studied
+2. GK: 10 days ago
+3. History: 7 days ago
+Study time in the last 7 days: 230 min
+```
+
+and also writes it (plus a final newline) to `digest.txt`.
+
+## The rules
+
+- For each subject, find the **latest** date it appears in the log, ignoring any rows after today. Days ago = today minus that date.
+- The 3 most neglected subjects come first: never-studied subjects at the top (in the order they appear in `subjects`), then the highest number of days. Ties keep the order of `subjects`.
+- The last line adds up the minutes from the 7 days ending today (today and the 6 days before).
+- The date line uses `today.strftime("%d %B %Y")`. Use `"1 day ago"` for exactly one day.
+
+On your laptop, schedule it for 07:00 and send the text to yourself with the Telegram bot from the last lesson.
+
+:::recall
+Q: How do you sort so that "never studied" comes before everything else, then by most days?
+A: Sort with a key that gives never-studied items the biggest value, for example float("inf") days, and use reverse=True or a negative number.
+Q: How do you find the 7 days ending today?
+A: Dates d with `today - timedelta(days=6) <= d <= today`.
+:::
+
+@exercise A.5a | Build the digest | project
+Write `digest(log_path, subjects, today)` as described in the lesson.
+
+```starter
+import csv
+from datetime import date, timedelta
+
+def digest(log_path, subjects, today):
+    pass
+
+print(digest("study_log.csv", ["Polity", "History", "Geography", "Maths", "GK", "Python"], date(2026, 10, 18)))
+```
+
+```solution
+import csv
+from datetime import date, timedelta
+
+def digest(log_path, subjects, today):
+    last_seen = {}
+    week_minutes = 0
+    week_start = today - timedelta(days=6)
+    with open(log_path, encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f):
+            day = date.fromisoformat(row["date"])
+            if day > today:
+                continue
+            subject = row["subject"]
+            if subject not in last_seen or day > last_seen[subject]:
+                last_seen[subject] = day
+            if week_start <= day <= today:
+                week_minutes += int(row["minutes"])
+
+    def neglect(subject):
+        if subject not in last_seen:
+            return float("inf")
+        return (today - last_seen[subject]).days
+
+    ranked = sorted(subjects, key=neglect, reverse=True)[:3]
+    lines = [f"Revision digest for {today.strftime('%d %B %Y')}"]
+    for n, subject in enumerate(ranked, start=1):
+        days = neglect(subject)
+        if days == float("inf"):
+            lines.append(f"{n}. {subject}: never studied")
+        elif days == 1:
+            lines.append(f"{n}. {subject}: 1 day ago")
+        else:
+            lines.append(f"{n}. {subject}: {days} days ago")
+    lines.append(f"Study time in the last 7 days: {week_minutes} min")
+    text = "\n".join(lines)
+    with open("digest.txt", "w", encoding="utf-8") as f:
+        f.write(text + "\n")
+    return text
+
+print(digest("study_log.csv", ["Polity", "History", "Geography", "Maths", "GK", "Python"], date(2026, 10, 18)))
+```
+
+```test
+from datetime import date as _date
+need("digest", "function")
+reset_files()
+subjects = ["Polity", "History", "Geography", "Maths", "GK", "Python"]
+want = "Revision digest for 18 October 2026\n1. Geography: never studied\n2. GK: 10 days ago\n3. History: 7 days ago\nStudy time in the last 7 days: 230 min"
+got = digest("study_log.csv", subjects, _date(2026, 10, 18))
+check(got == want, "The digest text is exactly right", f"Expected:\n{want}\n\nGot:\n{got}")
+check(file_text("digest.txt") == want + "\n", "digest.txt holds the same text", f"digest.txt: {file_text('digest.txt')!r}")
+got2 = digest("study_log.csv", ["Maths", "Python", "Polity"], _date(2026, 10, 18))
+check(got2 == "Revision digest for 18 October 2026\n1. Polity: 4 days ago\n2. Maths: 2 days ago\n3. Python: 1 day ago\nStudy time in the last 7 days: 230 min", "Works for another subject list, with '1 day ago'", f"Got:\n{got2}")
+got3 = digest("study_log.csv", ["GK"], _date(2026, 10, 11))
+check(got3 == "Revision digest for 11 October 2026\n1. GK: 3 days ago\nStudy time in the last 7 days: 120 min", "Works for an earlier date and a single subject", f"Got:\n{got3}")
+```
+
+:::hints
+- One pass over the log can record each subject's latest date and add up the week's minutes.
+- `date.fromisoformat("2026-10-05")` turns the text into a date.
+- Sort the subjects with `key=` a function returning `float("inf")` for never studied, else the days; `reverse=True`. Python's sort is stable, so ties keep their order.
+- Build the lines in a list and join with `"\n"`.
+:::

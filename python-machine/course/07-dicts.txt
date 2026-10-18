@@ -1,0 +1,878 @@
+@unit u7 | 7 | Tuples, dictionaries and sets
+@zen Special cases aren't special enough to break the rules.
+@summary Use tuples for fixed groups, dictionaries to look things up by key, and sets for unique items and fast membership tests.
+
+@lesson 7.1 | Tuples and unpacking | 20
+@goal Group fixed values in tuples and unpack them into separate variables in one line.
+
+A **tuple** is like a list that can't be changed. You write it with round brackets:
+
+```py
+point = (3, 4)
+exam = ("SSC CGL", 2026, "Tier 1")
+print(exam[0], exam[1])
+print(len(exam))
+```
+
+Indexing, slicing, `len()` and `in` work just as with lists. What you can't do is change it:
+
+```py error
+exam = ("SSC CGL", 2026, "Tier 1")
+exam[1] = 2027
+```
+
+Why have a list that can't change? For values that belong together and **shouldn't** change: a date, a coordinate, a (name, score) pair. If code elsewhere tries to change it by mistake, Python stops it.
+
+## Unpacking
+
+You can split a tuple (or a list) into separate variables in one line. The number of names must match the number of items:
+
+```py
+exam = ("SSC CGL", 2026, "Tier 1")
+name, year, tier = exam
+print(name)
+print(year)
+```
+
+This gives Python's famous one-line swap. The right side builds a tuple `(b, a)` first, then unpacks it:
+
+```py
+a = "Physics"
+b = "Maths"
+a, b = b, a
+print(a, b)
+```
+
+Compare that with the three lines and the `temp` variable you needed in Unit 2.
+
+## Tuples in loops
+
+Lists of tuples are everywhere in real code, and a `for` loop can unpack each one:
+
+```py
+scores = [("Polity", 42), ("History", 38), ("Economy", 45)]
+for subject, mark in scores:
+    print(f"{subject}: {mark}")
+```
+
+That's exactly what `enumerate()` was doing in Unit 6: giving you `(number, item)` tuples.
+
+:::predict
+```py
+x, y, z = "SSC"
+print(z, y, x)
+```
+- SSC
++ C S S
+- S S C
+- Error
+= A string is a sequence too, so its three characters unpack into x, y and z. Printing them backwards gives C S S.
+:::
+
+:::recall
+Q: What is the main difference between a tuple and a list?
+A: A tuple can't be changed after it's made (immutable); a list can.
+Q: How do you swap two variables in one line?
+A: `a, b = b, a`.
+Q: What does `for subject, mark in pairs:` do?
+A: Loops over a list of pairs and unpacks each pair into the two names.
+:::
+
+@exercise 7.1a | One-line swap
+Swap the values of `morning` and `evening` using tuple unpacking (one line, no extra variable):
+
+```text
+Polity History
+```
+
+```starter
+morning = "History"
+evening = "Polity"
+
+print(morning, evening)
+```
+
+```solution
+morning = "History"
+evening = "Polity"
+morning, evening = evening, morning
+print(morning, evening)
+```
+
+```test
+check_out("Polity History")
+check("temp" not in src and has("Tuple"), "You swapped with tuple unpacking", "Write it as one line: morning, evening = evening, morning")
+```
+
+:::hints
+- Put both names on the left of `=` and both values, the other way round, on the right.
+- `morning, evening = evening, morning` builds the pair on the right first, then unpacks it.
+:::
+
+@exercise 7.1b | Unpack a date
+Split `date` at the dashes, unpack the three parts into `day`, `month` and `year`, and print:
+
+```text
+Year 2026, month 10, day 18
+```
+
+```starter
+date = "18-10-2026"
+
+```
+
+```solution
+date = "18-10-2026"
+day, month, year = date.split("-")
+print(f"Year {year}, month {month}, day {day}")
+```
+
+```test
+check_out("Year 2026, month 10, day 18")
+need("day")
+need("year")
+check(var("year") == "2026", "year holds 2026")
+```
+
+:::hints
+- `date.split("-")` gives a list of three strings.
+- Unpack it straight away: `day, month, year = date.split("-")`.
+:::
+
+@exercise 7.1c | Best subject
+`scores` is a list of (subject, marks) tuples. Print every subject with its marks, then the best subject:
+
+```text
+Polity: 42
+History: 38
+Economy: 45
+Geography: 40
+Best: Economy
+```
+
+Don't use `max()`: loop and keep the best so far, as in Unit 5.
+
+```starter
+scores = [("Polity", 42), ("History", 38), ("Economy", 45), ("Geography", 40)]
+
+```
+
+```solution
+scores = [("Polity", 42), ("History", 38), ("Economy", 45), ("Geography", 40)]
+best_subject, best_mark = scores[0]
+for subject, mark in scores:
+    print(f"{subject}: {mark}")
+    if mark > best_mark:
+        best_subject, best_mark = subject, mark
+print("Best:", best_subject)
+```
+
+```test
+check_out("Polity: 42\nHistory: 38\nEconomy: 45\nGeography: 40\nBest: Economy")
+check(not calls("max"), "No max() used")
+```
+
+:::hints
+- `for subject, mark in scores:` unpacks each pair.
+- Keep two variables for the best so far, starting from the first pair.
+- Print the best one after the loop.
+:::
+
+@lesson 7.2 | Dictionaries | 25
+@goal Store and look up values by key, and loop over keys and values together.
+
+A list finds things by **position**. A **dictionary** finds things by **key**, like a real dictionary finds a meaning by its word. You write it with braces, as `key: value` pairs:
+
+```py
+articles = {
+    14: "Equality before law",
+    21: "Protection of life and personal liberty",
+    32: "Remedies for enforcement of rights conferred by this Part",
+}
+print(articles[21])
+print(len(articles))
+```
+
+These are the official headings from the Constitution of India, the same ones in your Article Machine. Looking up article 21 doesn't search through the others: dictionaries jump straight to the key, which keeps them fast even with millions of entries.
+
+## Adding, changing, removing
+
+```py
+marks = {"Polity": 42, "History": 38}
+marks["Economy"] = 45      # add a new key
+marks["History"] = 40      # change an existing one
+del marks["Polity"]        # remove a key
+print(marks)
+print("Economy" in marks)
+```
+
+`in` checks **keys**, not values.
+
+## Missing keys
+
+Asking for a key that isn't there raises a `KeyError`:
+
+```py error
+marks = {"Polity": 42}
+print(marks["Biology"])
+```
+
+Use `get()` when a key might be missing. It returns `None`, or a default you choose:
+
+```py
+marks = {"Polity": 42}
+print(marks.get("Biology"))
+print(marks.get("Biology", 0))
+```
+
+## Looping
+
+```py
+capitals = {"Rajasthan": "Jaipur", "Kerala": "Thiruvananthapuram", "Assam": "Dispur"}
+for state in capitals:
+    print(state)
+for state, city in capitals.items():
+    print(f"{city} is the capital of {state}")
+print(list(capitals.keys()))
+print(list(capitals.values()))
+```
+
+- Looping over a dictionary gives its **keys**.
+- `.items()` gives `(key, value)` pairs, which unpack nicely.
+- Dictionaries remember the order you added things in.
+
+Keys must be unchangeable values: strings, numbers or tuples. Values can be anything, even lists or other dictionaries.
+
+:::predict
+```py
+d = {"a": 1, "b": 2}
+d["a"] = d["b"] + 10
+d["c"] = d.get("z", 5)
+print(d)
+```
+- {'a': 1, 'b': 2, 'c': 5}
++ {'a': 12, 'b': 2, 'c': 5}
+- {'a': 12, 'b': 2, 'c': None}
+- KeyError
+= d["a"] becomes 2 + 10. "z" isn't a key, so get returns the default 5, which is stored under "c".
+:::
+
+:::recall
+Q: How do you read the value for a key, without crashing if the key is missing?
+A: `d.get(key)` returns None if it's missing; `d.get(key, default)` returns your default.
+Q: What does `for k, v in d.items():` loop over?
+A: Every key and value pair in the dictionary.
+Q: What does `key in d` check?
+A: Whether the key exists in the dictionary. It does not look at the values.
+:::
+
+@exercise 7.2a | Article lookup
+Read an article number and print its heading from `articles`. If the number isn't in the dictionary, print `Not in my notes`.
+
+```starter
+articles = {
+    14: "Equality before law",
+    17: "Abolition of Untouchability",
+    21: "Protection of life and personal liberty",
+    32: "Remedies for enforcement of rights conferred by this Part",
+    44: "Uniform civil code for the citizens",
+    352: "Proclamation of Emergency",
+}
+number = int(input("Article: "))
+
+```
+
+```solution
+articles = {
+    14: "Equality before law",
+    17: "Abolition of Untouchability",
+    21: "Protection of life and personal liberty",
+    32: "Remedies for enforcement of rights conferred by this Part",
+    44: "Uniform civil code for the citizens",
+    352: "Proclamation of Emergency",
+}
+number = int(input("Article: "))
+print(articles.get(number, "Not in my notes"))
+```
+
+```stdin
+21
+```
+
+```test
+check_has("Protection of life and personal liberty", "Article 21")
+check_has("Proclamation of Emergency", "Article 352", got=run("352"))
+check_has("Not in my notes", "A missing article like 999", got=run("999"))
+```
+
+:::hints
+- The keys are numbers, so the input must be converted with `int()` (already done).
+- `articles.get(number, "Not in my notes")` handles both cases in one call.
+:::
+
+@exercise 7.2b | Update the phone book
+Starting from `contacts`, using dictionary operations:
+
+1. add `"Kabir"` with `"98111 22233"`,
+2. change Riya's number to `"98000 11111"`,
+3. remove `"Dev"`.
+
+Then print the dictionary:
+
+```text
+{'Riya': '98000 11111', 'Kabir': '98111 22233'}
+```
+
+```starter
+contacts = {"Riya": "98765 43210", "Dev": "91234 56789"}
+
+print(contacts)
+```
+
+```solution
+contacts = {"Riya": "98765 43210", "Dev": "91234 56789"}
+contacts["Kabir"] = "98111 22233"
+contacts["Riya"] = "98000 11111"
+del contacts["Dev"]
+print(contacts)
+```
+
+```test
+check_out("{'Riya': '98000 11111', 'Kabir': '98111 22233'}")
+```
+
+:::hints
+- Adding and changing look the same: `contacts["Kabir"] = "..."`.
+- `del contacts["Dev"]` removes a key (or `contacts.pop("Dev")`).
+:::
+
+@exercise 7.2c | Print the notes
+Loop over `articles` with `.items()` and print each entry like this:
+
+```text
+Article 14: Equality before law
+Article 21: Protection of life and personal liberty
+Article 32: Remedies for enforcement of rights conferred by this Part
+```
+
+```starter
+articles = {
+    14: "Equality before law",
+    21: "Protection of life and personal liberty",
+    32: "Remedies for enforcement of rights conferred by this Part",
+}
+
+```
+
+```solution
+articles = {
+    14: "Equality before law",
+    21: "Protection of life and personal liberty",
+    32: "Remedies for enforcement of rights conferred by this Part",
+}
+for number, heading in articles.items():
+    print(f"Article {number}: {heading}")
+```
+
+```test
+check_out("Article 14: Equality before law\nArticle 21: Protection of life and personal liberty\nArticle 32: Remedies for enforcement of rights conferred by this Part")
+check(calls("items"), "You used .items()")
+```
+
+:::hints
+- `for number, heading in articles.items():`
+- Print with an f-string.
+:::
+
+@lesson 7.3 | Counting and grouping | 25
+@goal Use dictionaries to count things, find the most common one, and group items together.
+
+## The counting pattern
+
+This pattern appears in nearly every data task: counting votes, words, errors, sales.
+
+```py
+votes = ["Riya", "Dev", "Riya", "Sana", "Riya", "Dev"]
+counts = {}
+for name in votes:
+    counts[name] = counts.get(name, 0) + 1
+print(counts)
+```
+
+Read the key line carefully: get the current count (0 if this name is new), add 1, store it back.
+
+## Finding the most common
+
+Loop over the items and keep the best so far, the same pattern as finding a maximum:
+
+```py
+counts = {"Riya": 3, "Dev": 2, "Sana": 1}
+winner = None
+best = 0
+for name, n in counts.items():
+    if n > best:
+        winner, best = name, n
+print(winner, best)
+```
+
+## Grouping into lists
+
+A dictionary's values can be lists, which lets you **group** items:
+
+```py
+cities = ["Agra", "Bhopal", "Ajmer", "Bikaner", "Chennai"]
+groups = {}
+for city in cities:
+    letter = city[0]
+    if letter not in groups:
+        groups[letter] = []
+    groups[letter].append(city)
+print(groups)
+```
+
+## Joining a list into text
+
+To print a list neatly, `join` glues its strings together with a separator you choose:
+
+```py
+cities = ["Agra", "Ajmer"]
+print(", ".join(cities))
+print(" > ".join(["Unit 7", "Lesson 3", "Exercise b"]))
+```
+
+`join` only works on strings: convert numbers first with `str()`.
+
+## Records: dictionaries inside dictionaries
+
+```py
+student = {
+    "name": "Aman",
+    "exam": "SSC CGL",
+    "marks": {"Reasoning": 45, "English": 41, "Maths": 38, "GK": 33},
+}
+print(student["marks"]["English"])
+total = 0
+for subject, mark in student["marks"].items():
+    total += mark
+print(student["name"], "total:", total)
+```
+
+This shape (named fields, some of them nested) is exactly what JSON data looks like, which you'll load from files in Unit 12.
+
+:::predict
+```py
+counts = {}
+for ch in "banana":
+    counts[ch] = counts.get(ch, 0) + 1
+print(counts)
+```
+- {'b': 1, 'a': 1, 'n': 1}
++ {'b': 1, 'a': 3, 'n': 2}
+- {'a': 3, 'n': 2, 'b': 1}
+- {'banana': 1}
+= Each letter's count goes up every time it appears. Keys keep the order they were first added: b, a, n.
+:::
+
+:::recall
+Q: Write the counting pattern for a list called items.
+A: `counts = {}` then `for x in items: counts[x] = counts.get(x, 0) + 1`.
+Q: How do you print the list ["a", "b"] as `a, b`?
+A: `", ".join(["a", "b"])`. All items must be strings.
+Q: How would you read Aman's English marks from `student = {"marks": {"English": 41}}`?
+A: Chain the keys: `student["marks"]["English"]`.
+:::
+
+@exercise 7.3a | Letter count
+Count how many times each letter appears in `word` and print the dictionary:
+
+```text
+{'M': 1, 'I': 4, 'S': 4, 'P': 2}
+```
+
+```starter
+word = "MISSISSIPPI"
+counts = {}
+
+print(counts)
+```
+
+```solution
+word = "MISSISSIPPI"
+counts = {}
+for letter in word:
+    counts[letter] = counts.get(letter, 0) + 1
+print(counts)
+```
+
+```test
+check_out("{'M': 1, 'I': 4, 'S': 4, 'P': 2}")
+check(has("For"), "You used a loop")
+```
+
+:::hints
+- Loop over the letters of word.
+- `counts[letter] = counts.get(letter, 0) + 1`
+:::
+
+@exercise 7.3b | Class monitor election
+Count the votes and print the winner:
+
+```text
+Winner: Riya with 4 votes
+```
+
+Count with a dictionary, then find the name with the most votes using a loop (no `max()` or `Counter`).
+
+```starter
+votes = ["Riya", "Dev", "Riya", "Sana", "Dev", "Riya", "Kabir", "Riya", "Sana"]
+
+```
+
+```solution
+votes = ["Riya", "Dev", "Riya", "Sana", "Dev", "Riya", "Kabir", "Riya", "Sana"]
+counts = {}
+for name in votes:
+    counts[name] = counts.get(name, 0) + 1
+winner = None
+best = 0
+for name, n in counts.items():
+    if n > best:
+        winner, best = name, n
+print(f"Winner: {winner} with {best} votes")
+```
+
+```test
+check_out("Winner: Riya with 4 votes")
+check(not calls("max") and "Counter" not in src, "Counted and compared with loops")
+```
+
+:::hints
+- First build `counts` with the counting pattern.
+- Then loop over `counts.items()` and keep the best name and count so far.
+:::
+
+@exercise 7.3c | Group cities by letter
+Group the cities by their first letter and print one line per letter, in the order the letters first appear, with the cities joined by `, `:
+
+```text
+A: Agra, Ajmer, Amritsar
+B: Bhopal, Bikaner
+C: Chennai
+```
+
+```starter
+cities = ["Agra", "Bhopal", "Ajmer", "Bikaner", "Chennai", "Amritsar"]
+
+```
+
+```solution
+cities = ["Agra", "Bhopal", "Ajmer", "Bikaner", "Chennai", "Amritsar"]
+groups = {}
+for city in cities:
+    letter = city[0]
+    if letter not in groups:
+        groups[letter] = []
+    groups[letter].append(city)
+for letter, names in groups.items():
+    print(f"{letter}: {', '.join(names)}")
+```
+
+```test
+check_out("A: Agra, Ajmer, Amritsar\nB: Bhopal, Bikaner\nC: Chennai")
+check(calls("join"), "You used join()")
+```
+
+:::hints
+- Build a dictionary whose values are lists: create an empty list the first time you see a letter.
+- Then loop over `groups.items()` and print `letter: ` followed by `", ".join(names)`.
+:::
+
+@lesson 7.4 | Sets | 20
+@goal Keep only unique items, test membership quickly, and compare groups with set operations.
+
+A **set** is an unordered collection with **no duplicates**. You write it with braces, but without `key:` parts:
+
+```py
+subjects = {"Polity", "History", "Polity", "Economy", "History"}
+print(len(subjects))
+print("Economy" in subjects)
+```
+
+The duplicates vanish. Sets don't keep any order, so the order Python prints them in may differ from how you typed them. When you need a stable order, use `sorted()`, which returns a list.
+
+## Removing duplicates
+
+Turning a list into a set is the quickest way to drop duplicates:
+
+```py
+attempts = ["Maths", "GK", "Maths", "English", "GK", "Maths"]
+unique = sorted(set(attempts))
+print(unique)
+```
+
+`set()` with nothing inside makes an empty set. (`{}` makes an empty dictionary, not a set.)
+
+```py
+seen = set()
+seen.add("Polity")
+seen.add("Polity")
+seen.discard("Biology")   # no error if missing; remove() would raise one
+print(seen)
+```
+
+## Set maths
+
+Sets answer questions like "what do these two groups have in common?" in one step:
+
+```py
+aman = {"Polity", "History", "Economy", "Maths"}
+riya = {"Maths", "English", "Polity", "Science"}
+print(sorted(aman & riya))   # in both (intersection)
+print(sorted(aman | riya))   # in either (union)
+print(sorted(aman - riya))   # in aman but not riya (difference)
+```
+
+| Operator | Method | Meaning |
+| --- | --- | --- |
+| `a & b` | `a.intersection(b)` | items in both |
+| `a \| b` | `a.union(b)` | items in either |
+| `a - b` | `a.difference(b)` | items in a, not in b |
+| `a ^ b` | `a.symmetric_difference(b)` | items in exactly one |
+
+Checking `x in some_set` is very fast, even for huge sets. Lists have to check items one by one. That speed matters a lot in the interview track.
+
+:::predict
+```py
+a = {1, 2, 3, 4}
+b = {3, 4, 5}
+print(sorted(a - b), sorted(a & b))
+```
++ [1, 2] [3, 4]
+- [5] [3, 4]
+- [1, 2, 5] [3, 4]
+- [1, 2] [1, 2, 3, 4, 5]
+= a - b keeps what is only in a (1 and 2). a & b keeps what is in both (3 and 4).
+:::
+
+:::recall
+Q: What happens to duplicates in a set?
+A: A set keeps only one copy of each item, so duplicates disappear.
+Q: How do you make an empty set?
+A: `set()`. Empty braces `{}` make an empty dictionary.
+Q: What do `a & b`, `a | b` and `a - b` give for sets?
+A: Items in both; items in either; items in a but not in b.
+:::
+
+@exercise 7.4a | Unique topics
+Print the unique topics in `log`, sorted alphabetically, and how many there are:
+
+```text
+['Economy', 'GK', 'Maths', 'Polity']
+4 unique topics
+```
+
+```starter
+log = ["Maths", "Polity", "Maths", "GK", "Economy", "GK", "Maths", "Polity"]
+
+```
+
+```solution
+log = ["Maths", "Polity", "Maths", "GK", "Economy", "GK", "Maths", "Polity"]
+unique = sorted(set(log))
+print(unique)
+print(len(unique), "unique topics")
+```
+
+```test
+check_out("['Economy', 'GK', 'Maths', 'Polity']\n4 unique topics")
+check(calls("set"), "You used a set")
+```
+
+:::hints
+- `set(log)` drops the duplicates; `sorted()` turns it into a sorted list.
+- `len()` of that list is the number of unique topics.
+:::
+
+@exercise 7.4b | Revised by both
+Print the topics both students revised, sorted:
+
+```text
+['Maths', 'Polity']
+```
+
+```starter
+aman = {"Polity", "History", "Economy", "Maths"}
+riya = {"Maths", "English", "Polity", "Science"}
+
+```
+
+```solution
+aman = {"Polity", "History", "Economy", "Maths"}
+riya = {"Maths", "English", "Polity", "Science"}
+print(sorted(aman & riya))
+```
+
+```test
+check_out("['Maths', 'Polity']")
+check("&" in src or calls("intersection"), "You used intersection")
+```
+
+:::hints
+- Topics in both sets: the intersection, `aman & riya`.
+- Wrap it in `sorted()` so the order is always the same.
+:::
+
+@exercise 7.4c | Remove duplicates, keep the order
+Remove duplicates from `questions` but keep the **original order** of first appearance:
+
+```text
+[12, 7, 3, 25, 9]
+```
+
+Use a set called `seen` to remember what you've already added.
+
+```starter
+questions = [12, 7, 12, 3, 7, 25, 3, 9, 12]
+result = []
+seen = set()
+
+print(result)
+```
+
+```solution
+questions = [12, 7, 12, 3, 7, 25, 3, 9, 12]
+result = []
+seen = set()
+for q in questions:
+    if q not in seen:
+        seen.add(q)
+        result.append(q)
+print(result)
+```
+
+```test
+check_out("[12, 7, 3, 25, 9]")
+check(calls("add"), "You used seen.add()")
+```
+
+:::hints
+- Loop over questions. If a number isn't in `seen`, add it to `seen` and append it to `result`.
+- `sorted(set(...))` would lose the original order, so it's not enough here.
+:::
+
+@lesson 7.5 | Project: Constitution flashcard quiz | 40 | project
+@goal Combine a dictionary, a loop, input, counting and a list of mistakes into a study tool you'll actually use.
+
+You'll build a quiz on the articles from your notes: the program shows an article's heading and you type its number.
+
+```text
+Which article is this? Equality before law
+Article number: 14
+Correct!
+Which article is this? Abolition of Untouchability
+Article number: 21
+Wrong: it's Article 17
+...
+Score: 4/6
+Revise: 17, 280
+```
+
+If every answer is right, the last two lines are:
+
+```text
+Score: 6/6
+Perfect score!
+```
+
+## Plan
+
+1. A dictionary of article number to heading (given in the starter).
+2. A score counter and an empty list for mistakes.
+3. Loop over `articles.items()`: print the question, read a number, compare, print `Correct!` or the `Wrong:` line, update the score or the mistakes.
+4. After the loop: the score line, then either `Perfect score!` or the `Revise:` line with the mistaken article numbers joined by `, `.
+
+:::tip
+Once it works, make it yours: add more articles from your Article Machine, or shuffle the questions with `import random` and `random.shuffle()` on a list of the numbers.
+:::
+
+:::recall
+Q: Why store the mistakes in a list during the quiz?
+A: So you can show them all at the end, as a list of what to revise.
+Q: How do you print a list of numbers joined by ", "?
+A: Convert each to a string first, then join: `", ".join(str_numbers)`.
+:::
+
+@exercise 7.5a | Build the flashcard quiz | project
+Build the quiz from the lesson using the `articles` dictionary in the starter (don't change it). Print the lines exactly as shown in the lesson.
+
+```starter
+articles = {
+    14: "Equality before law",
+    17: "Abolition of Untouchability",
+    21: "Protection of life and personal liberty",
+    32: "Remedies for enforcement of rights conferred by this Part",
+    280: "Finance Commission",
+    352: "Proclamation of Emergency",
+}
+score = 0
+mistakes = []
+
+```
+
+```solution
+articles = {
+    14: "Equality before law",
+    17: "Abolition of Untouchability",
+    21: "Protection of life and personal liberty",
+    32: "Remedies for enforcement of rights conferred by this Part",
+    280: "Finance Commission",
+    352: "Proclamation of Emergency",
+}
+score = 0
+mistakes = []
+for number, heading in articles.items():
+    print("Which article is this?", heading)
+    answer = int(input("Article number: "))
+    if answer == number:
+        print("Correct!")
+        score += 1
+    else:
+        print(f"Wrong: it's Article {number}")
+        mistakes.append(str(number))
+print(f"Score: {score}/{len(articles)}")
+if mistakes:
+    print("Revise:", ", ".join(mistakes))
+else:
+    print("Perfect score!")
+```
+
+```stdin
+14
+21
+21
+32
+280
+352
+```
+
+```test
+check_has("Which article is this? Equality before law")
+check_has("Wrong: it's Article 17")
+check_has("Score: 5/6")
+check_has("Revise: 17")
+o = run("14\n17\n21\n32\n280\n352")
+check_has("Score: 6/6", "All right gives 6/6", got=o)
+check_has("Perfect score!", "All right gives Perfect score!", got=o)
+check("Wrong" not in o and "Revise" not in o, "No Wrong or Revise lines when everything is right", f"Your output:\n{o}")
+o = run("1\n17\n21\n2\n280\n3")
+check_has("Score: 3/6", "Three wrong gives 3/6", got=o)
+check_has("Revise: 14, 32, 352", "Mistakes listed in order", got=o)
+check(o.count("Correct!") == 3, "Correct! printed for each right answer", f"Your output:\n{o}")
+```
+
+:::hints
+- `for number, heading in articles.items():` gives each question and its answer.
+- Read the answer with `int(input(...))` and compare it with `number`.
+- Keep wrong numbers as strings (`str(number)`) so `", ".join(mistakes)` works at the end.
+- An empty list counts as False, so `if mistakes:` tells you whether there were any.
+:::

@@ -1,0 +1,687 @@
+@unit u4 | 4 | Decisions
+@zen Flat is better than nested.
+@summary Compare values, let your program choose between paths with if, elif and else, and combine conditions with and, or and not.
+
+@lesson 4.1 | True, False and comparisons | 20
+@goal Ask yes-or-no questions in code with comparison operators and understand the `bool` type.
+
+Programs make decisions by asking questions whose answer is yes or no. In Python, yes is `True` and no is `False`. They're values of the type **bool** (short for Boolean, after the mathematician George Boole).
+
+```py
+print(10 > 3)
+print(10 < 3)
+print(type(True))
+```
+
+`True` and `False` start with capital letters. `true` (lowercase) is just an unknown name, so it gives a NameError.
+
+## Comparison operators
+
+| Operator | Question |
+| --- | --- |
+| `==` | equal? |
+| `!=` | not equal? |
+| `<` `>` | less than, greater than? |
+| `<=` `>=` | less or equal, greater or equal? |
+
+```py
+marks = 145
+cutoff = 130
+print(marks >= cutoff)
+print(marks == cutoff)
+print(marks != cutoff)
+```
+
+:::warn
+`=` stores a value; `==` compares two values. Mixing them up is one of the most common bugs in every language. Read `==` as "is equal to".
+:::
+
+## Comparing text
+
+Strings compare letter by letter, like a dictionary. Capital letters come **before** lowercase ones, so comparisons are case-sensitive:
+
+```py
+print("apple" < "banana")
+print("Delhi" == "delhi")
+print("Delhi".lower() == "delhi")
+```
+
+To compare text without caring about capitals, convert both sides with `.lower()` first.
+
+## Types matter in comparisons
+
+```py
+print(5 == 5.0)
+print("5" == 5)
+```
+
+An int and a float with the same value are equal. But the string `"5"` is never equal to the number `5`. Remember `input()` gives strings: compare `int(input())` with numbers, not the raw text.
+
+:::predict
+```py
+x = 7
+print(x > 5, x == 10, x != 7)
+```
+- True True False
++ True False False
+- False False True
+- True False True
+= 7 is greater than 5 (True), 7 is not 10 (False), and `x != 7` asks whether 7 is not 7, which is False.
+:::
+
+:::recall
+Q: What are the two bool values in Python?
+A: `True` and `False`, both with a capital first letter.
+Q: What is the difference between `=` and `==`?
+A: `=` assigns a value to a name. `==` compares two values and gives True or False.
+Q: How do you compare two strings ignoring capital letters?
+A: Convert both to lowercase first: `a.lower() == b.lower()`.
+:::
+
+@exercise 4.1a | Did I clear the cutoff?
+`marks` is 47 and `pass_mark` is 40. Print the result of comparing them, so the program prints `True` when marks are at least the pass mark.
+
+```starter
+marks = 47
+pass_mark = 40
+
+```
+
+```solution
+marks = 47
+pass_mark = 40
+print(marks >= pass_mark)
+```
+
+```test
+check_out("True")
+check(has("Compare"), "You used a comparison", "Print a comparison like marks >= pass_mark rather than typing True.")
+```
+
+:::hints
+- "At least" means greater than or equal to.
+- `print(marks >= pass_mark)`
+:::
+
+@exercise 4.1b | Even?
+Print `True` if `n` is even and `False` if it isn't. For `n = 17` the program prints `False`.
+
+```starter
+n = 17
+
+```
+
+```solution
+n = 17
+print(n % 2 == 0)
+```
+
+```test
+check_out("False")
+check("%" in src and has("Compare"), "You used % and a comparison", "A number is even when n % 2 == 0.")
+```
+
+:::hints
+- Even numbers leave no remainder when divided by 2.
+- `n % 2` is the remainder. Compare it with 0 using `==`.
+:::
+
+@exercise 4.1c | Same city?
+`a` is `"Delhi"` and `b` is `"DELHI"`. Print whether they name the same city, ignoring capital letters. The output is `True`.
+
+```starter
+a = "Delhi"
+b = "DELHI"
+print(a == b)
+```
+
+```solution
+a = "Delhi"
+b = "DELHI"
+print(a.lower() == b.lower())
+```
+
+```test
+check_out("True")
+check(calls("lower") or calls("upper") or calls("casefold"), "You compared without caring about capitals", "Convert both strings with .lower() before comparing.")
+```
+
+:::hints
+- The starter prints False because D-e-l-h-i and D-E-L-H-I differ.
+- Convert both sides to the same case before comparing.
+:::
+
+@lesson 4.2 | if, elif and else | 25
+@goal Make a program choose what to do with `if`, `elif` and `else`, using indentation to mark each block.
+
+An `if` statement runs a block of code only when its condition is True:
+
+```py
+marks = 145
+cutoff = 130
+if marks >= cutoff:
+    print("Cleared the cutoff!")
+    print("Prepare for Tier 2.")
+print("Result checked.")
+```
+
+Three things to notice:
+
+1. The line ends with a **colon** `:`.
+2. The lines under it are **indented** by 4 spaces. Those lines are the **block**: they run together, or not at all.
+3. The first line that isn't indented (`print("Result checked.")`) is outside the `if`, so it always runs.
+
+In Python, indentation isn't decoration: it's how Python knows where a block starts and ends. The editor indents automatically after a colon; press [[Shift]]+[[Tab]] to step back out.
+
+## else: the other path
+
+```py
+n = 17
+if n % 2 == 0:
+    print("Even")
+else:
+    print("Odd")
+```
+
+Exactly one of the two blocks runs, never both.
+
+## elif: more than two paths
+
+`elif` means "else if". Python checks the conditions **from the top** and runs only the **first** block whose condition is True:
+
+```py
+marks = 82
+if marks >= 90:
+    grade = "A"
+elif marks >= 75:
+    grade = "B"
+elif marks >= 60:
+    grade = "C"
+else:
+    grade = "F"
+print("Grade:", grade)
+```
+
+82 is not 90 or more, but it is 75 or more, so the grade is B. Python never even checks the lower conditions. That's why the order matters: put the strictest condition first. Step through this example to watch Python skip the blocks.
+
+:::predict
+```py
+x = 15
+if x > 10:
+    print("big")
+elif x > 5:
+    print("medium")
+else:
+    print("small")
+```
++ big
+- big\nmedium
+- medium
+- small
+= Only the first True condition's block runs. 15 > 10 is True, so Python prints big and skips the rest, even though 15 > 5 is also True.
+:::
+
+## Common mistakes
+
+```py error
+age = 20
+if age >= 18
+    print("Adult")
+```
+
+```py error
+age = 20
+if age >= 18:
+print("Adult")
+```
+
+The first is missing the colon; the second forgot to indent the block.
+
+:::recall
+Q: What two things does every if line need?
+A: A condition and a colon at the end. The block under it must be indented (4 spaces).
+Q: In an if/elif/else chain, how many blocks run?
+A: Exactly one: the first block whose condition is True, or the else block if none is.
+Q: Why does the order of elif conditions matter?
+A: Python stops at the first True condition, so put the most specific or strictest condition first.
+:::
+
+@exercise 4.2a | Even or odd
+Read a whole number with `input()` and print `Even` or `Odd`.
+
+```starter
+n = int(input("Number: "))
+
+```
+
+```solution
+n = int(input("Number: "))
+if n % 2 == 0:
+    print("Even")
+else:
+    print("Odd")
+```
+
+```stdin
+14
+```
+
+```test
+check_has("Even", "14 is Even")
+check_has("Odd", "7 is Odd", got=run("7"))
+check(not ("Odd" in run("0")), "0 counts as Even", "0 % 2 is 0, so 0 is even.")
+check(has("If"), "You used if")
+```
+
+:::hints
+- `n % 2 == 0` is True for even numbers.
+- Use `if ...:` for Even and `else:` for Odd. Remember the colons and the indentation.
+:::
+
+@exercise 4.2b | Grade calculator
+Read marks out of 100 and print the grade:
+
+| Marks | Grade |
+| --- | --- |
+| 90 or more | A |
+| 75 to 89 | B |
+| 60 to 74 | C |
+| 40 to 59 | D |
+| below 40 | F |
+
+Print exactly `Grade: A` (or B, C, D, F).
+
+```starter
+marks = int(input("Marks: "))
+
+```
+
+```solution
+marks = int(input("Marks: "))
+if marks >= 90:
+    grade = "A"
+elif marks >= 75:
+    grade = "B"
+elif marks >= 60:
+    grade = "C"
+elif marks >= 40:
+    grade = "D"
+else:
+    grade = "F"
+print("Grade:", grade)
+```
+
+```stdin
+82
+```
+
+```test
+check_has("Grade: B", "82 gives B")
+for m, g in [(95, "A"), (90, "A"), (75, "B"), (74, "C"), (60, "C"), (40, "D"), (39, "F"), (0, "F")]:
+    check_has(f"Grade: {g}", f"{m} gives {g}", got=run(str(m)))
+```
+
+:::hints
+- Start with the highest grade: `if marks >= 90:`.
+- Each following `elif` only runs if the ones above were False, so `elif marks >= 75:` already means 75 to 89.
+- Finish with `else:` for F.
+:::
+
+@exercise 4.2c | Biggest of three
+Read three numbers and print the largest one like `Largest: 9`. Solve it with `if` statements, **without** using `max()`.
+
+```starter
+a = int(input())
+b = int(input())
+c = int(input())
+
+```
+
+```solution
+a = int(input())
+b = int(input())
+c = int(input())
+if a >= b and a >= c:
+    largest = a
+elif b >= c:
+    largest = b
+else:
+    largest = c
+print("Largest:", largest)
+```
+
+```stdin
+4
+9
+2
+```
+
+```test
+check_has("Largest: 9", "4, 9, 2 gives 9")
+for nums, big in [("9\n4\n2", 9), ("1\n2\n3", 3), ("5\n5\n1", 5), ("-3\n-8\n-1", -1)]:
+    check_has(f"Largest: {big}", f"{nums.replace(chr(10), ', ')} gives {big}", got=run(nums))
+check(not calls("max"), "No max() used", "The point of this exercise is the if logic, so don't use max().")
+```
+
+:::hints
+- One approach: start with `largest = a`, then check whether b is bigger, then whether c is bigger.
+- `if b > largest: largest = b`, and the same for c.
+- Test it with the biggest number in each position, and with negative numbers.
+:::
+
+@lesson 4.3 | and, or, not | 25
+@goal Combine conditions with `and`, `or` and `not`, check ranges, and use truthiness.
+
+Real decisions depend on more than one fact. Python combines conditions with three words:
+
+| Operator | True when |
+| --- | --- |
+| `a and b` | both are True |
+| `a or b` | at least one is True |
+| `not a` | a is False |
+
+```py
+age = 24
+graduate = True
+print(age >= 18 and graduate)
+print(age < 18 or graduate)
+print(not graduate)
+```
+
+## Ranges, the Python way
+
+To check that a value lies between two limits you can write `age >= 18 and age <= 32`. Python also lets you **chain** comparisons, which reads like maths:
+
+```py
+age = 24
+print(18 <= age <= 32)
+```
+
+## A classic: the leap year rule
+
+A year is a leap year if it is divisible by 4, except century years, which must be divisible by 400. In Python:
+
+```py
+year = 1900
+is_leap = year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+print(year, is_leap)
+```
+
+The brackets matter. `and` is checked before `or`, just as `*` comes before `+`, so add brackets whenever you mix them.
+
+## Truthiness
+
+Python can treat any value as True or False. **Empty** and **zero** values count as False; everything else counts as True:
+
+| Counts as False | Counts as True |
+| --- | --- |
+| `0`, `0.0` | any other number |
+| `""` (empty string) | any non-empty string, even `" "` |
+| `None` | most other values |
+
+So `if name:` means "if name is not empty":
+
+```py
+name = input("Name (or press Enter to skip): ").strip()
+if name:
+    print("Hello,", name)
+else:
+    print("Hello, stranger")
+```
+
+```stdin
+Aman
+```
+
+Run it and just press Enter without typing a name to see the other branch.
+
+## The in operator
+
+`in` checks whether something is inside something else. It reads like English:
+
+```py
+email = "aman@example.com"
+if "@" in email and "." in email:
+    print("Looks like an email")
+if "x" not in email:
+    print("No x in it")
+```
+
+:::predict
+```py
+a = 5
+print(a > 3 and a < 4, a > 3 or a < 4, not a > 3)
+```
+- True True False
++ False True False
+- False False True
+- True False False
+= `a < 4` is False, so the and is False. With or, one True side is enough. `not a > 3` flips True into False.
+:::
+
+:::recall
+Q: When is `a and b` True? When is `a or b` True?
+A: `and` needs both to be True. `or` needs at least one to be True.
+Q: How do you check that x is between 10 and 20 in Python?
+A: Chain the comparisons: `10 <= x <= 20`.
+Q: Which values count as False in a condition?
+A: Zero, empty strings (and other empty collections) and None. Everything else counts as True.
+:::
+
+@exercise 4.3a | Leap year
+Read a year and print `Leap year` or `Not a leap year`. A year is a leap year if it's divisible by 4, but century years (divisible by 100) only count if they're also divisible by 400.
+
+```starter
+year = int(input("Year: "))
+
+```
+
+```solution
+year = int(input("Year: "))
+if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):
+    print("Leap year")
+else:
+    print("Not a leap year")
+```
+
+```stdin
+2024
+```
+
+```test
+cases = {"2024": True, "2026": False, "1900": False, "2000": True, "2100": False, "1996": True}
+for y, leap in cases.items():
+    o = run(y)
+    if leap:
+        check("Leap year" in o and "Not" not in o, f"{y} is a leap year", f"Your output: {o.strip()}")
+    else:
+        check("Not a leap year" in o, f"{y} is not a leap year", f"Your output: {o.strip()}")
+```
+
+:::hints
+- Write the three facts as conditions: `year % 4 == 0`, `year % 100 != 0`, `year % 400 == 0`.
+- Combine them: divisible by 4 and (not a century, or divisible by 400).
+- Test 1900 (not leap) and 2000 (leap): they catch most mistakes.
+:::
+
+@exercise 4.3b | Valid username
+A username is valid if it has **5 to 15 characters** and contains only letters and digits. `text.isalnum()` is True when a string has only letters and digits. Read a username and print `Valid` or `Invalid`.
+
+```starter
+username = input("Username: ")
+
+```
+
+```solution
+username = input("Username: ")
+if 5 <= len(username) <= 15 and username.isalnum():
+    print("Valid")
+else:
+    print("Invalid")
+```
+
+```stdin
+aman2026
+```
+
+```test
+for name, ok in [("aman2026", True), ("abc", False), ("a" * 15, True), ("a" * 16, False), ("aman sharma", False), ("riya_v", False), ("Riya9", True)]:
+    o = run(name)
+    want = "Valid" if ok else "Invalid"
+    check(o.strip().endswith(want) and not (ok and "Invalid" in o), f"{name!r} is {want}", f"Your output: {o.strip()}")
+```
+
+:::hints
+- `len(username)` gives the number of characters. A chained comparison checks the range.
+- Join the length check and `username.isalnum()` with `and`.
+:::
+
+@exercise 4.3c | Login
+Read a username and a password. If the username is `admin` **and** the password is `python123`, print `Welcome, admin`. Otherwise print `Access denied`.
+
+```starter
+user = input("Username: ")
+password = input("Password: ")
+
+```
+
+```solution
+user = input("Username: ")
+password = input("Password: ")
+if user == "admin" and password == "python123":
+    print("Welcome, admin")
+else:
+    print("Access denied")
+```
+
+```stdin
+admin
+python123
+```
+
+```test
+check_has("Welcome, admin", "Right username and password let you in")
+check("Access denied" in run("admin\nwrong"), "Wrong password is refused")
+check("Access denied" in run("guest\npython123"), "Wrong username is refused")
+check("Welcome" not in run("Admin\npython123"), "Usernames are case-sensitive here")
+```
+
+:::hints
+- Both checks must pass, so join them with `and`.
+- Use `==` to compare, not `=`.
+:::
+
+@lesson 4.4 | Project: Eligibility checker | 35 | project
+@goal Turn a real set of rules into conditions, in the right order, with clear messages.
+
+Exam notifications are full of rules: age limits, relaxations by category, qualifications. Rules like these are exactly what `if` statements are for.
+
+You'll build a simplified checker for a post with these rules (real notifications differ by post, so always read the official one):
+
+- The candidate must be at least **18**.
+- The upper age limit is **32**, relaxed by **3 years for OBC** and **5 years for SC and ST**. GEN and EWS get no relaxation.
+- The candidate must be a **graduate**.
+
+The program reads the age, the category and whether the candidate is a graduate (`yes` or `no`). It prints the upper limit for that category, then the verdict. With `34`, `obc`, `yes`:
+
+```text
+Upper age limit for OBC: 35
+Eligible
+```
+
+With `36`, `obc`, `yes`:
+
+```text
+Upper age limit for OBC: 35
+Not eligible: the upper age limit for OBC is 35
+```
+
+The full set of messages, checked in this order:
+
+1. Under 18: `Not eligible: you must be at least 18`
+2. Over the limit: `Not eligible: the upper age limit for OBC is 35` (with the right category and limit)
+3. Not a graduate: `Not eligible: a bachelor's degree is required`
+4. Otherwise: `Eligible`
+
+## Plan it
+
+1. Read the inputs. Clean the category with `.strip().upper()` and the graduate answer with `.strip().lower()`.
+2. Work out the upper limit with if/elif/else on the category.
+3. Print the limit.
+4. Check the rules in order with if/elif/else and print the first message that applies.
+
+:::tip
+Write the test cases down before coding: an 18-year-old, a 17-year-old, a 35-year-old OBC candidate, a 36-year-old OBC candidate, a 37-year-old ST candidate, a non-graduate. Boundary values like 18 and 35 are where bugs hide.
+:::
+
+:::recall
+Q: Why test boundary values like exactly 18 or exactly 35?
+A: Mistakes such as using > instead of >= only show up right at the limits.
+Q: Why clean input with `.strip().upper()` before comparing?
+A: Users type extra spaces and random capitals; cleaning makes " obc " and "OBC" match.
+:::
+
+@exercise 4.4a | Build the eligibility checker | project
+Write the checker from the lesson. Read the age, the category (GEN, EWS, OBC, SC or ST, in any case) and `yes` or `no` for graduate. Print the upper age limit line, then the verdict, exactly as described.
+
+```starter
+age = int(input("Age: "))
+category = input("Category: ").strip().upper()
+graduate = input("Graduate (yes/no): ").strip().lower()
+
+```
+
+```solution
+age = int(input("Age: "))
+category = input("Category: ").strip().upper()
+graduate = input("Graduate (yes/no): ").strip().lower()
+
+if category == "OBC":
+    limit = 32 + 3
+elif category == "SC" or category == "ST":
+    limit = 32 + 5
+else:
+    limit = 32
+
+print(f"Upper age limit for {category}: {limit}")
+
+if age < 18:
+    print("Not eligible: you must be at least 18")
+elif age > limit:
+    print(f"Not eligible: the upper age limit for {category} is {limit}")
+elif graduate != "yes":
+    print("Not eligible: a bachelor's degree is required")
+else:
+    print("Eligible")
+```
+
+```stdin
+34
+obc
+yes
+```
+
+```test
+cases = [
+    ("25\nGEN\nyes", "Upper age limit for GEN: 32", "Eligible"),
+    ("34\nobc\nyes", "Upper age limit for OBC: 35", "Eligible"),
+    ("35\n OBC \nyes", "Upper age limit for OBC: 35", "Eligible"),
+    ("36\nobc\nyes", "Upper age limit for OBC: 35", "Not eligible: the upper age limit for OBC is 35"),
+    ("37\nst\nyes", "Upper age limit for ST: 37", "Eligible"),
+    ("33\newS\nyes", "Upper age limit for EWS: 32", "Not eligible: the upper age limit for EWS is 32"),
+    ("17\nsc\nyes", "Upper age limit for SC: 37", "Not eligible: you must be at least 18"),
+    ("18\nGEN\nyes", "Upper age limit for GEN: 32", "Eligible"),
+    ("30\ngen\nno", "Upper age limit for GEN: 32", "Not eligible: a bachelor's degree is required"),
+]
+for given, limit_line, verdict_line in cases:
+    o = run(given)
+    label = given.replace("\n", ", ")
+    check(limit_line in o and verdict_line in o and (verdict_line != "Eligible" or "Not eligible" not in o), f"{label} gives: {verdict_line}", f"Expected the lines {limit_line!r} and {verdict_line!r}.\nYour output:\n{o.strip()}")
+```
+
+:::hints
+- First work out `limit`: start with 32 and add the relaxation for OBC, SC and ST.
+- Then one if/elif/elif/else chain in the order the lesson gives: under 18, over the limit, not a graduate, eligible.
+- Use an f-string for the lines that include the category and the limit.
+- Check 35 for OBC (eligible) and 36 (not): `age > limit` is the right test for "over the limit".
+:::

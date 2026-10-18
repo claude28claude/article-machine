@@ -1,0 +1,1035 @@
+@unit uC | C | Interviews and DSA
+@summary The data structures and algorithm patterns that coding tests and technical interviews ask for, practised the way interviewers judge them: correct, efficient and clearly explained.
+
+@lesson C.1 | Big-O thinking | 25
+@goal Estimate how a program's running time grows with its input, and choose data structures that keep it fast.
+
+Interviewers don't only ask "does it work?" but "how does it **scale**?". A solution that's instant for 10 items can take hours for 10 million. **Big-O notation** describes how the work grows as the input size `n` grows, ignoring constant factors.
+
+| Big-O | Name | Example | n = 1,000,000 |
+| --- | --- | --- | --- |
+| O(1) | constant | dictionary lookup, `x in some_set` | 1 step |
+| O(log n) | logarithmic | binary search | about 20 steps |
+| O(n) | linear | one loop over a list, `x in some_list` | a million steps |
+| O(n log n) | linearithmic | `sorted()` | about 20 million |
+| O(n²) | quadratic | a loop inside a loop over the same list | a trillion steps |
+
+## Counting the work
+
+```py
+def has_duplicate_slow(items):          # O(n²): compares every pair
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            if items[i] == items[j]:
+                return True
+    return False
+
+
+def has_duplicate_fast(items):          # O(n): one pass with a set
+    seen = set()
+    for x in items:
+        if x in seen:
+            return True
+        seen.add(x)
+    return False
+
+
+data = list(range(2000)) + [5]
+print(has_duplicate_slow(data), has_duplicate_fast(data))
+```
+
+The fast version works because checking `x in seen` on a **set** takes the same tiny time however big the set is, while `x in a_list` checks items one by one. That single swap, list for set or dict, is the most common interview optimisation.
+
+## Measuring
+
+Run this and compare the times. Then try `data = list(range(4000))`: the slow one takes about four times longer (double n, square the work), while the fast one barely changes.
+
+```py
+import time
+
+
+def has_dup_slow(items):
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            if items[i] == items[j]:
+                return True
+    return False
+
+
+def has_dup_fast(items):
+    return len(set(items)) != len(items)
+
+
+data = list(range(2000))
+for name, fn in [("slow", has_dup_slow), ("fast", has_dup_fast)]:
+    start = time.perf_counter()
+    fn(data)
+    print(name, round(time.perf_counter() - start, 4), "seconds")
+```
+
+## The classic: two sum
+
+"Given a list of numbers and a target, find two positions whose numbers add up to the target." The O(n²) answer tries every pair. The O(n) answer remembers each number's position in a dictionary and asks, for each new number, "have I already seen the partner I need?":
+
+```py
+def two_sum(nums, target):
+    seen = {}                      # number -> its index
+    for i, n in enumerate(nums):
+        partner = target - n
+        if partner in seen:
+            return (seen[partner], i)
+        seen[n] = i
+    return None
+
+print(two_sum([2, 7, 11, 15], 9))
+print(two_sum([3, 2, 4], 6))
+```
+
+:::recall
+Q: What is the Big-O of checking `x in a_list` versus `x in a_set`?
+A: O(n) for a list (it checks items one by one) and O(1) on average for a set or dict.
+Q: What is the Big-O of a loop inside a loop over the same n items?
+A: O(n²).
+Q: What is the usual trick to turn an O(n²) pair search into O(n)?
+A: One pass that stores what you've seen in a set or dictionary, so each check is O(1).
+:::
+
+@exercise C.1a | Name the complexity
+Fill in `answers` with the Big-O of each snippet, written exactly as `"O(1)"`, `"O(log n)"`, `"O(n)"`, `"O(n log n)"` or `"O(n^2)"`.
+
+```starter
+# 1: d[key] where d is a dict
+# 2: for x in items: total += x
+# 3: sorted(items)
+# 4: for a in items:
+#        for b in items: pairs.append((a, b))
+# 5: binary search in a sorted list
+answers = {1: "", 2: "", 3: "", 4: "", 5: ""}
+```
+
+```solution
+answers = {1: "O(1)", 2: "O(n)", 3: "O(n log n)", 4: "O(n^2)", 5: "O(log n)"}
+```
+
+```test
+need("answers")
+real = {1: "O(1)", 2: "O(n)", 3: "O(n log n)", 4: "O(n^2)", 5: "O(log n)"}
+for k, v in real.items():
+    got = str(var("answers").get(k, "")).replace(" ", "").replace("²", "^2").lower()
+    check(got == v.replace(" ", "").lower(), f"Snippet {k}", f"You wrote {var('answers').get(k)!r}")
+```
+
+:::hints
+- Dictionary lookups don't get slower as the dict grows.
+- A nested loop over the same list does n x n steps.
+- Binary search halves the remaining range each step.
+:::
+
+@exercise C.1b | Two sum
+Write `two_sum(nums, target)` returning a tuple `(i, j)` with `i < j` of two positions whose numbers add up to `target`, or `None`. It must be O(n): one loop with a dictionary.
+
+```starter
+def two_sum(nums, target):
+    pass
+```
+
+```solution
+def two_sum(nums, target):
+    seen = {}
+    for i, n in enumerate(nums):
+        partner = target - n
+        if partner in seen:
+            return (seen[partner], i)
+        seen[n] = i
+    return None
+```
+
+```test
+need("two_sum", "function")
+expect("two_sum([2, 7, 11, 15], 9)", (0, 1))
+expect("two_sum([3, 2, 4], 6)", (1, 2))
+expect("two_sum([3, 3], 6)", (0, 1))
+expect("two_sum([1, 2, 3], 100)", None)
+import time as _t
+big = list(range(200000))
+start = _t.perf_counter()
+r = two_sum(big, 399997)
+check(r == (199998, 199999) and _t.perf_counter() - start < 1.5, "Fast on 200,000 numbers (O(n))", "Use a dictionary of number to index instead of checking every pair.")
+```
+
+:::hints
+- For each number, the partner you need is `target - n`.
+- Keep a dictionary of numbers you've already seen and their positions.
+- Check for the partner before adding the current number, so a number isn't paired with itself.
+:::
+
+@exercise C.1c | First repeat
+Write `first_repeat(items)` that returns the first item that appears for the second time while scanning left to right, or `None`. `first_repeat([3, 1, 4, 1, 5, 3])` is `1`. Make it O(n).
+
+```starter
+def first_repeat(items):
+    pass
+```
+
+```solution
+def first_repeat(items):
+    seen = set()
+    for x in items:
+        if x in seen:
+            return x
+        seen.add(x)
+    return None
+```
+
+```test
+need("first_repeat", "function")
+expect("first_repeat([3, 1, 4, 1, 5, 3])", 1)
+expect('first_repeat(["a", "b", "c"])', None)
+expect("first_repeat([])", None)
+expect("first_repeat([7, 7])", 7)
+import time as _t
+big = list(range(300000)) + [299999]
+start = _t.perf_counter()
+first_repeat(big)
+check(_t.perf_counter() - start < 1.5, "Fast on 300,000 items (O(n))")
+```
+
+:::hints
+- A set remembers what you've seen; `x in seen` is O(1).
+- Return as soon as you meet something already in the set.
+:::
+
+@lesson C.2 | Two pointers and sliding windows | 30
+@goal Solve array and string problems in one pass with the two-pointer and sliding-window patterns.
+
+Many interview problems over lists and strings have an O(n²) brute force and an O(n) pattern solution. Two patterns cover a huge share of them.
+
+## Two pointers
+
+Put one index at each end and move them towards each other. Checking a palindrome:
+
+```py
+def is_palindrome(text):
+    left, right = 0, len(text) - 1
+    while left < right:
+        if text[left] != text[right]:
+            return False
+        left += 1
+        right -= 1
+    return True
+
+print(is_palindrome("racecar"), is_palindrome("python"))
+```
+
+On a **sorted** list, two pointers find a pair with a given sum in O(n): if the sum is too small, move the left pointer up; too big, move the right pointer down.
+
+```py
+def pair_sum_sorted(nums, target):
+    left, right = 0, len(nums) - 1
+    while left < right:
+        s = nums[left] + nums[right]
+        if s == target:
+            return (left, right)
+        if s < target:
+            left += 1
+        else:
+            right -= 1
+    return None
+
+print(pair_sum_sorted([1, 3, 4, 6, 8, 11], 10))
+```
+
+## Sliding window
+
+For "best run of k consecutive items", don't re-add the whole window each time. Slide it: add the new item, subtract the one that fell off:
+
+```py
+def max_window_sum(nums, k):
+    window = sum(nums[:k])
+    best = window
+    for i in range(k, len(nums)):
+        window += nums[i] - nums[i - k]
+        best = max(best, window)
+    return best
+
+daily_minutes = [30, 60, 45, 90, 20, 75, 80]
+print(max_window_sum(daily_minutes, 3))   # best 3-day stretch
+```
+
+Windows can also grow and shrink: the famous "longest substring without repeating characters" keeps a window that never contains a repeat, moving its left edge forward whenever a repeat appears.
+
+:::recall
+Q: Describe the two-pointer pattern.
+A: Start pointers at both ends (or both at the start) and move them according to a rule, so the list is scanned once: O(n).
+Q: How does a sliding window avoid recomputing sums?
+A: When it moves one step, it adds the new item and subtracts the item that left.
+Q: Why does the two-pointer pair search need a sorted list?
+A: Sorting is what tells you which pointer to move: too small, move left up; too big, move right down.
+:::
+
+@exercise C.2a | Real palindromes
+Write `is_palindrome(text)` that ignores case and anything that isn't a letter or digit. `"Was it a car or a cat I saw?"` is a palindrome. Use two pointers on the cleaned text (don't just compare with the reversed string).
+
+```starter
+def is_palindrome(text):
+    pass
+```
+
+```solution
+def is_palindrome(text):
+    chars = [c.lower() for c in text if c.isalnum()]
+    left, right = 0, len(chars) - 1
+    while left < right:
+        if chars[left] != chars[right]:
+            return False
+        left += 1
+        right -= 1
+    return True
+```
+
+```test
+need("is_palindrome", "function")
+expect('is_palindrome("Was it a car or a cat I saw?")', True)
+expect('is_palindrome("A man, a plan, a canal: Panama")', True)
+expect('is_palindrome("Python")', False)
+expect('is_palindrome("")', True)
+expect('is_palindrome("ab")', False)
+check("[::-1]" not in src, "Uses two pointers, not a reversed copy")
+```
+
+:::hints
+- First keep only `c.lower()` for characters where `c.isalnum()`.
+- Then compare from both ends, moving inwards until the pointers meet.
+:::
+
+@exercise C.2b | Best three-day stretch
+Write `max_window_sum(nums, k)` returning the largest sum of `k` consecutive numbers, in O(n) with a sliding window. Assume `1 <= k <= len(nums)`.
+
+```starter
+def max_window_sum(nums, k):
+    pass
+```
+
+```solution
+def max_window_sum(nums, k):
+    window = sum(nums[:k])
+    best = window
+    for i in range(k, len(nums)):
+        window += nums[i] - nums[i - k]
+        best = max(best, window)
+    return best
+```
+
+```test
+need("max_window_sum", "function")
+expect("max_window_sum([30, 60, 45, 90, 20, 75, 80], 3)", 195)
+expect("max_window_sum([5], 1)", 5)
+expect("max_window_sum([-1, -2, -3], 2)", -3)
+expect("max_window_sum([1, 2, 3, 4], 4)", 10)
+import time as _t
+big = list(range(200000))
+start = _t.perf_counter()
+r = max_window_sum(big, 1000)
+check(r == sum(range(199000, 200000)) and _t.perf_counter() - start < 1.5, "Fast for 200,000 numbers with k = 1000", "Slide the window instead of summing k numbers each time.")
+```
+
+:::hints
+- Start with the sum of the first k numbers.
+- Each step: add `nums[i]` and subtract `nums[i - k]`, then update the best.
+:::
+
+@exercise C.2c | Longest run without repeats
+Write `longest_unique(s)`: the length of the longest substring of `s` with no repeated characters. `"abcabcbb"` gives 3 (`"abc"`). Use a growing and shrinking window: O(n).
+
+```starter
+def longest_unique(s):
+    pass
+```
+
+```solution
+def longest_unique(s):
+    last_seen = {}
+    start = 0
+    best = 0
+    for i, ch in enumerate(s):
+        if ch in last_seen and last_seen[ch] >= start:
+            start = last_seen[ch] + 1
+        last_seen[ch] = i
+        best = max(best, i - start + 1)
+    return best
+```
+
+```test
+need("longest_unique", "function")
+expect('longest_unique("abcabcbb")', 3)
+expect('longest_unique("bbbbb")', 1)
+expect('longest_unique("pwwkew")', 3)
+expect('longest_unique("")', 0)
+expect('longest_unique("abba")', 2)
+expect('longest_unique("dvdf")', 3)
+```
+
+:::hints
+- Keep the start of the current window and a dictionary of each character's last position.
+- When you meet a character already inside the window, move the start to just after its last position.
+- After each step, the window length is `i - start + 1`.
+:::
+
+@lesson C.3 | Hash maps in interviews | 25
+@goal Solve counting and grouping problems with dictionaries and Counter in O(n).
+
+Dictionaries are the interviewer's favourite tool because they turn "search" into "look up". The counting pattern from Unit 7 solves a whole family of questions.
+
+## Anagrams
+
+Two words are anagrams if they use exactly the same letters the same number of times. Compare letter counts:
+
+```py
+from collections import Counter
+
+def is_anagram(a, b):
+    return Counter(a) == Counter(b)
+
+print(is_anagram("listen", "silent"), is_anagram("rat", "car"))
+```
+
+## First unique character
+
+Count first, then scan again in order:
+
+```py
+from collections import Counter
+
+def first_unique(s):
+    counts = Counter(s)
+    for i, ch in enumerate(s):
+        if counts[ch] == 1:
+            return i
+    return -1
+
+print(first_unique("leetcode"), first_unique("aabb"))
+```
+
+Two passes over the string is still O(n): constants don't change the Big-O.
+
+## Grouping with a computed key
+
+Group words that are anagrams of each other: words with the same **sorted letters** belong together, so use that as the dictionary key:
+
+```py
+from collections import defaultdict
+
+def group_anagrams(words):
+    groups = defaultdict(list)
+    for w in words:
+        groups["".join(sorted(w))].append(w)
+    return list(groups.values())
+
+print(group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"]))
+```
+
+:::recall
+Q: How do you check whether two strings are anagrams in one line?
+A: `Counter(a) == Counter(b)`.
+Q: How can you group words that are anagrams of each other?
+A: Use the sorted letters of each word as a dictionary key and append the word to that key's list.
+Q: Is a solution that makes two passes over the input still O(n)?
+A: Yes. Constant factors don't change Big-O.
+:::
+
+@exercise C.3a | Anagram check
+Write `is_anagram(a, b)` that ignores case and spaces. `"Dormitory"` and `"Dirty room"` are anagrams.
+
+```starter
+from collections import Counter
+
+def is_anagram(a, b):
+    pass
+```
+
+```solution
+from collections import Counter
+
+def is_anagram(a, b):
+    clean = lambda s: Counter(s.lower().replace(" ", ""))
+    return clean(a) == clean(b)
+```
+
+```test
+need("is_anagram", "function")
+expect('is_anagram("Dormitory", "Dirty room")', True)
+expect('is_anagram("listen", "silent")', True)
+expect('is_anagram("rat", "car")', False)
+expect('is_anagram("aab", "abb")', False)
+```
+
+:::hints
+- Lowercase both and remove spaces before counting.
+- Compare the two Counters.
+:::
+
+@exercise C.3b | First unique character
+Write `first_unique(s)` returning the index of the first character that appears exactly once, or `-1`.
+
+```starter
+def first_unique(s):
+    pass
+```
+
+```solution
+from collections import Counter
+
+def first_unique(s):
+    counts = Counter(s)
+    for i, ch in enumerate(s):
+        if counts[ch] == 1:
+            return i
+    return -1
+```
+
+```test
+need("first_unique", "function")
+expect('first_unique("leetcode")', 0)
+expect('first_unique("loveleetcode")', 2)
+expect('first_unique("aabb")', -1)
+expect('first_unique("")', -1)
+```
+
+:::hints
+- Count every character first.
+- Then scan in order and return the first index whose count is 1.
+:::
+
+@exercise C.3c | Group the anagrams
+Write `group_anagrams(words)` returning a list of groups (lists), with groups in the order their first word appears, and words in each group in their original order.
+
+```starter
+def group_anagrams(words):
+    pass
+```
+
+```solution
+def group_anagrams(words):
+    groups = {}
+    for w in words:
+        key = "".join(sorted(w))
+        groups.setdefault(key, []).append(w)
+    return list(groups.values())
+```
+
+```test
+need("group_anagrams", "function")
+expect('group_anagrams(["eat", "tea", "tan", "ate", "nat", "bat"])', [["eat", "tea", "ate"], ["tan", "nat"], ["bat"]])
+expect("group_anagrams([])", [])
+expect('group_anagrams(["a"])', [["a"]])
+```
+
+:::hints
+- The key for a word is its sorted letters joined back into a string.
+- Dictionaries keep insertion order, so the groups come out in first-appearance order.
+:::
+
+@lesson C.4 | Stacks, queues and binary search | 30
+@goal Use a stack for nesting problems, a queue for first-come-first-served, and binary search for O(log n) lookups.
+
+## Stacks: last in, first out
+
+A **stack** is like a pile of plates: you add and remove at the top. A Python list is a perfect stack with `append()` and `pop()`. Stacks solve anything with **nesting**: brackets, undo history, the function calls you've seen piling up in Step through.
+
+```py
+def balanced(text):
+    pairs = {")": "(", "]": "[", "}": "{"}
+    stack = []
+    for ch in text:
+        if ch in "([{":
+            stack.append(ch)
+        elif ch in pairs:
+            if not stack or stack.pop() != pairs[ch]:
+                return False
+    return not stack
+
+print(balanced("print(len([1, 2]))"), balanced("(]"), balanced("(("))
+```
+
+## Queues: first in, first out
+
+A **queue** serves in arrival order. Removing from the front of a list is slow (everything shifts), so use `collections.deque`:
+
+```py
+from collections import deque
+
+queue = deque(["Aman", "Riya"])
+queue.append("Dev")          # joins at the back
+print(queue.popleft())       # served from the front
+print(list(queue))
+```
+
+## Binary search: O(log n)
+
+In a **sorted** list, check the middle: if the target is bigger, it can only be in the right half, so throw the left half away. Each step halves the search, so a million items need only about 20 steps:
+
+```py
+def binary_search(items, target):
+    lo, hi = 0, len(items) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if items[mid] == target:
+            return mid
+        if items[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return -1
+
+ranks = [3, 8, 15, 21, 32, 44, 51, 368]
+print(binary_search(ranks, 32), binary_search(ranks, 33))
+```
+
+Python's `bisect` module provides tested binary searches: `bisect.bisect_left(items, x)` gives the position where x would be inserted to keep the list sorted.
+
+:::recall
+Q: What is the difference between a stack and a queue?
+A: A stack is last in, first out (append and pop at the end); a queue is first in, first out (append at the back, popleft at the front).
+Q: Why use collections.deque for a queue?
+A: Removing from the front of a list is O(n); deque.popleft() is O(1).
+Q: What does binary search require, and how fast is it?
+A: A sorted list; it takes O(log n) steps by halving the range each time.
+:::
+
+@exercise C.4a | Balanced brackets
+Write `balanced(text)` returning True if every `()`, `[]` and `{}` in the text is properly opened and closed in the right order. Other characters are ignored.
+
+```starter
+def balanced(text):
+    pass
+```
+
+```solution
+def balanced(text):
+    pairs = {")": "(", "]": "[", "}": "{"}
+    stack = []
+    for ch in text:
+        if ch in "([{":
+            stack.append(ch)
+        elif ch in pairs:
+            if not stack or stack.pop() != pairs[ch]:
+                return False
+    return not stack
+```
+
+```test
+need("balanced", "function")
+for text, ok in [("print(len([1, 2]))", True), ("{[()()]}", True), ("(]", False), ("((", False), ("))", False), ("", True), ("a(b)c]", False), ("([)]", False)]:
+    expect(f"balanced({text!r})", ok)
+```
+
+:::hints
+- Push every opening bracket onto a list.
+- For a closing bracket, the top of the stack must be its matching opener; pop it.
+- At the end, the stack must be empty.
+:::
+
+@exercise C.4b | Binary search
+Write `binary_search(items, target)` returning the index of `target` in the sorted list `items`, or `-1`. It must be O(log n): no `in`, `.index()` or full loop over the list.
+
+```starter
+def binary_search(items, target):
+    pass
+```
+
+```solution
+def binary_search(items, target):
+    lo, hi = 0, len(items) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if items[mid] == target:
+            return mid
+        if items[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return -1
+```
+
+```test
+need("binary_search", "function")
+ranks = [3, 8, 15, 21, 32, 44, 51, 368]
+for t, i in [(32, 4), (3, 0), (368, 7), (33, -1), (1, -1), (400, -1)]:
+    expect(f"binary_search({ranks}, {t})", i)
+expect("binary_search([], 5)", -1)
+import time as _t
+big = list(range(0, 4000000, 2))
+start = _t.perf_counter()
+for t in range(0, 4000, 7):
+    binary_search(big, t)
+check(_t.perf_counter() - start < 1.0, "Fast: hundreds of searches in a 2-million-item list", "Halve the range each step instead of scanning.")
+```
+
+:::hints
+- Keep `lo` and `hi` bounds; look at `mid = (lo + hi) // 2`.
+- If the middle is too small, the answer can only be right of it: `lo = mid + 1`. Too big: `hi = mid - 1`.
+- Stop when `lo > hi`.
+:::
+
+@exercise C.4c | Insert position
+Write `insert_position(items, target)` returning the index where `target` should be inserted into the sorted list to keep it sorted (before any equal values). Use `bisect`.
+
+```starter
+import bisect
+
+def insert_position(items, target):
+    pass
+```
+
+```solution
+import bisect
+
+def insert_position(items, target):
+    return bisect.bisect_left(items, target)
+```
+
+```test
+need("insert_position", "function")
+expect("insert_position([1, 3, 5, 6], 5)", 2)
+expect("insert_position([1, 3, 5, 6], 2)", 1)
+expect("insert_position([1, 3, 5, 6], 7)", 4)
+expect("insert_position([], 1)", 0)
+expect("insert_position([2, 2, 2], 2)", 0)
+```
+
+:::hints
+- The bisect module does binary search for you on a sorted list.
+- `bisect.bisect_left(items, target)` returns the leftmost position where target fits.
+:::
+
+@lesson C.5 | Sorting, recursion and linked lists | 30
+@goal Implement merge sort, generate combinations recursively, and work with a linked list.
+
+## Merge sort: divide and conquer
+
+Split the list in half, sort each half (recursively), then **merge** two sorted halves by repeatedly taking the smaller front item. It runs in O(n log n), the best possible for sorting by comparisons:
+
+```py
+def merge(a, b):
+    result, i, j = [], 0, 0
+    while i < len(a) and j < len(b):
+        if a[i] <= b[j]:
+            result.append(a[i])
+            i += 1
+        else:
+            result.append(b[j])
+            j += 1
+    return result + a[i:] + b[j:]
+
+
+def merge_sort(items):
+    if len(items) <= 1:
+        return items
+    mid = len(items) // 2
+    return merge(merge_sort(items[:mid]), merge_sort(items[mid:]))
+
+
+print(merge_sort([38, 27, 43, 3, 9, 82, 10]))
+```
+
+## Recursion that branches: subsets
+
+Every subset of a list either includes the first item or doesn't. That one observation gives a recursive solution:
+
+```py
+def subsets(items):
+    if not items:
+        return [[]]
+    rest = subsets(items[1:])
+    return rest + [[items[0]] + s for s in rest]
+
+print(subsets(["Polity", "GK", "Maths"]))
+```
+
+There are 2^n subsets, so this is O(2^n): fine for small n, hopeless for 50 items. Interviewers like to ask how such answers scale.
+
+## Linked lists
+
+A **linked list** is a chain of nodes, each holding a value and a reference to the next node. Inserting at the front is O(1); reaching the k-th item is O(k). Interviews love reversing one:
+
+```py
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+
+def to_list(head):
+    out = []
+    while head:
+        out.append(head.value)
+        head = head.next
+    return out
+
+
+def reverse(head):
+    prev = None
+    while head:
+        head.next, prev, head = prev, head, head.next
+    return prev
+
+
+chain = Node(1, Node(2, Node(3)))
+print(to_list(chain), to_list(reverse(chain)))
+```
+
+Step through `reverse` to watch the arrows flip one node at a time.
+
+:::recall
+Q: How does merge sort work, and what is its Big-O?
+A: Split in half, sort each half recursively, merge the sorted halves: O(n log n).
+Q: How many subsets does a list of n items have?
+A: 2 to the power n.
+Q: What does each node of a linked list hold?
+A: A value and a reference to the next node (None at the end).
+:::
+
+@exercise C.5a | Merge sort
+Write `merge_sort(items)` returning a new sorted list, using merge sort (no `sorted()` or `.sort()`).
+
+```starter
+def merge_sort(items):
+    pass
+```
+
+```solution
+def merge(a, b):
+    result, i, j = [], 0, 0
+    while i < len(a) and j < len(b):
+        if a[i] <= b[j]:
+            result.append(a[i])
+            i += 1
+        else:
+            result.append(b[j])
+            j += 1
+    return result + a[i:] + b[j:]
+
+
+def merge_sort(items):
+    if len(items) <= 1:
+        return list(items)
+    mid = len(items) // 2
+    return merge(merge_sort(items[:mid]), merge_sort(items[mid:]))
+```
+
+```test
+import random as _r
+need("merge_sort", "function")
+expect("merge_sort([38, 27, 43, 3, 9, 82, 10])", [3, 9, 10, 27, 38, 43, 82])
+expect("merge_sort([])", [])
+expect("merge_sort([1])", [1])
+expect("merge_sort([2, 1, 2, 1])", [1, 1, 2, 2])
+data = [_r.randint(-1000, 1000) for _ in range(2000)]
+check(merge_sort(data) == sorted(data), "Sorts 2,000 random numbers correctly")
+check(not calls("sorted") and not calls("sort"), "No sorted() or .sort() used")
+```
+
+:::hints
+- Base case: a list of 0 or 1 items is already sorted.
+- Sort the two halves recursively, then merge them by repeatedly taking the smaller front item.
+- After one half runs out, add what's left of the other.
+:::
+
+@exercise C.5b | All subsets
+Write `subsets(items)` returning every subset of `items` as a list of lists. Order: the result for the rest of the items first, then those same subsets with the first item added, exactly as in the lesson.
+
+```starter
+def subsets(items):
+    pass
+```
+
+```solution
+def subsets(items):
+    if not items:
+        return [[]]
+    rest = subsets(items[1:])
+    return rest + [[items[0]] + s for s in rest]
+```
+
+```test
+need("subsets", "function")
+expect("subsets([])", [[]])
+expect('subsets(["a"])', [[], ["a"]])
+expect('subsets(["a", "b", "c"])', [[], ["c"], ["b"], ["b", "c"], ["a"], ["a", "c"], ["a", "b"], ["a", "b", "c"]])
+check(len(subsets(list(range(10)))) == 1024, "10 items give 1024 subsets")
+```
+
+:::hints
+- Base case: the only subset of an empty list is the empty list: `[[]]`.
+- Get the subsets of the rest, then add copies with the first item in front.
+:::
+
+@exercise C.5c | Reverse a linked list
+Using the given `Node` class, write `reverse(head)` that reverses the list in place and returns the new head, and `from_list(values)` that builds a linked list from a Python list (returning the head, or `None` for an empty list).
+
+```starter
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+
+def to_list(head):
+    out = []
+    while head:
+        out.append(head.value)
+        head = head.next
+    return out
+
+
+def from_list(values):
+    pass
+
+
+def reverse(head):
+    pass
+```
+
+```solution
+class Node:
+    def __init__(self, value, next=None):
+        self.value = value
+        self.next = next
+
+
+def to_list(head):
+    out = []
+    while head:
+        out.append(head.value)
+        head = head.next
+    return out
+
+
+def from_list(values):
+    head = None
+    for value in reversed(values):
+        head = Node(value, head)
+    return head
+
+
+def reverse(head):
+    prev = None
+    while head:
+        nxt = head.next
+        head.next = prev
+        prev = head
+        head = nxt
+    return prev
+```
+
+```test
+need("from_list", "function")
+need("reverse", "function")
+expect("to_list(from_list([1, 2, 3]))", [1, 2, 3])
+expect("from_list([])", None)
+expect("to_list(reverse(from_list([1, 2, 3, 4])))", [4, 3, 2, 1])
+expect("to_list(reverse(from_list([7])))", [7])
+expect("reverse(None)", None)
+```
+
+:::hints
+- from_list: build from the back, so each new node points at the head built so far.
+- reverse: walk the list keeping `prev`; for each node, save `next`, point the node at `prev`, then step forward.
+:::
+
+@lesson C.6 | Solving problems out loud | 20 | project
+@goal Use a repeatable method for unseen problems and practise it on two classic interview questions.
+
+Interviews test **how you think**, not just the final code. A simple framework keeps you calm and shows your thinking:
+
+1. **Understand**: restate the problem, ask about edge cases (empty input? duplicates? negative numbers?), and work one example by hand.
+2. **Match**: which pattern fits? Counting (dict), seen-before (set), sorted data (two pointers, binary search), consecutive runs (sliding window), nesting (stack), split-in-half (recursion).
+3. **Plan**: describe the approach and its Big-O **before** coding. Start with brute force if you must, then improve.
+4. **Implement**: clean code, good names, small functions.
+5. **Review**: trace your example through the code; test the edge cases.
+6. **Evaluate**: state the time and space complexity, and what you'd improve.
+
+Talk through every step out loud. Silence is the most common reason good programmers do badly in interviews.
+
+:::real
+For more practice after this track: LeetCode, HackerRank and Codeforces have thousands of problems sorted by pattern and difficulty. Aim for understanding patterns, not memorising answers: after solving a problem, ask the tutor for a different approach and its Big-O.
+:::
+
+:::recall
+Q: What are the six steps of the problem-solving framework?
+A: Understand, match a pattern, plan (with Big-O), implement, review with examples and edge cases, evaluate complexity.
+Q: Why state the Big-O before coding?
+A: It shows the interviewer your plan and catches a slow approach before you spend time writing it.
+:::
+
+@exercise C.6a | Product of the others | project
+Write `products_except_self(nums)`: for each position, the product of all the **other** numbers, without using division, in O(n). `[1, 2, 3, 4]` gives `[24, 12, 8, 6]`.
+
+Plan first: the answer at i is (product of everything left of i) x (product of everything right of i). Two passes build both.
+
+```starter
+def products_except_self(nums):
+    pass
+```
+
+```solution
+def products_except_self(nums):
+    n = len(nums)
+    result = [1] * n
+    left = 1
+    for i in range(n):
+        result[i] = left
+        left *= nums[i]
+    right = 1
+    for i in range(n - 1, -1, -1):
+        result[i] *= right
+        right *= nums[i]
+    return result
+```
+
+```test
+need("products_except_self", "function")
+expect("products_except_self([1, 2, 3, 4])", [24, 12, 8, 6])
+expect("products_except_self([2, 0, 5])", [0, 10, 0])
+expect("products_except_self([-1, 3])", [3, -1])
+check("/" not in src, "No division used")
+```
+
+:::hints
+- First pass, left to right: result[i] = product of everything before i.
+- Second pass, right to left: multiply result[i] by the product of everything after i.
+:::
+
+@exercise C.6b | Merge study slots | project
+Each slot is `[start, end]` in minutes. Write `merge_slots(slots)` that merges overlapping or touching slots and returns them sorted. `[[60, 120], [30, 90], [150, 180], [180, 200]]` gives `[[30, 120], [150, 200]]`.
+
+Plan: sort by start, then walk through, extending the last merged slot when the next one starts before (or exactly when) it ends.
+
+```starter
+def merge_slots(slots):
+    pass
+```
+
+```solution
+def merge_slots(slots):
+    merged = []
+    for start, end in sorted(slots):
+        if merged and start <= merged[-1][1]:
+            merged[-1][1] = max(merged[-1][1], end)
+        else:
+            merged.append([start, end])
+    return merged
+```
+
+```test
+need("merge_slots", "function")
+expect("merge_slots([[60, 120], [30, 90], [150, 180], [180, 200]])", [[30, 120], [150, 200]])
+expect("merge_slots([])", [])
+expect("merge_slots([[1, 10], [2, 3]])", [[1, 10]])
+expect("merge_slots([[5, 6], [1, 2]])", [[1, 2], [5, 6]])
+```
+
+:::hints
+- `sorted(slots)` orders them by start time.
+- If a slot starts at or before the last merged slot's end, stretch that slot's end with max(); otherwise start a new one.
+:::

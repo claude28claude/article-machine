@@ -1,0 +1,711 @@
+@phase 2 | Data and functions | Keep many values in one place, look them up fast, and package code into functions you can reuse
+@unit u6 | 6 | Lists
+@zen Sparse is better than dense.
+@summary Store many values in one ordered list, change it, loop over it, and avoid the classic copying trap.
+
+@lesson 6.1 | Making lists | 25
+@goal Create lists, read items by position, and check what a list contains.
+
+A **list** holds many values in order, inside square brackets, separated by commas:
+
+```py
+subjects = ["Polity", "History", "Geography", "Economy"]
+marks = [142, 151, 138, 160]
+print(subjects)
+print(len(subjects))
+```
+
+One variable now holds four values. Imagine tracking 100 mock tests with 100 separate variables: lists exist so you never have to.
+
+## Lists work like strings
+
+Everything you learned about indexing and slicing strings works on lists:
+
+```py
+subjects = ["Polity", "History", "Geography", "Economy"]
+print(subjects[0])
+print(subjects[-1])
+print(subjects[1:3])
+print("History" in subjects)
+print("Biology" in subjects)
+```
+
+The difference: a string's items are always single characters, while a list can hold anything, even a mix:
+
+```py
+student = ["Aman", 24, True, 145.5]
+empty = []
+print(student)
+print(len(empty))
+```
+
+## Building lists from other things
+
+```py
+print(list("SSC"))
+print(list(range(1, 6)))
+print("Equality before law".split())
+```
+
+`split()` is the bridge from text to lists. You saw it in Unit 3; now you know that the thing it returns is a list.
+
+:::predict
+```py
+nums = [10, 20, 30, 40, 50]
+print(nums[1], nums[-2], nums[:2])
+```
+- 10 40 [10, 20]
++ 20 40 [10, 20]
+- 20 30 [10, 20, 30]
+- 20 40 [20, 30]
+= Index 1 is the second item, 20. Index -2 is the second from the end, 40. The slice [:2] takes items 0 and 1.
+:::
+
+:::recall
+Q: How do you write a list in Python?
+A: Square brackets with items separated by commas: `[1, 2, 3]` or `["a", "b"]`.
+Q: How do you check whether a list contains a value?
+A: With `in`: `"Polity" in subjects` gives True or False.
+Q: What does `len()` give for a list?
+A: The number of items in it.
+:::
+
+@exercise 6.1a | First and last
+Print the first and the last subject in `subjects`, using indexes, like this:
+
+```text
+First: Polity
+Last: Economy
+```
+
+Use `-1` for the last one, so the code still works if more subjects are added.
+
+```starter
+subjects = ["Polity", "History", "Geography", "Economy"]
+
+```
+
+```solution
+subjects = ["Polity", "History", "Geography", "Economy"]
+print("First:", subjects[0])
+print("Last:", subjects[-1])
+```
+
+```test
+check_out("First: Polity\nLast: Economy")
+check("[-1]" in src, "You used index -1", "subjects[-1] is always the last item.")
+```
+
+:::hints
+- The first item is at index 0.
+- `subjects[-1]` is the last item, however long the list is.
+:::
+
+@exercise 6.1b | Top three
+`ranking` lists candidates from first place downwards. Print a list of the top three with one slice:
+
+```text
+['Riya', 'Kabir', 'Aman']
+```
+
+```starter
+ranking = ["Riya", "Kabir", "Aman", "Sana", "Dev", "Meera"]
+
+```
+
+```solution
+ranking = ["Riya", "Kabir", "Aman", "Sana", "Dev", "Meera"]
+print(ranking[:3])
+```
+
+```test
+check_out("['Riya', 'Kabir', 'Aman']")
+check(has("Slice"), "You used a slice")
+```
+
+:::hints
+- A slice of the first three items is `ranking[0:3]`, or simply `ranking[:3]`.
+- Print the slice itself; Python shows lists in square brackets.
+:::
+
+@exercise 6.1c | Is it on the syllabus?
+Read a subject name and print whether it's in `syllabus`, ignoring spaces around what the user types:
+
+```text
+Yes, Economy is on the syllabus
+```
+
+or
+
+```text
+No, Biology is not on the syllabus
+```
+
+```starter
+syllabus = ["Polity", "History", "Geography", "Economy", "Science"]
+topic = input("Subject: ").strip()
+
+```
+
+```solution
+syllabus = ["Polity", "History", "Geography", "Economy", "Science"]
+topic = input("Subject: ").strip()
+if topic in syllabus:
+    print(f"Yes, {topic} is on the syllabus")
+else:
+    print(f"No, {topic} is not on the syllabus")
+```
+
+```stdin
+Economy
+```
+
+```test
+check_has("Yes, Economy is on the syllabus")
+check_has("No, Biology is not on the syllabus", got=run("Biology"))
+check_has("Yes, Science is on the syllabus", "Extra spaces are ignored", got=run("  Science "))
+```
+
+:::hints
+- `topic in syllabus` is True when the list contains it.
+- Use if/else with an f-string for each message.
+:::
+
+@lesson 6.2 | Changing lists | 25
+@goal Add, remove, sort and replace items, and avoid the `None` trap of in-place methods.
+
+Strings can't change; lists can. Lists are **mutable**:
+
+```py
+marks = [142, 151, 138]
+marks[1] = 155
+print(marks)
+```
+
+## Adding and removing
+
+```py
+todo = ["Polity", "History"]
+todo.append("Economy")       # add to the end
+todo.insert(0, "Revision")   # add at a position
+print(todo)
+todo.remove("History")       # remove by value
+last = todo.pop()            # remove and return the last item
+print(todo, last)
+```
+
+| Method | What it does |
+| --- | --- |
+| `append(x)` | adds x at the end |
+| `insert(i, x)` | adds x at position i |
+| `extend(other)` | adds every item of another list |
+| `remove(x)` | removes the first x (error if missing) |
+| `pop()` / `pop(i)` | removes and returns the last item, or item i |
+| `del lst[i]` | deletes item i (a statement, not a method) |
+| `clear()` | empties the list |
+
+## Sorting
+
+```py
+scores = [138, 160, 142, 151]
+scores.sort()
+print(scores)
+scores.sort(reverse=True)
+print(scores)
+print(sorted([3, 1, 2]))
+```
+
+- `lst.sort()` sorts **the list itself** and returns nothing.
+- `sorted(lst)` leaves the original alone and returns a **new** sorted list.
+
+## The None trap
+
+Methods that change a list return `None` (Python's value for "nothing"). So this is a classic bug:
+
+```py
+scores = [3, 1, 2]
+scores = scores.sort()
+print(scores)
+```
+
+The list was sorted, then thrown away, and `scores` now holds `None`. Either call `scores.sort()` on its own line, or write `scores = sorted(scores)`.
+
+:::predict
+```py
+a = [5, 3, 8]
+a.append(1)
+a.sort()
+print(a)
+print(a.pop(0), a)
+```
++ [1, 3, 5, 8]\n1 [3, 5, 8]
+- [5, 3, 8, 1]\n5 [3, 8, 1]
+- [1, 3, 5, 8]\n8 [1, 3, 5]
+- [1, 3, 5, 8]\n1 [1, 3, 5, 8]
+= append adds 1 at the end and sort moves it to the front. pop(0) then removes the item at position 0, which is 1, and returns it.
+:::
+
+:::recall
+Q: What is the difference between `lst.sort()` and `sorted(lst)`?
+A: `lst.sort()` sorts the list in place and returns None. `sorted(lst)` returns a new sorted list and leaves the original unchanged.
+Q: What does `pop()` do?
+A: Removes the last item from a list and returns it. `pop(i)` does the same for position i.
+Q: Why is `x = x.sort()` a bug?
+A: sort() returns None, so x ends up as None instead of the sorted list.
+:::
+
+@exercise 6.2a | Study plan
+Start with `plan = ["Polity", "History"]`. Then, using list methods:
+
+1. add `"Economy"` at the end,
+2. add `"Maths"` at the start,
+3. remove `"History"`.
+
+Print the final list:
+
+```text
+['Maths', 'Polity', 'Economy']
+```
+
+```starter
+plan = ["Polity", "History"]
+
+print(plan)
+```
+
+```solution
+plan = ["Polity", "History"]
+plan.append("Economy")
+plan.insert(0, "Maths")
+plan.remove("History")
+print(plan)
+```
+
+```test
+check_out("['Maths', 'Polity', 'Economy']")
+check(calls("append") and calls("insert") and calls("remove"), "You used append, insert and remove")
+```
+
+:::hints
+- `append` adds at the end; `insert(0, ...)` adds at the start.
+- `remove("History")` takes it out by value.
+:::
+
+@exercise 6.2b | Best three scores
+Sort `scores` from highest to lowest and print the top three:
+
+```text
+[172, 160, 151]
+```
+
+```starter
+scores = [138, 160, 142, 151, 172, 129]
+
+```
+
+```solution
+scores = [138, 160, 142, 151, 172, 129]
+scores.sort(reverse=True)
+print(scores[:3])
+```
+
+```test
+check_out("[172, 160, 151]")
+check(calls("sort") or calls("sorted"), "You sorted the list")
+```
+
+:::hints
+- `sort(reverse=True)` sorts from biggest to smallest.
+- After sorting, the top three are the first three: a slice.
+:::
+
+@exercise 6.2c | Fix the None bug
+This program should print the names in alphabetical order, but it prints `None`. Fix it.
+
+```text
+['Aman', 'Dev', 'Riya', 'Sana']
+```
+
+```starter
+names = ["Riya", "Aman", "Sana", "Dev"]
+names = names.sort()
+print(names)
+```
+
+```solution
+names = ["Riya", "Aman", "Sana", "Dev"]
+names.sort()
+print(names)
+```
+
+```test
+check_out("['Aman', 'Dev', 'Riya', 'Sana']")
+```
+
+:::hints
+- What does `names.sort()` return? Print it to see.
+- Either call sort() on its own line, or use `names = sorted(names)`.
+:::
+
+@lesson 6.3 | Looping over lists | 25
+@goal Walk through lists with `for`, number items with `enumerate()`, and build new lists from old ones.
+
+A `for` loop over a list visits every item in order. This is the most common loop in Python:
+
+```py
+subjects = ["Polity", "History", "Economy"]
+for subject in subjects:
+    print("Revise", subject)
+```
+
+## Numbering items: enumerate()
+
+When you need the position as well as the item, use `enumerate()`. It gives pairs of (number, item); `start=1` makes the numbering human-friendly:
+
+```py
+subjects = ["Polity", "History", "Economy"]
+for number, subject in enumerate(subjects, start=1):
+    print(f"{number}. {subject}")
+```
+
+## Building a new list
+
+Start with an empty list and `append` what you want to keep. This is the accumulator pattern from Unit 5, with a list as the accumulator:
+
+```py
+marks = [35, 72, 48, 29, 90, 61]
+passed = []
+for m in marks:
+    if m >= 40:
+        passed.append(m)
+print(passed)
+```
+
+Transforming every item works the same way:
+
+```py
+prices = [100, 250, 80]
+with_gst = []
+for p in prices:
+    with_gst.append(round(p * 1.18, 2))
+print(with_gst)
+```
+
+## Built-in helpers
+
+Python has functions that do common loops for you:
+
+```py
+marks = [35, 72, 48, 29, 90, 61]
+print(sum(marks), min(marks), max(marks), len(marks))
+print("Average:", round(sum(marks) / len(marks), 2))
+print("Position of 90:", marks.index(90))
+```
+
+:::predict
+```py
+words = ["a", "bb", "ccc"]
+out = []
+for w in words:
+    out.append(len(w))
+print(out)
+```
+- ['a', 'bb', 'ccc']
++ [1, 2, 3]
+- 6
+- [3, 3, 3]
+= The loop appends the length of each word, so the new list holds 1, 2 and 3.
+:::
+
+:::recall
+Q: What does `enumerate(items, start=1)` give you in a for loop?
+A: Pairs of a counting number (starting at 1) and the item, so you can write `for n, item in enumerate(items, start=1):`.
+Q: How do you build a list of only the items you want?
+A: Start with an empty list, loop over the original, and append items that pass your test.
+Q: How do you get the average of a list of numbers?
+A: `sum(lst) / len(lst)`.
+:::
+
+@exercise 6.3a | Who passed?
+Make a new list `passed` with only the marks of 40 or more, then print it:
+
+```text
+[72, 48, 90, 61, 40]
+```
+
+```starter
+marks = [35, 72, 48, 29, 90, 61, 40, 12]
+passed = []
+
+print(passed)
+```
+
+```solution
+marks = [35, 72, 48, 29, 90, 61, 40, 12]
+passed = []
+for m in marks:
+    if m >= 40:
+        passed.append(m)
+print(passed)
+```
+
+```test
+check_out("[72, 48, 90, 61, 40]")
+check(has("For"), "You used a loop")
+```
+
+:::hints
+- Loop over marks, and append each mark that is 40 or more.
+- 40 counts as a pass, so use `>=`.
+:::
+
+@exercise 6.3b | Numbered list
+Print the topics as a numbered list starting at 1, using `enumerate()`:
+
+```text
+1. Fundamental Rights
+2. Directive Principles
+3. Fundamental Duties
+```
+
+```starter
+topics = ["Fundamental Rights", "Directive Principles", "Fundamental Duties"]
+
+```
+
+```solution
+topics = ["Fundamental Rights", "Directive Principles", "Fundamental Duties"]
+for number, topic in enumerate(topics, start=1):
+    print(f"{number}. {topic}")
+```
+
+```test
+check_out("1. Fundamental Rights\n2. Directive Principles\n3. Fundamental Duties")
+check(calls("enumerate"), "You used enumerate()")
+```
+
+:::hints
+- `for number, topic in enumerate(topics, start=1):`
+- Print with an f-string: `f"{number}. {topic}"`.
+:::
+
+@exercise 6.3c | Above average
+Print the average of `marks` (2 decimal places) and how many marks are above it:
+
+```text
+Average: 62.17
+Above average: 3
+```
+
+```starter
+marks = [35, 72, 48, 81, 90, 47]
+
+```
+
+```solution
+marks = [35, 72, 48, 81, 90, 47]
+average = sum(marks) / len(marks)
+above = 0
+for m in marks:
+    if m > average:
+        above += 1
+print(f"Average: {average:.2f}")
+print("Above average:", above)
+```
+
+```test
+check_out("Average: 62.17\nAbove average: 3")
+```
+
+:::hints
+- Average: `sum(marks) / len(marks)`.
+- Then loop and count the marks that are greater than the average.
+- Format with `{average:.2f}`.
+:::
+
+@lesson 6.4 | Lists of lists, and copying | 30
+@goal Work with tables stored as lists of lists, and know when two names share one list.
+
+## Lists inside lists
+
+A list can hold other lists, which gives you a table: each inner list is a row.
+
+```py
+results = [
+    ["Aman", 72, 81],
+    ["Riya", 88, 79],
+    ["Dev", 65, 70],
+]
+print(results[1])
+print(results[1][0], results[1][2])
+for row in results:
+    name = row[0]
+    total = row[1] + row[2]
+    print(name, total)
+```
+
+`results[1][2]` reads as: row 1, then item 2 of that row.
+
+## The copying trap
+
+This is one of the most important ideas in Python. Read it slowly.
+
+```py
+a = [1, 2, 3]
+b = a
+b.append(4)
+print(a)
+```
+
+Why did `a` change? Because `b = a` does **not** copy the list. It makes `b` a second name for the **same** list. There is one list with two names (programmers say `b` is an **alias**). Press **Step through** on that example: both names get the same badge, meaning the same object in memory.
+
+To get a separate list, copy it:
+
+```py
+a = [1, 2, 3]
+b = a.copy()     # or a[:] or list(a)
+b.append(4)
+print(a, b)
+```
+
+Numbers and strings never cause this problem, because they can't be changed in place: you can only point the name at a new value.
+
+:::warn
+The same thing happens when you pass a list into a function (Unit 8): the function gets the same list, not a copy. If it changes the list, the caller sees the change.
+:::
+
+:::predict
+```py
+x = ["a", "b"]
+y = x
+y[0] = "z"
+print(x[0])
+```
+- a
++ z
+- b
+- Error
+= y is the same list as x, so changing y[0] changes what x[0] gives too.
+:::
+
+:::recall
+Q: After `b = a` where a is a list, what happens when you change b?
+A: a changes too: both names point at the same list. Use `a.copy()` for a separate list.
+Q: How do you read `table[2][0]`?
+A: Item 0 of row 2: take the inner list at index 2, then its first item.
+Q: Name three ways to copy a list.
+A: `a.copy()`, `a[:]` and `list(a)`.
+:::
+
+@exercise 6.4a | Totals table
+Each row of `results` is a name followed by two marks. Print each name with its total:
+
+```text
+Aman 153
+Riya 167
+Dev 135
+```
+
+```starter
+results = [
+    ["Aman", 72, 81],
+    ["Riya", 88, 79],
+    ["Dev", 65, 70],
+]
+
+```
+
+```solution
+results = [
+    ["Aman", 72, 81],
+    ["Riya", 88, 79],
+    ["Dev", 65, 70],
+]
+for row in results:
+    print(row[0], row[1] + row[2])
+```
+
+```test
+check_out("Aman 153\nRiya 167\nDev 135")
+check(has("For"), "You used a loop")
+```
+
+:::hints
+- Loop over the rows: `for row in results:`.
+- In each row, item 0 is the name and items 1 and 2 are the marks.
+:::
+
+@exercise 6.4b | Keep the original
+This program should add a bonus mark to a **copy** of the marks, keeping the original list unchanged. Right now it changes both. Fix it so it prints:
+
+```text
+Original: [40, 55, 61]
+With bonus: [41, 56, 62]
+```
+
+```starter
+original = [40, 55, 61]
+bonus = original
+for i in range(len(bonus)):
+    bonus[i] += 1
+print("Original:", original)
+print("With bonus:", bonus)
+```
+
+```solution
+original = [40, 55, 61]
+bonus = original.copy()
+for i in range(len(bonus)):
+    bonus[i] += 1
+print("Original:", original)
+print("With bonus:", bonus)
+```
+
+```test
+check_out("Original: [40, 55, 61]\nWith bonus: [41, 56, 62]")
+```
+
+:::hints
+- `bonus = original` makes a second name for the same list.
+- Make a real copy with `original.copy()`.
+:::
+
+@exercise 6.4c | Column totals
+`table` has three rows of three numbers. Print the total of each **column**:
+
+```text
+[12, 15, 18]
+```
+
+```starter
+table = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+]
+
+```
+
+```solution
+table = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+]
+totals = [0, 0, 0]
+for row in table:
+    for col in range(3):
+        totals[col] += row[col]
+print(totals)
+```
+
+```test
+check_out("[12, 15, 18]")
+check(has("For"), "You used loops")
+```
+
+:::hints
+- Start with `totals = [0, 0, 0]`.
+- For each row, add `row[col]` to `totals[col]` for col 0, 1 and 2.
+- A loop inside a loop does it: rows outside, columns inside.
+:::
