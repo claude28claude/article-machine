@@ -1,0 +1,448 @@
+@unit u15 | 15 | Python on your laptop
+@zen If the implementation is easy to explain, it may be a good idea.
+@summary Move from the browser to a real setup: install Python and VS Code, manage packages in virtual environments, test with pytest, use Git, and work well with AI tools.
+
+@lesson 15.1 | Install Python and VS Code | 30
+@goal Set up Python 3 and VS Code on your laptop, run a script from the terminal, and use the standard script layout.
+
+Everything you've learned works the same on your laptop. The difference: real files on disk, any package from the internet, and programs that can run for hours or on a schedule. This lesson is a setup checklist; do it once, carefully.
+
+## 1. Install Python
+
+1. Go to [python.org/downloads](https://www.python.org/downloads/) and download the latest Python 3 release.
+2. **Windows**: run the installer and tick **"Add python.exe to PATH"** at the bottom of the first screen before clicking *Install Now*. This one checkbox saves hours of confusion.
+3. **Mac**: run the `.pkg` installer.
+4. Open a terminal (Windows: *Terminal* or *PowerShell*; Mac: *Terminal*), type the first line below and press Enter. The second line is what you should see:
+
+```text
+python --version
+Python 3.13.x
+```
+
+On Windows, if `python` isn't found, try `py --version`. On Mac, use `python3`.
+
+## 2. Install VS Code
+
+1. Download it free from [code.visualstudio.com](https://code.visualstudio.com/).
+2. Open it, go to the Extensions panel (the four squares icon) and install **Python** by Microsoft.
+3. Create a folder such as `python-practice`, then *File > Open Folder* it in VS Code.
+
+## 3. Run your first script
+
+Create `hello.py` in that folder, type `print("Hello from my laptop")`, save, and press the ▶ button at the top right. Or, in VS Code's terminal (*View > Terminal*):
+
+```text
+python hello.py
+```
+
+| Terminal command | What it does |
+| --- | --- |
+| `cd folder` | go into a folder |
+| `cd ..` | go up one folder |
+| `dir` (Windows) / `ls` (Mac) | list the files here |
+| `python file.py` | run a script |
+| `python` | open the interactive `>>>` prompt (`exit()` to leave) |
+
+## 4. The standard script layout
+
+Real scripts put their work in a `main()` function, called from the `__name__` guard you met in Unit 11:
+
+```py
+def summarise(scores):
+    return f"{len(scores)} tests, best {max(scores)}, average {sum(scores) / len(scores):.1f}"
+
+
+def main():
+    scores = [130.0, 142.5, 118.0]
+    print(summarise(scores))
+
+
+if __name__ == "__main__":
+    main()
+```
+
+Every piece is importable and testable, and nothing runs by accident on import.
+
+## Command-line arguments
+
+Scripts can take arguments from the terminal: `python score.py 68 12`. They arrive in `sys.argv`, a list of strings whose first item is the script name:
+
+```py norun
+import sys
+
+correct, wrong = int(sys.argv[1]), int(sys.argv[2])
+print(correct * 2 - wrong * 0.5)
+```
+
+:::real
+From now on, try each exercise on your laptop too. The browser is perfect for learning; your laptop is where you'll build things that last.
+:::
+
+:::recall
+Q: What checkbox matters most when installing Python on Windows?
+A: "Add python.exe to PATH", so the terminal can find python.
+Q: How do you run a script from the terminal?
+A: `python name.py` (or `py name.py` on Windows, `python3 name.py` on Mac).
+Q: What is in `sys.argv`?
+A: A list of the command-line words as strings; item 0 is the script's name.
+:::
+
+@exercise 15.1a | Script layout
+Write a `main()` function that prints `Ready to build` and call it from an `if __name__ == "__main__":` guard.
+
+```starter
+print("Ready to build")
+```
+
+```solution
+def main():
+    print("Ready to build")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+```test
+check_out("Ready to build")
+need("main", "function")
+check("__name__" in src and "__main__" in src, "main() is called from the __name__ guard")
+import ast as _ast
+top_prints = [n for n in _ast.parse(src).body if isinstance(n, _ast.Expr) and isinstance(n.value, _ast.Call) and getattr(n.value.func, "id", "") == "print"]
+check(not top_prints, "Nothing prints at import time", "Move the print inside main().")
+```
+
+:::hints
+- Put the print inside `def main():`.
+- At the bottom: `if __name__ == "__main__":` and, indented, `main()`.
+:::
+
+@exercise 15.1b | Read the arguments
+Write `parse_args(argv)` that takes a list like `["score.py", "68", "12"]` and returns the tuple `(68, 12)` as ints. If there aren't exactly two arguments after the script name, raise `ValueError("usage: score.py CORRECT WRONG")`.
+
+```starter
+def parse_args(argv):
+    pass
+```
+
+```solution
+def parse_args(argv):
+    if len(argv) != 3:
+        raise ValueError("usage: score.py CORRECT WRONG")
+    return int(argv[1]), int(argv[2])
+```
+
+```test
+need("parse_args", "function")
+expect('parse_args(["score.py", "68", "12"])', (68, 12))
+expect('parse_args(["x.py", "0", "0"])', (0, 0))
+expect_raises('parse_args(["score.py", "68"])', ValueError)
+expect_raises('parse_args(["score.py"])', ValueError)
+```
+
+:::hints
+- argv[0] is the script name; the numbers are argv[1] and argv[2].
+- Check `len(argv) != 3` first and raise the ValueError.
+:::
+
+@lesson 15.2 | pip and virtual environments | 25
+@goal Install packages from PyPI with pip, keep each project's packages separate with a virtual environment, and record them in requirements.txt.
+
+Beyond the standard library there are over half a million free packages on **PyPI** (the Python Package Index). `pip` installs them. The ones you'll meet in your tracks:
+
+| Package | For |
+| --- | --- |
+| `requests` | calling websites and APIs |
+| `beautifulsoup4` | reading HTML from web pages |
+| `openpyxl` | reading and writing Excel files |
+| `pandas`, `matplotlib` | data analysis and charts |
+| `scikit-learn` | machine learning |
+| `flask`, `fastapi` | building web apps and APIs |
+| `anthropic` | calling Claude from your own code |
+| `pytest` | testing |
+
+## Virtual environments
+
+Different projects need different packages and versions. A **virtual environment** is a private folder of packages for one project, so projects never fight each other. Create one per project, inside the project folder:
+
+```text
+python -m venv .venv
+```
+
+Then **activate** it, every time you open a new terminal for that project:
+
+| System | Activate command |
+| --- | --- |
+| Windows | `.venv\Scripts\activate` |
+| Mac / Linux | `source .venv/bin/activate` |
+
+The prompt then shows `(.venv)`. Now install what you need:
+
+```text
+pip install requests pandas
+pip freeze > requirements.txt
+```
+
+`pip freeze` lists exact versions, and saving them in `requirements.txt` lets anyone (including future you on a new laptop) recreate the setup with `pip install -r requirements.txt`. VS Code notices `.venv` and offers to use it; say yes.
+
+:::warn
+Run `pip` with the virtual environment **active**. Installing everything globally works at first, then turns into version conflicts. If `pip` isn't found, `python -m pip install ...` always works.
+:::
+
+:::recall
+Q: What is a virtual environment for?
+A: Giving each project its own private set of packages, so projects don't conflict.
+Q: How do you create and activate one on Windows?
+A: `python -m venv .venv`, then `.venv\Scripts\activate`.
+Q: What does `pip freeze > requirements.txt` do?
+A: Saves the exact installed package versions so the setup can be recreated with `pip install -r requirements.txt`.
+:::
+
+@exercise 15.2a | Read a requirements file
+Write `parse_requirements(text)` that turns the contents of a requirements file into a dictionary of package name to version. Ignore blank lines and lines starting with `#`. A line like `pandas==2.2.3` gives `"pandas": "2.2.3"`; a line without `==` (just a name) gives the version `None`. Names should be lowercase, with spaces stripped.
+
+```starter
+def parse_requirements(text):
+    pass
+```
+
+```solution
+def parse_requirements(text):
+    result = {}
+    for line in text.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if "==" in line:
+            name, version = line.split("==", 1)
+            result[name.strip().lower()] = version.strip()
+        else:
+            result[line.lower()] = None
+    return result
+```
+
+```test
+need("parse_requirements", "function")
+text = "# web\nrequests==2.32.3\n\nFlask==3.1.0\npytest\n  pandas == 2.2.3  \n"
+expect(f"parse_requirements({text!r})", {"requests": "2.32.3", "flask": "3.1.0", "pytest": None, "pandas": "2.2.3"})
+expect('parse_requirements("")', {})
+```
+
+:::hints
+- Loop over `text.splitlines()`, strip each line, and skip empty ones and comments.
+- `line.split("==", 1)` gives the name and version; strip both.
+:::
+
+@lesson 15.3 | Testing with pytest | 25
+@goal Write automated tests with plain `assert` statements, and check that your tests really catch bugs.
+
+Every **Check** button press in this course runs automated tests on your code. Professionals write tests for their own code too, so they can change it without fear of breaking something.
+
+**pytest** is Python's favourite testing tool (`pip install pytest`). A test is just a function whose name starts with `test_` and which uses `assert`:
+
+```py
+def cgl_score(correct, wrong):
+    return correct * 2 - wrong * 0.5
+
+
+def test_all_right():
+    assert cgl_score(100, 0) == 200
+
+
+def test_negative_marking():
+    assert cgl_score(68, 12) == 130.0
+
+
+def test_nothing_attempted():
+    assert cgl_score(0, 0) == 0
+
+
+# pytest finds and runs these for you; here we call them ourselves:
+for test in [test_all_right, test_negative_marking, test_nothing_attempted]:
+    test()
+print("3 passed")
+```
+
+On your laptop, put tests in files named `test_something.py` and run `pytest` in the terminal. It finds every `test_` function, runs it, and reports which passed and which failed, with the values involved.
+
+## What makes a good test
+
+- **Arrange, act, assert**: set up the inputs, call the function, check the result.
+- Test the **normal case**, the **edges** (zero, empty, the exact boundary like 40 for a pass mark) and the **errors** (with `pytest.raises(ValueError)`).
+- One idea per test, with a name that says what it checks.
+
+## Do your tests catch bugs?
+
+A test suite that passes on everything is worthless. A good check: **deliberately break** the function in a few realistic ways and see whether some test fails each time. Professionals call this **mutation testing**, and it's exactly how the next exercise checks your tests.
+
+:::recall
+Q: How does pytest recognise a test?
+A: A function whose name starts with `test_`, in a file whose name starts with `test_`.
+Q: What should good tests cover besides the normal case?
+A: Edge cases (zero, empty, exact boundaries) and expected errors.
+Q: How can you tell whether your tests are any good?
+A: Introduce realistic bugs on purpose; a good test suite fails for each of them.
+:::
+
+@exercise 15.3a | Tests that catch bugs
+Write **at least three** test functions for `cgl_score`. They must all pass on the correct function, and the checker will then swap in three buggy versions: your tests must catch every one (at least one test fails for each bug).
+
+```starter
+def cgl_score(correct, wrong):
+    return correct * 2 - wrong * 0.5
+
+
+def test_all_right():
+    assert cgl_score(100, 0) == 200
+
+```
+
+```solution
+def cgl_score(correct, wrong):
+    return correct * 2 - wrong * 0.5
+
+
+def test_all_right():
+    assert cgl_score(100, 0) == 200
+
+
+def test_negative_marking():
+    assert cgl_score(68, 12) == 130.0
+
+
+def test_only_wrong():
+    assert cgl_score(0, 10) == -5.0
+```
+
+```test
+names = [k for k in list(globals()) if k.startswith("test_") and callable(globals()[k])]
+check(len(names) >= 3, "At least three test functions", f"Found: {names}")
+G = globals()[names[0]].__globals__ if names else {}
+def failures():
+    n = 0
+    for name in names:
+        try:
+            globals()[name]()
+        except Exception:
+            n += 1
+    return n
+check(failures() == 0, "All your tests pass on the correct function")
+real = G.get("cgl_score")
+bugs = {
+    "wrong answers are ignored": lambda c, w: c * 2,
+    "the penalty is 1 instead of 0.5": lambda c, w: c * 2 - w * 1,
+    "right answers earn 1 mark, not 2": lambda c, w: c - w * 0.5,
+}
+for label, bug in bugs.items():
+    G["cgl_score"] = bug
+    check(failures() > 0, f"Your tests catch the bug where {label}", "Add a test where this mistake would give a different answer.")
+G["cgl_score"] = real
+```
+
+:::hints
+- Each test calls cgl_score with chosen inputs and asserts the exact expected result.
+- A test with only right answers can't notice a wrong penalty: include wrong answers in some tests.
+- Try a test with only wrong answers, such as `cgl_score(0, 10) == -5.0`.
+:::
+
+@lesson 15.4 | Git, docs and coding with AI | 25
+@goal Save your work's history with Git, find answers in documentation, and use AI assistants like Claude in a way that makes you better, not dependent.
+
+## Git: a time machine for code
+
+**Git** records snapshots (commits) of your project, so you can see what changed, undo mistakes and share code on **GitHub**. Install it from [git-scm.com](https://git-scm.com/), then in your project folder:
+
+| Command | What it does |
+| --- | --- |
+| `git init` | start tracking this folder |
+| `git status` | what changed since the last commit |
+| `git add file.py` (or `git add .`) | choose changes for the next snapshot |
+| `git commit -m "Add score calculator"` | save the snapshot with a message |
+| `git log --oneline` | list past commits |
+| `git push` | upload commits to GitHub |
+
+Add a `.gitignore` file listing things that shouldn't be saved, at least `.venv/`, `__pycache__/` and any file holding passwords or API keys. Your Article Machine already lives on GitHub, so you've seen what this looks like from the other side.
+
+## Reading documentation
+
+The official docs at [docs.python.org](https://docs.python.org/3/) are the final word on Python. Each package has its own docs too. When stuck:
+
+1. Read the error message, bottom up.
+2. Check the docs for the function you're calling: what arguments, what it returns.
+3. Search the exact error message plus the package name.
+
+## Working with AI, the right way
+
+AI assistants, including Claude in this course and in Claude Code, can make you learn far faster, or stop you learning at all. The difference is how you use them.
+
+- **Ask for explanations, not just answers.** "Why does this raise KeyError?" teaches you; "fix it" only fixes it.
+- **Give full context**: your code, the full error, what you expected, what you've tried.
+- **Try first.** Ask for a hint before a solution; the struggle is where learning happens.
+- **Read every line it writes.** AI code can be wrong, outdated or subtly buggy. If you can't explain it, don't commit it.
+- **Never paste secrets** (API keys, passwords, personal data) into any chat.
+- **Test it.** Your new testing skills apply to AI code more than anyone's.
+
+:::real
+In Claude Code you can say "explain this traceback", "review my code like a senior developer", "write tests for this function", or "read my Python Machine progress and set me exercises on my weak spots". It can read and run your real project files, so it's a powerful pair programmer once you're on your laptop.
+:::
+
+:::recall
+Q: What do `git add` and `git commit` do?
+A: add chooses changes for the next snapshot; commit saves that snapshot with a message.
+Q: What should go in .gitignore?
+A: Things that shouldn't be saved or shared: .venv/, __pycache__/, and any files with secrets.
+Q: Name three rules for using AI assistants well.
+A: Ask for explanations and hints before answers, read and test every line it writes, and never paste secrets.
+:::
+
+@exercise 15.4a | Review the AI's code
+An AI assistant wrote `add_score` and `best_of` below. Each has a bug (three bugs in total). Fix them so the checks pass:
+
+- `add_score(score)` should return a **new** list containing just that score when no list is given. (Hint: what happens to the default list between calls?)
+- `best_of(scores, n)` should return the top `n` scores, highest first, including the n-th one.
+- `best_of([], 3)` should return `[]` instead of crashing.
+
+```starter
+def add_score(score, scores=[]):
+    scores.append(score)
+    return scores
+
+
+def best_of(scores, n):
+    ranked = sorted(scores, reverse=True)
+    if ranked[0] is None:
+        return []
+    return ranked[: n - 1]
+```
+
+```solution
+def add_score(score, scores=None):
+    if scores is None:
+        scores = []
+    scores.append(score)
+    return scores
+
+
+def best_of(scores, n):
+    ranked = sorted(scores, reverse=True)
+    return ranked[:n]
+```
+
+```test
+need("add_score", "function")
+need("best_of", "function")
+first = add_score(10)
+second = add_score(20)
+check(first == [10] and second == [20], "Each call without a list starts a fresh one", f"First call gave {first}, second gave {second}. A default list is created once and shared between calls.")
+mine = [1]
+check(add_score(2, mine) == [1, 2] and mine == [1, 2], "Passing a list appends to it")
+expect("best_of([130, 142.5, 118, 126], 2)", [142.5, 130])
+expect("best_of([5, 3, 9], 3)", [9, 5, 3])
+expect("best_of([], 3)", [])
+```
+
+:::hints
+- A default like `scores=[]` is created once, when the function is defined, and reused on every call. Use `scores=None` and create the list inside.
+- `ranked[: n - 1]` stops one short. The slice for the first n items is `[:n]`.
+- Indexing `ranked[0]` crashes on an empty list; slicing never does, so the check isn't needed.
+:::

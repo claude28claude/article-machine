@@ -1,0 +1,1095 @@
+@unit uB | B | Data & AI
+@summary Analyse data like an analyst: statistics, NumPy, pandas and charts, then your first machine learning model and an app that talks to Claude.
+
+@lesson B.1 | Statistics with Python | 25
+@goal Describe a set of numbers with the right statistics and spot a real trend.
+
+Data work starts with describing numbers honestly. Python's `statistics` module covers the basics without installing anything.
+
+```py
+import statistics as st
+
+scores = [127, 133, 141, 144, 151, 155, 154, 165, 169]
+print("mean:", round(st.mean(scores), 2))
+print("median:", st.median(scores))
+print("stdev:", round(st.stdev(scores), 2))
+print("quartiles:", st.quantiles(scores, n=4))
+```
+
+- **mean**: the average. Pulled around by extreme values.
+- **median**: the middle value when sorted. Robust to outliers.
+- **mode** (`st.mode`): the most common value.
+- **standard deviation** (`stdev`): how spread out the values are. Small means consistent.
+- **quartiles**: the values that cut the sorted data into four equal parts.
+
+## Mean or median?
+
+One bad day can drag a mean down. Watch:
+
+```py
+import statistics as st
+
+usual = [140, 142, 145, 143, 141]
+with_bad_day = usual + [60]
+print(st.mean(usual), st.median(usual))
+print(round(st.mean(with_bad_day), 1), st.median(with_bad_day))
+```
+
+The median barely moves. When a few extreme values exist (incomes, house prices, one disastrous mock), report the median, or both.
+
+## Is it really improving?
+
+Comparing just the first and last value is a classic mistake: both could be flukes. Compare the **average of the first half** with the **average of the second half**:
+
+```py
+import statistics as st
+
+scores = [127, 133, 141, 144, 151, 155, 154, 165, 169]
+half = len(scores) // 2
+early = st.mean(scores[:half])
+late = st.mean(scores[-half:])
+print(round(early, 1), round(late, 1), "change:", round(late - early, 1))
+```
+
+:::predict
+```py
+import statistics as st
+print(st.median([5, 1, 9, 3]))
+```
+- 3
+- 5
++ 4.0
+- 4.5
+= Sorted, the values are 1, 3, 5, 9. With an even count, the median is the average of the two middle values: (3 + 5) / 2.
+:::
+
+:::recall
+Q: When is the median a better summary than the mean?
+A: When there are outliers or skewed values: the median ignores how extreme they are.
+Q: What does a small standard deviation tell you?
+A: The values are close together: results are consistent.
+Q: How do you check a trend more reliably than first vs last value?
+A: Compare the average of the first half of the data with the average of the second half.
+:::
+
+@exercise B.1a | Describe the scores
+Write `summary(scores)` returning a dictionary with `mean`, `median` and `stdev`, each rounded to 2 places.
+
+```starter
+import statistics as st
+
+def summary(scores):
+    pass
+```
+
+```solution
+import statistics as st
+
+def summary(scores):
+    return {
+        "mean": round(st.mean(scores), 2),
+        "median": round(st.median(scores), 2),
+        "stdev": round(st.stdev(scores), 2),
+    }
+```
+
+```test
+need("summary", "function")
+expect("summary([127, 133, 141, 144, 151, 155, 154, 165, 169])", {"mean": 148.78, "median": 151, "stdev": 13.92})
+expect("summary([10, 20])", {"mean": 15, "median": 15.0, "stdev": 7.07})
+```
+
+:::hints
+- `st.mean`, `st.median` and `st.stdev` do the work.
+- Build the dictionary with three keys and round each value.
+:::
+
+@exercise B.1b | Percentile rank
+Write `percentile_rank(score, all_scores)`: the percentage of scores in `all_scores` that are **strictly below** `score`, rounded to 1 place. In a list of 10 scores, being above 9 of them is 90.0.
+
+```starter
+def percentile_rank(score, all_scores):
+    pass
+```
+
+```solution
+def percentile_rank(score, all_scores):
+    below = sum(1 for s in all_scores if s < score)
+    return round(below / len(all_scores) * 100, 1)
+```
+
+```test
+need("percentile_rank", "function")
+expect("percentile_rank(150, [100, 120, 130, 140, 150, 160, 170, 180, 190, 200])", 40.0)
+expect("percentile_rank(201, [100, 120, 130, 140, 150, 160, 170, 180, 190, 200])", 100.0)
+expect("percentile_rank(5, [5, 5, 5])", 0.0)
+expect("percentile_rank(2, [1, 2, 3])", 33.3)
+```
+
+:::hints
+- Count the scores below with `sum(1 for s in all_scores if s < score)`.
+- Divide by the number of scores and multiply by 100.
+:::
+
+@exercise B.1c | Trend detector
+Write `trend(scores)` that compares the mean of the first half with the mean of the second half (for an odd count, ignore the middle value). Return `"improving"` if the second half is more than 2 marks higher, `"declining"` if it's more than 2 lower, else `"steady"`.
+
+```starter
+import statistics as st
+
+def trend(scores):
+    pass
+```
+
+```solution
+import statistics as st
+
+def trend(scores):
+    half = len(scores) // 2
+    change = st.mean(scores[-half:]) - st.mean(scores[:half])
+    if change > 2:
+        return "improving"
+    if change < -2:
+        return "declining"
+    return "steady"
+```
+
+```test
+need("trend", "function")
+expect("trend([127, 133, 141, 144, 151, 155, 154, 165, 169])", "improving")
+expect("trend([150, 148, 140, 135])", "declining")
+expect("trend([140, 142, 141, 141])", "steady")
+expect("trend([100, 0, 103])", "improving")
+```
+
+:::hints
+- `half = len(scores) // 2`; the first half is `scores[:half]`, the second is `scores[-half:]`.
+- With an odd count, those two slices skip the middle value automatically.
+:::
+
+@lesson B.2 | NumPy essentials | 25
+@goal Work with whole arrays of numbers at once using NumPy: arithmetic, statistics, masks and 2D tables.
+
+**NumPy** is the foundation of nearly all data and AI work in Python. Its `array` holds numbers of one type, packed tightly, and does maths on **all of them at once**, written like maths on a single number:
+
+```py
+import numpy as np
+
+minutes = np.array([60, 45, 30, 90, 120])
+print(minutes / 60)
+print(minutes.sum(), minutes.mean(), minutes.max())
+print(minutes.shape, minutes.dtype)
+```
+
+No loop: `minutes / 60` divides every element. This is called **vectorisation**, and it runs at the speed of compiled C code, which matters when you have millions of values.
+
+## Masks: selecting with conditions
+
+A comparison gives an array of True/False, and that array can select elements:
+
+```py
+import numpy as np
+
+scores = np.array([127, 133, 141, 144, 151, 155, 154, 165, 169])
+good = scores >= 150
+print(good)
+print(scores[good])
+print(good.sum(), "tests at 150 or more")
+print(scores[scores < 140].mean())
+```
+
+`good.sum()` counts the Trues, because True counts as 1.
+
+## 2D arrays: tables
+
+Rows can be tests and columns subjects. `axis=0` works **down the columns** (one result per column); `axis=1` works **across each row**:
+
+```py
+import numpy as np
+
+# reasoning, english, maths, gk for three mocks
+marks = np.array([
+    [38, 35, 24, 30],
+    [40, 37, 27, 29],
+    [41, 36, 31, 33],
+])
+print(marks.shape)
+print(marks.sum(axis=1))    # total per test
+print(marks.mean(axis=0))   # average per subject
+print(marks[:, 2])          # the maths column
+```
+
+`marks[:, 2]` means "every row, column 2".
+
+:::tip
+`.tolist()` turns an array back into a normal Python list, and `np.round(arr, 1)` rounds every element.
+:::
+
+:::predict
+```py
+import numpy as np
+a = np.array([1, 2, 3, 4])
+print((a * 10)[a % 2 == 0])
+```
+- [10 30]
++ [20 40]
+- [2 4]
+- [False True False True]
+= a * 10 is [10 20 30 40]; the mask picks positions where a is even (2 and 4), which hold 20 and 40.
+:::
+
+:::recall
+Q: What does vectorisation mean in NumPy?
+A: Doing an operation on a whole array at once, like `arr / 60`, without writing a loop.
+Q: How do you select only the values above 150 from an array called scores?
+A: With a boolean mask: `scores[scores > 150]`.
+Q: In a 2D array, what do axis=0 and axis=1 do in `.mean(axis=...)`?
+A: axis=0 gives one result per column (down the rows); axis=1 gives one result per row.
+:::
+
+@exercise B.2a | Minutes to hours
+Write `to_hours(minutes)` that takes a list of minutes and returns a **list** of hours rounded to 1 place, using NumPy (no loop).
+
+```starter
+import numpy as np
+
+def to_hours(minutes):
+    pass
+```
+
+```solution
+import numpy as np
+
+def to_hours(minutes):
+    return np.round(np.array(minutes) / 60, 1).tolist()
+```
+
+```test
+need("to_hours", "function")
+expect("to_hours([60, 45, 30, 90, 125])", [1.0, 0.8, 0.5, 1.5, 2.1])
+expect("to_hours([])", [])
+check(not has("For", "While", "ListComp"), "No Python loop used", "Let NumPy divide the whole array at once.")
+```
+
+:::hints
+- `np.array(minutes) / 60` divides everything.
+- `np.round(..., 1)` rounds and `.tolist()` returns a list.
+:::
+
+@exercise B.2b | Good days
+Write `good_days(scores, cutoff)` that returns a tuple `(count, average)`: how many scores are at least `cutoff`, and their average rounded to 2 places (`0` if none). Use a mask.
+
+```starter
+import numpy as np
+
+def good_days(scores, cutoff):
+    pass
+```
+
+```solution
+import numpy as np
+
+def good_days(scores, cutoff):
+    arr = np.array(scores)
+    picked = arr[arr >= cutoff]
+    if picked.size == 0:
+        return (0, 0)
+    return (int(picked.size), round(float(picked.mean()), 2))
+```
+
+```test
+need("good_days", "function")
+expect("good_days([127, 133, 141, 144, 151, 155, 154, 165, 169], 150)", (5, 158.8))
+expect("good_days([10, 20], 50)", (0, 0))
+expect("good_days([150], 150)", (1, 150.0))
+```
+
+:::hints
+- `arr[arr >= cutoff]` keeps only the good scores.
+- `.size` counts them; convert with `int()` and `float()` so the results are plain Python numbers.
+:::
+
+@exercise B.2c | Subject averages
+Rows of `marks` are tests and columns are subjects (reasoning, english, maths, gk). Write `subject_means(marks)` returning a list of the four column averages rounded to 1 place, and `best_test(marks)` returning the **index** of the test with the highest total (use `argmax`).
+
+```starter
+import numpy as np
+
+def subject_means(marks):
+    pass
+
+def best_test(marks):
+    pass
+```
+
+```solution
+import numpy as np
+
+def subject_means(marks):
+    return np.round(np.array(marks).mean(axis=0), 1).tolist()
+
+def best_test(marks):
+    return int(np.array(marks).sum(axis=1).argmax())
+```
+
+```test
+need("subject_means", "function")
+need("best_test", "function")
+m = [[38, 35, 24, 30], [40, 37, 27, 29], [41, 36, 31, 33]]
+expect(f"subject_means({m})", [39.7, 36.0, 27.3, 30.7])
+expect(f"best_test({m})", 2)
+expect("best_test([[50, 50], [10, 10]])", 0)
+```
+
+:::hints
+- Column averages: `.mean(axis=0)`.
+- Row totals: `.sum(axis=1)`; `.argmax()` gives the position of the biggest.
+:::
+
+@lesson B.3 | pandas essentials | 30
+@goal Load a CSV into a pandas DataFrame, then select, filter, sort, add columns and group, the everyday moves of data analysis.
+
+**pandas** is Python's spreadsheet on steroids: a **DataFrame** is a table with named columns, and one line of pandas often replaces a whole loop. Here are nine mock tests (each subject out of 50):
+
+```file mock_tests.csv
+date,test,reasoning,english,maths,gk
+2026-08-03,Mock 1,38,35,24,30
+2026-08-10,Mock 2,40,37,27,29
+2026-08-24,Mock 3,41,36,31,33
+2026-09-07,Mock 4,43,39,28,34
+2026-09-14,Mock 5,42,41,33,35
+2026-09-28,Mock 6,44,40,35,36
+2026-10-05,Mock 7,45,42,29,38
+2026-10-12,Mock 8,46,43,37,39
+2026-10-16,Mock 9,47,44,38,40
+```
+
+```py
+import pandas as pd
+
+df = pd.read_csv("mock_tests.csv")
+print(df.shape)
+print(df.head(3))
+print(df["maths"].mean())
+```
+
+The first run loads pandas, which takes a few seconds; after that it's instant.
+
+## Selecting and filtering
+
+```py
+import pandas as pd
+
+df = pd.read_csv("mock_tests.csv")
+print(df[["test", "maths"]].head(3))     # some columns
+weak = df[df["maths"] < 30]               # rows matching a condition
+print(weak[["test", "maths"]])
+print(len(weak), "tests below 30 in maths")
+```
+
+`df["maths"] < 30` is a True/False column; using it inside `df[...]` keeps only the True rows, just like a NumPy mask. Combine conditions with `&` (and) and `|` (or), with brackets around each part: `df[(df["maths"] < 30) & (df["gk"] > 30)]`.
+
+## New columns and sorting
+
+```py
+import pandas as pd
+
+df = pd.read_csv("mock_tests.csv")
+df["total"] = df["reasoning"] + df["english"] + df["maths"] + df["gk"]
+best = df.sort_values("total", ascending=False)
+print(best[["test", "total"]].head(3))
+print(df["total"].describe())
+```
+
+## Grouping
+
+`groupby` splits the rows into groups, calculates per group, and combines the results. Here, the average total per month:
+
+```py
+import pandas as pd
+
+df = pd.read_csv("mock_tests.csv")
+df["total"] = df[["reasoning", "english", "maths", "gk"]].sum(axis=1)
+df["month"] = pd.to_datetime(df["date"]).dt.strftime("%Y-%m")
+print(df.groupby("month")["total"].mean().round(2))
+```
+
+That's split-apply-combine, the most powerful idea in pandas.
+
+| Task | pandas |
+| --- | --- |
+| load a CSV | `pd.read_csv("file.csv")` |
+| first rows | `df.head()` |
+| one column | `df["col"]` |
+| filter rows | `df[df["col"] > 10]` |
+| sort | `df.sort_values("col", ascending=False)` |
+| new column | `df["new"] = df["a"] + df["b"]` |
+| per-group stats | `df.groupby("key")["col"].mean()` |
+| counts | `df["col"].value_counts()` |
+
+:::recall
+Q: How do you keep only the rows of df where maths is below 30?
+A: `df[df["maths"] < 30]`.
+Q: How do you add a total column from columns a and b?
+A: `df["total"] = df["a"] + df["b"]`.
+Q: What does `df.groupby("month")["total"].mean()` give?
+A: The average total for each month: split by month, average each group, combine.
+:::
+
+@exercise B.3a | Top three mocks
+Load `mock_tests.csv`, add a `total` column, and print the names of the three best tests by total, best first, as a list:
+
+```text
+['Mock 9', 'Mock 8', 'Mock 6']
+```
+
+```starter
+import pandas as pd
+
+df = pd.read_csv("mock_tests.csv")
+
+```
+
+```solution
+import pandas as pd
+
+df = pd.read_csv("mock_tests.csv")
+df["total"] = df["reasoning"] + df["english"] + df["maths"] + df["gk"]
+top = df.sort_values("total", ascending=False).head(3)
+print(top["test"].tolist())
+```
+
+```test
+check_out("['Mock 9', 'Mock 8', 'Mock 6']")
+df_ = var("df")
+check(df_ is not None and "total" in getattr(df_, "columns", []), "df has a total column")
+```
+
+:::hints
+- Add the four subject columns together into `df["total"]`.
+- Sort by total, descending, take `.head(3)`, then `["test"].tolist()`.
+:::
+
+@exercise B.3b | Weak maths days
+Print how many tests had maths below 30, and the average English score in those tests:
+
+```text
+Weak maths tests: 4
+English in those tests: 38.25
+```
+
+```starter
+import pandas as pd
+
+df = pd.read_csv("mock_tests.csv")
+
+```
+
+```solution
+import pandas as pd
+
+df = pd.read_csv("mock_tests.csv")
+weak = df[df["maths"] < 30]
+print("Weak maths tests:", len(weak))
+print("English in those tests:", round(weak["english"].mean(), 2))
+```
+
+```test
+check_out("Weak maths tests: 4\nEnglish in those tests: 38.25")
+```
+
+:::hints
+- Filter: `weak = df[df["maths"] < 30]`.
+- `len(weak)` counts the rows; `weak["english"].mean()` averages one column.
+:::
+
+@exercise B.3c | Month by month
+Write `monthly_totals(path)` that loads the CSV at `path`, adds totals, and returns a **dictionary** of month (`"2026-08"` style) to average total, rounded to 2 places.
+
+```starter
+import pandas as pd
+
+def monthly_totals(path):
+    pass
+```
+
+```solution
+import pandas as pd
+
+def monthly_totals(path):
+    df = pd.read_csv(path)
+    df["total"] = df[["reasoning", "english", "maths", "gk"]].sum(axis=1)
+    df["month"] = pd.to_datetime(df["date"]).dt.strftime("%Y-%m")
+    return df.groupby("month")["total"].mean().round(2).to_dict()
+```
+
+```test
+need("monthly_totals", "function")
+expect('monthly_totals("mock_tests.csv")', {"2026-08": 133.67, "2026-09": 150.0, "2026-10": 162.67})
+```
+
+:::hints
+- Make the month column with `pd.to_datetime(df["date"]).dt.strftime("%Y-%m")`.
+- `df.groupby("month")["total"].mean()` then `.round(2).to_dict()`.
+:::
+
+@lesson B.4 | Charts with matplotlib | 25
+@goal Turn data into clear line and bar charts with titles, labels and legends.
+
+A good chart answers one question at a glance. **matplotlib** is Python's standard plotting library; pandas uses it under the hood.
+
+```py
+import matplotlib.pyplot as plt
+
+tests = ["M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9"]
+totals = [127, 133, 141, 144, 151, 155, 154, 165, 169]
+
+plt.plot(tests, totals, marker="o")
+plt.title("Mock test totals")
+plt.xlabel("Test")
+plt.ylabel("Marks out of 200")
+plt.grid(True)
+plt.show()
+```
+
+`plt.show()` draws the chart into the console here (on your laptop it opens a window). Charts in this course use a dark style to match the page; on your laptop they'll have a white background unless you add `plt.style.use("dark_background")`.
+
+## Choosing the chart
+
+| Question | Chart |
+| --- | --- |
+| How did it change over time? | line: `plt.plot(x, y)` |
+| How do categories compare? | bar: `plt.bar(names, values)` |
+| How are values spread? | histogram: `plt.hist(values)` |
+| Do two things move together? | scatter: `plt.scatter(x, y)` |
+
+```py
+import matplotlib.pyplot as plt
+
+subjects = ["Reasoning", "English", "Maths", "GK"]
+averages = [42.9, 39.7, 31.3, 34.9]
+plt.bar(subjects, averages)
+plt.title("Average by subject")
+plt.ylabel("Marks out of 50")
+plt.show()
+```
+
+## Several lines and a legend
+
+Give each line a `label=`, then call `plt.legend()`:
+
+```py
+import matplotlib.pyplot as plt
+
+tests = list(range(1, 10))
+maths = [24, 27, 31, 28, 33, 35, 29, 37, 38]
+english = [35, 37, 36, 39, 41, 40, 42, 43, 44]
+plt.plot(tests, maths, label="Maths")
+plt.plot(tests, english, label="English")
+plt.title("Maths is catching up")
+plt.xlabel("Mock number")
+plt.legend()
+plt.show()
+```
+
+## From pandas
+
+The same mock test file as the last lesson is in your workspace:
+
+```file mock_tests.csv
+date,test,reasoning,english,maths,gk
+2026-08-03,Mock 1,38,35,24,30
+2026-08-10,Mock 2,40,37,27,29
+2026-08-24,Mock 3,41,36,31,33
+2026-09-07,Mock 4,43,39,28,34
+2026-09-14,Mock 5,42,41,33,35
+2026-09-28,Mock 6,44,40,35,36
+2026-10-05,Mock 7,45,42,29,38
+2026-10-12,Mock 8,46,43,37,39
+2026-10-16,Mock 9,47,44,38,40
+```
+
+```py
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("mock_tests.csv")
+df.plot(x="test", y=["maths", "gk"], marker="o", title="Maths and GK")
+plt.show()
+```
+
+
+:::tip
+Every chart needs a title that states the point ("Maths is catching up" beats "Line chart"), labelled axes with units, and nothing decorative that doesn't carry information.
+:::
+
+:::recall
+Q: Which chart shows change over time, and which compares categories?
+A: A line chart for change over time; a bar chart to compare categories.
+Q: How do you add a legend to a chart with several lines?
+A: Give each line `label="..."` and call `plt.legend()`.
+Q: What makes a chart title good?
+A: It states the finding, not the chart type.
+:::
+
+@exercise B.4a | Totals over time
+Draw a **line** chart of `totals` against `tests` with the title `Mock test totals`, x label `Test` and y label `Marks`, then show it.
+
+```starter
+import matplotlib.pyplot as plt
+
+tests = ["M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9"]
+totals = [127, 133, 141, 144, 151, 155, 154, 165, 169]
+
+```
+
+```solution
+import matplotlib.pyplot as plt
+
+tests = ["M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9"]
+totals = [127, 133, 141, 144, 151, 155, 154, 165, 169]
+plt.plot(tests, totals, marker="o")
+plt.title("Mock test totals")
+plt.xlabel("Test")
+plt.ylabel("Marks")
+plt.show()
+```
+
+```test
+check(len(charts) >= 1, "A chart was drawn", "Call plt.plot(...) and plt.show().")
+if charts:
+    ax = charts[0]["axes"][0]
+    check(ax["lines"] >= 1, "It is a line chart")
+    check(ax["title"] == "Mock test totals", "Title is 'Mock test totals'", f"title is {ax['title']!r}")
+    check(ax["xlabel"] == "Test" and ax["ylabel"] == "Marks", "Axes are labelled Test and Marks", f"labels are {ax['xlabel']!r} and {ax['ylabel']!r}")
+```
+
+:::hints
+- `plt.plot(tests, totals)` draws the line.
+- `plt.title`, `plt.xlabel` and `plt.ylabel` add the text; `plt.show()` displays it.
+:::
+
+@exercise B.4b | Compare subjects
+Draw a **bar** chart with one bar per subject showing `averages`, titled `Average by subject`.
+
+```starter
+import matplotlib.pyplot as plt
+
+subjects = ["Reasoning", "English", "Maths", "GK"]
+averages = [42.9, 39.7, 31.3, 34.9]
+
+```
+
+```solution
+import matplotlib.pyplot as plt
+
+subjects = ["Reasoning", "English", "Maths", "GK"]
+averages = [42.9, 39.7, 31.3, 34.9]
+plt.bar(subjects, averages)
+plt.title("Average by subject")
+plt.show()
+```
+
+```test
+check(len(charts) >= 1, "A chart was drawn")
+if charts:
+    ax = charts[0]["axes"][0]
+    check(ax["bars"] == 4, "Four bars", f"found {ax['bars']} bars")
+    check(ax["title"] == "Average by subject", "Title is 'Average by subject'", f"title is {ax['title']!r}")
+```
+
+:::hints
+- `plt.bar(subjects, averages)`
+- Add the title, then `plt.show()`.
+:::
+
+@exercise B.4c | Two subjects, one chart
+Plot `maths` and `english` as two lines against `tests`, labelled `Maths` and `English`, with a legend and the title `Maths vs English`.
+
+```starter
+import matplotlib.pyplot as plt
+
+tests = list(range(1, 10))
+maths = [24, 27, 31, 28, 33, 35, 29, 37, 38]
+english = [35, 37, 36, 39, 41, 40, 42, 43, 44]
+
+```
+
+```solution
+import matplotlib.pyplot as plt
+
+tests = list(range(1, 10))
+maths = [24, 27, 31, 28, 33, 35, 29, 37, 38]
+english = [35, 37, 36, 39, 41, 40, 42, 43, 44]
+plt.plot(tests, maths, label="Maths")
+plt.plot(tests, english, label="English")
+plt.title("Maths vs English")
+plt.legend()
+plt.show()
+```
+
+```test
+check(len(charts) >= 1, "A chart was drawn")
+if charts:
+    ax = charts[0]["axes"][0]
+    check(ax["lines"] == 2, "Two lines", f"found {ax['lines']}")
+    check(ax["legend"], "There is a legend", "Give each line a label and call plt.legend().")
+    check(ax["title"] == "Maths vs English", "Title is 'Maths vs English'")
+```
+
+:::hints
+- Call `plt.plot` twice, each with a `label=`.
+- `plt.legend()` before `plt.show()`.
+:::
+
+@lesson B.5 | Machine learning basics | 30
+@goal Understand what a model learns, fit your first one (a straight line), and measure how wrong its predictions are on data it hasn't seen.
+
+**Machine learning** means a program learns a rule from examples instead of you writing the rule. You give it **features** (inputs, like hours studied) and **labels** (the right answers, like the score), and it finds a pattern it can apply to new inputs.
+
+The simplest model of all is a straight line: `score = slope * hours + intercept`. "Learning" means choosing the slope and intercept that fit the examples best. NumPy can do it in one call:
+
+```py
+import numpy as np
+
+hours = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+scores = np.array([95, 104, 112, 118, 129, 135, 144, 151])
+slope, intercept = np.polyfit(hours, scores, 1)
+print(f"score = {slope:.2f} x hours + {intercept:.2f}")
+print("Prediction for 10 hours:", round(slope * 10 + intercept, 1))
+```
+
+`np.polyfit(x, y, 1)` finds the line (a degree-1 polynomial) that makes the squared errors smallest. That method, **least squares**, is also what's inside the linear regression of every ML library.
+
+## How wrong is it?
+
+A model is only as good as its errors on **new** data. The **mean absolute error** (MAE) is the average distance between prediction and truth, in the same units as the data:
+
+```py
+import numpy as np
+
+actual = np.array([120, 135, 150])
+predicted = np.array([118, 140, 149])
+print("MAE:", np.mean(np.abs(actual - predicted)))
+```
+
+## Train and test
+
+If you judge a model on the same examples it learned from, it can look perfect while being useless, like memorising answer keys. So you **split** the data: learn from the training part, measure on the test part it never saw.
+
+```py
+import numpy as np
+
+hours = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+scores = np.array([95, 104, 112, 118, 129, 135, 144, 151])
+train_x, test_x = hours[:6], hours[6:]
+train_y, test_y = scores[:6], scores[6:]
+slope, intercept = np.polyfit(train_x, train_y, 1)
+pred = slope * test_x + intercept
+print("predicted", np.round(pred, 1), "actual", test_y)
+print("test MAE:", round(float(np.mean(np.abs(pred - test_y))), 2))
+```
+
+:::warn
+A model that fits training data **too** closely (a wiggly curve through every point) usually predicts new data badly. That's **overfitting**, the central danger in machine learning. Simple models and honest test sets are the defence.
+:::
+
+:::real
+On your laptop, the library **scikit-learn** (`pip install scikit-learn`) wraps all of this, with dozens of models behind one interface: `model.fit(X_train, y_train)`, `model.predict(X_test)`, plus `train_test_split` and error metrics. Everything here carries straight over; Google Colab also has it preinstalled.
+:::
+
+:::recall
+Q: What are features and labels?
+A: Features are the inputs a model uses; labels are the correct answers it learns to predict.
+Q: Why split data into training and test sets?
+A: To measure the model on data it hasn't seen; scoring it on training data hides overfitting.
+Q: What is mean absolute error?
+A: The average size of the prediction errors, in the data's own units.
+:::
+
+@exercise B.5a | Fit a line
+Write `fit_line(x, y)` that returns `(slope, intercept)` of the best straight line, each rounded to 2 places, using `np.polyfit`.
+
+```starter
+import numpy as np
+
+def fit_line(x, y):
+    pass
+```
+
+```solution
+import numpy as np
+
+def fit_line(x, y):
+    slope, intercept = np.polyfit(x, y, 1)
+    return (round(float(slope), 2), round(float(intercept), 2))
+```
+
+```test
+import numpy as _np
+need("fit_line", "function")
+expect("fit_line([1, 2, 3], [5, 7, 9])", (2.0, 3.0))
+h = [1, 2, 3, 4, 5, 6, 7, 8]
+s = [95, 104, 112, 118, 129, 135, 144, 151]
+sl, ic = _np.polyfit(h, s, 1)
+expect(f"fit_line({h}, {s})", (round(float(sl), 2), round(float(ic), 2)))
+```
+
+:::hints
+- `np.polyfit(x, y, 1)` returns the slope and the intercept.
+- Convert each with `float()` before rounding so they're plain Python numbers.
+:::
+
+@exercise B.5b | Mean absolute error
+Write `mae(actual, predicted)` returning the mean absolute error rounded to 2 places. Use NumPy, no loop.
+
+```starter
+import numpy as np
+
+def mae(actual, predicted):
+    pass
+```
+
+```solution
+import numpy as np
+
+def mae(actual, predicted):
+    return round(float(np.mean(np.abs(np.array(actual) - np.array(predicted)))), 2)
+```
+
+```test
+need("mae", "function")
+expect("mae([120, 135, 150], [118, 140, 149])", 2.67)
+expect("mae([10], [10])", 0)
+expect("mae([1, 2], [3, 0])", 2)
+check(not has("For", "While"), "No Python loop used")
+```
+
+:::hints
+- Turn both lists into arrays first so you can subtract them.
+- Subtract, take `np.abs`, then `np.mean`, and round the float.
+:::
+
+@exercise B.5c | Train, then test
+Write `evaluate(hours, scores, n_train)`: fit a line on the first `n_train` points, predict the rest, and return the test MAE rounded to 2 places.
+
+```starter
+import numpy as np
+
+def evaluate(hours, scores, n_train):
+    pass
+```
+
+```solution
+import numpy as np
+
+def evaluate(hours, scores, n_train):
+    x = np.array(hours)
+    y = np.array(scores)
+    slope, intercept = np.polyfit(x[:n_train], y[:n_train], 1)
+    pred = slope * x[n_train:] + intercept
+    return round(float(np.mean(np.abs(pred - y[n_train:]))), 2)
+```
+
+```test
+import numpy as _np
+need("evaluate", "function")
+h = [1, 2, 3, 4, 5, 6, 7, 8]
+s = [95, 104, 112, 118, 129, 135, 144, 151]
+sl, ic = _np.polyfit(h[:6], s[:6], 1)
+want = round(float(_np.mean(_np.abs(sl * _np.array(h[6:]) + ic - _np.array(s[6:])))), 2)
+expect(f"evaluate({h}, {s}, 6)", want)
+expect("evaluate([1, 2, 3, 4], [2, 4, 6, 8], 2)", 0)
+```
+
+:::hints
+- Slice the first n_train values for fitting and the rest for testing.
+- Predict with `slope * test_x + intercept`, then compute the MAE.
+:::
+
+@lesson B.6 | Build an AI app with Claude | 30
+@goal Call Claude from your own Python code on your laptop, keep your API key safe, and structure a small chat app you can test offline.
+
+You've been using Claude as a tutor inside this page. With the **Claude API** your own programs can use it too: a doubt-solver for your study group, a script that summarises articles, a bot that quizzes you.
+
+## Setup on your laptop
+
+1. Create an API key in the Claude Console at [platform.claude.com](https://platform.claude.com/). API use is paid per token (roughly per word), separately from a Claude.ai subscription, so set a spending limit in the Console.
+2. In your project's virtual environment: `pip install anthropic`.
+3. Put the key in an **environment variable**, never in your code:
+
+| System | Command (then open a new terminal) |
+| --- | --- |
+| Windows | `setx ANTHROPIC_API_KEY "your-key"` |
+| Mac / Linux | add `export ANTHROPIC_API_KEY="your-key"` to `~/.zshrc` or `~/.bashrc` |
+
+:::warn
+An API key is like a password linked to your money. Never paste it into code, chats, screenshots or GitHub. If one leaks, delete it in the Console at once and make a new one.
+:::
+
+## Your first call
+
+```py norun
+import anthropic
+
+client = anthropic.Anthropic()   # reads ANTHROPIC_API_KEY from the environment
+
+response = client.beta.messages.create(
+    model="claude-opus-5-5",
+    max_tokens=16000,
+    betas=["server-side-fallback-2026-07-01"],
+    fallbacks="default",
+    system="You are a patient tutor for SSC exam aspirants. Answer in under 120 words.",
+    messages=[{"role": "user", "content": "Explain Article 21 in simple words."}],
+)
+
+if response.stop_reason == "refusal":
+    print("Claude declined this one.")
+else:
+    for block in response.content:
+        if block.type == "text":
+            print(block.text)
+```
+
+- `model` picks which Claude model answers.
+- `system` sets the assistant's role and rules for the whole conversation.
+- `messages` is the conversation so far, as a list of `{"role", "content"}` dictionaries.
+- The reply comes back as a list of **content blocks**; the words are in the blocks whose `type` is `"text"`.
+- `fallbacks="default"` (with its `betas` entry) lets the API automatically retry on another model in the rare case the first declines a request, so your app keeps working.
+
+## Conversations need memory you keep
+
+The API remembers nothing between calls. To chat, keep the list of messages yourself and send all of it every time, adding Claude's answer after each reply:
+
+```py norun
+import anthropic
+
+client = anthropic.Anthropic()
+history = []
+
+while True:
+    question = input("You: ").strip()
+    if question.lower() in ("quit", "exit"):
+        break
+    history.append({"role": "user", "content": question})
+    response = client.beta.messages.create(
+        model="claude-opus-5-5",
+        max_tokens=16000,
+        betas=["server-side-fallback-2026-07-01"],
+        fallbacks="default",
+        system="You are a patient tutor for SSC exam aspirants.",
+        messages=history,
+    )
+    answer = "".join(b.text for b in response.content if b.type == "text")
+    print("Claude:", answer)
+    history.append({"role": "assistant", "content": answer})
+```
+
+## Test without spending money
+
+Professionals separate the logic of an app from the network call, so most of it can be tested offline with a **fake client** that pretends to be the API. The exercises do exactly that: your code is written against the real SDK shape, and the checker swaps in a fake.
+
+:::real
+Ideas to build next: a summariser for long notes, an MCQ generator that writes questions from your Article Machine data, or a Telegram bot (Automation track) that answers doubts using Claude. Read the official docs at [platform.claude.com/docs](https://platform.claude.com/docs) for streaming, tool use and more.
+:::
+
+:::recall
+Q: Where should an API key live?
+A: In an environment variable (like ANTHROPIC_API_KEY), never in code or in Git.
+Q: Why must a chat app send the whole message history on every call?
+A: The API is stateless: it only knows what you send in that request.
+Q: How do you get the text out of a Claude API response?
+A: Loop over `response.content` and join the `.text` of blocks whose `type` is "text".
+:::
+
+@exercise B.6a | Build the messages
+Write `build_messages(history, question)`. `history` is a list of `(role, text)` pairs; return the list of message dictionaries the API expects, with the new question added as a final user message.
+
+`build_messages([("user", "Hi"), ("assistant", "Hello!")], "What is Article 14?")` returns:
+
+```text
+[{'role': 'user', 'content': 'Hi'}, {'role': 'assistant', 'content': 'Hello!'}, {'role': 'user', 'content': 'What is Article 14?'}]
+```
+
+```starter
+def build_messages(history, question):
+    pass
+```
+
+```solution
+def build_messages(history, question):
+    messages = [{"role": role, "content": text} for role, text in history]
+    messages.append({"role": "user", "content": question})
+    return messages
+```
+
+```test
+need("build_messages", "function")
+expect('build_messages([("user", "Hi"), ("assistant", "Hello!")], "What is Article 14?")', [{"role": "user", "content": "Hi"}, {"role": "assistant", "content": "Hello!"}, {"role": "user", "content": "What is Article 14?"}])
+expect('build_messages([], "Start")', [{"role": "user", "content": "Start"}])
+```
+
+:::hints
+- A comprehension turns each `(role, text)` pair into a dictionary.
+- Append the new question with role `"user"` at the end.
+:::
+
+@exercise B.6b | Ask Claude (offline-tested)
+Write `ask(client, question, system)` that calls `client.messages.create(...)` (or `client.beta.messages.create(...)` with fallbacks, as in the lesson) with `model="claude-opus-5-5"`, `max_tokens=16000`, the `system` text and a single user message, and returns the reply text: the `.text` of the content blocks whose `type` is `"text"`, joined together. If `stop_reason` is `"refusal"`, return `"Claude declined this request."`.
+
+The checker passes in a fake client, so no API key or internet is needed.
+
+```starter
+def ask(client, question, system):
+    pass
+```
+
+```solution
+def ask(client, question, system):
+    response = client.messages.create(
+        model="claude-opus-5-5",
+        max_tokens=16000,
+        system=system,
+        messages=[{"role": "user", "content": question}],
+    )
+    if response.stop_reason == "refusal":
+        return "Claude declined this request."
+    return "".join(block.text for block in response.content if block.type == "text")
+```
+
+```test
+from types import SimpleNamespace as NS
+
+class FakeMessages:
+    def __init__(self, reply, stop="end_turn"):
+        self.calls = []
+        self.reply = reply
+        self.stop = stop
+    def create(self, **kwargs):
+        self.calls.append(kwargs)
+        blocks = [NS(type="thinking", thinking=""), NS(type="text", text=self.reply[0])] + [NS(type="text", text=t) for t in self.reply[1:]]
+        return NS(content=blocks, stop_reason=self.stop)
+
+class FakeClient:
+    def __init__(self, reply, stop="end_turn"):
+        self.messages = FakeMessages(reply, stop)
+        self.beta = NS(messages=self.messages)
+
+need("ask", "function")
+fake = FakeClient(["Article 21 protects ", "life and personal liberty."])
+answer = ask(fake, "Explain Article 21", "You are a tutor.")
+check(answer == "Article 21 protects life and personal liberty.", "Returns the joined text of the text blocks", f"returned {answer!r}")
+call = fake.messages.calls[0] if fake.messages.calls else {}
+check(call.get("model") == "claude-opus-5-5", "Uses model claude-opus-5-5", f"model was {call.get('model')!r}")
+check(call.get("system") == "You are a tutor.", "Passes the system prompt", f"system was {call.get('system')!r}")
+check(call.get("messages") == [{"role": "user", "content": "Explain Article 21"}], "Sends one user message with the question", f"messages were {call.get('messages')!r}")
+check(call.get("max_tokens") == 16000, "Sets max_tokens to 16000", f"max_tokens was {call.get('max_tokens')!r}")
+declined = ask(FakeClient(["x"], stop="refusal"), "q", "s")
+check(declined == "Claude declined this request.", "Handles a refusal", f"returned {declined!r}")
+```
+
+:::hints
+- Call `client.messages.create(model=..., max_tokens=..., system=..., messages=[...])` with keyword arguments.
+- Check `response.stop_reason` before reading the content.
+- Join the text: `"".join(b.text for b in response.content if b.type == "text")`.
+:::

@@ -1,0 +1,959 @@
+@unit uD | D | Web apps
+@summary Understand HTTP, build a tiny web framework to see how Flask works inside, store data with SQL, and design an API for your Article Machine.
+
+@lesson D.1 | How the web works | 25
+@goal Describe what happens in an HTTP request and response, and take URLs and JSON apart in Python.
+
+Every time you open a page, your browser (the **client**) sends a **request** to a **server**, which sends back a **response**. A web app is just a program that turns requests into responses.
+
+## The URL
+
+```text
+https://api.example.in/articles/21?lang=en&format=json
+scheme  host           path        query
+```
+
+```py
+from urllib.parse import urlparse, parse_qs
+
+url = "https://api.example.in/articles/21?lang=en&format=json"
+parts = urlparse(url)
+print(parts.scheme, parts.netloc, parts.path)
+print(parse_qs(parts.query))
+```
+
+## The request
+
+A request has a **method** (what to do), a **path** (to what), **headers** (extra information) and sometimes a **body** (data sent along).
+
+| Method | Meaning | Example |
+| --- | --- | --- |
+| GET | read something | open article 21 |
+| POST | create something | submit a quiz answer |
+| PUT / PATCH | change something | update your profile |
+| DELETE | remove something | delete a note |
+
+## The response
+
+A response has a **status code**, headers and a body: HTML for pages, **JSON** for APIs.
+
+| Code | Meaning |
+| --- | --- |
+| 200 | OK |
+| 201 | Created |
+| 301 / 302 | Moved (redirect) |
+| 400 | Bad request (your fault: invalid input) |
+| 401 / 403 | Not logged in / not allowed |
+| 404 | Not found |
+| 500 | Server error (the server's fault) |
+
+Modelling one in plain Python makes the idea concrete:
+
+```py
+import json
+
+request = {"method": "GET", "path": "/articles/21", "headers": {"Accept": "application/json"}}
+response = {
+    "status": 200,
+    "headers": {"Content-Type": "application/json"},
+    "body": json.dumps({"number": 21, "heading": "Protection of life and personal liberty"}),
+}
+print(request["method"], request["path"], "->", response["status"])
+print(json.loads(response["body"])["heading"])
+```
+
+That's all a web framework does at heart: receive the first dictionary, produce the second.
+
+:::recall
+Q: What are the four parts of a URL like https://site.in/path?x=1?
+A: Scheme (https), host (site.in), path (/path) and query (x=1).
+Q: What do the HTTP methods GET and POST mean?
+A: GET reads something; POST sends data to create something.
+Q: What is the difference between 4xx and 5xx status codes?
+A: 4xx means the client made a mistake (like 404 not found); 5xx means the server failed.
+:::
+
+@exercise D.1a | Take a URL apart
+Write `parse_url(url)` returning a dictionary with `scheme`, `host`, `path` and `query`, where `query` maps each parameter to its **first** value.
+
+```starter
+from urllib.parse import urlparse, parse_qs
+
+def parse_url(url):
+    pass
+```
+
+```solution
+from urllib.parse import urlparse, parse_qs
+
+def parse_url(url):
+    p = urlparse(url)
+    query = {k: v[0] for k, v in parse_qs(p.query).items()}
+    return {"scheme": p.scheme, "host": p.netloc, "path": p.path, "query": query}
+```
+
+```test
+need("parse_url", "function")
+expect('parse_url("https://api.example.in/articles/21?lang=en&format=json")', {"scheme": "https", "host": "api.example.in", "path": "/articles/21", "query": {"lang": "en", "format": "json"}})
+expect('parse_url("http://localhost:8000/")', {"scheme": "http", "host": "localhost:8000", "path": "/", "query": {}})
+expect('parse_url("https://x.in/s?q=a&q=b")["query"]', {"q": "a"})
+```
+
+:::hints
+- `urlparse(url)` gives `.scheme`, `.netloc` (the host), `.path` and `.query`.
+- `parse_qs` returns lists of values; keep the first with `v[0]`.
+:::
+
+@exercise D.1b | Status categories
+Write `status_category(code)` returning `"success"` for 200-299, `"redirect"` for 300-399, `"client error"` for 400-499, `"server error"` for 500-599, and `"unknown"` otherwise.
+
+```starter
+def status_category(code):
+    pass
+```
+
+```solution
+def status_category(code):
+    if 200 <= code <= 299:
+        return "success"
+    if 300 <= code <= 399:
+        return "redirect"
+    if 400 <= code <= 499:
+        return "client error"
+    if 500 <= code <= 599:
+        return "server error"
+    return "unknown"
+```
+
+```test
+need("status_category", "function")
+for code, cat in [(200, "success"), (201, "success"), (301, "redirect"), (404, "client error"), (403, "client error"), (500, "server error"), (503, "server error"), (99, "unknown"), (600, "unknown")]:
+    expect(f"status_category({code})", cat)
+```
+
+:::hints
+- Chained comparisons read well here: `200 <= code <= 299`.
+- Early returns keep it flat.
+:::
+
+@exercise D.1c | A JSON response
+Write `json_response(data, status=200)` returning a dictionary with `status`, `headers` (a dictionary with `Content-Type` set to `application/json`) and `body` (the data as a JSON string).
+
+```starter
+import json
+
+def json_response(data, status=200):
+    pass
+```
+
+```solution
+import json
+
+def json_response(data, status=200):
+    return {"status": status, "headers": {"Content-Type": "application/json"}, "body": json.dumps(data)}
+```
+
+```test
+import json as _json
+need("json_response", "function")
+r = json_response({"number": 21})
+check(r.get("status") == 200 and r.get("headers") == {"Content-Type": "application/json"}, "Default status 200 and the JSON content type", f"got {r}")
+check(_json.loads(r.get("body", "null")) == {"number": 21}, "The body is the data as JSON text", f"body was {r.get('body')!r}")
+r2 = json_response({"error": "Not found"}, status=404)
+check(r2.get("status") == 404, "Status can be set")
+```
+
+:::hints
+- `json.dumps(data)` turns the data into a JSON string.
+- Return a dictionary with the three keys.
+:::
+
+@lesson D.2 | Build a tiny web framework | 30
+@goal See how frameworks like Flask route requests by building a small one with a decorator.
+
+Flask code looks like this:
+
+```py norun
+@app.get("/articles/<n>")
+def article(n):
+    return {"number": n}
+```
+
+Magic? No: you already know every piece. `@app.get(...)` is a **decorator** (Unit 14) that stores your function in a dictionary of routes. When a request arrives, the framework looks up its path and calls the stored function. Let's build that.
+
+## Registering routes with a decorator
+
+```py
+ROUTES = {}
+
+def route(path):
+    def register(func):
+        ROUTES[path] = func
+        return func
+    return register
+
+
+@route("/")
+def home():
+    return "Welcome to the Article API"
+
+
+@route("/about")
+def about():
+    return "Built in Python"
+
+
+def handle(path):
+    func = ROUTES.get(path)
+    if func is None:
+        return 404, "Not found"
+    return 200, func()
+
+
+print(handle("/"))
+print(handle("/about"))
+print(handle("/missing"))
+```
+
+`route(path)` returns the real decorator, which records the function and gives it back unchanged.
+
+## Paths with parameters
+
+Real apps need paths like `/articles/21`. A pattern `/articles/<n>` matches when both have the same number of parts and every fixed part is equal; the `<...>` parts become arguments:
+
+```py
+def match(pattern, path):
+    p_parts = pattern.strip("/").split("/")
+    parts = path.strip("/").split("/")
+    if len(p_parts) != len(parts):
+        return None
+    params = {}
+    for p, actual in zip(p_parts, parts):
+        if p.startswith("<") and p.endswith(">"):
+            params[p[1:-1]] = actual
+        elif p != actual:
+            return None
+    return params
+
+print(match("/articles/<n>", "/articles/21"))
+print(match("/articles/<n>", "/parts/III"))
+```
+
+The handler then gets those values as keyword arguments: `func(**params)`.
+
+:::recall
+Q: What does a decorator like `@app.get("/")` do in a web framework?
+A: Registers the function in the framework's table of routes so requests to that path call it.
+Q: How can `/articles/<n>` match `/articles/21`?
+A: Split both into parts; equal counts, fixed parts identical, and each `<name>` part captures the real value as a parameter.
+:::
+
+@exercise D.2a | Routing with a decorator
+Write the `route(path)` decorator that stores functions in `ROUTES`, and `handle(path)` that returns `(200, result)` from the matching function or `(404, "Not found")`. The routes `/` and `/about` in the starter must work.
+
+```starter
+ROUTES = {}
+
+def route(path):
+    pass
+
+def handle(path):
+    pass
+
+
+@route("/")
+def home():
+    return "Welcome to the Article API"
+
+
+@route("/about")
+def about():
+    return "Built in Python"
+```
+
+```solution
+ROUTES = {}
+
+def route(path):
+    def register(func):
+        ROUTES[path] = func
+        return func
+    return register
+
+def handle(path):
+    func = ROUTES.get(path)
+    if func is None:
+        return 404, "Not found"
+    return 200, func()
+
+
+@route("/")
+def home():
+    return "Welcome to the Article API"
+
+
+@route("/about")
+def about():
+    return "Built in Python"
+```
+
+```test
+need("route", "function")
+need("handle", "function")
+expect('handle("/")', (200, "Welcome to the Article API"))
+expect('handle("/about")', (200, "Built in Python"))
+expect('handle("/nope")', (404, "Not found"))
+check(callable(var("home")) and var("home")() == "Welcome to the Article API", "The decorator returns the function unchanged")
+```
+
+:::hints
+- `route(path)` must return a function that takes `func`, stores it in `ROUTES[path]`, and returns `func`.
+- handle: look the path up with `.get()`; call the function if found.
+:::
+
+@exercise D.2b | Match path parameters
+Write `match(pattern, path)` returning a dictionary of captured parameters, or `None` if the path doesn't fit. Leading and trailing slashes don't matter.
+
+```starter
+def match(pattern, path):
+    pass
+```
+
+```solution
+def match(pattern, path):
+    p_parts = pattern.strip("/").split("/")
+    parts = path.strip("/").split("/")
+    if len(p_parts) != len(parts):
+        return None
+    params = {}
+    for p, actual in zip(p_parts, parts):
+        if p.startswith("<") and p.endswith(">"):
+            params[p[1:-1]] = actual
+        elif p != actual:
+            return None
+    return params
+```
+
+```test
+need("match", "function")
+expect('match("/articles/<n>", "/articles/21")', {"n": "21"})
+expect('match("/articles/<n>", "/articles/21/")', {"n": "21"})
+expect('match("/parts/<part>/articles/<n>", "/parts/III/articles/14")', {"part": "III", "n": "14"})
+expect('match("/articles/<n>", "/parts/III")', None)
+expect('match("/articles/<n>", "/articles")', None)
+expect('match("/about", "/about")', {})
+```
+
+:::hints
+- Strip the slashes from both ends, then split on "/".
+- Different numbers of parts: no match.
+- For each pair of parts: a `<name>` part captures; any other part must be equal.
+:::
+
+@exercise D.2c | An article endpoint
+Using `match` (given), write `handle(path)` for one route, `/articles/<n>`: return `(200, json_text)` with `{"number": n, "heading": ...}` for a known article (n as an int), `(404, json_text)` with `{"error": "Article not found"}` for an unknown number, and `(404, json_text)` with `{"error": "Not found"}` for any other path or a non-number n.
+
+```starter
+import json
+
+ARTICLES = {14: "Equality before law", 21: "Protection of life and personal liberty"}
+
+def match(pattern, path):
+    p_parts = pattern.strip("/").split("/")
+    parts = path.strip("/").split("/")
+    if len(p_parts) != len(parts):
+        return None
+    params = {}
+    for p, actual in zip(p_parts, parts):
+        if p.startswith("<") and p.endswith(">"):
+            params[p[1:-1]] = actual
+        elif p != actual:
+            return None
+    return params
+
+def handle(path):
+    pass
+```
+
+```solution
+import json
+
+ARTICLES = {14: "Equality before law", 21: "Protection of life and personal liberty"}
+
+def match(pattern, path):
+    p_parts = pattern.strip("/").split("/")
+    parts = path.strip("/").split("/")
+    if len(p_parts) != len(parts):
+        return None
+    params = {}
+    for p, actual in zip(p_parts, parts):
+        if p.startswith("<") and p.endswith(">"):
+            params[p[1:-1]] = actual
+        elif p != actual:
+            return None
+    return params
+
+def handle(path):
+    params = match("/articles/<n>", path)
+    if params is None or not params["n"].isdigit():
+        return 404, json.dumps({"error": "Not found"})
+    n = int(params["n"])
+    if n not in ARTICLES:
+        return 404, json.dumps({"error": "Article not found"})
+    return 200, json.dumps({"number": n, "heading": ARTICLES[n]})
+```
+
+```test
+import json as _json
+need("handle", "function")
+def call(p):
+    status, body = handle(p)
+    return status, _json.loads(body)
+check(call("/articles/21") == (200, {"number": 21, "heading": "Protection of life and personal liberty"}), "Article 21 works", f"got {call('/articles/21')}")
+check(call("/articles/99") == (404, {"error": "Article not found"}), "Unknown article gives 404", f"got {call('/articles/99')}")
+check(call("/articles/abc") == (404, {"error": "Not found"}), "A non-number gives Not found", f"got {call('/articles/abc')}")
+check(call("/parts/III") == (404, {"error": "Not found"}), "Other paths give Not found", f"got {call('/parts/III')}")
+```
+
+:::hints
+- Match the path; if it doesn't fit, or n isn't digits, return the Not found error.
+- Convert n with int() and look it up in ARTICLES.
+- Use `json.dumps(...)` for every body.
+:::
+
+@lesson D.3 | Databases with SQL | 30
+@goal Store and query data with SQL using Python's built-in `sqlite3`, safely.
+
+Files and JSON work for small data. Real apps use a **database**, and most databases speak **SQL**. Python includes **SQLite**: a complete SQL database stored in a single file (or in memory), used inside every phone and browser.
+
+The articles for this lesson:
+
+```file articles.json
+[
+  {"number": 14, "heading": "Equality before law", "part": "III"},
+  {"number": 17, "heading": "Abolition of Untouchability", "part": "III"},
+  {"number": 21, "heading": "Protection of life and personal liberty", "part": "III"},
+  {"number": 32, "heading": "Remedies for enforcement of rights conferred by this Part", "part": "III"},
+  {"number": 44, "heading": "Uniform civil code for the citizens", "part": "IV"},
+  {"number": 112, "heading": "Annual financial statement", "part": "V"},
+  {"number": 280, "heading": "Finance Commission", "part": "XII"},
+  {"number": 324, "heading": "Superintendence, direction and control of elections to be vested in an Election Commission", "part": "XV"},
+  {"number": 352, "heading": "Proclamation of Emergency", "part": "XVIII"},
+  {"number": 360, "heading": "Provisions as to financial emergency", "part": "XVIII"}
+]
+```
+
+## Create, insert, query
+
+```py
+import json
+import sqlite3
+
+conn = sqlite3.connect(":memory:")          # or "articles.db" for a file
+conn.execute("CREATE TABLE articles (number INTEGER PRIMARY KEY, heading TEXT, part TEXT)")
+
+with open("articles.json", encoding="utf-8") as f:
+    rows = [(a["number"], a["heading"], a["part"]) for a in json.load(f)]
+conn.executemany("INSERT INTO articles VALUES (?, ?, ?)", rows)
+conn.commit()
+
+for number, heading in conn.execute("SELECT number, heading FROM articles WHERE part = ? ORDER BY number", ("III",)):
+    print(number, heading)
+```
+
+| SQL | Meaning |
+| --- | --- |
+| `CREATE TABLE t (col TYPE, ...)` | make a table |
+| `INSERT INTO t VALUES (?, ?)` | add a row |
+| `SELECT cols FROM t WHERE cond ORDER BY col LIMIT n` | read rows |
+| `UPDATE t SET col = ? WHERE cond` | change rows |
+| `DELETE FROM t WHERE cond` | remove rows |
+| `SELECT part, COUNT(*) FROM t GROUP BY part` | count per group |
+
+## Never build SQL from user input
+
+The `?` placeholders matter more than anything else on this page. Gluing user text into SQL with f-strings lets an attacker rewrite your query (**SQL injection**, one of the most common real-world security holes):
+
+```py norun
+# DANGEROUS: never do this
+conn.execute(f"SELECT * FROM articles WHERE heading LIKE '%{user_text}%'")
+
+# SAFE: the database treats the value purely as data
+conn.execute("SELECT * FROM articles WHERE heading LIKE ?", (f"%{user_text}%",))
+```
+
+## Grouping and counting
+
+```py
+import json
+import sqlite3
+
+conn = sqlite3.connect(":memory:")
+conn.execute("CREATE TABLE articles (number INTEGER PRIMARY KEY, heading TEXT, part TEXT)")
+with open("articles.json", encoding="utf-8") as f:
+    conn.executemany("INSERT INTO articles VALUES (:number, :heading, :part)", json.load(f))
+
+query = "SELECT part, COUNT(*) FROM articles GROUP BY part ORDER BY COUNT(*) DESC, part"
+print(conn.execute(query).fetchall())
+```
+
+`:number` style placeholders take values from dictionaries, which fits JSON data neatly.
+
+:::recall
+Q: What do the `?` placeholders in SQL protect against?
+A: SQL injection: values are passed as data and can never change the query itself.
+Q: Which SQL clause counts rows per group?
+A: `GROUP BY`, as in `SELECT part, COUNT(*) FROM articles GROUP BY part`.
+Q: What does `conn.commit()` do?
+A: Saves the changes made since the last commit to the database.
+:::
+
+@exercise D.3a | Load the database
+Write `load(path)` that creates an in-memory SQLite database with a table `articles (number INTEGER PRIMARY KEY, heading TEXT, part TEXT)`, fills it from the JSON file and returns the connection. Then write `headings_in_part(conn, part)` returning the headings of that Part ordered by article number.
+
+```starter
+import json
+import sqlite3
+
+def load(path):
+    pass
+
+def headings_in_part(conn, part):
+    pass
+```
+
+```solution
+import json
+import sqlite3
+
+def load(path):
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE articles (number INTEGER PRIMARY KEY, heading TEXT, part TEXT)")
+    with open(path, encoding="utf-8") as f:
+        conn.executemany("INSERT INTO articles VALUES (:number, :heading, :part)", json.load(f))
+    conn.commit()
+    return conn
+
+def headings_in_part(conn, part):
+    rows = conn.execute("SELECT heading FROM articles WHERE part = ? ORDER BY number", (part,))
+    return [heading for (heading,) in rows]
+```
+
+```test
+need("load", "function")
+need("headings_in_part", "function")
+c = load("articles.json")
+check(c.execute("SELECT COUNT(*) FROM articles").fetchone()[0] == 10, "All 10 articles were inserted")
+expect('headings_in_part(load("articles.json"), "XVIII")', ["Proclamation of Emergency", "Provisions as to financial emergency"])
+expect('headings_in_part(load("articles.json"), "IV")', ["Uniform civil code for the citizens"])
+expect('headings_in_part(load("articles.json"), "XXII")', [])
+check("?" in src, "Uses ? placeholders")
+```
+
+:::hints
+- `executemany` with `:number, :heading, :part` placeholders takes the list of dictionaries directly.
+- Query with `WHERE part = ? ORDER BY number`, passing `(part,)` (a one-item tuple).
+:::
+
+@exercise D.3b | Count per Part
+Write `count_by_part(conn)` returning a list of `(part, count)` tuples, most articles first, ties sorted by Part name. Do the counting in SQL.
+
+```starter
+import json
+import sqlite3
+
+def load(path):
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE articles (number INTEGER PRIMARY KEY, heading TEXT, part TEXT)")
+    with open(path, encoding="utf-8") as f:
+        conn.executemany("INSERT INTO articles VALUES (:number, :heading, :part)", json.load(f))
+    return conn
+
+def count_by_part(conn):
+    pass
+```
+
+```solution
+import json
+import sqlite3
+
+def load(path):
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE articles (number INTEGER PRIMARY KEY, heading TEXT, part TEXT)")
+    with open(path, encoding="utf-8") as f:
+        conn.executemany("INSERT INTO articles VALUES (:number, :heading, :part)", json.load(f))
+    return conn
+
+def count_by_part(conn):
+    query = "SELECT part, COUNT(*) FROM articles GROUP BY part ORDER BY COUNT(*) DESC, part"
+    return conn.execute(query).fetchall()
+```
+
+```test
+need("count_by_part", "function")
+expect('count_by_part(load("articles.json"))', [("III", 4), ("XVIII", 2), ("IV", 1), ("V", 1), ("XII", 1), ("XV", 1)])
+check("GROUP BY" in src.upper(), "Counted with GROUP BY")
+```
+
+:::hints
+- `SELECT part, COUNT(*) FROM articles GROUP BY part`
+- Order by the count descending, then by part: `ORDER BY COUNT(*) DESC, part`.
+- `.fetchall()` returns a list of tuples.
+:::
+
+@exercise D.3c | Safe search
+Write `search(conn, word)` returning the numbers of articles whose heading contains `word` (case-insensitive), ordered by number. Use a `?` placeholder with `LIKE`, never string-building with the word.
+
+```starter
+import json
+import sqlite3
+
+def load(path):
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE articles (number INTEGER PRIMARY KEY, heading TEXT, part TEXT)")
+    with open(path, encoding="utf-8") as f:
+        conn.executemany("INSERT INTO articles VALUES (:number, :heading, :part)", json.load(f))
+    return conn
+
+def search(conn, word):
+    pass
+```
+
+```solution
+import json
+import sqlite3
+
+def load(path):
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE articles (number INTEGER PRIMARY KEY, heading TEXT, part TEXT)")
+    with open(path, encoding="utf-8") as f:
+        conn.executemany("INSERT INTO articles VALUES (:number, :heading, :part)", json.load(f))
+    return conn
+
+def search(conn, word):
+    rows = conn.execute("SELECT number FROM articles WHERE heading LIKE ? ORDER BY number", (f"%{word}%",))
+    return [number for (number,) in rows]
+```
+
+```test
+need("search", "function")
+expect('search(load("articles.json"), "financ")', [112, 280, 360])
+expect('search(load("articles.json"), "EMERGENCY")', [352, 360])
+expect('search(load("articles.json"), "zzz")', [])
+expect("search(load(\"articles.json\"), \"' OR '1'='1\")", [])
+```
+
+:::hints
+- SQLite's LIKE ignores case for English letters.
+- Put the % wildcards in the value, not the SQL: `(f"%{word}%",)`.
+:::
+
+@lesson D.4 | Flask and FastAPI on your laptop | 30
+@goal Turn your Python functions into a real web API with Flask or FastAPI, and know what happens next.
+
+Now the real thing. On your laptop, in a virtual environment, install a framework. **Flask** is simple and famous; **FastAPI** is modern and uses type hints to validate input and write documentation for you.
+
+## Flask
+
+`pip install flask`, then save as `app.py`:
+
+```py norun
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+ARTICLES = {14: "Equality before law", 21: "Protection of life and personal liberty"}
+
+
+@app.get("/articles/<int:n>")
+def article(n):
+    if n not in ARTICLES:
+        return jsonify({"error": "Article not found"}), 404
+    return jsonify({"number": n, "heading": ARTICLES[n]})
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+Run `python app.py` and open `http://127.0.0.1:5000/articles/21`. Compare it with your tiny framework: a decorator registers the route, `<int:n>` captures and converts the parameter, and the function returns a body and a status.
+
+## FastAPI
+
+`pip install "fastapi[standard]"`, then save as `main.py`:
+
+```py norun
+from fastapi import FastAPI, HTTPException
+
+app = FastAPI()
+
+ARTICLES = {14: "Equality before law", 21: "Protection of life and personal liberty"}
+
+
+@app.get("/articles/{n}")
+def article(n: int):
+    if n not in ARTICLES:
+        raise HTTPException(status_code=404, detail="Article not found")
+    return {"number": n, "heading": ARTICLES[n]}
+```
+
+Run `fastapi dev main.py` and open `http://127.0.0.1:8000/docs`: FastAPI has written interactive documentation from your type hints. Try `/articles/abc` and it answers with a clear validation error, because `n: int` told it what to expect.
+
+## Keep the logic separate
+
+The same `articles.json` from the last lesson is in your workspace for the exercise:
+
+```file articles.json
+[
+  {"number": 14, "heading": "Equality before law", "part": "III"},
+  {"number": 17, "heading": "Abolition of Untouchability", "part": "III"},
+  {"number": 21, "heading": "Protection of life and personal liberty", "part": "III"},
+  {"number": 32, "heading": "Remedies for enforcement of rights conferred by this Part", "part": "III"},
+  {"number": 44, "heading": "Uniform civil code for the citizens", "part": "IV"},
+  {"number": 112, "heading": "Annual financial statement", "part": "V"},
+  {"number": 280, "heading": "Finance Commission", "part": "XII"},
+  {"number": 324, "heading": "Superintendence, direction and control of elections to be vested in an Election Commission", "part": "XV"},
+  {"number": 352, "heading": "Proclamation of Emergency", "part": "XVIII"},
+  {"number": 360, "heading": "Provisions as to financial emergency", "part": "XVIII"}
+]
+```
+
+
+Notice how little code lives in the route functions. Professional apps keep the real work (database queries, calculations) in plain functions, a **service layer**, and keep routes thin. Plain functions are easy to test, exactly as you'll do in the next exercise, and switching frameworks later means rewriting only the thin layer.
+
+:::real
+Next steps once your API works locally: HTML pages with templates (Jinja2 in Flask), a database file instead of a dictionary, and **deployment** to a hosting service so others can use it. Many hosts offer free tiers for small Python apps; your Article Machine's GitHub repository could gain a `/api` sibling.
+:::
+
+:::recall
+Q: In Flask, what does `@app.get("/articles/<int:n>")` do?
+A: Registers the function for GET requests to that path and passes the number from the URL as the int n.
+Q: What does FastAPI do with the type hint `n: int`?
+A: Converts and validates the path value as an int, and uses it in the automatic documentation.
+Q: Why keep route functions thin?
+A: The logic lives in plain functions that are easy to test and reuse; routes just connect HTTP to them.
+:::
+
+@exercise D.4a | The service layer
+Write the two service functions an Article API needs, using the `articles` table (a `load` function is provided):
+
+- `get_article(conn, n)` returns `{"number": ..., "heading": ..., "part": ...}` or `None`
+- `list_part(conn, part)` returns `{"part": part, "count": ..., "articles": [numbers in order]}`
+
+```starter
+import json
+import sqlite3
+
+def load(path):
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE articles (number INTEGER PRIMARY KEY, heading TEXT, part TEXT)")
+    with open(path, encoding="utf-8") as f:
+        conn.executemany("INSERT INTO articles VALUES (:number, :heading, :part)", json.load(f))
+    return conn
+
+def get_article(conn, n):
+    pass
+
+def list_part(conn, part):
+    pass
+```
+
+```solution
+import json
+import sqlite3
+
+def load(path):
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE articles (number INTEGER PRIMARY KEY, heading TEXT, part TEXT)")
+    with open(path, encoding="utf-8") as f:
+        conn.executemany("INSERT INTO articles VALUES (:number, :heading, :part)", json.load(f))
+    return conn
+
+def get_article(conn, n):
+    row = conn.execute("SELECT number, heading, part FROM articles WHERE number = ?", (n,)).fetchone()
+    if row is None:
+        return None
+    return {"number": row[0], "heading": row[1], "part": row[2]}
+
+def list_part(conn, part):
+    numbers = [n for (n,) in conn.execute("SELECT number FROM articles WHERE part = ? ORDER BY number", (part,))]
+    return {"part": part, "count": len(numbers), "articles": numbers}
+```
+
+```test
+need("get_article", "function")
+need("list_part", "function")
+expect('get_article(load("articles.json"), 280)', {"number": 280, "heading": "Finance Commission", "part": "XII"})
+expect('get_article(load("articles.json"), 9999)', None)
+expect('list_part(load("articles.json"), "III")', {"part": "III", "count": 4, "articles": [14, 17, 21, 32]})
+expect('list_part(load("articles.json"), "XXII")', {"part": "XXII", "count": 0, "articles": []})
+```
+
+:::hints
+- `.fetchone()` returns one tuple, or None when nothing matched.
+- Build the dictionaries from the row values; count the list for `count`.
+:::
+
+@lesson D.5 | Project: The Article API core | 45 | project
+@goal Build the complete request handler of a small API: routing, database queries, status codes and JSON, all testable without a server.
+
+You'll write `handle(conn, method, path, query)` for an Article API. It returns `(status, body)` where body is a JSON string. Plug it into Flask or FastAPI on your laptop later and it becomes a real web service.
+
+| Request | Response |
+| --- | --- |
+| `GET /articles/<n>` (known n) | 200 `{"number": 21, "heading": "...", "part": "III"}` |
+| `GET /articles/<n>` (unknown or not a number) | 404 `{"error": "Article not found"}` |
+| `GET /parts/<part>` | 200 `{"part": "III", "count": 4, "articles": [14, 17, 21, 32]}` |
+| `GET /search` with `query={"q": "emergency"}` | 200 `{"results": [{"number": 352, "heading": "..."}, ...]}` ordered by number |
+| `GET /search` without q, or q shorter than 3 characters | 400 `{"error": "Search needs at least 3 characters"}` |
+| any other method on a known path | 405 `{"error": "Method not allowed"}` |
+| anything else | 404 `{"error": "Not found"}` |
+
+The data is the same `articles.json`:
+
+```file articles.json
+[
+  {"number": 14, "heading": "Equality before law", "part": "III"},
+  {"number": 17, "heading": "Abolition of Untouchability", "part": "III"},
+  {"number": 21, "heading": "Protection of life and personal liberty", "part": "III"},
+  {"number": 32, "heading": "Remedies for enforcement of rights conferred by this Part", "part": "III"},
+  {"number": 44, "heading": "Uniform civil code for the citizens", "part": "IV"},
+  {"number": 112, "heading": "Annual financial statement", "part": "V"},
+  {"number": 280, "heading": "Finance Commission", "part": "XII"},
+  {"number": 324, "heading": "Superintendence, direction and control of elections to be vested in an Election Commission", "part": "XV"},
+  {"number": 352, "heading": "Proclamation of Emergency", "part": "XVIII"},
+  {"number": 360, "heading": "Provisions as to financial emergency", "part": "XVIII"}
+]
+```
+
+`query` is a dictionary of query parameters (like the one `parse_url` gave you in D.1). Reuse your `match` function from D.2 and SQL from D.3, with `?` placeholders everywhere.
+
+:::tip
+Write a tiny helper `reply(status, data)` that returns `(status, json.dumps(data))`; every branch then becomes one short line.
+:::
+
+:::recall
+Q: Which status code means "this path exists but not with that method"?
+A: 405 Method Not Allowed.
+Q: Which status code fits a request with invalid input, like a search term that is too short?
+A: 400 Bad Request.
+:::
+
+@exercise D.5a | Build the API handler | project
+Write `handle(conn, method, path, query)` exactly as specified in the lesson. `load` and `match` are provided.
+
+```starter
+import json
+import sqlite3
+
+def load(path):
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE articles (number INTEGER PRIMARY KEY, heading TEXT, part TEXT)")
+    with open(path, encoding="utf-8") as f:
+        conn.executemany("INSERT INTO articles VALUES (:number, :heading, :part)", json.load(f))
+    return conn
+
+def match(pattern, path):
+    p_parts = pattern.strip("/").split("/")
+    parts = path.strip("/").split("/")
+    if len(p_parts) != len(parts):
+        return None
+    params = {}
+    for p, actual in zip(p_parts, parts):
+        if p.startswith("<") and p.endswith(">"):
+            params[p[1:-1]] = actual
+        elif p != actual:
+            return None
+    return params
+
+def reply(status, data):
+    return status, json.dumps(data)
+
+def handle(conn, method, path, query):
+    pass
+```
+
+```solution
+import json
+import sqlite3
+
+def load(path):
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE articles (number INTEGER PRIMARY KEY, heading TEXT, part TEXT)")
+    with open(path, encoding="utf-8") as f:
+        conn.executemany("INSERT INTO articles VALUES (:number, :heading, :part)", json.load(f))
+    return conn
+
+def match(pattern, path):
+    p_parts = pattern.strip("/").split("/")
+    parts = path.strip("/").split("/")
+    if len(p_parts) != len(parts):
+        return None
+    params = {}
+    for p, actual in zip(p_parts, parts):
+        if p.startswith("<") and p.endswith(">"):
+            params[p[1:-1]] = actual
+        elif p != actual:
+            return None
+    return params
+
+def reply(status, data):
+    return status, json.dumps(data)
+
+def handle(conn, method, path, query):
+    article = match("/articles/<n>", path)
+    part = match("/parts/<part>", path)
+    search = match("/search", path)
+    if article is None and part is None and search is None:
+        return reply(404, {"error": "Not found"})
+    if method != "GET":
+        return reply(405, {"error": "Method not allowed"})
+    if article is not None:
+        n = article["n"]
+        row = None
+        if n.isdigit():
+            row = conn.execute("SELECT number, heading, part FROM articles WHERE number = ?", (int(n),)).fetchone()
+        if row is None:
+            return reply(404, {"error": "Article not found"})
+        return reply(200, {"number": row[0], "heading": row[1], "part": row[2]})
+    if part is not None:
+        numbers = [x for (x,) in conn.execute("SELECT number FROM articles WHERE part = ? ORDER BY number", (part["part"],))]
+        return reply(200, {"part": part["part"], "count": len(numbers), "articles": numbers})
+    q = (query or {}).get("q", "").strip()
+    if len(q) < 3:
+        return reply(400, {"error": "Search needs at least 3 characters"})
+    rows = conn.execute("SELECT number, heading FROM articles WHERE heading LIKE ? ORDER BY number", (f"%{q}%",))
+    return reply(200, {"results": [{"number": num, "heading": h} for num, h in rows]})
+```
+
+```test
+import json as _json
+need("handle", "function")
+c = load("articles.json")
+def call(method, path, query=None):
+    status, body = handle(c, method, path, query or {})
+    return status, _json.loads(body)
+cases = [
+    (("GET", "/articles/21"), (200, {"number": 21, "heading": "Protection of life and personal liberty", "part": "III"})),
+    (("GET", "/articles/22"), (404, {"error": "Article not found"})),
+    (("GET", "/articles/abc"), (404, {"error": "Article not found"})),
+    (("GET", "/parts/III"), (200, {"part": "III", "count": 4, "articles": [14, 17, 21, 32]})),
+    (("GET", "/parts/XVIII/"), (200, {"part": "XVIII", "count": 2, "articles": [352, 360]})),
+    (("GET", "/search", {"q": "emergency"}), (200, {"results": [{"number": 352, "heading": "Proclamation of Emergency"}, {"number": 360, "heading": "Provisions as to financial emergency"}]})),
+    (("GET", "/search", {"q": "zz"}), (400, {"error": "Search needs at least 3 characters"})),
+    (("GET", "/search"), (400, {"error": "Search needs at least 3 characters"})),
+    (("POST", "/articles/21"), (405, {"error": "Method not allowed"})),
+    (("DELETE", "/search", {"q": "law"}), (405, {"error": "Method not allowed"})),
+    (("GET", "/nothing/here"), (404, {"error": "Not found"})),
+]
+for args, want in cases:
+    got = call(*args)
+    check(got == want, f"{args[0]} {args[1]} {args[2] if len(args) > 2 else ''}".strip() + f" gives {want[0]}", f"Expected {want}\nGot      {got}")
+check("?" in src, "Uses ? placeholders in SQL")
+```
+
+:::hints
+- Match all three patterns first. If none fits, it's 404 Not found; if one fits but the method isn't GET, it's 405.
+- For articles, check `n.isdigit()` before querying, and use `.fetchone()`.
+- For search, read `query.get("q", "")`, strip it, and check the length before querying with LIKE.
+:::

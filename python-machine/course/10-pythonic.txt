@@ -1,0 +1,642 @@
+@unit u10 | 10 | Pythonic tools
+@zen Although practicality beats purity.
+@summary Write the short, clear code experienced Python programmers write: comprehensions, sorting with key functions, zip, any, all, and flexible arguments.
+
+@lesson 10.1 | Comprehensions | 25
+@goal Build lists, dictionaries and sets in one readable line with comprehensions.
+
+You've written this loop many times: start empty, loop, append.
+
+```py
+squares = []
+for n in range(1, 6):
+    squares.append(n * n)
+print(squares)
+```
+
+A **list comprehension** says the same thing in one line:
+
+```py
+squares = [n * n for n in range(1, 6)]
+print(squares)
+```
+
+Read it as: "a list of `n * n`, for each `n` in `range(1, 6)`". The shape is always `[expression for item in iterable]`.
+
+## Filtering with if
+
+Add `if` at the end to keep only some items:
+
+```py
+marks = [35, 72, 48, 29, 90, 61]
+passed = [m for m in marks if m >= 40]
+with_bonus = [m + 5 for m in marks if m >= 40]
+print(passed)
+print(with_bonus)
+```
+
+## Transforming text
+
+```py
+names = ["  aman ", "RIYA", "dev  "]
+clean = [n.strip().title() for n in names]
+print(clean)
+words = "the constitution of india".split()
+print([w.capitalize() for w in words])
+```
+
+## Dictionary and set comprehensions
+
+Same idea, with braces:
+
+```py
+words = ["Polity", "GK", "Economy"]
+lengths = {w: len(w) for w in words}
+print(lengths)
+first_letters = {w[0] for w in ["Agra", "Ajmer", "Bhopal"]}
+print(sorted(first_letters))
+```
+
+:::tip
+Comprehensions are for building one collection from another. If you need several steps, prints, or nested conditions, a normal loop is clearer. Readability counts more than cleverness.
+:::
+
+:::predict
+```py
+print([x * 2 for x in range(5) if x % 2 == 1])
+```
+- [0, 2, 4, 6, 8]
++ [2, 6]
+- [1, 3]
+- [2, 4, 6]
+= Only the odd values of x (1 and 3) pass the if, and each is doubled.
+:::
+
+:::recall
+Q: What is the shape of a list comprehension with a filter?
+A: `[expression for item in iterable if condition]`.
+Q: How do you build a dictionary from a list with a comprehension?
+A: `{key_expr: value_expr for item in iterable}`, for example `{w: len(w) for w in words}`.
+Q: When should you use a normal loop instead of a comprehension?
+A: When the logic needs several steps, prints or complex conditions; clarity comes first.
+:::
+
+@exercise 10.1a | Squares
+Use a list comprehension to make `squares`, the squares of 1 to 10, and print it:
+
+```text
+[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+```
+
+```starter
+squares = []
+
+print(squares)
+```
+
+```solution
+squares = [n * n for n in range(1, 11)]
+print(squares)
+```
+
+```test
+check_out("[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]")
+check(has("ListComp"), "You used a list comprehension")
+```
+
+:::hints
+- The shape is `[expression for n in range(...)]`.
+- range(1, 11) gives 1 to 10; the expression is n * n.
+:::
+
+@exercise 10.1b | Grace marks
+Using **one** list comprehension, make a list of the marks that are 35 or more, each with 5 grace marks added:
+
+```text
+[77, 53, 95, 66, 40]
+```
+
+```starter
+marks = [72, 48, 29, 90, 61, 35, 12]
+
+```
+
+```solution
+marks = [72, 48, 29, 90, 61, 35, 12]
+print([m + 5 for m in marks if m >= 35])
+```
+
+```test
+check_out("[77, 53, 95, 66, 40]")
+check(has("ListComp"), "You used a list comprehension")
+```
+
+:::hints
+- The expression is `m + 5`; the filter is `if m >= 35`.
+- Put it together: `[m + 5 for m in marks if m >= 35]`.
+:::
+
+@exercise 10.1c | Topic lengths
+Make a dictionary `lengths` that maps each topic to its number of characters, using a dictionary comprehension, and print it:
+
+```text
+{'Polity': 6, 'History': 7, 'GK': 2}
+```
+
+```starter
+topics = ["Polity", "History", "GK"]
+
+```
+
+```solution
+topics = ["Polity", "History", "GK"]
+lengths = {t: len(t) for t in topics}
+print(lengths)
+```
+
+```test
+check_out("{'Polity': 6, 'History': 7, 'GK': 2}")
+check(has("DictComp"), "You used a dictionary comprehension")
+```
+
+:::hints
+- Braces with `key: value`, then `for t in topics`.
+- `{t: len(t) for t in topics}`
+:::
+
+@lesson 10.2 | Sorting with key and lambda | 25
+@goal Sort and pick the best by any rule using `key=` functions and short `lambda` functions.
+
+`sorted()` and `.sort()` normally compare items directly. The `key=` argument lets you sort by **something about** each item instead: Python calls the key function on every item and sorts by the results.
+
+```py
+words = ["polity", "GK", "Economy", "art"]
+print(sorted(words))
+print(sorted(words, key=len))
+print(sorted(words, key=str.lower))
+```
+
+Notice the plain `sorted(words)` puts `Economy` and `GK` first: capital letters sort before lowercase ones. `key=str.lower` compares the lowercase versions instead.
+
+## lambda: a function in one line
+
+Often the key you need is tiny and used once. `lambda` creates a small nameless function:
+
+```py
+students = [("Aman", 72), ("Riya", 88), ("Dev", 65)]
+by_marks = sorted(students, key=lambda s: s[1], reverse=True)
+print(by_marks)
+```
+
+`lambda s: s[1]` means "a function that takes `s` and returns `s[1]`". It's the same as:
+
+```py norun
+def second(s):
+    return s[1]
+```
+
+## Sorting by several things
+
+Return a tuple from the key: Python compares the first parts, then uses the second to break ties.
+
+```py
+words = ["pear", "fig", "apple", "kiwi", "date"]
+print(sorted(words, key=lambda w: (len(w), w)))
+```
+
+## max and min with key
+
+`max()` and `min()` take `key=` too:
+
+```py
+students = [("Aman", 72), ("Riya", 88), ("Dev", 65)]
+print(max(students, key=lambda s: s[1]))
+marks = {"Polity": 42, "History": 38, "Economy": 45}
+print(max(marks, key=marks.get))
+```
+
+`max(marks, key=marks.get)` loops over the keys and compares their values: a classic one-liner for "the key with the biggest value".
+
+:::predict
+```py
+nums = [-7, 3, -1, 5]
+print(sorted(nums, key=abs))
+```
+- [-7, -1, 3, 5]
++ [-1, 3, 5, -7]
+- [5, 3, -1, -7]
+- [1, 3, 5, 7]
+= key=abs sorts by distance from zero: 1, 3, 5, 7. The original values are kept, so -1 comes first and -7 last.
+:::
+
+:::recall
+Q: What does `key=` do in sorted()?
+A: Sorts by the result of calling the key function on each item, instead of by the items themselves.
+Q: What does `lambda x: x[1]` mean?
+A: A small nameless function that takes x and returns x[1].
+Q: How do you get the dictionary key with the largest value?
+A: `max(d, key=d.get)`.
+:::
+
+@exercise 10.2a | Merit list
+Sort `students` by marks, highest first, and print just the names in that order:
+
+```text
+['Riya', 'Sana', 'Aman', 'Dev']
+```
+
+```starter
+students = [("Aman", 72), ("Riya", 88), ("Dev", 65), ("Sana", 81)]
+
+```
+
+```solution
+students = [("Aman", 72), ("Riya", 88), ("Dev", 65), ("Sana", 81)]
+ranked = sorted(students, key=lambda s: s[1], reverse=True)
+print([name for name, marks in ranked])
+```
+
+```test
+check_out("['Riya', 'Sana', 'Aman', 'Dev']")
+check(has("Lambda") or "itemgetter" in src, "You sorted with a key function")
+```
+
+:::hints
+- `sorted(students, key=lambda s: s[1], reverse=True)` sorts by the second item, biggest first.
+- Then pull the names out with a comprehension: `[name for name, marks in ranked]`.
+:::
+
+@exercise 10.2b | Short words first
+Sort `words` by length, and alphabetically when the length is the same:
+
+```text
+['GK', 'art', 'Maths', 'Polity', 'Economy', 'History']
+```
+
+```starter
+words = ["Polity", "art", "History", "GK", "Economy", "Maths"]
+
+```
+
+```solution
+words = ["Polity", "art", "History", "GK", "Economy", "Maths"]
+print(sorted(words, key=lambda w: (len(w), w)))
+```
+
+```test
+check_out("['GK', 'art', 'Maths', 'Polity', 'Economy', 'History']")
+check(has("Lambda"), "You used a lambda")
+```
+
+:::hints
+- The key can return a tuple: `(len(w), w)`.
+- Python compares the lengths first and uses the words only to break ties.
+:::
+
+@exercise 10.2c | Strongest subject
+Use `max()` with a key to print the subject with the highest marks:
+
+```text
+Economy
+```
+
+```starter
+marks = {"Polity": 42, "History": 38, "Economy": 45, "GK": 40}
+
+```
+
+```solution
+marks = {"Polity": 42, "History": 38, "Economy": 45, "GK": 40}
+print(max(marks, key=marks.get))
+```
+
+```test
+check_out("Economy")
+check(calls("max"), "You used max()")
+```
+
+:::hints
+- `max(marks)` alone compares the keys alphabetically.
+- Give it `key=marks.get` so it compares the values but still returns the key.
+:::
+
+@lesson 10.3 | zip, any and all | 20
+@goal Walk through several lists together with `zip()`, and test whole collections with `any()` and `all()`.
+
+## zip: pair things up
+
+`zip()` walks through several sequences at once, giving you one item from each:
+
+```py
+names = ["Aman", "Riya", "Dev"]
+marks = [72, 88, 65]
+for name, mark in zip(names, marks):
+    print(f"{name}: {mark}")
+print(dict(zip(names, marks)))
+```
+
+`dict(zip(keys, values))` is the standard way to build a dictionary from two lists. If the lists have different lengths, `zip` stops at the shortest.
+
+## any and all
+
+- `all(...)` is True if **every** item is true.
+- `any(...)` is True if **at least one** item is true.
+
+They're usually given a **generator expression**: a comprehension written with round brackets (or none, when it's the only argument). It produces the values one at a time instead of building a list:
+
+```py
+marks = [72, 48, 90, 61]
+print(all(m >= 40 for m in marks))
+print(any(m >= 90 for m in marks))
+print(any(m < 40 for m in marks))
+```
+
+Generator expressions work anywhere a function loops over values:
+
+```py
+marks = [72, 48, 90, 61]
+print(sum(m for m in marks if m >= 60))
+print(sum(1 for m in marks if m >= 60))
+```
+
+The second line is a neat way to **count** items that match.
+
+:::predict
+```py
+a = [1, 2, 3, 4]
+b = ["x", "y"]
+print(list(zip(a, b)), all(n > 0 for n in a), any(n > 3 for n in a))
+```
+- [(1, 'x'), (2, 'y'), (3, None), (4, None)] True True
++ [(1, 'x'), (2, 'y')] True True
+- [(1, 'x'), (2, 'y')] True False
+- [(1, 2), ('x', 'y')] True True
+= zip stops when the shorter list runs out. Every n is above 0, and 4 is above 3.
+:::
+
+:::recall
+Q: What does `zip(a, b)` give you in a loop?
+A: Pairs: the first items of a and b together, then the second items, stopping at the shorter one.
+Q: What is the difference between any() and all()?
+A: all() needs every item to be true; any() needs at least one.
+Q: How do you count the items matching a condition in one line?
+A: `sum(1 for x in items if condition)`.
+:::
+
+@exercise 10.3a | Result lines
+Use `zip()` to print each student with their marks:
+
+```text
+Aman scored 72
+Riya scored 88
+Dev scored 65
+```
+
+```starter
+names = ["Aman", "Riya", "Dev"]
+marks = [72, 88, 65]
+
+```
+
+```solution
+names = ["Aman", "Riya", "Dev"]
+marks = [72, 88, 65]
+for name, mark in zip(names, marks):
+    print(f"{name} scored {mark}")
+```
+
+```test
+check_out("Aman scored 72\nRiya scored 88\nDev scored 65")
+check(calls("zip"), "You used zip()")
+```
+
+:::hints
+- `for name, mark in zip(names, marks):`
+- Inside the loop: `print(f"{name} scored {mark}")`.
+:::
+
+@exercise 10.3b | Everyone through?
+Write `all_passed(marks)` returning True if every mark is at least 40, and `topper_exists(marks)` returning True if any mark is 90 or more. Use `all()` and `any()`.
+
+```starter
+def all_passed(marks):
+    pass
+
+def topper_exists(marks):
+    pass
+```
+
+```solution
+def all_passed(marks):
+    return all(m >= 40 for m in marks)
+
+def topper_exists(marks):
+    return any(m >= 90 for m in marks)
+```
+
+```test
+need("all_passed", "function")
+need("topper_exists", "function")
+expect("all_passed([40, 55, 90])", True)
+expect("all_passed([40, 39])", False)
+expect("topper_exists([88, 90])", True)
+expect("topper_exists([88, 89])", False)
+expect("all_passed([])", True)
+check(calls("all") and calls("any"), "You used all() and any()")
+```
+
+:::hints
+- `return all(m >= 40 for m in marks)`
+- any() is the same shape with the other condition.
+:::
+
+@exercise 10.3c | Build a lookup
+Build a dictionary `capital_of` from the two lists with `zip()`, then print the capital of Kerala:
+
+```text
+Thiruvananthapuram
+```
+
+```starter
+states = ["Rajasthan", "Kerala", "Assam"]
+capitals = ["Jaipur", "Thiruvananthapuram", "Dispur"]
+
+```
+
+```solution
+states = ["Rajasthan", "Kerala", "Assam"]
+capitals = ["Jaipur", "Thiruvananthapuram", "Dispur"]
+capital_of = dict(zip(states, capitals))
+print(capital_of["Kerala"])
+```
+
+```test
+check_out("Thiruvananthapuram")
+need("capital_of")
+check(var("capital_of") == {"Rajasthan": "Jaipur", "Kerala": "Thiruvananthapuram", "Assam": "Dispur"}, "capital_of maps every state to its capital")
+```
+
+:::hints
+- `dict(zip(states, capitals))` pairs each state with its capital.
+- Then look Kerala up with square brackets.
+:::
+
+@lesson 10.4 | Flexible arguments and unpacking | 20
+@goal Write functions that take any number of arguments with `*args` and `**kwargs`, and unpack collections with `*` and `**`.
+
+## *args: any number of positional arguments
+
+A parameter written with `*` collects all extra positional arguments into a tuple:
+
+```py
+def total(*numbers):
+    print("Got:", numbers)
+    return sum(numbers)
+
+print(total(1, 2))
+print(total(10, 20, 30, 40))
+print(total())
+```
+
+That's how `print()` accepts any number of values.
+
+## **kwargs: any number of keyword arguments
+
+`**` collects extra keyword arguments into a dictionary:
+
+```py
+def profile(name, **details):
+    lines = [name]
+    for key, value in details.items():
+        lines.append(f"  {key}: {value}")
+    return "\n".join(lines)
+
+print(profile("Aman", exam="SSC CGL", year=2026, city="Jaipur"))
+```
+
+The names `args` and `kwargs` are only a convention; the stars do the work.
+
+## Unpacking with * and **
+
+The stars also work the other way, spreading a collection out into separate values:
+
+```py
+marks = [72, 88, 65]
+print(*marks)
+print(*marks, sep=" | ")
+
+first, *rest = [1, 2, 3, 4]
+print(first, rest)
+
+base = {"exam": "SSC CGL", "tier": 1}
+extra = {"tier": 2, "city": "Jaipur"}
+print({**base, **extra})
+```
+
+In the merged dictionary, later keys win, so `tier` becomes 2.
+
+:::predict
+```py
+def f(a, *rest):
+    return len(rest)
+
+print(f(1), f(1, 2, 3), f(*[5, 6]))
+```
+- 1 3 2
++ 0 2 1
+- 0 3 2
+- Error
+= `a` takes the first argument and rest gets the others: none, then two, then one (f(*[5, 6]) is f(5, 6)).
+:::
+
+:::recall
+Q: What does `*args` collect in a function definition?
+A: Any extra positional arguments, as a tuple.
+Q: What does `**kwargs` collect?
+A: Any extra keyword arguments, as a dictionary.
+Q: What does `first, *rest = [1, 2, 3]` give?
+A: first is 1 and rest is [2, 3].
+:::
+
+@exercise 10.4a | Average of anything
+Write `average(*nums)` that returns the mean of any number of arguments, rounded to 2 places, or `0` if none are given.
+
+```starter
+def average(*nums):
+    pass
+```
+
+```solution
+def average(*nums):
+    if not nums:
+        return 0
+    return round(sum(nums) / len(nums), 2)
+```
+
+```test
+need("average", "function")
+expect("average(1, 2, 3)", 2)
+expect("average(142, 151)", 146.5)
+expect("average()", 0)
+expect("average(10, 20, 30, 41)", 25.25)
+```
+
+:::hints
+- nums is a tuple of everything passed in.
+- An empty tuple counts as False.
+:::
+
+@exercise 10.4b | Describe anything
+Write `describe(**info)` that returns the details as `key=value` pairs joined by `, ` in the order given. `describe(exam="CGL", tier=1)` returns `"exam=CGL, tier=1"`.
+
+```starter
+def describe(**info):
+    pass
+```
+
+```solution
+def describe(**info):
+    return ", ".join(f"{k}={v}" for k, v in info.items())
+```
+
+```test
+need("describe", "function")
+expect('describe(exam="CGL", tier=1)', "exam=CGL, tier=1")
+expect('describe(city="Jaipur")', "city=Jaipur")
+expect("describe()", "")
+```
+
+:::hints
+- info is a dictionary: loop over `info.items()`.
+- Build `f"{k}={v}"` strings and join them with `", "`.
+:::
+
+@exercise 10.4c | Head and tail
+Unpack `ranks` into `topper` (the first item) and `others` (a list of the rest) in **one line** using `*`, then print:
+
+```text
+Topper: Riya
+Others: ['Sana', 'Aman', 'Dev']
+```
+
+```starter
+ranks = ["Riya", "Sana", "Aman", "Dev"]
+
+```
+
+```solution
+ranks = ["Riya", "Sana", "Aman", "Dev"]
+topper, *others = ranks
+print("Topper:", topper)
+print("Others:", others)
+```
+
+```test
+check_out("Topper: Riya\nOthers: ['Sana', 'Aman', 'Dev']")
+check(has("Starred"), "You unpacked with *")
+```
+
+:::hints
+- A starred name on the left collects everything left over into a list.
+- `topper, *others = ranks`
+:::

@@ -1,0 +1,694 @@
+@unit u11 | 11 | Modules and the standard library
+@zen Namespaces are one honking great idea -- let's do more of those!
+@summary Import ready-made tools from Python's standard library (maths, randomness, dates, smarter collections) and split your own code into modules.
+
+@lesson 11.1 | import, math and random | 20
+@goal Import modules in the different ways Python allows, and use the most common tools from `math` and `random`.
+
+Python ships with a huge **standard library**: hundreds of **modules**, each a file of ready-made functions. People say Python comes with "batteries included". To use a module, `import` it:
+
+```py
+import math
+print(math.sqrt(144))
+print(math.pi)
+print(math.ceil(4.1), math.floor(4.9))
+```
+
+The module name and a dot come first: `math.sqrt`. That's a **namespace**: `math.floor` and a `floor` variable of your own can't clash, because one of them lives inside `math`.
+
+## Three ways to import
+
+```py
+import math                    # use as math.sqrt
+from math import sqrt, pi      # use as sqrt, pi directly
+import statistics as st        # a shorter alias
+
+print(math.gcd(12, 18))
+print(sqrt(81), round(pi, 3))
+print(st.mean([72, 88, 65]), st.median([72, 88, 65]))
+```
+
+Prefer `import math` for clarity, `from ... import ...` for a few names you use a lot, and aliases for long names. Avoid `from math import *`: it dumps every name into your file, and you can no longer tell where things came from.
+
+## Useful math tools
+
+| Tool | Gives |
+| --- | --- |
+| `math.sqrt(x)` | square root |
+| `math.ceil(x)` / `math.floor(x)` | round up / down to a whole number |
+| `math.pi` | 3.14159... |
+| `math.gcd(a, b)` | greatest common divisor |
+| `math.factorial(n)` | n! |
+
+## random
+
+```py
+import random
+print(random.randint(1, 6))             # a dice roll
+print(random.choice(["Polity", "GK", "Maths"]))
+topics = ["Polity", "History", "Economy"]
+random.shuffle(topics)                  # shuffles the list in place
+print(topics)
+print(random.sample(range(1, 101), 3))  # 3 different numbers
+```
+
+Computers make "random" numbers with a formula. Give it the same starting point, called a **seed**, and you get the same sequence every time, which is very useful for testing:
+
+```py
+import random
+random.seed(2026)
+print(random.randint(1, 100), random.randint(1, 100))
+random.seed(2026)
+print(random.randint(1, 100), random.randint(1, 100))
+```
+
+## Finding your way around
+
+`dir(module)` lists everything in a module and `help(thing)` prints its documentation. The official reference is at [docs.python.org](https://docs.python.org/3/library/); learning to read it is part of becoming a programmer.
+
+:::predict
+```py
+import math
+print(math.ceil(130 / 40), math.floor(-2.5))
+```
+- 3 -2
++ 4 -3
+- 3 -3
+- 4 -2
+= 130 / 40 is 3.25, and ceil rounds up to 4. floor rounds down, and down from -2.5 is -3.
+:::
+
+:::recall
+Q: What is the difference between `import math` and `from math import sqrt`?
+A: With `import math` you write `math.sqrt`; with `from math import sqrt` you can write `sqrt` directly.
+Q: What does `random.seed(42)` do?
+A: Fixes the starting point of the random sequence, so the same "random" numbers come out every run.
+Q: What does `math.ceil(x)` do?
+A: Rounds x up to the next whole number.
+:::
+
+@exercise 11.1a | Buses for the trip
+`students` people are going on a trip and each bus holds `capacity`. Use `math.ceil` to print how many buses are needed:
+
+```text
+Buses needed: 4
+```
+
+```starter
+import math
+
+students = 130
+capacity = 40
+
+```
+
+```solution
+import math
+
+students = 130
+capacity = 40
+print("Buses needed:", math.ceil(students / capacity))
+```
+
+```test
+check_out("Buses needed: 4")
+check(calls("ceil"), "You used math.ceil")
+```
+
+:::hints
+- 130 / 40 is 3.25 buses, but you can't hire a quarter of a bus.
+- `math.ceil(students / capacity)` rounds up.
+:::
+
+@exercise 11.1b | Circle area
+Write `circle_area(r)` that returns the area of a circle (`pi * r * r`) rounded to 2 decimal places, using `math.pi`.
+
+```starter
+import math
+
+def circle_area(r):
+    pass
+```
+
+```solution
+import math
+
+def circle_area(r):
+    return round(math.pi * r * r, 2)
+```
+
+```test
+need("circle_area", "function")
+expect("circle_area(7)", 153.94)
+expect("circle_area(1)", 3.14)
+expect("circle_area(0)", 0)
+check("3.14" not in src, "You used math.pi, not 3.14")
+```
+
+:::hints
+- Area is pi times r squared.
+- `round(math.pi * r * r, 2)`
+:::
+
+@exercise 11.1c | Shuffle the revision order
+Seed the random generator with `2026`, shuffle `topics` with `random.shuffle`, and print the list. Because of the seed, the result is always:
+
+```text
+['History', 'Science', 'Geography', 'Economy', 'Polity']
+```
+
+```starter
+import random
+
+topics = ["Polity", "History", "Economy", "Geography", "Science"]
+
+```
+
+```solution
+import random
+
+topics = ["Polity", "History", "Economy", "Geography", "Science"]
+random.seed(2026)
+random.shuffle(topics)
+print(topics)
+```
+
+```test
+check_out("['History', 'Science', 'Geography', 'Economy', 'Polity']")
+check(calls("seed") and calls("shuffle"), "You used seed and shuffle")
+```
+
+:::hints
+- Call `random.seed(2026)` before shuffling.
+- `random.shuffle(topics)` changes the list in place and returns None, so print topics afterwards.
+:::
+
+@lesson 11.2 | Dates and times | 25
+@goal Create dates, count days between them, add days, and format or read dates as text.
+
+The `datetime` module handles calendar maths that would be painful by hand: month lengths, leap years, weekdays.
+
+```py
+from datetime import date
+
+today = date(2026, 10, 18)
+exam = date(2027, 1, 15)
+print(exam - today)
+print((exam - today).days, "days to go")
+print(today.year, today.month, today.day)
+```
+
+`date.today()` gives the real current date. The examples here use fixed dates so everyone sees the same output.
+
+## Adding days
+
+A `timedelta` is a length of time. Add it to a date:
+
+```py
+from datetime import date, timedelta
+
+start = date(2026, 10, 18)
+print(start + timedelta(days=100))
+print(start + timedelta(weeks=12))
+```
+
+100 days from 18 October 2026 is Republic Day 2027.
+
+## Formatting dates
+
+`strftime` ("string from time") turns a date into text using **format codes**:
+
+| Code | Means | Example |
+| --- | --- | --- |
+| `%d` | day, 2 digits | 26 |
+| `%m` | month, 2 digits | 01 |
+| `%Y` | year | 2026 |
+| `%B` | month name | January |
+| `%A` | weekday name | Monday |
+| `%b` / `%a` | short month / weekday | Jan / Mon |
+
+```py
+from datetime import date
+
+r_day = date(2026, 1, 26)
+print(r_day.strftime("%d/%m/%Y"))
+print(r_day.strftime("%A, %d %B %Y"))
+print(r_day.weekday())   # Monday is 0, Sunday is 6
+```
+
+## Reading dates from text
+
+`strptime` ("string parse time") does the reverse, using the same codes to describe the text's layout:
+
+```py
+from datetime import datetime
+
+d = datetime.strptime("15-08-1947", "%d-%m-%Y")
+print(d.strftime("%A"))
+print(d.date())
+```
+
+`datetime` objects hold a date **and** a time; `.date()` keeps just the date.
+
+:::predict
+```py
+from datetime import date, timedelta
+d = date(2024, 2, 28) + timedelta(days=1)
+print(d)
+```
+- 2024-03-01
++ 2024-02-29
+- 2024-02-28
+- Error
+= 2024 is a leap year, so the day after 28 February is 29 February. datetime knows the calendar rules.
+:::
+
+:::recall
+Q: How do you get the number of days between two dates a and b?
+A: `(b - a).days`. Subtracting dates gives a timedelta.
+Q: What do strftime and strptime do?
+A: strftime turns a date into text; strptime reads text into a date. Both use codes like %d, %m, %Y.
+Q: How do you get the date 30 days after d?
+A: `d + timedelta(days=30)`.
+:::
+
+@exercise 11.2a | Days to the exam
+Print how many days there are from `today` to `exam`:
+
+```text
+89 days to go
+```
+
+```starter
+from datetime import date
+
+today = date(2026, 10, 18)
+exam = date(2027, 1, 15)
+
+```
+
+```solution
+from datetime import date
+
+today = date(2026, 10, 18)
+exam = date(2027, 1, 15)
+print((exam - today).days, "days to go")
+```
+
+```test
+check_out("89 days to go")
+check(has("BinOp") and ".days" in src, "You subtracted the dates and used .days")
+```
+
+:::hints
+- Subtracting two dates gives a timedelta.
+- Its `.days` attribute is the whole number of days.
+:::
+
+@exercise 11.2b | Write the date out
+Write `long_date(d)` that returns a date as text like `Monday, 26 January 2026`.
+
+```starter
+from datetime import date
+
+def long_date(d):
+    pass
+
+print(long_date(date(2026, 1, 26)))
+```
+
+```solution
+from datetime import date
+
+def long_date(d):
+    return d.strftime("%A, %d %B %Y")
+
+print(long_date(date(2026, 1, 26)))
+```
+
+```test
+need("long_date", "function")
+expect("long_date(date(2026, 1, 26))", "Monday, 26 January 2026")
+expect("long_date(date(1950, 1, 26))", "Thursday, 26 January 1950")
+check(calls("strftime"), "You used strftime")
+```
+
+:::hints
+- `%A` is the weekday, `%d` the day, `%B` the month name, `%Y` the year.
+- `return d.strftime("%A, %d %B %Y")`
+:::
+
+@exercise 11.2c | What day was it?
+Read a date typed as `DD-MM-YYYY` and print its weekday. For `15-08-1947`:
+
+```text
+Friday
+```
+
+```starter
+from datetime import datetime
+
+text = input("Date (DD-MM-YYYY): ")
+
+```
+
+```solution
+from datetime import datetime
+
+text = input("Date (DD-MM-YYYY): ")
+d = datetime.strptime(text.strip(), "%d-%m-%Y")
+print(d.strftime("%A"))
+```
+
+```stdin
+15-08-1947
+```
+
+```test
+check_has("Friday", "15 August 1947 was a Friday")
+check_has("Monday", "26 January 2026 is a Monday", got=run("26-01-2026"))
+check_has("Sunday", "18 October 2026 is a Sunday", got=run("18-10-2026"))
+```
+
+:::hints
+- `datetime.strptime(text, "%d-%m-%Y")` reads the text as a date.
+- Then `strftime("%A")` gives the weekday name.
+:::
+
+@lesson 11.3 | Smarter collections | 25
+@goal Count with `Counter`, group with `defaultdict`, and name the fields of tuples with `namedtuple`.
+
+The `collections` module has upgraded versions of the containers you know, built for jobs that come up constantly.
+
+## Counter: counting made easy
+
+Remember the counting pattern from Unit 7? `Counter` does it in one step:
+
+```py
+from collections import Counter
+
+votes = ["Riya", "Dev", "Riya", "Sana", "Riya", "Dev"]
+counts = Counter(votes)
+print(counts)
+print(counts["Riya"], counts["Nobody"])
+print(counts.most_common(2))
+```
+
+A missing key gives 0 instead of a KeyError. `most_common(n)` returns the top n as (item, count) pairs.
+
+```py
+from collections import Counter
+
+text = "the right to equality and the right to freedom"
+print(Counter(text.split()).most_common(3))
+```
+
+## defaultdict: no more "if key not in"
+
+A `defaultdict` creates a missing key's value automatically the first time you touch it. With `list`, every new key starts as an empty list, so grouping needs no checks:
+
+```py
+from collections import defaultdict
+
+cities = ["Agra", "Bhopal", "Ajmer", "Bikaner", "Chennai"]
+groups = defaultdict(list)
+for city in cities:
+    groups[city[0]].append(city)
+print(dict(groups))
+```
+
+Compare that with the version in lesson 7.3, which needed an `if` for every new letter.
+
+## namedtuple: tuples with field names
+
+```py
+from collections import namedtuple
+
+Student = namedtuple("Student", ["name", "marks", "city"])
+s = Student("Aman", 157, "Jaipur")
+print(s.name, s.marks)
+print(s)
+```
+
+`s.marks` is far clearer than `s[1]`. In Unit 13 you'll meet classes and dataclasses, which go further.
+
+:::predict
+```py
+from collections import Counter
+c = Counter("mississippi")
+print(c.most_common(1), c["z"])
+```
+- [('s', 4)] 0
++ [('i', 4)] 0
+- [('i', 4), ('s', 4)] 0
+- [('i', 4)] KeyError
+= i and s both appear 4 times; most_common keeps the one met first in the text, which is i. Missing items count as 0.
+:::
+
+:::recall
+Q: What does `Counter(items).most_common(3)` return?
+A: The three most frequent items, as (item, count) pairs, most common first.
+Q: Why is `defaultdict(list)` handy for grouping?
+A: Every new key starts as an empty list automatically, so you can append without checking.
+Q: What does a namedtuple add to a normal tuple?
+A: Names for its fields, so you can write s.marks instead of s[1].
+:::
+
+@exercise 11.3a | Most frequent words
+Print the two most common words in `text` with their counts, using `Counter`:
+
+```text
+[('the', 3), ('union', 2)]
+```
+
+("of" also appears twice, but when counts tie, `most_common` keeps the word it met first.)
+
+```starter
+from collections import Counter
+
+text = "the union of india the states of the union"
+
+```
+
+```solution
+from collections import Counter
+
+text = "the union of india the states of the union"
+print(Counter(text.split()).most_common(2))
+```
+
+```test
+check_out("[('the', 3), ('union', 2)]")
+check(calls("Counter") and calls("most_common"), "You used Counter and most_common")
+```
+
+:::hints
+- Split the text into words first.
+- `Counter(words).most_common(2)`
+:::
+
+@exercise 11.3b | Group by city
+Use a `defaultdict(list)` to group the students by city, and print the dictionary (converted with `dict()`):
+
+```text
+{'Jaipur': ['Aman', 'Dev'], 'Delhi': ['Riya'], 'Pune': ['Sana', 'Kabir']}
+```
+
+```starter
+from collections import defaultdict
+
+students = [("Aman", "Jaipur"), ("Riya", "Delhi"), ("Sana", "Pune"), ("Dev", "Jaipur"), ("Kabir", "Pune")]
+
+```
+
+```solution
+from collections import defaultdict
+
+students = [("Aman", "Jaipur"), ("Riya", "Delhi"), ("Sana", "Pune"), ("Dev", "Jaipur"), ("Kabir", "Pune")]
+by_city = defaultdict(list)
+for name, city in students:
+    by_city[city].append(name)
+print(dict(by_city))
+```
+
+```test
+check_out("{'Jaipur': ['Aman', 'Dev'], 'Delhi': ['Riya'], 'Pune': ['Sana', 'Kabir']}")
+check(calls("defaultdict"), "You used defaultdict")
+```
+
+:::hints
+- `by_city = defaultdict(list)`, then loop with `for name, city in students:`.
+- `by_city[city].append(name)` works even for a new city.
+:::
+
+@exercise 11.3c | Repeated letters
+Write `repeated(word)` that returns a sorted list of the letters appearing more than once, ignoring case. `repeated("Committee")` returns `['e', 'm', 't']`.
+
+```starter
+from collections import Counter
+
+def repeated(word):
+    pass
+```
+
+```solution
+from collections import Counter
+
+def repeated(word):
+    counts = Counter(word.lower())
+    return sorted(letter for letter, n in counts.items() if n > 1)
+```
+
+```test
+need("repeated", "function")
+expect('repeated("Committee")', ["e", "m", "t"])
+expect('repeated("Python")', [])
+expect('repeated("Banana")', ["a", "n"])
+```
+
+:::hints
+- Count the lowercase letters with Counter.
+- Keep the letters whose count is above 1, then sort them.
+:::
+
+@lesson 11.4 | Your own modules | 20
+@goal Split code into your own module files, import from them, and use `if __name__ == "__main__":`.
+
+Any `.py` file is a module. When a program grows, move related functions into their own file and import them, exactly as you import `math`.
+
+This lesson comes with a file called `scoring.py`, already saved in your workspace:
+
+```file scoring.py
+"""Scoring helpers for SSC mock tests."""
+
+PLUS = 2
+MINUS = 0.5
+
+
+def cgl_score(correct, wrong):
+    return correct * PLUS - wrong * MINUS
+
+
+def accuracy(correct, wrong):
+    attempted = correct + wrong
+    if attempted == 0:
+        return 0.0
+    return round(correct / attempted * 100, 1)
+
+
+if __name__ == "__main__":
+    print("Testing scoring.py")
+    print(cgl_score(68, 12))
+```
+
+Import it like any module:
+
+```py
+import scoring
+
+print(scoring.cgl_score(72, 18))
+print(scoring.accuracy(72, 18))
+print(scoring.PLUS)
+```
+
+```py
+from scoring import cgl_score, accuracy
+
+print(cgl_score(60, 25), accuracy(60, 25))
+```
+
+## What is `if __name__ == "__main__":` for?
+
+Every module has a variable `__name__`. When a file is **run directly**, Python sets it to `"__main__"`. When the file is **imported**, it's set to the module's name (`"scoring"`). So code under that `if` runs when you run the file itself, and stays quiet when someone imports it. That's why importing `scoring` above didn't print "Testing scoring.py".
+
+```py
+print(__name__)
+```
+
+You'll see this line at the bottom of almost every real Python script. It lets one file be both a reusable module and a runnable program.
+
+:::note
+Here, files live in your browser's memory while the page is open. On your laptop (Unit 15) they're real files in a folder, and `import scoring` finds `scoring.py` sitting next to your program.
+:::
+
+:::predict
+```py
+import scoring
+print(scoring.__name__)
+```
+- __main__
++ scoring
+- scoring.py
+- None
+= When a file is imported, its __name__ is the module name. Only the file you run directly is called __main__.
+:::
+
+:::recall
+Q: How do you use functions from your own file `tools.py`?
+A: Put it next to your program and write `import tools` (then `tools.func()`), or `from tools import func`.
+Q: What is `__name__` when a file is run directly?
+A: `"__main__"`. When the file is imported, it's the module's name.
+Q: Why put test or demo code under `if __name__ == "__main__":`?
+A: So it runs when you run the file itself but not when another program imports it.
+:::
+
+@exercise 11.4a | Use the module
+Import `cgl_score` and `accuracy` from `scoring` (the file from this lesson) and print a summary for 70 correct and 20 wrong:
+
+```text
+Score: 130.0, accuracy: 77.8%
+```
+
+Don't copy the functions into your code: import them.
+
+```starter
+# Import from scoring here
+
+```
+
+```solution
+from scoring import cgl_score, accuracy
+
+print(f"Score: {cgl_score(70, 20)}, accuracy: {accuracy(70, 20)}%")
+```
+
+```test
+check_out("Score: 130.0, accuracy: 77.8%")
+check("def cgl_score" not in src and (has("Import") or has("ImportFrom")), "You imported the functions instead of copying them")
+```
+
+:::hints
+- `from scoring import cgl_score, accuracy`
+- Then call them inside an f-string.
+:::
+
+@exercise 11.4b | Guard your demo
+Write a function `percent(part, whole)` that returns `part / whole * 100` rounded to 1 place. Below it, put a demo line `print(percent(157, 200))` **inside** an `if __name__ == "__main__":` block, so the demo only runs when the file is run directly.
+
+```starter
+def percent(part, whole):
+    pass
+
+print(percent(157, 200))
+```
+
+```solution
+def percent(part, whole):
+    return round(part / whole * 100, 1)
+
+
+if __name__ == "__main__":
+    print(percent(157, 200))
+```
+
+```test
+check_out("78.5")
+need("percent", "function")
+expect("percent(1, 3)", 33.3)
+check("__name__" in src and '"__main__"' in src or "'__main__'" in src, "The demo is guarded by if __name__ == \"__main__\":")
+```
+
+:::hints
+- Write the function first and return the rounded value.
+- Then `if __name__ == "__main__":` with the print indented under it.
+:::

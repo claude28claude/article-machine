@@ -1,0 +1,906 @@
+@unit u5 | 5 | Loops
+@zen Simple is better than complex.
+@summary Repeat work with while and for, use range(), build totals and maximums, and control loops with break and continue.
+
+@lesson 5.1 | while loops | 25
+@goal Repeat code while a condition stays True, and make sure the loop ends.
+
+Computers are good at doing the same thing many times without getting bored. A `while` loop repeats its block **as long as** its condition is True:
+
+```py
+count = 5
+while count > 0:
+    print(count)
+    count -= 1
+print("Liftoff!")
+```
+
+Python checks the condition, runs the block, then goes back and checks again. When `count` reaches 0, `count > 0` is False and the loop ends. Step through it and watch the arrow jump back to the `while` line each time.
+
+## Every loop needs a way out
+
+If nothing in the block moves the condition towards False, the loop runs forever. That's an **infinite loop**:
+
+```py norun
+count = 5
+while count > 0:
+    print(count)   # count never changes, so this never stops
+```
+
+If it happens to you, press **Stop**, or wait: the bench stops any program after 10 seconds. Then ask yourself: what is supposed to change each time round?
+
+## Loops that don't know how many times
+
+`while` shines when you don't know in advance how many repetitions you need. How many years until ₹10,000 at 8% interest doubles?
+
+```py
+money = 10000
+years = 0
+while money < 20000:
+    money = money * 1.08
+    years += 1
+print(years, "years")
+print(round(money))
+```
+
+## Reading until the user says stop
+
+A value that means "stop" is called a **sentinel**. Here, typing `0` ends the input:
+
+```py
+total = 0
+n = int(input("Number (0 to stop): "))
+while n != 0:
+    total += n
+    n = int(input("Number (0 to stop): "))
+print("Total:", total)
+```
+
+```stdin
+5
+10
+0
+```
+
+Notice the `input()` line appears twice: once before the loop to get the first number, and once at the end of the block to get the next.
+
+:::predict
+```py
+n = 1
+while n < 20:
+    n = n * 3
+print(n)
+```
+- 9
+- 20
++ 27
+- 81
+= n goes 1, 3, 9, 27. After 9 the condition 9 < 20 is still True, so it becomes 27. Then 27 < 20 is False and the loop stops.
+:::
+
+:::recall
+Q: When does a `while` loop stop?
+A: When its condition is False at the moment Python checks it, at the top of each round.
+Q: What causes an infinite loop?
+A: Nothing inside the loop changes the condition, so it stays True forever.
+Q: What is a sentinel value?
+A: A special input that means "stop", like typing 0 or "quit".
+:::
+
+@exercise 5.1a | Rocket countdown
+Print a countdown from `10` to `1`, one number per line, then `Liftoff!`. Use a `while` loop.
+
+```starter
+count = 10
+
+```
+
+```solution
+count = 10
+while count > 0:
+    print(count)
+    count -= 1
+print("Liftoff!")
+```
+
+```test
+check_out("\n".join(str(i) for i in range(10, 0, -1)) + "\nLiftoff!")
+check(has("While"), "You used a while loop")
+```
+
+:::hints
+- Loop while count is greater than 0.
+- Inside the loop: print count, then subtract 1.
+- Liftoff goes after the loop, so it isn't indented.
+:::
+
+@exercise 5.1b | Doubling time
+Your savings start at `10000` and grow by `8%` each year (`money = money * 1.08`). Print how many years it takes until the money is **at least** `20000`:
+
+```text
+Years: 10
+```
+
+```starter
+money = 10000
+years = 0
+
+```
+
+```solution
+money = 10000
+years = 0
+while money < 20000:
+    money = money * 1.08
+    years += 1
+print("Years:", years)
+```
+
+```test
+check_out("Years: 10")
+check(has("While"), "You used a while loop", "Don't type 10: let the loop count the years.")
+```
+
+:::hints
+- Keep going while the money is below 20000.
+- Each time round: grow the money, and add 1 to years.
+:::
+
+@exercise 5.1c | Sum until zero
+Read numbers one at a time. When the user types `0`, stop and print the total of everything typed before it. For `5`, `10`, `25`, `0`:
+
+```text
+Total: 40
+```
+
+```starter
+total = 0
+
+```
+
+```solution
+total = 0
+n = int(input("Number (0 to stop): "))
+while n != 0:
+    total += n
+    n = int(input("Number (0 to stop): "))
+print("Total:", total)
+```
+
+```stdin
+5
+10
+25
+0
+```
+
+```test
+check_has("Total: 40", "5, 10, 25 then 0 gives 40")
+check_has("Total: 0", "Typing 0 straight away gives 0", got=run("0"))
+check_has("Total: -2", "Negative numbers count too", got=run("3\n-5\n0"))
+```
+
+:::hints
+- Read the first number before the loop.
+- Loop while the number isn't 0: add it to the total, then read the next one.
+- Print the total after the loop.
+:::
+
+@lesson 5.2 | for loops and range() | 25
+@goal Repeat code for each item in a sequence, and generate number sequences with `range()`.
+
+A `for` loop runs its block once **for each item** in a sequence. A string is a sequence of characters:
+
+```py
+for letter in "SSC":
+    print(letter)
+```
+
+The variable after `for` (here `letter`) takes each value in turn. You choose its name; pick one that says what it holds.
+
+## range(): numbers on demand
+
+`range()` produces a sequence of whole numbers. Like slicing, the stop value is **not** included:
+
+```py
+for i in range(5):
+    print(i)
+```
+
+| Call | Gives |
+| --- | --- |
+| `range(5)` | 0, 1, 2, 3, 4 |
+| `range(1, 6)` | 1, 2, 3, 4, 5 |
+| `range(0, 20, 5)` | 0, 5, 10, 15 |
+| `range(10, 0, -2)` | 10, 8, 6, 4, 2 |
+
+```py
+for n in range(1, 11):
+    print("5 x", n, "=", 5 * n)
+```
+
+## for or while?
+
+- Use `for` when you're going through a sequence, or you know how many times to repeat.
+- Use `while` when you repeat **until something happens**, and you can't know the count in advance.
+
+Most loops in real Python code are `for` loops.
+
+## Counting with a for loop
+
+```py
+word = "Constitution"
+count = 0
+for ch in word.lower():
+    if ch in "aeiou":
+        count += 1
+print("Vowels:", count)
+```
+
+Indentation shows the structure: the `if` is inside the loop, and the `count += 1` is inside the `if`. The `print` is outside both, so it runs once at the end.
+
+:::predict
+```py
+for i in range(2, 11, 3):
+    print(i, end=" ")
+```
+- 2 3 4 5 6 7 8 9 10
++ 2 5 8
+- 2 5 8 11
+- 3 6 9
+= Start at 2 and step by 3: 2, 5, 8. The next would be 11, but the stop value 11 is not included.
+:::
+
+:::quiz
+? How many times does `for i in range(1, 10):` run its block?
+- 10
++ 9
+- 1
+- 11
+= range(1, 10) gives 1 to 9: the stop value is excluded. That's 9 numbers.
+:::
+
+:::recall
+Q: What does `range(1, 6)` produce?
+A: 1, 2, 3, 4 and 5. The stop value 6 is not included.
+Q: When should you use `for` instead of `while`?
+A: When you are going through a sequence or know how many times to repeat. Use while to repeat until a condition changes.
+Q: In `for ch in "abc":`, what values does `ch` take?
+A: "a", then "b", then "c".
+:::
+
+@exercise 5.2a | Table of 7
+Print the 7 times table from 1 to 10, formatted like this:
+
+```text
+7 x 1 = 7
+7 x 2 = 14
+...
+7 x 10 = 70
+```
+
+```starter
+for n in range(1, 11):
+    pass  # replace this line
+```
+
+```solution
+for n in range(1, 11):
+    print(f"7 x {n} = {7 * n}")
+```
+
+```test
+check_out("\n".join(f"7 x {n} = {7 * n}" for n in range(1, 11)))
+check(has("For"), "You used a for loop")
+```
+
+:::hints
+- `range(1, 11)` gives 1 to 10.
+- Inside the loop print one line using n: `print(f"7 x {n} = {7 * n}")`.
+:::
+
+@exercise 5.2b | Sum 1 to n
+Read a number `n` and print the sum of every whole number from 1 to n, using a loop. For `100` the output is:
+
+```text
+Sum: 5050
+```
+
+```starter
+n = int(input("n: "))
+total = 0
+
+```
+
+```solution
+n = int(input("n: "))
+total = 0
+for i in range(1, n + 1):
+    total += i
+print("Sum:", total)
+```
+
+```stdin
+100
+```
+
+```test
+check_has("Sum: 5050", "n = 100 gives 5050")
+check_has("Sum: 15", "n = 5 gives 15", got=run("5"))
+check_has("Sum: 1", "n = 1 gives 1", got=run("1"))
+check(has("For", "While"), "You used a loop")
+```
+
+:::hints
+- To include n, the range has to stop at n + 1.
+- Add each number to total inside the loop; print after the loop.
+:::
+
+@exercise 5.2c | Count the vowels
+Read a word and print how many vowels (a, e, i, o, u) it has, ignoring capital letters. For `Constitution`:
+
+```text
+Vowels: 5
+```
+
+```starter
+word = input("Word: ")
+
+```
+
+```solution
+word = input("Word: ")
+count = 0
+for ch in word.lower():
+    if ch in "aeiou":
+        count += 1
+print("Vowels:", count)
+```
+
+```stdin
+Constitution
+```
+
+```test
+check_has("Vowels: 5", "Constitution has 5 vowels")
+check_has("Vowels: 5", "EDUCATION has 5", got=run("EDUCATION"))
+check_has("Vowels: 0", "rhythm has 0", got=run("rhythm"))
+check(has("For"), "You used a for loop")
+```
+
+:::hints
+- Loop over the characters: `for ch in word.lower():`.
+- `ch in "aeiou"` is True for a vowel.
+- Start a counter at 0 before the loop and add 1 for each vowel.
+:::
+
+@lesson 5.3 | Loop patterns | 25
+@goal Use the accumulator patterns every programmer knows: running totals, counts, largest and smallest, and building strings.
+
+Most loops you'll ever write follow one of a few patterns. Learn them once and you'll recognise them everywhere.
+
+## The accumulator
+
+**Start** a variable before the loop, **update** it inside, **use** it after:
+
+```py
+marks = [142, 151, 138, 160, 147]
+total = 0
+for m in marks:
+    total += m
+print("Total:", total)
+print("Average:", total / len(marks))
+```
+
+(`marks` is a **list**, a sequence of values in square brackets. Lists get their own unit next; for now, treat it like a sequence you can loop over, just like a string.)
+
+## Counting what matches
+
+```py
+marks = [142, 151, 138, 160, 147]
+above_150 = 0
+for m in marks:
+    if m > 150:
+        above_150 += 1
+print(above_150, "tests above 150")
+```
+
+## Keeping the best so far
+
+To find the largest value, remember the best one seen so far and replace it whenever you meet something bigger. Start with the **first** value, not 0, so it also works with negative numbers:
+
+```py
+marks = [142, 151, 138, 160, 147]
+best = marks[0]
+for m in marks:
+    if m > best:
+        best = m
+print("Best:", best)
+```
+
+Python has `max()` and `min()` built in, and you should use them in real code. But this pattern is how they work, and coding interviews love asking you to write it yourself.
+
+## Building a string
+
+```py
+word = "loops"
+result = ""
+for ch in word:
+    result = ch + result
+print(result)
+```
+
+Each letter is put in front of the result so far, so the word comes out reversed.
+
+## Multiplying
+
+A running product starts at **1**, not 0:
+
+```py
+n = 5
+product = 1
+for i in range(1, n + 1):
+    product *= i
+print(product)
+```
+
+That's 5 factorial: 1 x 2 x 3 x 4 x 5.
+
+:::predict
+```py
+total = 0
+for n in range(1, 5):
+    total += n * n
+print(total)
+```
+- 10
++ 30
+- 16
+- 25
+= It adds the squares 1 + 4 + 9 + 16, which is 30. range(1, 5) stops before 5.
+:::
+
+:::recall
+Q: What are the three steps of the accumulator pattern?
+A: Set a starting value before the loop, update it inside the loop, use it after the loop.
+Q: When finding the maximum yourself, why start with the first value instead of 0?
+A: If every value is negative, starting at 0 would wrongly give 0 as the maximum.
+Q: What starting value does a running product need?
+A: 1, because multiplying by 0 would make everything 0.
+:::
+
+@exercise 5.3a | Highest mock score
+Read 5 scores, one per line, and print the highest **without** using `max()`:
+
+```text
+Highest: 160
+```
+
+```starter
+highest = int(input("Score: "))
+for i in range(4):
+    score = int(input("Score: "))
+    # update highest here
+
+print("Highest:", highest)
+```
+
+```solution
+highest = int(input("Score: "))
+for i in range(4):
+    score = int(input("Score: "))
+    if score > highest:
+        highest = score
+print("Highest:", highest)
+```
+
+```stdin
+142
+151
+138
+160
+147
+```
+
+```test
+check_has("Highest: 160", "142, 151, 138, 160, 147 gives 160")
+check_has("Highest: 99", "The first score can be the highest", got=run("99\n1\n2\n3\n4"))
+check_has("Highest: 99", "The last score can be the highest", got=run("1\n2\n3\n4\n99"))
+check_has("Highest: -1", "Works with negative numbers", got=run("-5\n-1\n-9\n-3\n-7"))
+check(not calls("max"), "No max() used")
+```
+
+:::hints
+- `highest` already holds the first score. Each new score only matters if it's bigger.
+- `if score > highest: highest = score`, inside the loop.
+:::
+
+@exercise 5.3b | Factorial
+Read `n` and print `n!` (n factorial: 1 x 2 x ... x n) using a loop. For `5`:
+
+```text
+5! = 120
+```
+
+By definition `0!` is 1.
+
+```starter
+n = int(input("n: "))
+
+```
+
+```solution
+n = int(input("n: "))
+result = 1
+for i in range(1, n + 1):
+    result *= i
+print(f"{n}! = {result}")
+```
+
+```stdin
+5
+```
+
+```test
+check_has("5! = 120", "5! is 120")
+check_has("0! = 1", "0! is 1", got=run("0"))
+check_has("10! = 3628800", "10! is 3628800", got=run("10"))
+check_has("25! = 15511210043330985984000000", "Python handles huge numbers: 25!", got=run("25"))
+check(not uses("math"), "No math module needed", "Build the product with a loop, without math.factorial.")
+```
+
+:::hints
+- A product starts at 1.
+- Multiply by every number from 1 to n: `range(1, n + 1)`.
+- For n = 0 the loop runs zero times, so the result stays 1. That's correct.
+:::
+
+@exercise 5.3c | Digit sum
+Read a whole number and print the sum of its digits. For `2026`:
+
+```text
+Digit sum: 10
+```
+
+Hint: the number can stay as text so you can loop over its characters.
+
+```starter
+number = input("Number: ")
+
+```
+
+```solution
+number = input("Number: ")
+total = 0
+for digit in number:
+    total += int(digit)
+print("Digit sum:", total)
+```
+
+```stdin
+2026
+```
+
+```test
+check_has("Digit sum: 10", "2026 gives 10")
+check_has("Digit sum: 45", "123456789 gives 45", got=run("123456789"))
+check_has("Digit sum: 7", "7 gives 7", got=run("7"))
+```
+
+:::hints
+- Loop over the characters of the text: `for digit in number:`.
+- Each digit is a one-character string; `int(digit)` makes it a number you can add.
+:::
+
+@lesson 5.4 | break, continue and nested loops | 25
+@goal Leave a loop early with `break`, skip a round with `continue`, and put loops inside loops.
+
+## break: stop the loop now
+
+`break` ends the loop immediately, even if the condition is still True or items remain. It's perfect for searching: stop as soon as you've found what you want.
+
+```py
+for n in range(1, 100):
+    if n * n > 200:
+        print("First square above 200:", n * n)
+        break
+```
+
+## The while True pattern
+
+For input loops, many programmers write a loop that would run forever, and `break` out when the user is done. It avoids writing `input()` twice:
+
+```py
+total = 0
+while True:
+    text = input("Number or 'done': ")
+    if text == "done":
+        break
+    total += int(text)
+print("Total:", total)
+```
+
+```stdin
+4
+6
+done
+```
+
+## continue: skip to the next round
+
+`continue` jumps straight back to the top of the loop, skipping the rest of the block for this round:
+
+```py
+for n in range(1, 11):
+    if n % 3 == 0:
+        continue
+    print(n, end=" ")
+```
+
+Multiples of 3 are skipped; everything else prints.
+
+## Loops inside loops
+
+A loop can contain another loop. The inner loop runs **completely** for every single round of the outer loop:
+
+```py
+for row in range(1, 4):
+    for col in range(1, 4):
+        print(row * col, end="\t")
+    print()
+```
+
+`print()` with nothing in it just ends the line. Step through this one: the inner loop runs 3 times for each of the 3 outer rounds, 9 times in total.
+
+Nested loops also draw patterns:
+
+```py
+for i in range(1, 5):
+    print("*" * i)
+```
+
+(Here `"*" * i` does the inner repeating for us.)
+
+:::predict
+```py
+for i in range(1, 6):
+    if i == 2:
+        continue
+    if i == 4:
+        break
+    print(i)
+```
+- 1\n2\n3
++ 1\n3
+- 1\n3\n5
+- 1\n3\n4
+= i = 2 is skipped by continue. At i = 4 the loop breaks before printing, so only 1 and 3 are printed.
+:::
+
+:::recall
+Q: What does `break` do?
+A: Ends the loop immediately; the program continues after the loop.
+Q: What does `continue` do?
+A: Skips the rest of the block for this round and goes to the next round of the loop.
+Q: In nested loops, how many times does the inner block run if the outer loop runs 3 times and the inner loop 4 times?
+A: 12 times: the inner loop runs completely for each round of the outer loop.
+:::
+
+@exercise 5.4a | First common multiple
+Find the first number **greater than 100** that is divisible by both 7 and 13. Print it:
+
+```text
+182
+```
+
+Use a loop with `break`.
+
+```starter
+n = 101
+
+```
+
+```solution
+n = 101
+while True:
+    if n % 7 == 0 and n % 13 == 0:
+        print(n)
+        break
+    n += 1
+```
+
+```test
+check_out("182")
+check(has("Break"), "You used break")
+```
+
+:::hints
+- Start at 101 and go up by 1.
+- `n % 7 == 0 and n % 13 == 0` is True when both divide n.
+- Print and `break` as soon as you find it.
+:::
+
+@exercise 5.4b | Prime or not
+Read a whole number and print `Prime` or `Not prime`. A prime number is greater than 1 and divisible only by 1 and itself. Stop checking as soon as you find a divisor.
+
+```starter
+n = int(input("Number: "))
+
+```
+
+```solution
+n = int(input("Number: "))
+is_prime = n > 1
+for d in range(2, n):
+    if n % d == 0:
+        is_prime = False
+        break
+if is_prime:
+    print("Prime")
+else:
+    print("Not prime")
+```
+
+```stdin
+97
+```
+
+```test
+for value, prime in [("97", True), ("2", True), ("3", True), ("1", False), ("0", False), ("4", False), ("91", False), ("7919", True), ("100", False)]:
+    o = run(value).strip()
+    want = "Prime" if prime else "Not prime"
+    check(o.endswith(want) and not (prime and "Not" in o), f"{value} is {want.lower()}", f"Your output: {o}")
+```
+
+:::hints
+- Numbers below 2 are never prime: deal with them first.
+- Try every divisor from 2 up to n - 1. If one divides n exactly (`n % d == 0`), it's not prime.
+- A variable like `is_prime = True` that the loop switches to False is called a flag.
+:::
+
+@exercise 5.4c | Star triangle
+Read a number `n` and print a triangle of `n` rows, where row `i` has `i` stars. For `4`:
+
+```text
+*
+**
+***
+****
+```
+
+```starter
+n = int(input("Rows: "))
+
+```
+
+```solution
+n = int(input("Rows: "))
+for i in range(1, n + 1):
+    print("*" * i)
+```
+
+```stdin
+4
+```
+
+```test
+check_out("*\n**\n***\n****", got=out[out.find("*"):])
+o = run("6")
+check_out("\n".join("*" * i for i in range(1, 7)), "6 rows work too", got=o[o.find("*"):])
+```
+
+:::hints
+- Loop i from 1 to n: `range(1, n + 1)`.
+- `"*" * i` makes a string of i stars.
+:::
+
+@lesson 5.5 | Project: Number guessing game | 40 | project
+@goal Build a complete interactive game with a loop, conditions, a counter and a random number.
+
+Classic first game: the computer picks a secret number from 1 to 100, and you guess. After each guess it says **Too low** or **Too high**, until you get it.
+
+## Random numbers
+
+Python's `random` module (a ready-made toolbox; modules get a full lesson in Unit 11) picks random numbers. `import` loads it:
+
+```py
+import random
+secret = random.randint(1, 100)
+print("I picked", secret)
+```
+
+Run that a few times: a different number each run. `randint(1, 100)` can return 1, 100 or anything between.
+
+:::note
+To make the game fair to test, the checker fixes the random sequence, so it knows your secret number. That works as long as you write exactly `secret = random.randint(1, 100)` once, before the loop.
+:::
+
+## How the game should look
+
+```text
+Guess (1-100): 50
+Too high
+Guess (1-100): 25
+Too low
+Guess (1-100): 42
+Got it! The number was 42. Tries: 3
+```
+
+## Plan
+
+1. Import random and pick the secret.
+2. Start a `tries` counter at 0.
+3. Loop: read a guess, add 1 to tries, then compare:
+   - lower than the secret: print `Too low`
+   - higher: print `Too high`
+   - equal: print the winning line and `break`
+
+:::tip
+In the bench, each guess you type is fed back into the same game, and the secret stays the same until you press Run again. Step through it with a few guesses typed to watch the loop work.
+:::
+
+:::recall
+Q: How do you get a random whole number from 1 to 100?
+A: `import random`, then `random.randint(1, 100)`. Both ends can come up.
+Q: What does `import` do?
+A: Loads a module, a ready-made toolbox of functions such as random or math.
+:::
+
+@exercise 5.5a | Build the guessing game | project
+Write the guessing game. Use `secret = random.randint(1, 100)`, print `Too low` or `Too high` after each wrong guess, and finish with exactly:
+
+```text
+Got it! The number was 42. Tries: 3
+```
+
+(with the real secret and the real number of tries).
+
+```starter
+import random
+
+secret = random.randint(1, 100)
+tries = 0
+
+```
+
+```solution
+import random
+
+secret = random.randint(1, 100)
+tries = 0
+while True:
+    guess = int(input("Guess (1-100): "))
+    tries += 1
+    if guess < secret:
+        print("Too low")
+    elif guess > secret:
+        print("Too high")
+    else:
+        print(f"Got it! The number was {secret}. Tries: {tries}")
+        break
+```
+
+```stdin
+50
+25
+42
+```
+
+```test
+import random as _r
+_r.seed(7)
+secret = _r.randint(1, 100)
+o = run(f"1\n100\n{secret}")
+check_has("Too low", "A guess of 1 is too low", got=o)
+check_has("Too high", "A guess of 100 is too high", got=o)
+check_has(f"Got it! The number was {secret}. Tries: 3", "Winning line after 3 tries", got=o)
+o = run(f"{secret}")
+check_has(f"Got it! The number was {secret}. Tries: 1", "A first-try win counts 1 try", got=o)
+check(o.count("Too") == 0, "No hint when the first guess is right", f"Your output: {o.strip()}")
+```
+
+:::hints
+- Use `while True:` and `break` when the guess is right.
+- Read the guess with `int(input(...))` inside the loop and add 1 to tries straight after.
+- Compare with if/elif/else: less than, greater than, else equal.
+:::

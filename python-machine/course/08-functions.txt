@@ -1,0 +1,865 @@
+@unit u8 | 8 | Functions
+@zen If the implementation is hard to explain, it's a bad idea.
+@summary Package code into named, reusable functions: parameters in, return values out, clear scope, and functions that call functions, including themselves.
+
+@lesson 8.1 | Defining functions | 25
+@goal Write your own functions with `def`, pass them values, and get results back with `return`.
+
+You've used plenty of functions: `print()`, `len()`, `input()`, `sorted()`. Now you'll make your own. A **function** is a named block of code you can run whenever you like, as often as you like.
+
+```py
+def greet(name):
+    message = "Namaste, " + name + "!"
+    return message
+
+print(greet("Aman"))
+print(greet("Riya"))
+```
+
+- `def` starts a function **definition**, followed by its name, brackets and a colon.
+- `name` is a **parameter**: a variable that receives whatever value the caller passes in. `"Aman"` is the **argument** passed for it.
+- The indented block is the function's **body**. Nothing in it runs until the function is **called**.
+- `return` sends a value back to wherever the function was called.
+
+Press **Step through** on that example: watch the arrow jump into the function, a new box of local variables appear, and the result come back.
+
+## return is not print
+
+This is the most important idea in this lesson. `print()` shows a value on the screen and the program can't use it again. `return` hands the value back so the caller can store it, test it or calculate with it:
+
+```py
+def area(length, width):
+    return length * width
+
+room = area(4, 5)
+hall = area(10, 6)
+print(room + hall)
+print(area(2, 3) > 5)
+```
+
+A function that has no `return` gives back `None`:
+
+```py
+def shout(text):
+    print(text.upper())
+
+result = shout("hello")
+print(result)
+```
+
+## Why bother?
+
+- **Reuse**: write the logic once, call it a hundred times.
+- **Names**: `cgl_score(68, 12)` says what it does; the formula alone doesn't.
+- **Testing**: you can check a function with different inputs, which is exactly what the **Check** button does with your exercises.
+
+Function names follow the same rules as variables (snake_case). Start them with a verb when you can: `calculate_total`, `is_valid`, `get_grade`.
+
+:::predict
+```py
+def double(x):
+    return x * 2
+    print("done")
+
+print(double(double(3)))
+```
+- 6
++ 12
+- 12\ndone
+- done\n12
+= `return` ends the function immediately, so print("done") never runs. double(3) is 6, and double(6) is 12.
+:::
+
+:::recall
+Q: What is the difference between a parameter and an argument?
+A: A parameter is the variable in the function definition; the argument is the value passed in when you call it.
+Q: What is the difference between `return` and `print` in a function?
+A: return hands the value back to the caller to use; print only shows it on screen.
+Q: What does a function return if it has no return statement?
+A: None.
+:::
+
+@exercise 8.1a | A greeting function
+Write a function `greet(name)` that **returns** the text `Hello, ` + the name + `!`. For example `greet("Aman")` returns `"Hello, Aman!"`.
+
+The checker calls your function directly, so make sure it returns the text rather than printing it.
+
+```starter
+def greet(name):
+    pass  # replace with your code
+
+print(greet("Aman"))
+```
+
+```solution
+def greet(name):
+    return "Hello, " + name + "!"
+
+print(greet("Aman"))
+```
+
+```test
+need("greet", "function")
+expect('greet("Aman")', "Hello, Aman!")
+expect('greet("Riya")', "Hello, Riya!")
+expect('greet("")', "Hello, !")
+```
+
+:::hints
+- Build the text with `+` or an f-string.
+- Use `return`, not `print`, inside the function.
+:::
+
+@exercise 8.1b | Area of a rectangle
+Write `rectangle_area(length, width)` that returns the area.
+
+```starter
+def rectangle_area(length, width):
+    pass
+
+print(rectangle_area(4, 5))
+```
+
+```solution
+def rectangle_area(length, width):
+    return length * width
+
+print(rectangle_area(4, 5))
+```
+
+```test
+need("rectangle_area", "function")
+expect("rectangle_area(4, 5)", 20)
+expect("rectangle_area(2.5, 4)", 10.0)
+expect("rectangle_area(0, 9)", 0)
+```
+
+:::hints
+- Area is length times width.
+- `return length * width`
+:::
+
+@exercise 8.1c | Is it even?
+Write `is_even(n)` that returns `True` if n is even and `False` otherwise. Return the comparison itself; you don't need an if statement.
+
+```starter
+def is_even(n):
+    pass
+
+print(is_even(10), is_even(7))
+```
+
+```solution
+def is_even(n):
+    return n % 2 == 0
+
+print(is_even(10), is_even(7))
+```
+
+```test
+need("is_even", "function")
+expect("is_even(10)", True)
+expect("is_even(7)", False)
+expect("is_even(0)", True)
+expect("is_even(-4)", True)
+```
+
+:::hints
+- `n % 2 == 0` is already True or False.
+- `return n % 2 == 0`
+:::
+
+@lesson 8.2 | Parameters and return values | 25
+@goal Use default values and keyword arguments, return several values at once, and document a function.
+
+## Default values
+
+A parameter can have a **default**, used when the caller leaves it out:
+
+```py
+def cgl_score(correct, wrong, plus=2, minus=0.5):
+    return correct * plus - wrong * minus
+
+print(cgl_score(68, 12))
+print(cgl_score(68, 12, plus=1, minus=0.25))
+```
+
+Parameters with defaults must come after the ones without.
+
+## Keyword arguments
+
+You can name arguments when you call a function. Then their order doesn't matter, and the call explains itself:
+
+```py
+def cgl_score(correct, wrong, plus=2, minus=0.5):
+    return correct * plus - wrong * minus
+
+print(cgl_score(wrong=12, correct=68))
+print(cgl_score(70, 10, minus=1))
+```
+
+You already know keyword arguments: `print(..., sep="-")` and `sorted(..., reverse=True)`.
+
+## Returning several values
+
+Return a tuple, and unpack it at the call:
+
+```py
+def stats(numbers):
+    total = sum(numbers)
+    return total, total / len(numbers)
+
+total, average = stats([142, 151, 138, 160])
+print(total, average)
+```
+
+## Returning early
+
+A function can have several `return`s. The first one reached ends the function. That keeps decisions flat:
+
+```py
+def grade(marks):
+    if marks >= 90:
+        return "A"
+    if marks >= 75:
+        return "B"
+    if marks >= 60:
+        return "C"
+    return "F"
+
+print(grade(95), grade(80), grade(20))
+```
+
+## Docstrings
+
+A string on the first line of the body describes the function. Editors show it, and `help()` prints it:
+
+```py
+def cgl_score(correct, wrong):
+    """Return the SSC CGL Tier 1 score: +2 per right answer, -0.5 per wrong one."""
+    return correct * 2 - wrong * 0.5
+
+print(cgl_score.__doc__)
+```
+
+:::predict
+```py
+def f(a, b=10, c=100):
+    return a + b + c
+
+print(f(1), f(1, 2), f(1, c=3))
+```
+- 111 3 4
++ 111 103 14
+- 111 103 104
+- 1 3 4
+= f(1) uses both defaults: 1 + 10 + 100. f(1, 2) replaces b: 1 + 2 + 100. f(1, c=3) keeps b at 10: 1 + 10 + 3.
+:::
+
+:::recall
+Q: Where must parameters with default values go?
+A: After all the parameters without defaults.
+Q: How does a function return two values?
+A: `return a, b` returns a tuple; unpack it with `x, y = f()`.
+Q: What is a docstring?
+A: A string on the first line of a function body that explains what the function does.
+:::
+
+@exercise 8.2a | Score with defaults
+Write `cgl_score(correct, wrong, plus=2, minus=0.5)` that returns the score. `cgl_score(68, 12)` gives `130.0`, and `cgl_score(50, 10, plus=1, minus=0.25)` gives `47.5`.
+
+```starter
+def cgl_score(correct, wrong):
+    return correct * 2 - wrong * 0.5
+```
+
+```solution
+def cgl_score(correct, wrong, plus=2, minus=0.5):
+    return correct * plus - wrong * minus
+```
+
+```test
+need("cgl_score", "function")
+expect("cgl_score(68, 12)", 130.0)
+expect("cgl_score(50, 10, plus=1, minus=0.25)", 47.5)
+expect("cgl_score(40, 0, minus=1)", 80)
+expect("cgl_score(wrong=4, correct=10)", 18.0)
+```
+
+:::hints
+- Add the two new parameters with their defaults: `plus=2, minus=0.5`.
+- Use `plus` and `minus` in the formula instead of the fixed numbers.
+:::
+
+@exercise 8.2b | Smallest and largest
+Write `min_max(numbers)` that returns a tuple `(smallest, largest)` for a non-empty list, without using `min()` or `max()`.
+
+```starter
+def min_max(numbers):
+    pass
+
+print(min_max([4, 9, 1, 7]))
+```
+
+```solution
+def min_max(numbers):
+    smallest = numbers[0]
+    largest = numbers[0]
+    for n in numbers:
+        if n < smallest:
+            smallest = n
+        if n > largest:
+            largest = n
+    return smallest, largest
+
+print(min_max([4, 9, 1, 7]))
+```
+
+```test
+need("min_max", "function")
+expect("min_max([4, 9, 1, 7])", (1, 9))
+expect("min_max([5])", (5, 5))
+expect("min_max([-3, -8, -1])", (-8, -1))
+check(not calls("min") and not calls("max"), "No min() or max() used")
+```
+
+:::hints
+- Start both trackers at the first item, `numbers[0]`.
+- Loop and update each tracker when you find a smaller or larger number.
+- `return smallest, largest` returns a tuple.
+:::
+
+@exercise 8.2c | Format a name
+Write `full_name(first, last, upper=False)` that returns `"First Last"` with each part in title case, or all in capitals when `upper=True`:
+
+- `full_name("aman", "sharma")` gives `"Aman Sharma"`
+- `full_name("aman", "sharma", upper=True)` gives `"AMAN SHARMA"`
+
+```starter
+def full_name(first, last, upper=False):
+    pass
+```
+
+```solution
+def full_name(first, last, upper=False):
+    name = f"{first} {last}".title()
+    if upper:
+        return name.upper()
+    return name
+```
+
+```test
+need("full_name", "function")
+expect('full_name("aman", "sharma")', "Aman Sharma")
+expect('full_name("aman", "sharma", upper=True)', "AMAN SHARMA")
+expect('full_name("RIYA", "verma")', "Riya Verma")
+```
+
+:::hints
+- Join the parts with a space and call `.title()`.
+- If `upper` is True, return the `.upper()` version instead.
+:::
+
+@lesson 8.3 | Scope: where variables live | 20
+@goal Know which variables a function can see and change, and write functions that take inputs and return outputs instead of touching globals.
+
+Variables created inside a function are **local**: they exist only while the function runs, and the rest of the program can't see them.
+
+```py error
+def make_total():
+    total = 42
+    return total
+
+make_total()
+print(total)
+```
+
+Variables created at the top level of the file are **global**. A function can **read** a global:
+
+```py
+pass_mark = 40
+
+def passed(marks):
+    return marks >= pass_mark
+
+print(passed(55))
+```
+
+But as soon as a function **assigns** to a name, Python treats that name as local for the whole function. That causes one of Python's most confusing errors:
+
+```py error
+xp = 100
+
+def earn():
+    xp = xp + 20
+    return xp
+
+earn()
+```
+
+`UnboundLocalError` means: you're using a local variable before it was given a value. Python decided `xp` is local (because of the assignment) and then found it read before being set.
+
+## The fix: pass in, return out
+
+Don't reach for globals. Give the function what it needs as **parameters**, and **return** what it produces:
+
+```py
+def earn(xp, amount):
+    return xp + amount
+
+xp = 100
+xp = earn(xp, 20)
+print(xp)
+```
+
+Functions written this way, which depend only on their inputs and change nothing outside, are called **pure**. They're easy to test and reuse, which is why professionals prefer them. (Python does have a `global` keyword that lets a function change a global variable. You'll rarely need it; reaching for it usually means the design needs rethinking.)
+
+## Lists passed in can be changed
+
+When you pass a list, the function gets the **same list**, not a copy (remember aliasing from Unit 6). Changes inside are visible outside:
+
+```py
+def add_bonus(marks):
+    for i in range(len(marks)):
+        marks[i] += 5
+
+scores = [40, 50]
+add_bonus(scores)
+print(scores)
+```
+
+Sometimes that's what you want. When it isn't, build and return a new list instead.
+
+:::predict
+```py
+x = 1
+def f():
+    x = 2
+    return x
+print(f(), x)
+```
+- 2 2
++ 2 1
+- 1 1
+- UnboundLocalError
+= The x inside f is a separate local variable. Setting it to 2 doesn't touch the global x, which stays 1.
+:::
+
+:::recall
+Q: Can code outside a function use a variable created inside it?
+A: No. Variables created inside a function are local and disappear when it returns.
+Q: What causes UnboundLocalError?
+A: A function assigns to a name (making it local) but reads it before giving it a value, often while trying to update a global.
+Q: What is a pure function?
+A: One that only uses its parameters and returns a result, without changing anything outside itself.
+:::
+
+@exercise 8.3a | Fix the global
+This code crashes with `UnboundLocalError`. Rewrite `add_xp` so it takes the current XP and the amount as parameters and **returns** the new total. Then update `xp` with its result. The program should print `150`.
+
+```starter
+xp = 100
+
+def add_xp():
+    xp = xp + 50
+
+add_xp()
+print(xp)
+```
+
+```solution
+xp = 100
+
+def add_xp(current, amount):
+    return current + amount
+
+xp = add_xp(xp, 50)
+print(xp)
+```
+
+```test
+check_out("150")
+need("add_xp", "function")
+expect("add_xp(10, 5)", 15)
+expect("add_xp(0, 0)", 0)
+check("global" not in src, "No global keyword", "Pass the values in and return the result instead of using global.")
+```
+
+:::hints
+- Give the function two parameters, such as `current` and `amount`.
+- Return `current + amount`.
+- Call it and store the result: `xp = add_xp(xp, 50)`.
+:::
+
+@exercise 8.3b | Bonus without side effects
+Write `with_bonus(marks, bonus)` that returns a **new** list with `bonus` added to each mark, and leaves the original list unchanged.
+
+```starter
+def with_bonus(marks, bonus):
+    pass
+
+original = [40, 55, 61]
+print(with_bonus(original, 2))
+print(original)
+```
+
+```solution
+def with_bonus(marks, bonus):
+    result = []
+    for m in marks:
+        result.append(m + bonus)
+    return result
+
+original = [40, 55, 61]
+print(with_bonus(original, 2))
+print(original)
+```
+
+```test
+need("with_bonus", "function")
+expect("with_bonus([40, 55, 61], 2)", [42, 57, 63])
+expect("with_bonus([], 5)", [])
+data = [1, 2, 3]
+result = with_bonus(data, 10)
+check(data == [1, 2, 3], "The original list is unchanged", f"After the call the original list was {data}")
+check(result is not data, "It returns a new list")
+```
+
+:::hints
+- Start with an empty `result` list inside the function.
+- Append `m + bonus` for each mark, then return result.
+- Don't change `marks` itself.
+:::
+
+@exercise 8.3c | A pure average
+Write `average(numbers)` that returns the mean of a list, rounded to 2 decimal places. It should use only its parameter: no global variables. For an empty list return `0`.
+
+```starter
+def average(numbers):
+    pass
+```
+
+```solution
+def average(numbers):
+    if not numbers:
+        return 0
+    return round(sum(numbers) / len(numbers), 2)
+```
+
+```test
+need("average", "function")
+expect("average([142, 151, 138])", 143.67)
+expect("average([10])", 10)
+expect("average([])", 0)
+expect("average([1, 2])", 1.5)
+```
+
+:::hints
+- An empty list counts as False: `if not numbers: return 0`.
+- Otherwise `round(sum(numbers) / len(numbers), 2)`.
+:::
+
+@lesson 8.4 | Functions together, and recursion | 25
+@goal Build programs from small functions that call each other, and write simple recursive functions.
+
+## Small functions, big programs
+
+Good programs are built from small functions that each do one job. Then bigger functions combine them:
+
+```py
+def is_prime(n):
+    if n < 2:
+        return False
+    for d in range(2, n):
+        if n % d == 0:
+            return False
+    return True
+
+def primes_up_to(limit):
+    result = []
+    for n in range(2, limit + 1):
+        if is_prime(n):
+            result.append(n)
+    return result
+
+print(primes_up_to(30))
+```
+
+`is_prime` is small enough to get right and test on its own. `primes_up_to` reads almost like English because the hard part has a name.
+
+## Recursion: a function that calls itself
+
+Some problems contain smaller copies of themselves. 5! (5 factorial) is 5 times 4!, and 4! is 4 times 3!, and so on down to 0!, which is simply 1. A **recursive** function follows that description directly:
+
+```py
+def factorial(n):
+    if n == 0:          # base case: answer directly
+        return 1
+    return n * factorial(n - 1)   # recursive case: a smaller copy
+
+print(factorial(5))
+```
+
+Every recursive function needs two parts:
+
+1. a **base case** that answers without calling itself, and
+2. a **recursive case** that calls itself on a **smaller** problem, moving towards the base case.
+
+Step through `factorial(3)`: you'll see a stack of `factorial` boxes, each waiting for the one above it to return. Forget the base case and the stack grows until Python gives up:
+
+```py error
+def forever(n):
+    return forever(n + 1)
+
+forever(1)
+```
+
+:::tip
+Loops can do everything recursion does, and in Python they're usually faster. Recursion shines on problems with a nested shape, such as folders inside folders and trees, and it's a favourite in coding interviews. You'll use it again in the interview track.
+:::
+
+:::predict
+```py
+def count(n):
+    if n == 0:
+        return "go"
+    return str(n) + " " + count(n - 1)
+
+print(count(3))
+```
+- go
+- 3 2 1
++ 3 2 1 go
+- go 1 2 3
+= count(3) is "3 " + count(2), which is "2 " + count(1), which is "1 " + count(0), and count(0) is "go".
+:::
+
+:::recall
+Q: What two parts does every recursive function need?
+A: A base case that returns without recursing, and a recursive case that calls itself on a smaller problem.
+Q: What happens if a recursive function has no base case?
+A: It calls itself forever until Python stops it with a RecursionError.
+Q: Why split a program into small functions?
+A: Each one is easier to understand, test and reuse, and the big function reads clearly because the pieces have names.
+:::
+
+@exercise 8.4a | Primes up to n
+Write `is_prime(n)` and `primes_up_to(limit)`. `primes_up_to` must use `is_prime` and return a list of all primes from 2 to limit (inclusive).
+
+```starter
+def is_prime(n):
+    pass
+
+def primes_up_to(limit):
+    pass
+
+print(primes_up_to(20))
+```
+
+```solution
+def is_prime(n):
+    if n < 2:
+        return False
+    for d in range(2, n):
+        if n % d == 0:
+            return False
+    return True
+
+def primes_up_to(limit):
+    result = []
+    for n in range(2, limit + 1):
+        if is_prime(n):
+            result.append(n)
+    return result
+
+print(primes_up_to(20))
+```
+
+```test
+need("is_prime", "function")
+need("primes_up_to", "function")
+expect("is_prime(2)", True)
+expect("is_prime(1)", False)
+expect("is_prime(97)", True)
+expect("is_prime(91)", False)
+expect("primes_up_to(20)", [2, 3, 5, 7, 11, 13, 17, 19])
+expect("primes_up_to(2)", [2])
+expect("primes_up_to(1)", [])
+```
+
+:::hints
+- In is_prime, return False as soon as you find a divisor, and True after the loop.
+- In primes_up_to, loop from 2 to limit + 1 and append each n where is_prime(n) is True.
+:::
+
+@exercise 8.4b | Recursive factorial
+Write `fact(n)` **recursively** (it must call itself): `fact(0)` is 1, and `fact(n)` is `n * fact(n - 1)`.
+
+```starter
+def fact(n):
+    pass
+```
+
+```solution
+def fact(n):
+    if n == 0:
+        return 1
+    return n * fact(n - 1)
+```
+
+```test
+import ast
+need("fact", "function")
+expect("fact(0)", 1)
+expect("fact(1)", 1)
+expect("fact(5)", 120)
+expect("fact(12)", 479001600)
+tree = ast.parse(src)
+rec = any(isinstance(n, ast.FunctionDef) and n.name == "fact" and any(isinstance(c, ast.Call) and getattr(c.func, "id", None) == "fact" for c in ast.walk(n)) for n in ast.walk(tree))
+check(rec, "fact calls itself (recursion)", "Inside fact, return n * fact(n - 1).")
+```
+
+:::hints
+- Base case: if n is 0, return 1.
+- Recursive case: return n * fact(n - 1).
+:::
+
+@exercise 8.4c | Recursive power
+Write `power(base, exp)` recursively for whole numbers `exp >= 0`, without using `**` or `pow()`. `power(2, 10)` is 1024 and anything to the power 0 is 1.
+
+```starter
+def power(base, exp):
+    pass
+```
+
+```solution
+def power(base, exp):
+    if exp == 0:
+        return 1
+    return base * power(base, exp - 1)
+```
+
+```test
+import ast
+need("power", "function")
+expect("power(2, 10)", 1024)
+expect("power(5, 0)", 1)
+expect("power(3, 4)", 81)
+expect("power(-2, 3)", -8)
+check("**" not in src and not calls("pow"), "No ** or pow() used")
+tree = ast.parse(src)
+rec = any(isinstance(n, ast.FunctionDef) and n.name == "power" and any(isinstance(c, ast.Call) and getattr(c.func, "id", None) == "power" for c in ast.walk(n)) for n in ast.walk(tree))
+check(rec, "power calls itself")
+```
+
+:::hints
+- Base case: exp == 0 returns 1.
+- base to the power exp is base times (base to the power exp - 1).
+:::
+
+@lesson 8.5 | Project: Report card toolkit | 40 | project
+@goal Design a small set of functions that work together, and test each one on its own.
+
+You'll build four functions that turn a dictionary of marks into a report card. Each subject is out of 50.
+
+```text
+Report card: Aman
+Reasoning   45/50
+English     41/50
+Maths       38/50
+GK          33/50
+Total: 157/200 (78.5%) Grade: B
+```
+
+## The functions
+
+1. `total(marks)`: the sum of the marks in the dictionary.
+2. `percentage(obtained, maximum)`: obtained / maximum * 100, rounded to 1 decimal place.
+3. `grade(pct)`: A for 90 and above, B for 75 and above, C for 60 and above, D for 40 and above, otherwise F.
+4. `report(name, marks, out_of=50)`: **returns** the whole report as one string, lines separated by `\n`. Subject names are left-aligned in 12 characters.
+
+`report` should call the other three. The checker tests every function separately, just as professional code is tested, so each must work on its own.
+
+:::tip
+Build and test one function at a time. Call it with a few values at the bottom of your file and print the results, then move on to the next one.
+:::
+
+:::recall
+Q: Why should `report` return a string instead of printing it?
+A: A returned string can be printed, saved to a file, emailed or tested. Printing only shows it once.
+Q: How do you join lines into one string with line breaks?
+A: Collect them in a list and use `"\n".join(lines)`.
+:::
+
+@exercise 8.5a | Build the toolkit | project
+Write `total`, `percentage`, `grade` and `report` as described in the lesson. `report` must **return** the text (the starter prints it for you).
+
+```starter
+def total(marks):
+    pass
+
+def percentage(obtained, maximum):
+    pass
+
+def grade(pct):
+    pass
+
+def report(name, marks, out_of=50):
+    pass
+
+print(report("Aman", {"Reasoning": 45, "English": 41, "Maths": 38, "GK": 33}))
+```
+
+```solution
+def total(marks):
+    result = 0
+    for mark in marks.values():
+        result += mark
+    return result
+
+def percentage(obtained, maximum):
+    return round(obtained / maximum * 100, 1)
+
+def grade(pct):
+    if pct >= 90:
+        return "A"
+    if pct >= 75:
+        return "B"
+    if pct >= 60:
+        return "C"
+    if pct >= 40:
+        return "D"
+    return "F"
+
+def report(name, marks, out_of=50):
+    lines = [f"Report card: {name}"]
+    for subject, mark in marks.items():
+        lines.append(f"{subject:<12}{mark}/{out_of}")
+    got = total(marks)
+    maximum = out_of * len(marks)
+    pct = percentage(got, maximum)
+    lines.append(f"Total: {got}/{maximum} ({pct}%) Grade: {grade(pct)}")
+    return "\n".join(lines)
+
+print(report("Aman", {"Reasoning": 45, "English": 41, "Maths": 38, "GK": 33}))
+```
+
+```test
+for name in ["total", "percentage", "grade", "report"]:
+    need(name, "function")
+expect('total({"a": 10, "b": 20, "c": 5})', 35)
+expect("total({})", 0)
+expect("percentage(157, 200)", 78.5)
+expect("percentage(1, 3)", 33.3)
+for p, g in [(95, "A"), (90, "A"), (89.9, "B"), (75, "B"), (60, "C"), (40, "D"), (39.9, "F")]:
+    expect(f"grade({p})", g)
+expect('report("Aman", {"Reasoning": 45, "English": 41, "Maths": 38, "GK": 33})', "Report card: Aman\nReasoning   45/50\nEnglish     41/50\nMaths       38/50\nGK          33/50\nTotal: 157/200 (78.5%) Grade: B")
+expect('report("Riya", {"Maths": 95, "Science": 88}, out_of=100)', "Report card: Riya\nMaths       95/100\nScience     88/100\nTotal: 183/200 (91.5%) Grade: A")
+```
+
+:::hints
+- `total`: loop over `marks.values()` and add them up (or use `sum(marks.values())`).
+- `grade`: early returns, from A down to F.
+- `report`: build a list of lines, starting with the title; add one line per subject with `f"{subject:<12}{mark}/{out_of}"`.
+- The maximum is `out_of * len(marks)`. Finish with `return "\n".join(lines)`.
+:::

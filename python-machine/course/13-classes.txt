@@ -1,0 +1,1202 @@
+@phase 4 | Professional Python | Classes, advanced features, and the tools working programmers use every day
+@unit u13 | 13 | Classes and objects
+@zen Complex is better than complicated.
+@summary Model real things as objects: classes with attributes and methods, readable printing, inheritance, special methods, properties and dataclasses.
+
+@lesson 13.1 | Classes and objects | 25
+@goal Define a class, create objects from it, and give them attributes and methods.
+
+So far data and the functions that use it have lived apart: a dictionary of marks here, an `average()` function there. A **class** bundles them together. It's a blueprint; each **object** (or **instance**) made from it has its own data and knows how to work with it.
+
+You've used objects all along: every string is an object of class `str`, and `"hi".upper()` calls a method that belongs to it. Now you'll write your own classes.
+
+```py
+class MockTest:
+    def __init__(self, name, correct, wrong):
+        self.name = name
+        self.correct = correct
+        self.wrong = wrong
+
+    def score(self):
+        return self.correct * 2 - self.wrong * 0.5
+
+
+t1 = MockTest("Mock 1", 68, 12)
+t2 = MockTest("Mock 2", 75, 10)
+print(t1.name, t1.score())
+print(t2.name, t2.score())
+```
+
+## The pieces
+
+- `class MockTest:` starts the blueprint. Class names use **CapitalizedWords**.
+- `__init__` is the **initialiser**: Python runs it automatically when you create an object, to set up its starting data. (Those double underscores are pronounced "dunder".)
+- `self` is the object being set up or used. `self.correct = correct` stores a value **on the object**: an **attribute**.
+- `score(self)` is a **method**: a function that belongs to the class and works on `self`.
+- `MockTest("Mock 1", 68, 12)` creates an object. Python passes the new object as `self` for you; you supply the other arguments.
+
+Step through the example: you'll see two separate objects, each with its own `correct` and `wrong`.
+
+## Objects keep their own data
+
+```py
+class MockTest:
+    def __init__(self, name, correct, wrong):
+        self.name = name
+        self.correct = correct
+        self.wrong = wrong
+
+    def attempted(self):
+        return self.correct + self.wrong
+
+    def accuracy(self):
+        return round(self.correct / self.attempted() * 100, 1)
+
+
+test = MockTest("Mock 3", 72, 18)
+print(test.attempted(), test.accuracy())
+test.wrong = 8          # attributes can be changed
+print(test.attempted(), test.accuracy())
+```
+
+Methods can call other methods through `self`, as `accuracy` calls `self.attempted()`.
+
+:::predict
+```py
+class Dog:
+    def __init__(self, name):
+        self.name = name
+    def speak(self):
+        return self.name + " says woof"
+
+a = Dog("Tommy")
+b = Dog("Sheru")
+print(b.speak())
+```
+- Tommy says woof
++ Sheru says woof
+- Dog says woof
+- self.name says woof
+= b is its own object with name "Sheru", and speak uses that object's own name through self.
+:::
+
+:::recall
+Q: What is the difference between a class and an object?
+A: A class is a blueprint; an object is one thing made from it, with its own data.
+Q: What does `__init__` do?
+A: Runs automatically when an object is created, to set its starting attributes.
+Q: What is `self`?
+A: The object a method is working on. Python passes it in automatically.
+:::
+
+@exercise 13.1a | A Book class
+Write a class `Book` whose `__init__` takes `title` and `author` and stores them as attributes, with a method `describe()` that returns `"<title> by <author>"`.
+
+```starter
+class Book:
+    pass
+
+book = Book("Wings of Fire", "A. P. J. Abdul Kalam")
+print(book.describe())
+```
+
+```solution
+class Book:
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+
+    def describe(self):
+        return f"{self.title} by {self.author}"
+
+book = Book("Wings of Fire", "A. P. J. Abdul Kalam")
+print(book.describe())
+```
+
+```test
+need("Book")
+b = Book("Godan", "Munshi Premchand")
+check(getattr(b, "title", None) == "Godan" and getattr(b, "author", None) == "Munshi Premchand", "Book stores title and author")
+expect('Book("Godan", "Munshi Premchand").describe()', "Godan by Munshi Premchand")
+check_out("Wings of Fire by A. P. J. Abdul Kalam")
+```
+
+:::hints
+- `def __init__(self, title, author):` then `self.title = title` and the same for author.
+- `describe` returns an f-string using `self.title` and `self.author`.
+:::
+
+@exercise 13.1b | Mock test methods
+Write a class `MockTest` with attributes `correct` and `wrong` (set in `__init__`) and these methods:
+
+- `score()`: correct x 2 minus wrong x 0.5
+- `attempted()`: correct + wrong
+- `accuracy()`: correct / attempted x 100, rounded to 1 place (0.0 if nothing was attempted)
+
+```starter
+class MockTest:
+    def __init__(self, correct, wrong):
+        pass
+```
+
+```solution
+class MockTest:
+    def __init__(self, correct, wrong):
+        self.correct = correct
+        self.wrong = wrong
+
+    def score(self):
+        return self.correct * 2 - self.wrong * 0.5
+
+    def attempted(self):
+        return self.correct + self.wrong
+
+    def accuracy(self):
+        if self.attempted() == 0:
+            return 0.0
+        return round(self.correct / self.attempted() * 100, 1)
+```
+
+```test
+need("MockTest")
+expect("MockTest(68, 12).score()", 130.0)
+expect("MockTest(68, 12).attempted()", 80)
+expect("MockTest(72, 18).accuracy()", 80.0)
+expect("MockTest(0, 0).accuracy()", 0.0)
+expect("MockTest(60, 25).accuracy()", 70.6)
+```
+
+:::hints
+- Store both values on self in `__init__`.
+- Each method uses `self.correct` and `self.wrong`.
+- accuracy can call `self.attempted()`; check for 0 before dividing.
+:::
+
+@exercise 13.1c | Rectangle
+Write a class `Rectangle(width, height)` with methods `area()`, `perimeter()` and `is_square()`.
+
+```starter
+class Rectangle:
+    pass
+```
+
+```solution
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def area(self):
+        return self.width * self.height
+
+    def perimeter(self):
+        return 2 * (self.width + self.height)
+
+    def is_square(self):
+        return self.width == self.height
+```
+
+```test
+need("Rectangle")
+expect("Rectangle(4, 5).area()", 20)
+expect("Rectangle(4, 5).perimeter()", 18)
+expect("Rectangle(4, 5).is_square()", False)
+expect("Rectangle(3, 3).is_square()", True)
+```
+
+:::hints
+- Store width and height in `__init__`.
+- Perimeter is 2 x (width + height).
+- is_square returns the comparison width == height.
+:::
+
+@lesson 13.2 | State, printing and class attributes | 25
+@goal Write methods that change an object, make objects print nicely with `__str__` and `__repr__`, and share data between all objects with class attributes.
+
+## Methods that change the object
+
+Objects shine when they **remember** things between method calls:
+
+```py
+class Wallet:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+
+    def add(self, amount):
+        self.balance += amount
+
+    def spend(self, amount):
+        if amount > self.balance:
+            raise ValueError("not enough money")
+        self.balance -= amount
+
+
+w = Wallet("Aman", 500)
+w.add(250)
+w.spend(120)
+print(w.balance)
+```
+
+The object protects its own rules: `spend` refuses to go below zero. Code outside doesn't need to remember that rule; the class enforces it everywhere.
+
+## Printing objects: __str__ and __repr__
+
+By default, printing an object shows something unhelpful like `<__main__.Wallet object at 0x...>`. Two special methods fix that:
+
+- `__str__` returns the friendly text `print()` and `str()` use.
+- `__repr__` returns an unambiguous, developer-facing text, ideally looking like the code that creates the object. You see it in lists, in the console and in debuggers.
+
+```py
+class Book:
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+
+    def __str__(self):
+        return f"{self.title} by {self.author}"
+
+    def __repr__(self):
+        return f"Book({self.title!r}, {self.author!r})"
+
+
+b = Book("Godan", "Munshi Premchand")
+print(b)
+print([b])
+```
+
+`!r` inside an f-string uses `repr()`, which adds the quotes.
+
+## Class attributes
+
+An attribute set on the **class itself** (not on `self`) is shared by every object:
+
+```py
+class Candidate:
+    exam = "SSC CGL"      # shared by all candidates
+    count = 0
+
+    def __init__(self, name):
+        self.name = name  # each candidate's own
+        Candidate.count += 1
+
+
+a = Candidate("Aman")
+b = Candidate("Riya")
+print(a.exam, b.exam, Candidate.count)
+```
+
+:::predict
+```py
+class Box:
+    def __init__(self):
+        self.items = []
+    def add(self, x):
+        self.items.append(x)
+        return len(self.items)
+
+a = Box()
+b = Box()
+a.add("pen")
+print(a.add("book"), b.add("cup"))
+```
+- 3 3
++ 2 1
+- 2 2
+- 1 1
+= Each Box gets its own new list in __init__. a now has two items; b only has one.
+:::
+
+:::recall
+Q: What is `__str__` for?
+A: Returning the friendly text that print() and str() show for an object.
+Q: What is the difference between `__str__` and `__repr__`?
+A: __str__ is for users; __repr__ is an unambiguous version for developers, ideally like the code that creates the object.
+Q: What is a class attribute?
+A: A value stored on the class itself, shared by every object of that class.
+:::
+
+@exercise 13.2a | A wallet with rules
+Write `Wallet(owner, balance=0)` with:
+
+- `add(amount)`: adds to the balance; raises `ValueError` if amount isn't positive
+- `spend(amount)`: subtracts; raises `ValueError` if amount is more than the balance
+- `__str__`: returns `"Aman: Rs 630"` style text
+
+```starter
+class Wallet:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+```
+
+```solution
+class Wallet:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+
+    def add(self, amount):
+        if amount <= 0:
+            raise ValueError("amount must be positive")
+        self.balance += amount
+
+    def spend(self, amount):
+        if amount > self.balance:
+            raise ValueError("not enough money")
+        self.balance -= amount
+
+    def __str__(self):
+        return f"{self.owner}: Rs {self.balance}"
+```
+
+```test
+need("Wallet")
+w = Wallet("Aman", 500)
+w.add(250)
+w.spend(120)
+check(w.balance == 630, "500 + 250 - 120 leaves 630", f"balance is {w.balance}")
+check(str(w) == "Aman: Rs 630", "str() shows 'Aman: Rs 630'", f"str() gave {str(w)!r}")
+expect_raises('Wallet("Riya", 100).spend(150)', ValueError)
+expect_raises('Wallet("Riya").add(0)', ValueError)
+expect_raises('Wallet("Riya").add(-5)', ValueError)
+w2 = Wallet("Dev")
+check(w2.balance == 0, "The balance starts at 0 by default")
+```
+
+:::hints
+- `add` and `spend` change `self.balance`; check the rule first and `raise ValueError(...)` if it's broken.
+- `__str__` returns an f-string with the owner and balance.
+:::
+
+@exercise 13.2b | Readable books
+Add `__str__` and `__repr__` to `Book` so that:
+
+- `str(Book("Godan", "Munshi Premchand"))` is `Godan by Munshi Premchand`
+- `repr(...)` is `Book('Godan', 'Munshi Premchand')`
+
+```starter
+class Book:
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+
+print(Book("Godan", "Munshi Premchand"))
+print([Book("Gitanjali", "Rabindranath Tagore")])
+```
+
+```solution
+class Book:
+    def __init__(self, title, author):
+        self.title = title
+        self.author = author
+
+    def __str__(self):
+        return f"{self.title} by {self.author}"
+
+    def __repr__(self):
+        return f"Book({self.title!r}, {self.author!r})"
+
+print(Book("Godan", "Munshi Premchand"))
+print([Book("Gitanjali", "Rabindranath Tagore")])
+```
+
+```test
+need("Book")
+expect('str(Book("Godan", "Munshi Premchand"))', "Godan by Munshi Premchand")
+expect('repr(Book("Godan", "Munshi Premchand"))', "Book('Godan', 'Munshi Premchand')")
+check_out("Godan by Munshi Premchand\n[Book('Gitanjali', 'Rabindranath Tagore')]")
+```
+
+:::hints
+- Both methods take only self and return a string.
+- In `__repr__`, `{self.title!r}` adds the quotes for you.
+:::
+
+@exercise 13.2c | Count the objects
+Write a class `Candidate` with a class attribute `count` that starts at 0 and goes up by 1 every time a `Candidate` is created. Each candidate stores its `name`. After creating three candidates, `Candidate.count` is 3.
+
+```starter
+class Candidate:
+    def __init__(self, name):
+        self.name = name
+
+a = Candidate("Aman")
+b = Candidate("Riya")
+c = Candidate("Dev")
+print(Candidate.count)
+```
+
+```solution
+class Candidate:
+    count = 0
+
+    def __init__(self, name):
+        self.name = name
+        Candidate.count += 1
+
+a = Candidate("Aman")
+b = Candidate("Riya")
+c = Candidate("Dev")
+print(Candidate.count)
+```
+
+```test
+check_out("3")
+need("Candidate")
+before = Candidate.count
+Candidate("Sana")
+check(Candidate.count == before + 1, "Creating another candidate adds 1")
+check("count" not in vars(Candidate("Kabir")), "count is a class attribute, not stored on each object", "Set count on the class (Candidate.count += 1), not on self.")
+```
+
+:::hints
+- Put `count = 0` directly inside the class body, not in `__init__`.
+- In `__init__`, increase it on the class: `Candidate.count += 1`.
+:::
+
+@lesson 13.3 | Inheritance | 25
+@goal Build specialised classes from general ones with inheritance, `super()` and overriding.
+
+Often several classes share most of their behaviour. **Inheritance** lets a new class start from an existing one and change only what's different.
+
+```py
+class Exam:
+    def __init__(self, name, questions, marks_each):
+        self.name = name
+        self.questions = questions
+        self.marks_each = marks_each
+
+    def max_marks(self):
+        return self.questions * self.marks_each
+
+    def score(self, correct, wrong):
+        return correct * self.marks_each
+
+
+class NegativeMarkingExam(Exam):
+    def __init__(self, name, questions, marks_each, penalty):
+        super().__init__(name, questions, marks_each)
+        self.penalty = penalty
+
+    def score(self, correct, wrong):
+        return correct * self.marks_each - wrong * self.penalty
+
+
+school = Exam("School test", 50, 1)
+cgl = NegativeMarkingExam("SSC CGL Tier 1", 100, 2, 0.5)
+print(school.max_marks(), school.score(40, 10))
+print(cgl.max_marks(), cgl.score(68, 12))
+```
+
+- `class NegativeMarkingExam(Exam):` means "a NegativeMarkingExam **is an** Exam". It **inherits** everything: `max_marks` works without being rewritten.
+- `super().__init__(...)` runs the parent's `__init__`, so the shared setup isn't duplicated.
+- Defining `score` again **overrides** the parent's version for this class only.
+
+## Polymorphism
+
+Code can treat different classes the same way, as long as they share the method names. Each object runs its own version:
+
+```py
+class Exam:
+    def __init__(self, name):
+        self.name = name
+    def score(self, correct, wrong):
+        return correct
+
+class NegativeMarkingExam(Exam):
+    def score(self, correct, wrong):
+        return correct * 2 - wrong * 0.5
+
+for exam in [Exam("Class test"), NegativeMarkingExam("Mock")]:
+    print(exam.name, exam.score(10, 4))
+```
+
+`isinstance(obj, Class)` checks the family: a `NegativeMarkingExam` object is also an instance of `Exam`.
+
+:::tip
+Use inheritance for a true "is a" relationship. If a class merely **uses** another (a Library **has** Books), store the object as an attribute instead. That's called composition, and it's usually the simpler choice.
+:::
+
+:::predict
+```py
+class A:
+    def hello(self):
+        return "A"
+    def greet(self):
+        return "I am " + self.hello()
+
+class B(A):
+    def hello(self):
+        return "B"
+
+print(B().greet(), isinstance(B(), A))
+```
+- I am A True
++ I am B True
+- I am B False
+- Error
+= greet is inherited from A, but self is a B object, so self.hello() runs B's version. A B is also an A.
+:::
+
+:::recall
+Q: What does `class Child(Parent):` mean?
+A: Child inherits all of Parent's attributes and methods, and can add or override them.
+Q: What does `super().__init__(...)` do?
+A: Runs the parent class's `__init__` so the shared setup isn't duplicated.
+Q: What is overriding?
+A: Defining a method in the child class with the same name as one in the parent, replacing it for the child.
+:::
+
+@exercise 13.3a | Shapes
+Write a base class `Shape` with a method `area()` that raises `NotImplementedError`, and a method `describe()` that returns `"<ClassName> with area <area>"` using `type(self).__name__` and `round(self.area(), 2)`. Then write `Circle(radius)` and `Square(side)` that inherit from `Shape` and override `area()`.
+
+```starter
+import math
+
+class Shape:
+    def area(self):
+        raise NotImplementedError
+
+    def describe(self):
+        return f"{type(self).__name__} with area {round(self.area(), 2)}"
+
+```
+
+```solution
+import math
+
+class Shape:
+    def area(self):
+        raise NotImplementedError
+
+    def describe(self):
+        return f"{type(self).__name__} with area {round(self.area(), 2)}"
+
+
+class Circle(Shape):
+    def __init__(self, radius):
+        self.radius = radius
+
+    def area(self):
+        return math.pi * self.radius ** 2
+
+
+class Square(Shape):
+    def __init__(self, side):
+        self.side = side
+
+    def area(self):
+        return self.side ** 2
+```
+
+```test
+need("Circle")
+need("Square")
+expect("Square(4).area()", 16)
+expect("round(Circle(1).area(), 4)", 3.1416)
+expect("Circle(2).describe()", "Circle with area 12.57")
+expect("Square(3).describe()", "Square with area 9")
+check(issubclass(Circle, Shape) and issubclass(Square, Shape), "Circle and Square inherit from Shape")
+expect_raises("Shape().area()", NotImplementedError)
+```
+
+:::hints
+- `class Circle(Shape):` with its own `__init__` storing the radius.
+- Override `area` in each subclass; describe is inherited for free.
+:::
+
+@exercise 13.3b | SSC exam
+`Exam` is given. Write `SSCExam(Exam)` that adds a `penalty` (default `0.5`) and overrides `score(correct, wrong)` to subtract `wrong * penalty`. Use `super().__init__`.
+
+```starter
+class Exam:
+    def __init__(self, name, marks_each):
+        self.name = name
+        self.marks_each = marks_each
+
+    def score(self, correct, wrong):
+        return correct * self.marks_each
+
+```
+
+```solution
+class Exam:
+    def __init__(self, name, marks_each):
+        self.name = name
+        self.marks_each = marks_each
+
+    def score(self, correct, wrong):
+        return correct * self.marks_each
+
+
+class SSCExam(Exam):
+    def __init__(self, name, marks_each, penalty=0.5):
+        super().__init__(name, marks_each)
+        self.penalty = penalty
+
+    def score(self, correct, wrong):
+        return correct * self.marks_each - wrong * self.penalty
+```
+
+```test
+need("SSCExam")
+expect('SSCExam("CGL", 2).score(68, 12)', 130.0)
+expect('SSCExam("CHSL", 2, penalty=0.5).score(70, 20)', 130.0)
+expect('SSCExam("Custom", 1, penalty=0.25).score(40, 8)', 38.0)
+expect('SSCExam("CGL", 2).name', "CGL")
+expect('Exam("School", 1).score(40, 10)', 40)
+check(issubclass(SSCExam, Exam), "SSCExam inherits from Exam")
+check("super()" in src, "You used super()")
+```
+
+:::hints
+- `class SSCExam(Exam):`
+- In `__init__`, call `super().__init__(name, marks_each)` then store the penalty.
+- Override score with the negative marking formula.
+:::
+
+@lesson 13.4 | Special methods and properties | 25
+@goal Make your objects work with `+`, `==`, `<`, `len()` and `in`, and use `@property` for computed and protected attributes.
+
+Python's operators call special **dunder methods** behind the scenes. `a + b` calls `a.__add__(b)`; `len(x)` calls `x.__len__()`. Define them, and your objects work with Python's syntax.
+
+```py
+class Money:
+    def __init__(self, rupees):
+        self.rupees = rupees
+
+    def __add__(self, other):
+        return Money(self.rupees + other.rupees)
+
+    def __eq__(self, other):
+        return self.rupees == other.rupees
+
+    def __lt__(self, other):
+        return self.rupees < other.rupees
+
+    def __repr__(self):
+        return f"Money({self.rupees})"
+
+
+fees = Money(100) + Money(250)
+print(fees)
+print(fees == Money(350))
+print(sorted([Money(50), Money(10), Money(30)]))
+```
+
+`__lt__` (less than) is all `sorted()` needs to sort your objects.
+
+| Method | Called by |
+| --- | --- |
+| `__add__` | `a + b` |
+| `__eq__` | `a == b` |
+| `__lt__` | `a < b`, `sorted()` |
+| `__len__` | `len(a)` |
+| `__contains__` | `x in a` |
+| `__str__` / `__repr__` | `print(a)` / the console |
+
+```py
+class Syllabus:
+    def __init__(self, topics):
+        self.topics = list(topics)
+
+    def __len__(self):
+        return len(self.topics)
+
+    def __contains__(self, topic):
+        return topic.lower() in [t.lower() for t in self.topics]
+
+
+s = Syllabus(["Polity", "History", "Economy"])
+print(len(s), "polity" in s, "Biology" in s)
+```
+
+## @property: attributes that are calculated
+
+Sometimes a value should be **worked out** from other data, but read like a normal attribute. `@property` does that:
+
+```py
+class Student:
+    def __init__(self, name, marks):
+        self.name = name
+        self.marks = marks
+
+    @property
+    def average(self):
+        return round(sum(self.marks) / len(self.marks), 1)
+
+
+s = Student("Aman", [72, 81, 90])
+print(s.average)        # no brackets
+s.marks.append(60)
+print(s.average)        # always up to date
+```
+
+A property can also **guard** an attribute with a setter that checks new values:
+
+```py
+class Candidate:
+    def __init__(self, age):
+        self.age = age          # goes through the setter below
+
+    @property
+    def age(self):
+        return self._age
+
+    @age.setter
+    def age(self, value):
+        if not 18 <= value <= 60:
+            raise ValueError("age must be 18 to 60")
+        self._age = value
+
+
+c = Candidate(25)
+c.age = 30
+print(c.age)
+try:
+    c.age = 12
+except ValueError as e:
+    print("Refused:", e)
+```
+
+The underscore in `_age` is a convention meaning "internal: use `age` instead".
+
+:::predict
+```py
+class Team:
+    def __init__(self, *names):
+        self.names = names
+    def __len__(self):
+        return len(self.names)
+    def __contains__(self, name):
+        return name in self.names
+
+t = Team("Aman", "Riya")
+print(len(t), "Riya" in t, "Dev" in t)
+```
+- 1 True False
++ 2 True False
+- 2 False False
+- Error
+= len(t) calls __len__ (two names) and `in` calls __contains__ for each check.
+:::
+
+:::recall
+Q: Which method makes `a + b` work for your objects?
+A: `__add__(self, other)`.
+Q: What does `sorted()` need from your class to sort its objects?
+A: A `__lt__` method (less than).
+Q: What does `@property` do?
+A: Lets a method be read like an attribute (no brackets), useful for calculated values or for guarding an attribute with a setter.
+:::
+
+@exercise 13.4a | A Vector
+Write `Vector(x, y)` with:
+
+- `__add__`: `Vector(1, 2) + Vector(3, 4)` is `Vector(4, 6)`
+- `__eq__`: vectors are equal when x and y match
+- `__repr__`: `Vector(4, 6)`
+- `length()`: the distance from the origin, `(x**2 + y**2) ** 0.5`
+
+```starter
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+```
+
+```solution
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y
+
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y})"
+
+    def length(self):
+        return (self.x ** 2 + self.y ** 2) ** 0.5
+```
+
+```test
+need("Vector")
+expect("Vector(1, 2) + Vector(3, 4) == Vector(4, 6)", True)
+expect("Vector(1, 2) == Vector(2, 1)", False)
+expect("repr(Vector(1, 2) + Vector(3, 4))", "Vector(4, 6)")
+expect("Vector(3, 4).length()", 5.0)
+```
+
+:::hints
+- `__add__` returns a new Vector built from the sums.
+- `__eq__` returns True when both coordinates match.
+- `__repr__` returns an f-string like `f"Vector({self.x}, {self.y})"`.
+:::
+
+@exercise 13.4b | Average as a property
+Write `Student(name, marks)` where `marks` is a list, with:
+
+- a property `average` (rounded to 1 place, `0` for an empty list)
+- a property `grade`: `A` if average >= 90, `B` if >= 75, `C` if >= 60, else `F`
+
+Both must update automatically when marks change.
+
+```starter
+class Student:
+    def __init__(self, name, marks):
+        self.name = name
+        self.marks = marks
+```
+
+```solution
+class Student:
+    def __init__(self, name, marks):
+        self.name = name
+        self.marks = marks
+
+    @property
+    def average(self):
+        if not self.marks:
+            return 0
+        return round(sum(self.marks) / len(self.marks), 1)
+
+    @property
+    def grade(self):
+        avg = self.average
+        if avg >= 90:
+            return "A"
+        if avg >= 75:
+            return "B"
+        if avg >= 60:
+            return "C"
+        return "F"
+```
+
+```test
+need("Student")
+s = Student("Aman", [72, 81, 90])
+check(s.average == 81.0, "average of 72, 81, 90 is 81.0", f"got {s.average!r}")
+check(s.grade == "B", "grade is B", f"got {s.grade!r}")
+s.marks.append(100)
+check(s.average == 85.8 and s.grade == "B", "average updates when marks change", f"after adding 100: {s.average!r}")
+check(Student("Riya", [95, 92]).grade == "A", "Riya gets an A")
+check(Student("Dev", []).average == 0, "Empty marks give 0")
+check(isinstance(type(s).__dict__.get("average"), property), "average is a @property")
+```
+
+:::hints
+- Put `@property` on the line above `def average(self):`.
+- grade can use `self.average` (no brackets: it's a property).
+:::
+
+@lesson 13.5 | Dataclasses | 20
+@goal Let Python write `__init__`, `__repr__` and `__eq__` for you with `@dataclass`.
+
+Many classes mostly hold data. Writing `__init__`, `__repr__` and `__eq__` for each is repetitive. The `dataclasses` module writes them for you:
+
+```py
+from dataclasses import dataclass
+
+@dataclass
+class Book:
+    title: str
+    author: str
+    pages: int = 0
+
+b = Book("Wings of Fire", "A. P. J. Abdul Kalam", 180)
+print(b)
+print(b == Book("Wings of Fire", "A. P. J. Abdul Kalam", 180))
+print(b.pages)
+```
+
+The lines `title: str` declare the fields with **type hints** (more on those in Unit 14). Fields with defaults come after fields without.
+
+## Lists as defaults
+
+Never write `tags: list = []`: every object would share one list. Use `field(default_factory=list)`, which builds a fresh list for each object:
+
+```py
+from dataclasses import dataclass, field
+
+@dataclass
+class Student:
+    name: str
+    marks: list = field(default_factory=list)
+
+a = Student("Aman")
+b = Student("Riya")
+a.marks.append(90)
+print(a, b)
+```
+
+## Sorting and freezing
+
+`order=True` makes objects sortable, comparing fields in order. `frozen=True` makes them unchangeable, like tuples:
+
+```py
+from dataclasses import dataclass
+
+@dataclass(order=True)
+class Candidate:
+    score: float
+    name: str
+
+ranked = sorted([Candidate(130.0, "Aman"), Candidate(142.5, "Riya"), Candidate(118.0, "Dev")], reverse=True)
+for c in ranked:
+    print(c.name, c.score)
+```
+
+Dataclasses can have methods too; they're normal classes with the boring parts written for you.
+
+:::predict
+```py
+from dataclasses import dataclass
+
+@dataclass
+class P:
+    x: int
+    y: int = 0
+
+print(P(1), P(1) == P(1, 0))
+```
+- P(1) True
++ P(x=1, y=0) True
+- P(x=1, y=0) False
+- <P object> True
+= The dataclass writes a __repr__ showing every field, and an __eq__ that compares the fields, so P(1) equals P(1, 0).
+:::
+
+:::recall
+Q: What does `@dataclass` write for you?
+A: `__init__`, `__repr__` and `__eq__`, based on the fields you declare.
+Q: How do you give a dataclass field an empty list as its default?
+A: `field(default_factory=list)`, never `= []`.
+Q: What does `@dataclass(order=True)` add?
+A: Comparison methods, so objects can be sorted by their fields in order.
+:::
+
+@exercise 13.5a | Book as a dataclass
+Rewrite `Book` as a dataclass with fields `title` (str), `author` (str) and `pages` (int, default 0), plus a method `is_long()` returning True for more than 300 pages.
+
+```starter
+from dataclasses import dataclass
+
+```
+
+```solution
+from dataclasses import dataclass
+
+@dataclass
+class Book:
+    title: str
+    author: str
+    pages: int = 0
+
+    def is_long(self):
+        return self.pages > 300
+```
+
+```test
+import dataclasses
+need("Book")
+check(dataclasses.is_dataclass(Book), "Book is a dataclass")
+expect('repr(Book("Godan", "Munshi Premchand", 312))', "Book(title='Godan', author='Munshi Premchand', pages=312)")
+expect('Book("A", "B").pages', 0)
+expect('Book("Godan", "Munshi Premchand", 312).is_long()', True)
+expect('Book("Gitanjali", "Tagore", 104).is_long()', False)
+```
+
+:::hints
+- `@dataclass` above `class Book:`, then one line per field with a type hint.
+- Give pages a default: `pages: int = 0`.
+:::
+
+@exercise 13.5b | Merit order
+Make `Candidate` a dataclass with `order=True` and fields `score` (float) then `name` (str). Then sort `candidates` from highest score to lowest and print the names:
+
+```text
+['Riya', 'Aman', 'Sana', 'Dev']
+```
+
+```starter
+from dataclasses import dataclass
+
+# Define the Candidate dataclass here
+
+
+candidates = [Candidate(130.0, "Aman"), Candidate(142.5, "Riya"), Candidate(118.0, "Dev"), Candidate(126.5, "Sana")]
+
+```
+
+```solution
+from dataclasses import dataclass
+
+@dataclass(order=True)
+class Candidate:
+    score: float
+    name: str
+
+candidates = [Candidate(130.0, "Aman"), Candidate(142.5, "Riya"), Candidate(118.0, "Dev"), Candidate(126.5, "Sana")]
+ranked = sorted(candidates, reverse=True)
+print([c.name for c in ranked])
+```
+
+```test
+import dataclasses
+check_out("['Riya', 'Aman', 'Sana', 'Dev']")
+need("Candidate")
+check(dataclasses.is_dataclass(Candidate), "Candidate is a dataclass")
+check(Candidate(1.0, "a") < Candidate(2.0, "b"), "Candidates compare by score", "Use @dataclass(order=True) with score as the first field.")
+```
+
+:::hints
+- `@dataclass(order=True)` and put `score` first so it is compared first.
+- `sorted(candidates, reverse=True)` then a comprehension for the names.
+:::
+
+@lesson 13.6 | Project: Library tracker | 45 | project
+@goal Design two cooperating classes with clear rules and errors, the way real application code is organised.
+
+Your study group shares books. You'll build a small library system with two classes:
+
+**`Book`** (a dataclass): `title`, `author`, and `borrower` (default `None`, meaning available).
+
+**`Library`**:
+
+- `__init__()`: starts with an empty dictionary of books, keyed by title.
+- `add(title, author)`: adds a book. Raises `ValueError` if that title already exists.
+- `borrow(title, member)`: marks the book as borrowed by member. Raises `KeyError` if there's no such title, `ValueError` if it's already borrowed.
+- `give_back(title)`: makes it available again. Raises `ValueError` if it wasn't borrowed.
+- `available()`: a sorted list of the titles nobody has borrowed.
+- `borrowed_by(member)`: a sorted list of the titles that member has.
+- `__len__`: the number of books.
+
+```py norun
+lib = Library()
+lib.add("Wings of Fire", "A. P. J. Abdul Kalam")
+lib.add("Godan", "Munshi Premchand")
+lib.borrow("Godan", "Riya")
+print(lib.available())          # ['Wings of Fire']
+print(lib.borrowed_by("Riya"))  # ['Godan']
+print(len(lib))                 # 2
+```
+
+:::tip
+Write `Book` first, then `Library.__init__` and `add`, and test them before moving on. The checker tests each method separately, including the error cases.
+:::
+
+:::recall
+Q: Why raise exceptions from methods like borrow() instead of printing a message?
+A: The caller decides how to react (show a message, retry, log it), and the object's rules can't be ignored silently.
+Q: What does composition mean?
+A: One object holding others as attributes, like a Library holding Book objects.
+:::
+
+@exercise 13.6a | Build the library | project
+Write `Book` and `Library` as described in the lesson.
+
+```starter
+from dataclasses import dataclass
+
+@dataclass
+class Book:
+    title: str
+    author: str
+    borrower: str = None
+
+
+class Library:
+    def __init__(self):
+        self.books = {}
+
+```
+
+```solution
+from dataclasses import dataclass
+
+@dataclass
+class Book:
+    title: str
+    author: str
+    borrower: str = None
+
+
+class Library:
+    def __init__(self):
+        self.books = {}
+
+    def add(self, title, author):
+        if title in self.books:
+            raise ValueError(f"{title} is already in the library")
+        self.books[title] = Book(title, author)
+
+    def borrow(self, title, member):
+        book = self.books[title]
+        if book.borrower is not None:
+            raise ValueError(f"{title} is already borrowed")
+        book.borrower = member
+
+    def give_back(self, title):
+        book = self.books[title]
+        if book.borrower is None:
+            raise ValueError(f"{title} wasn't borrowed")
+        book.borrower = None
+
+    def available(self):
+        return sorted(t for t, b in self.books.items() if b.borrower is None)
+
+    def borrowed_by(self, member):
+        return sorted(t for t, b in self.books.items() if b.borrower == member)
+
+    def __len__(self):
+        return len(self.books)
+```
+
+```test
+need("Library")
+lib = Library()
+lib.add("Wings of Fire", "A. P. J. Abdul Kalam")
+lib.add("Godan", "Munshi Premchand")
+lib.add("Gitanjali", "Rabindranath Tagore")
+check(len(lib) == 3, "len() counts the books", f"len gave {len(lib)}")
+check(lib.available() == ["Gitanjali", "Godan", "Wings of Fire"], "Everything is available at first, sorted", f"got {lib.available()}")
+lib.borrow("Godan", "Riya")
+lib.borrow("Gitanjali", "Riya")
+check(lib.available() == ["Wings of Fire"], "Borrowed books leave the available list", f"got {lib.available()}")
+check(lib.borrowed_by("Riya") == ["Gitanjali", "Godan"], "borrowed_by lists Riya's books, sorted", f"got {lib.borrowed_by('Riya')}")
+check(lib.borrowed_by("Dev") == [], "Dev has nothing")
+try:
+    lib.borrow("Godan", "Dev")
+    check(False, "Borrowing a borrowed book raises ValueError", "No error was raised")
+except ValueError:
+    check(True, "Borrowing a borrowed book raises ValueError")
+try:
+    lib.borrow("Harry Potter", "Dev")
+    check(False, "Borrowing a missing title raises KeyError", "No error was raised")
+except KeyError:
+    check(True, "Borrowing a missing title raises KeyError")
+try:
+    lib.add("Godan", "Someone")
+    check(False, "Adding a duplicate title raises ValueError", "No error was raised")
+except ValueError:
+    check(True, "Adding a duplicate title raises ValueError")
+lib.give_back("Godan")
+check("Godan" in lib.available(), "give_back makes the book available again")
+try:
+    lib.give_back("Wings of Fire")
+    check(False, "Returning a book that wasn't borrowed raises ValueError", "No error was raised")
+except ValueError:
+    check(True, "Returning a book that wasn't borrowed raises ValueError")
+```
+
+:::hints
+- Store `Book` objects in `self.books[title]`.
+- `self.books[title]` raises KeyError by itself for a missing title, which is exactly what borrow needs.
+- available and borrowed_by: comprehensions over `self.books.items()`, wrapped in sorted().
+:::

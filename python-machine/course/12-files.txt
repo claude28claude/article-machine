@@ -1,0 +1,743 @@
+@unit u12 | 12 | Files and data
+@zen In the face of ambiguity, refuse the temptation to guess.
+@summary Read and write text files safely with `with`, process CSV spreadsheets, and save and load structured data as JSON.
+
+@lesson 12.1 | Reading and writing files | 25
+@goal Open files with `with`, read them line by line, write and append text, and handle missing files.
+
+Everything so far vanished when the program ended. **Files** let data outlive the program: notes, logs, results, settings.
+
+This lesson comes with a file called `notes.txt` in your workspace:
+
+```file notes.txt
+Article 14: Equality before law
+Article 19: Freedom of speech, etc
+Article 21: Protection of life and personal liberty
+Article 32: Remedies for enforcement of rights
+```
+
+## Reading
+
+```py
+with open("notes.txt", encoding="utf-8") as f:
+    text = f.read()
+print(text)
+print(len(text), "characters")
+```
+
+`open()` gives you a file object; `with` makes sure the file is **closed** when the block ends, even if an error happens. Always use `with` for files.
+
+`encoding="utf-8"` tells Python how the characters are stored. Include it: it makes files with Hindi or symbols like ₹ read correctly on every computer.
+
+## Line by line
+
+Looping over a file gives one line at a time, which works even for files too big to fit in memory:
+
+```py
+with open("notes.txt", encoding="utf-8") as f:
+    for number, line in enumerate(f, start=1):
+        print(number, line.strip())
+```
+
+Each line still ends with `\n`, so `strip()` it before using it.
+
+## Writing and appending
+
+The second argument to `open()` is the **mode**:
+
+| Mode | Meaning |
+| --- | --- |
+| `"r"` | read (the default) |
+| `"w"` | write: creates the file, or **erases** it if it exists |
+| `"a"` | append: adds to the end |
+
+```py
+with open("log.txt", "w", encoding="utf-8") as f:
+    f.write("Day 1: print and variables\n")
+    f.write("Day 2: strings\n")
+
+with open("log.txt", "a", encoding="utf-8") as f:
+    f.write("Day 3: decisions\n")
+
+with open("log.txt", encoding="utf-8") as f:
+    print(f.read())
+```
+
+`write()` doesn't add new lines for you: include `\n` yourself.
+
+:::warn
+`"w"` silently erases an existing file. When you mean "add to it", use `"a"`.
+:::
+
+## Missing files
+
+```py error
+with open("missing.txt", encoding="utf-8") as f:
+    print(f.read())
+```
+
+Check first with `os.path.exists()`, or catch `FileNotFoundError`:
+
+```py
+import os
+
+name = "missing.txt"
+if os.path.exists(name):
+    print("found it")
+else:
+    print(name, "doesn't exist yet")
+```
+
+:::predict
+```py
+with open("t.txt", "w", encoding="utf-8") as f:
+    f.write("one\n")
+with open("t.txt", "w", encoding="utf-8") as f:
+    f.write("two\n")
+with open("t.txt", encoding="utf-8") as f:
+    print(f.read().strip())
+```
+- one\ntwo
++ two
+- one
+- two\none
+= Opening with "w" erases the file each time, so only the second write survives.
+:::
+
+:::recall
+Q: Why open files with a `with` statement?
+A: It closes the file automatically when the block ends, even if an error happens.
+Q: What is the difference between modes "w" and "a"?
+A: "w" creates or erases the file before writing; "a" adds to the end of it.
+Q: Why call strip() on lines read from a file?
+A: Each line ends with a newline character, which strip() removes.
+:::
+
+@exercise 12.1a | Count the notes
+Read `notes.txt` and print how many lines it has and the longest line:
+
+```text
+Lines: 4
+Longest: Article 21: Protection of life and personal liberty
+```
+
+```starter
+with open("notes.txt", encoding="utf-8") as f:
+    lines = []
+
+```
+
+```solution
+with open("notes.txt", encoding="utf-8") as f:
+    lines = [line.strip() for line in f]
+print("Lines:", len(lines))
+print("Longest:", max(lines, key=len))
+```
+
+```test
+check_out("Lines: 4\nLongest: Article 21: Protection of life and personal liberty")
+check(calls("open"), "You read the file")
+```
+
+:::hints
+- Collect the stripped lines in a list: `[line.strip() for line in f]`.
+- `max(lines, key=len)` gives the longest one.
+:::
+
+@exercise 12.1b | Write a study log
+Write these three lines to a file called `log.txt` (mode `"w"`), then read the file back and print it:
+
+```text
+Day 1: print and variables
+Day 2: strings
+Day 3: decisions
+```
+
+```starter
+entries = ["Day 1: print and variables", "Day 2: strings", "Day 3: decisions"]
+
+```
+
+```solution
+entries = ["Day 1: print and variables", "Day 2: strings", "Day 3: decisions"]
+with open("log.txt", "w", encoding="utf-8") as f:
+    for entry in entries:
+        f.write(entry + "\n")
+with open("log.txt", encoding="utf-8") as f:
+    print(f.read())
+```
+
+```test
+check_out("Day 1: print and variables\nDay 2: strings\nDay 3: decisions")
+saved = file_text("log.txt")
+check(saved is not None and saved.strip().split("\n") == ["Day 1: print and variables", "Day 2: strings", "Day 3: decisions"], "log.txt holds the three lines", f"log.txt contains: {saved!r}")
+```
+
+:::hints
+- Open `log.txt` with mode `"w"` and write each entry followed by `"\n"`.
+- Open it again (mode `"r"`) and print what you read.
+:::
+
+@exercise 12.1c | Add to the log
+`log.txt` already has two lines (created for you below). Append `Day 3: decisions` **without erasing** them, then print how many lines the file has:
+
+```text
+Lines: 3
+```
+
+```starter
+with open("log.txt", "w", encoding="utf-8") as f:
+    f.write("Day 1: print and variables\nDay 2: strings\n")
+
+# Append the new line here
+
+```
+
+```solution
+with open("log.txt", "w", encoding="utf-8") as f:
+    f.write("Day 1: print and variables\nDay 2: strings\n")
+
+with open("log.txt", "a", encoding="utf-8") as f:
+    f.write("Day 3: decisions\n")
+
+with open("log.txt", encoding="utf-8") as f:
+    print("Lines:", len(f.readlines()))
+```
+
+```test
+check_out("Lines: 3")
+saved = file_text("log.txt") or ""
+check(saved.endswith("Day 3: decisions\n") and saved.startswith("Day 1"), "The new line was appended after the old ones", f"log.txt contains: {saved!r}")
+```
+
+:::hints
+- Mode `"a"` adds to the end of the file.
+- `f.readlines()` gives a list of the lines; `len()` counts them.
+:::
+
+@lesson 12.2 | CSV files | 25
+@goal Read and write CSV files, the format every spreadsheet can open, with the `csv` module.
+
+**CSV** (comma-separated values) is plain text where each line is a row and commas separate the columns. Excel, Google Sheets and nearly every data tool can open and save it. This lesson's file:
+
+```file marks.csv
+name,polity,history,economy
+Aman,42,38,45
+Riya,47,44,39
+Dev,35,41,36
+Sana,44,46,48
+```
+
+The first row is the **header**: the column names.
+
+## Reading with csv.reader
+
+```py
+import csv
+
+with open("marks.csv", encoding="utf-8", newline="") as f:
+    reader = csv.reader(f)
+    header = next(reader)       # take the first row
+    print(header)
+    for row in reader:
+        print(row)
+```
+
+Each row is a list of **strings**: `'42'`, not `42`. Convert numbers with `int()` before doing maths. `newline=""` is what the csv module wants when opening the file; just include it.
+
+## Reading with csv.DictReader
+
+`DictReader` uses the header to turn each row into a dictionary, so you can use column names instead of positions:
+
+```py
+import csv
+
+with open("marks.csv", encoding="utf-8", newline="") as f:
+    for row in csv.DictReader(f):
+        total = int(row["polity"]) + int(row["history"]) + int(row["economy"])
+        print(row["name"], total)
+```
+
+Code that says `row["history"]` keeps working even if someone adds a column, and it's far easier to read than `row[2]`.
+
+## Writing CSV
+
+```py
+import csv
+
+rows = [["name", "total"], ["Aman", 125], ["Riya", 130]]
+with open("totals.csv", "w", encoding="utf-8", newline="") as f:
+    writer = csv.writer(f)
+    writer.writerows(rows)
+
+with open("totals.csv", encoding="utf-8") as f:
+    print(f.read())
+```
+
+Why not just `split(",")`? Real CSV files contain values like `"Remedies for enforcement of rights, etc"` with commas **inside** quotes. The csv module handles those correctly; a plain split breaks them.
+
+:::predict
+```py
+import csv
+import io
+row = next(csv.reader(io.StringIO('14,"Equality, before law"')))
+print(len(row), row[1])
+```
+- 3 Equality
++ 2 Equality, before law
+- 2 "Equality, before law"
+- 3 before law
+= The quotes tell csv that the comma inside belongs to the value, so there are 2 columns and the quotes themselves are removed.
+:::
+
+:::recall
+Q: What type are the values csv.reader gives you?
+A: Strings. Convert numbers with int() or float() before maths.
+Q: What does csv.DictReader do?
+A: Reads each row as a dictionary keyed by the header names, so you can write row["name"].
+Q: Why use the csv module instead of split(",")?
+A: It handles quoted values that contain commas, and other edge cases, correctly.
+:::
+
+@exercise 12.2a | Totals from a CSV
+Read `marks.csv` with `csv.DictReader` and print each student's total:
+
+```text
+Aman 125
+Riya 130
+Dev 112
+Sana 138
+```
+
+```starter
+import csv
+
+```
+
+```solution
+import csv
+
+with open("marks.csv", encoding="utf-8", newline="") as f:
+    for row in csv.DictReader(f):
+        total = int(row["polity"]) + int(row["history"]) + int(row["economy"])
+        print(row["name"], total)
+```
+
+```test
+check_out("Aman 125\nRiya 130\nDev 112\nSana 138")
+check(calls("DictReader") or calls("reader"), "You used the csv module")
+```
+
+:::hints
+- Open the file and loop over `csv.DictReader(f)`.
+- Each value is a string: convert with `int()` before adding.
+:::
+
+@exercise 12.2b | Subject averages
+Print the class average for each subject, rounded to 2 places:
+
+```text
+polity 42.0
+history 42.25
+economy 42.0
+```
+
+Work it out from the file; don't type the numbers.
+
+```starter
+import csv
+
+subjects = ["polity", "history", "economy"]
+
+```
+
+```solution
+import csv
+
+subjects = ["polity", "history", "economy"]
+totals = {s: 0 for s in subjects}
+count = 0
+with open("marks.csv", encoding="utf-8", newline="") as f:
+    for row in csv.DictReader(f):
+        count += 1
+        for s in subjects:
+            totals[s] += int(row[s])
+for s in subjects:
+    print(s, round(totals[s] / count, 2))
+```
+
+```test
+check_out("polity 42.0\nhistory 42.25\neconomy 42.0")
+check(calls("open"), "You read the file")
+```
+
+:::hints
+- Keep a running total per subject in a dictionary, and count the rows.
+- After the loop, divide each total by the count.
+:::
+
+@exercise 12.2c | Save a results file
+Read `marks.csv` and write `results.csv` with the columns `name,total,grade`, where grade is `A` for a total of 130 or more, otherwise `B`. Then print the new file:
+
+```text
+name,total,grade
+Aman,125,B
+Riya,130,A
+Dev,112,B
+Sana,138,A
+```
+
+```starter
+import csv
+
+```
+
+```solution
+import csv
+
+rows = [["name", "total", "grade"]]
+with open("marks.csv", encoding="utf-8", newline="") as f:
+    for row in csv.DictReader(f):
+        total = int(row["polity"]) + int(row["history"]) + int(row["economy"])
+        rows.append([row["name"], total, "A" if total >= 130 else "B"])
+
+with open("results.csv", "w", encoding="utf-8", newline="") as f:
+    csv.writer(f).writerows(rows)
+
+with open("results.csv", encoding="utf-8") as f:
+    print(f.read())
+```
+
+```test
+expected = "name,total,grade\nAman,125,B\nRiya,130,A\nDev,112,B\nSana,138,A"
+check_out(expected)
+saved = (file_text("results.csv") or "").replace("\r\n", "\n").strip()
+check(saved == expected, "results.csv has the right rows", f"results.csv contains:\n{saved}")
+```
+
+:::hints
+- Build a list of rows, starting with the header row.
+- `"A" if total >= 130 else "B"` is a one-line if/else (a conditional expression).
+- Write all rows with `csv.writer(f).writerows(rows)`.
+:::
+
+@lesson 12.3 | JSON | 25
+@goal Save and load structured data (dictionaries and lists, nested any way) with the `json` module.
+
+CSV is great for tables. For anything with structure (records inside records, lists of tags, settings) the standard is **JSON** (JavaScript Object Notation). It looks almost exactly like Python dictionaries and lists:
+
+```file articles.json
+[
+  {"a": "14", "h": "Equality before law", "p": "III"},
+  {"a": "21", "h": "Protection of life and personal liberty", "p": "III"},
+  {"a": "44", "h": "Uniform civil code for the citizens", "p": "IV"},
+  {"a": "280", "h": "Finance Commission", "p": "XII"},
+  {"a": "352", "h": "Proclamation of Emergency", "p": "XVIII"}
+]
+```
+
+Fun fact: this is the same shape as the data behind your Article Machine (`a` for article, `h` for heading, `p` for Part).
+
+## Loading
+
+```py
+import json
+
+with open("articles.json", encoding="utf-8") as f:
+    articles = json.load(f)
+print(type(articles), len(articles))
+print(articles[0]["h"])
+for art in articles:
+    print(art["a"], "is in Part", art["p"])
+```
+
+`json.load(f)` reads a file; `json.loads(text)` reads a string.
+
+## Saving
+
+```py
+import json
+
+progress = {"name": "Aman", "lessons_done": 42, "streak": 9, "weak": ["recursion", "CSV"]}
+with open("progress.json", "w", encoding="utf-8") as f:
+    json.dump(progress, f, indent=2)
+
+with open("progress.json", encoding="utf-8") as f:
+    print(f.read())
+```
+
+`indent=2` makes the file readable for humans. `json.dumps(data)` gives the JSON as a string instead of writing a file.
+
+## How the types map
+
+| JSON | Python |
+| --- | --- |
+| object `{...}` | dict |
+| array `[...]` | list |
+| string `"..."` | str |
+| number | int or float |
+| `true` / `false` | `True` / `False` |
+| `null` | `None` |
+
+JSON keys are always strings, so a dictionary with int keys comes back with string keys after a save and load.
+
+:::predict
+```py
+import json
+data = json.loads('{"ok": true, "score": null, "tags": ["a", "b"]}')
+print(data["ok"], data["score"], len(data["tags"]))
+```
+- true null 2
++ True None 2
+- True null 2
+- Error
+= json converts true to True, null to None, and the array to a list of 2 items.
+:::
+
+:::recall
+Q: What is the difference between json.load and json.loads?
+A: json.load reads JSON from a file object; json.loads reads it from a string.
+Q: What does indent=2 do in json.dump?
+A: Formats the JSON over several lines with indentation so people can read it.
+Q: What do JSON's true, false and null become in Python?
+A: True, False and None.
+:::
+
+@exercise 12.3a | Part III articles
+Load `articles.json` and print the headings of the articles in Part III, in file order:
+
+```text
+Equality before law
+Protection of life and personal liberty
+```
+
+```starter
+import json
+
+```
+
+```solution
+import json
+
+with open("articles.json", encoding="utf-8") as f:
+    articles = json.load(f)
+for art in articles:
+    if art["p"] == "III":
+        print(art["h"])
+```
+
+```test
+check_out("Equality before law\nProtection of life and personal liberty")
+check(calls("load") or calls("loads"), "You loaded the JSON")
+```
+
+:::hints
+- `json.load(f)` gives a list of dictionaries.
+- Keep the ones where `art["p"] == "III"`.
+:::
+
+@exercise 12.3b | Save your settings
+Save `settings` to `settings.json` with `indent=2`, load it back into a new variable `loaded`, and print `loaded["minutes"]`:
+
+```text
+60
+```
+
+```starter
+import json
+
+settings = {"name": "Aman", "minutes": 60, "goals": ["automation", "data", "interviews", "web"], "dark_mode": True}
+
+```
+
+```solution
+import json
+
+settings = {"name": "Aman", "minutes": 60, "goals": ["automation", "data", "interviews", "web"], "dark_mode": True}
+with open("settings.json", "w", encoding="utf-8") as f:
+    json.dump(settings, f, indent=2)
+with open("settings.json", encoding="utf-8") as f:
+    loaded = json.load(f)
+print(loaded["minutes"])
+```
+
+```test
+import json as _json
+check_out("60")
+saved = file_text("settings.json")
+check(saved is not None, "settings.json was written")
+if saved:
+    check(_json.loads(saved) == var("settings"), "The file holds the same data")
+    check("\n  " in saved, "It is indented", "Pass indent=2 to json.dump.")
+need("loaded")
+check(var("loaded") == var("settings"), "loaded equals the original settings")
+```
+
+:::hints
+- `json.dump(settings, f, indent=2)` inside a `with open(..., "w")` block.
+- Then open it for reading and `loaded = json.load(f)`.
+:::
+
+@exercise 12.3c | Articles per Part
+Count how many articles in `articles.json` belong to each Part and print the dictionary:
+
+```text
+{'III': 2, 'IV': 1, 'XII': 1, 'XVIII': 1}
+```
+
+```starter
+import json
+
+```
+
+```solution
+import json
+from collections import Counter
+
+with open("articles.json", encoding="utf-8") as f:
+    articles = json.load(f)
+print(dict(Counter(art["p"] for art in articles)))
+```
+
+```test
+check_out("{'III': 2, 'IV': 1, 'XII': 1, 'XVIII': 1}")
+```
+
+:::hints
+- Load the list, then count the `"p"` values.
+- The counting pattern or `Counter` both work; print a plain dict.
+:::
+
+@lesson 12.4 | Project: Study log analyzer | 45 | project
+@goal Read a real-looking data file, summarise it, print a report and save the summary as JSON.
+
+You've logged two weeks of study in a CSV file. Time to find out where the hours really went.
+
+```file study_log.csv
+date,subject,minutes
+2026-10-05,Polity,60
+2026-10-05,Maths,45
+2026-10-06,History,30
+2026-10-06,Polity,40
+2026-10-07,Maths,60
+2026-10-08,GK,20
+2026-10-08,Polity,50
+2026-10-09,Python,60
+2026-10-10,Maths,30
+2026-10-10,Python,45
+2026-10-11,History,40
+2026-10-11,Python,60
+```
+
+Your program prints this report:
+
+```text
+Study log: 7 days, 540 minutes (9.0 hours)
+By subject:
+  Python     165 min
+  Polity     150 min
+  Maths      135 min
+  History     70 min
+  GK          20 min
+Best day: 2026-10-05 with 105 min
+Average per day: 77.1 min
+```
+
+and saves `summary.json`:
+
+```text
+{
+  "total_minutes": 540,
+  "by_subject": {"Python": 165, "Polity": 150, "Maths": 135, "History": 70, "GK": 20},
+  "best_day": "2026-10-05"
+}
+```
+
+(With `indent=2` the nested dictionary will spread over more lines; that's fine.)
+
+## Plan
+
+1. Read the CSV with DictReader. For each row, add the minutes to a per-subject total and a per-day total (two dictionaries; `defaultdict(int)` or `.get()`).
+2. Total minutes = sum of the subject totals. Hours = minutes / 60, one decimal place.
+3. Sort subjects by minutes, highest first. Each line is `f"  {subject:<10}{minutes:>4} min"`.
+4. Best day: the day with the most minutes. Average per day: total / number of days, 1 decimal place.
+5. Save the summary dictionary with `json.dump(..., indent=2)`. Keep `by_subject` in the same highest-first order.
+
+:::real
+This is a real data workflow in miniature: load, aggregate, sort, report, save. The Data & AI track does the same with pandas, which turns most of these steps into one line each, but now you'll know what those lines are doing.
+:::
+
+:::recall
+Q: What are the usual steps of a small data report?
+A: Load the data, aggregate (totals, counts), sort or rank, print the report, save the results.
+Q: How do you sort a dictionary's items by value, highest first?
+A: `sorted(d.items(), key=lambda kv: kv[1], reverse=True)`.
+:::
+
+@exercise 12.4a | Build the analyzer | project
+Write the analyzer from the lesson. It must print the report exactly and save `summary.json` with the keys `total_minutes`, `by_subject` (highest first) and `best_day`.
+
+```starter
+import csv
+import json
+
+by_subject = {}
+by_day = {}
+
+```
+
+```solution
+import csv
+import json
+
+by_subject = {}
+by_day = {}
+with open("study_log.csv", encoding="utf-8", newline="") as f:
+    for row in csv.DictReader(f):
+        minutes = int(row["minutes"])
+        by_subject[row["subject"]] = by_subject.get(row["subject"], 0) + minutes
+        by_day[row["date"]] = by_day.get(row["date"], 0) + minutes
+
+total = sum(by_subject.values())
+ranked = sorted(by_subject.items(), key=lambda kv: kv[1], reverse=True)
+best_day = max(by_day, key=by_day.get)
+
+print(f"Study log: {len(by_day)} days, {total} minutes ({total / 60:.1f} hours)")
+print("By subject:")
+for subject, minutes in ranked:
+    print(f"  {subject:<10}{minutes:>4} min")
+print(f"Best day: {best_day} with {by_day[best_day]} min")
+print(f"Average per day: {total / len(by_day):.1f} min")
+
+summary = {"total_minutes": total, "by_subject": dict(ranked), "best_day": best_day}
+with open("summary.json", "w", encoding="utf-8") as f:
+    json.dump(summary, f, indent=2)
+```
+
+```test
+import json as _json
+check_out("""Study log: 7 days, 540 minutes (9.0 hours)
+By subject:
+  Python     165 min
+  Polity     150 min
+  Maths      135 min
+  History     70 min
+  GK          20 min
+Best day: 2026-10-05 with 105 min
+Average per day: 77.1 min""")
+saved = file_text("summary.json")
+check(saved is not None, "summary.json was saved")
+if saved:
+    data = _json.loads(saved)
+    check(data.get("total_minutes") == 540, "total_minutes is 540", f"got {data.get('total_minutes')!r}")
+    check(data.get("by_subject") == {"Python": 165, "Polity": 150, "Maths": 135, "History": 70, "GK": 20}, "by_subject has every subject's minutes")
+    check(list(data.get("by_subject", {})) == ["Python", "Polity", "Maths", "History", "GK"], "by_subject is ordered highest first")
+    check(data.get("best_day") == "2026-10-05", "best_day is 2026-10-05")
+```
+
+:::hints
+- Two dictionaries do the counting: minutes per subject and minutes per day.
+- `sorted(by_subject.items(), key=lambda kv: kv[1], reverse=True)` ranks the subjects.
+- `max(by_day, key=by_day.get)` finds the best day.
+- `dict(ranked)` turns the ranked pairs back into an ordered dictionary for the JSON.
+:::

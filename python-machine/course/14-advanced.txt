@@ -1,0 +1,844 @@
+@unit u14 | 14 | Advanced Python
+@zen Now is better than never.
+@summary The features that separate beginners from fluent Python programmers: generators, decorators, context managers, type hints and regular expressions.
+
+@lesson 14.1 | Iterators and generators | 25
+@goal Understand what a for loop really does, and write generator functions that produce values one at a time with `yield`.
+
+## What a for loop does
+
+Anything you can loop over is **iterable**. Behind every `for` loop, Python asks the iterable for an **iterator** with `iter()`, then calls `next()` on it until it raises `StopIteration`:
+
+```py
+subjects = ["Polity", "GK"]
+it = iter(subjects)
+print(next(it))
+print(next(it))
+try:
+    next(it)
+except StopIteration:
+    print("finished")
+```
+
+You'll rarely call `next()` yourself, but knowing this explains the next idea.
+
+## Generators
+
+A function that contains `yield` is a **generator function**. Calling it doesn't run it; it returns a generator. Each `next()` runs the function until the next `yield`, hands out that value, and **pauses** there, keeping all its variables, until the next request:
+
+```py
+def countdown(n):
+    while n > 0:
+        yield n
+        n -= 1
+    print("(generator finished)")
+
+for x in countdown(3):
+    print(x)
+```
+
+Step through it and watch execution jump back into `countdown` at the line after `yield`.
+
+## Why bother? Laziness
+
+A list holds **all** its values in memory at once. A generator produces each value only when asked. That makes it possible to work with enormous, or even endless, sequences:
+
+```py
+def multiples_of(n):
+    k = n
+    while True:          # endless, and that's fine
+        yield k
+        k += n
+
+for m in multiples_of(7):
+    if m > 40:
+        break
+    print(m, end=" ")
+```
+
+The generator expressions you met in Unit 10, like `sum(x * x for x in range(1_000_000))`, are lazy in the same way: no million-item list is ever built.
+
+```py
+squares = (x * x for x in range(5))
+print(squares)
+print(list(squares))
+print(list(squares))
+```
+
+A generator can only be used **once**: after it's exhausted, it's empty.
+
+:::predict
+```py
+def gen():
+    yield 1
+    yield 2
+    yield 3
+
+g = gen()
+print(next(g), next(g), list(g))
+```
+- 1 1 [1, 2, 3]
++ 1 2 [3]
+- 1 2 [1, 2, 3]
+- 1 2 []
+= Each next() takes the next value. list(g) collects only what's left, which is 3.
+:::
+
+:::recall
+Q: What does `yield` do in a function?
+A: Hands a value to whoever is looping and pauses the function there, ready to continue on the next request.
+Q: Why are generators memory-friendly?
+A: They produce one value at a time instead of building the whole sequence in memory.
+Q: What happens if you loop over the same generator twice?
+A: The second time it's empty: a generator can only be used once.
+:::
+
+@exercise 14.1a | Countdown generator
+Write a generator `countdown(n)` that yields n, n - 1, ..., 1. `list(countdown(4))` gives `[4, 3, 2, 1]`.
+
+```starter
+def countdown(n):
+    pass
+```
+
+```solution
+def countdown(n):
+    while n > 0:
+        yield n
+        n -= 1
+```
+
+```test
+import inspect
+need("countdown", "function")
+check(inspect.isgeneratorfunction(countdown), "countdown is a generator function (uses yield)")
+expect("list(countdown(4))", [4, 3, 2, 1])
+expect("list(countdown(0))", [])
+expect("next(countdown(10))", 10)
+```
+
+:::hints
+- Use a while loop that yields n, then decreases it.
+- A function with `yield` in it is automatically a generator.
+:::
+
+@exercise 14.1b | Fibonacci generator
+Write `fibonacci()`, an **endless** generator of the Fibonacci numbers 0, 1, 1, 2, 3, 5, 8, ... (each is the sum of the two before). Then write `first(n, gen)` that returns a list of the first n values from any generator.
+
+```starter
+def fibonacci():
+    pass
+
+def first(n, gen):
+    pass
+
+print(first(10, fibonacci()))
+```
+
+```solution
+def fibonacci():
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+
+def first(n, gen):
+    result = []
+    for value in gen:
+        if len(result) == n:
+            break
+        result.append(value)
+    return result
+
+print(first(10, fibonacci()))
+```
+
+```test
+import inspect
+need("fibonacci", "function")
+need("first", "function")
+check(inspect.isgeneratorfunction(fibonacci), "fibonacci uses yield")
+expect("first(10, fibonacci())", [0, 1, 1, 2, 3, 5, 8, 13, 21, 34])
+expect("first(1, fibonacci())", [0])
+expect("first(0, fibonacci())", [])
+expect("first(3, iter([7, 8, 9, 10]))", [7, 8, 9])
+```
+
+:::hints
+- Keep two numbers `a, b = 0, 1`; yield a, then `a, b = b, a + b`, forever.
+- first: loop over gen, stop when you have n values. Check the length before appending so n = 0 works.
+:::
+
+@lesson 14.2 | Decorators | 25
+@goal Treat functions as values, write closures, and build decorators that add behaviour to any function.
+
+## Functions are values
+
+In Python a function is an object like any other: you can store it in a variable, put it in a list, pass it to another function, and return it from one.
+
+```py
+def shout(text):
+    return text.upper() + "!"
+
+def whisper(text):
+    return text.lower() + "..."
+
+def speak(style, text):
+    return style(text)
+
+print(speak(shout, "Hello"))
+print(speak(whisper, "Hello"))
+```
+
+You did this already with `sorted(items, key=len)`: `len` was passed as a value.
+
+## Closures: functions that remember
+
+A function defined inside another function remembers the outer function's variables, even after the outer one has finished:
+
+```py
+def make_multiplier(n):
+    def multiply(x):
+        return x * n
+    return multiply
+
+double = make_multiplier(2)
+triple = make_multiplier(3)
+print(double(10), triple(10))
+```
+
+## Decorators
+
+A **decorator** takes a function and returns a new function that wraps extra behaviour around it. The `@` line is a shortcut for `func = decorator(func)`:
+
+```py
+import functools
+
+def announce(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"Calling {func.__name__}{args}")
+        result = func(*args, **kwargs)
+        print(f"{func.__name__} returned {result!r}")
+        return result
+    return wrapper
+
+@announce
+def cgl_score(correct, wrong):
+    return correct * 2 - wrong * 0.5
+
+cgl_score(68, 12)
+```
+
+- `wrapper(*args, **kwargs)` accepts whatever arguments the original takes and passes them on.
+- `functools.wraps(func)` copies the original's name and docstring onto the wrapper, so tracebacks and `help()` still make sense.
+
+Decorators are everywhere in real Python: `@property` and `@dataclass` are decorators; web frameworks use `@app.get("/")` to turn functions into web pages; testing tools use them too.
+
+:::predict
+```py
+def twice(func):
+    def wrapper(x):
+        return func(func(x))
+    return wrapper
+
+@twice
+def add3(x):
+    return x + 3
+
+print(add3(10))
+```
+- 13
++ 16
+- 20
+- 33
+= The decorator replaces add3 with a wrapper that applies the original twice: 10 + 3 + 3.
+:::
+
+:::recall
+Q: What does `@decorator` above `def f` mean?
+A: The same as writing `f = decorator(f)` after the function: f is replaced by the decorator's result.
+Q: What is a closure?
+A: An inner function that remembers variables from the function it was created in.
+Q: Why use `functools.wraps(func)` in a decorator?
+A: It keeps the original function's name and docstring on the wrapper.
+:::
+
+@exercise 14.2a | Make a multiplier
+Write `make_multiplier(n)` that returns a function multiplying its argument by n. `make_multiplier(5)(4)` is 20.
+
+```starter
+def make_multiplier(n):
+    pass
+```
+
+```solution
+def make_multiplier(n):
+    def multiply(x):
+        return x * n
+    return multiply
+```
+
+```test
+need("make_multiplier", "function")
+expect("make_multiplier(5)(4)", 20)
+expect("make_multiplier(0)(99)", 0)
+expect("callable(make_multiplier(2))", True)
+check(make_multiplier(3)(3) == 9 and make_multiplier(10)(3) == 30, "Each multiplier remembers its own n")
+```
+
+:::hints
+- Define a function inside make_multiplier that uses n.
+- Return that inner function (no brackets: you return the function, not its result).
+:::
+
+@exercise 14.2b | An uppercase decorator
+Write a decorator `uppercase` that makes any function returning text return it in capitals. Use `functools.wraps`.
+
+```starter
+import functools
+
+def uppercase(func):
+    pass
+
+@uppercase
+def greet(name):
+    return f"namaste, {name}"
+
+print(greet("aman"))
+```
+
+```solution
+import functools
+
+def uppercase(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs).upper()
+    return wrapper
+
+@uppercase
+def greet(name):
+    return f"namaste, {name}"
+
+print(greet("aman"))
+```
+
+```test
+check_out("NAMASTE, AMAN")
+need("uppercase", "function")
+@uppercase
+def _motto(a, b="python"):
+    return f"{a} {b}"
+check(_motto("learn") == "LEARN PYTHON", "Works for other functions with any arguments", f"got {_motto('learn')!r}")
+check(_motto.__name__ == "_motto", "functools.wraps keeps the function's name", f"name is {_motto.__name__!r}")
+```
+
+:::hints
+- Inside uppercase, define `wrapper(*args, **kwargs)` that calls func and returns the result `.upper()`.
+- Put `@functools.wraps(func)` above the wrapper, and return wrapper.
+:::
+
+@exercise 14.2c | Count the calls
+Write a decorator `count_calls` that counts how many times a function is called, storing the count on the wrapper as an attribute `calls` (starting at 0).
+
+```starter
+import functools
+
+def count_calls(func):
+    pass
+
+@count_calls
+def study(topic):
+    return f"Studying {topic}"
+
+study("Polity")
+study("GK")
+print(study.calls)
+```
+
+```solution
+import functools
+
+def count_calls(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        wrapper.calls += 1
+        return func(*args, **kwargs)
+    wrapper.calls = 0
+    return wrapper
+
+@count_calls
+def study(topic):
+    return f"Studying {topic}"
+
+study("Polity")
+study("GK")
+print(study.calls)
+```
+
+```test
+check_out("2")
+need("count_calls", "function")
+@count_calls
+def _f(x):
+    return x * 2
+check(_f.calls == 0, "The count starts at 0")
+check(_f(5) == 10, "The function still returns its result")
+_f(1)
+_f(2)
+check(_f.calls == 3, "Three calls are counted", f"calls is {_f.calls}")
+```
+
+:::hints
+- Functions can have attributes: set `wrapper.calls = 0` after defining the wrapper.
+- Inside the wrapper, add 1 to `wrapper.calls` before calling func.
+:::
+
+@lesson 14.3 | Context managers | 20
+@goal Understand the `with` statement and write your own context managers for setup and clean-up.
+
+You've used `with open(...) as f:` to guarantee a file gets closed. Any object that defines `__enter__` and `__exit__` works with `with`:
+
+- `__enter__` runs at the start of the block; what it returns goes after `as`.
+- `__exit__` runs at the end, **always**, even if an exception happened inside the block.
+
+```py
+class Section:
+    def __init__(self, title):
+        self.title = title
+
+    def __enter__(self):
+        print(f"== {self.title} ==")
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        print(f"== end of {self.title} ==")
+        return False   # don't hide exceptions
+
+
+with Section("Polity revision"):
+    print("Article 14")
+    print("Article 21")
+```
+
+If `__exit__` returns True, an exception raised in the block is **suppressed**. Use that power sparingly; errors should never pass silently.
+
+## The easy way: @contextmanager
+
+`contextlib.contextmanager` turns a generator into a context manager. Everything before `yield` is the setup, everything after is the clean-up. Wrap the `yield` in try/finally so the clean-up runs even after an error:
+
+```py
+from contextlib import contextmanager
+
+@contextmanager
+def section(title):
+    print(f"== {title} ==")
+    try:
+        yield
+    finally:
+        print(f"== end of {title} ==")
+
+
+with section("Maths"):
+    print("Profit and loss")
+```
+
+Context managers appear wherever something must be undone: closing files and network connections, releasing locks, rolling back database changes, restoring a setting you changed temporarily.
+
+:::predict
+```py
+from contextlib import contextmanager
+
+@contextmanager
+def tag(name):
+    print(f"<{name}>", end="")
+    yield
+    print(f"</{name}>", end="")
+
+with tag("b"):
+    print("hi", end="")
+print()
+```
+- <b></b>hi
++ <b>hi</b>
+- hi<b></b>
+- <b>\nhi\n</b>
+= The code before yield runs first, then the block, then the code after yield.
+:::
+
+:::recall
+Q: Which two methods make an object usable in a with statement?
+A: `__enter__` (runs at the start) and `__exit__` (runs at the end, even after an error).
+Q: How do you write a context manager with a generator?
+A: Decorate it with `@contextmanager`: code before `yield` is the setup, code after is the clean-up (put the yield in try/finally).
+Q: What happens if `__exit__` returns True?
+A: An exception raised inside the with block is suppressed.
+:::
+
+@exercise 14.3a | A section printer
+Write a context manager `section(title)` with `@contextmanager` that prints `== title ==` before the block and `== end ==` after it, even if the block raises an error.
+
+```starter
+from contextlib import contextmanager
+
+with section("Polity"):
+    print("Article 14")
+```
+
+```solution
+from contextlib import contextmanager
+
+@contextmanager
+def section(title):
+    print(f"== {title} ==")
+    try:
+        yield
+    finally:
+        print("== end ==")
+
+with section("Polity"):
+    print("Article 14")
+```
+
+```test
+check_out("== Polity ==\nArticle 14\n== end ==")
+need("section", "function")
+import io, contextlib as _cl
+buf = io.StringIO()
+try:
+    with _cl.redirect_stdout(buf):
+        with section("Test"):
+            raise ValueError("boom")
+except ValueError:
+    pass
+check(buf.getvalue().strip().endswith("== end =="), "The end line prints even after an error", f"printed: {buf.getvalue()!r}")
+```
+
+:::hints
+- Decorate a generator function with `@contextmanager`.
+- Print the first line, then `try: yield` and `finally: print("== end ==")`.
+:::
+
+@exercise 14.3b | Ignore one kind of error
+Write a class `ignore_zero_division` that works with `with` and suppresses only `ZeroDivisionError`. Any other exception must still be raised.
+
+```starter
+class ignore_zero_division:
+    pass
+
+with ignore_zero_division():
+    print(10 / 0)
+print("still running")
+```
+
+```solution
+class ignore_zero_division:
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        return exc_type is not None and issubclass(exc_type, ZeroDivisionError)
+
+with ignore_zero_division():
+    print(10 / 0)
+print("still running")
+```
+
+```test
+check_out("still running")
+need("ignore_zero_division")
+try:
+    with ignore_zero_division():
+        int("x")
+    check(False, "Other errors are not hidden", "A ValueError was swallowed.")
+except ValueError:
+    check(True, "Other errors are not hidden")
+with ignore_zero_division():
+    value = 5
+check(value == 5, "A block without errors runs normally")
+```
+
+:::hints
+- `__exit__(self, exc_type, exc, tb)` gets the exception's class as exc_type (None if there was no error).
+- Return True only when exc_type is ZeroDivisionError.
+:::
+
+@lesson 14.4 | Type hints | 20
+@goal Read and write type hints that document what functions expect and return.
+
+Python doesn't make you declare types, but you **can** annotate them. Hints document intent for readers, and editors and tools like `mypy` use them to catch mistakes before you run anything:
+
+```py
+def cgl_score(correct: int, wrong: int, penalty: float = 0.5) -> float:
+    return correct * 2 - wrong * penalty
+
+name: str = "Aman"
+attempts: list[int] = [68, 72, 75]
+print(cgl_score(70, 10))
+print(cgl_score.__annotations__)
+```
+
+- `param: type` after a parameter.
+- `-> type` before the colon for the return value.
+- `list[int]`, `dict[str, float]`, `tuple[int, int]` describe what's inside collections.
+
+## Hints are not enforced
+
+Python ignores them when the program runs. This works, even though the hint says `int`:
+
+```py
+def double(x: int) -> int:
+    return x * 2
+
+print(double("ab"))
+```
+
+That's why tools like `mypy` (or the checker built into VS Code) exist: they read the hints and warn you about calls like that **before** the code runs.
+
+## More shapes
+
+```py
+def find_article(number: int, notes: dict[int, str]) -> str | None:
+    return notes.get(number)
+
+def average(marks: list[float]) -> float:
+    return sum(marks) / len(marks) if marks else 0.0
+
+print(find_article(14, {14: "Equality before law"}))
+print(find_article(99, {}))
+```
+
+`str | None` means "a string or None": the function may find nothing. (Older code writes `Optional[str]` from the `typing` module for the same thing.)
+
+:::tip
+Add hints to function signatures in any code you'll keep. They cost seconds, make the code self-documenting, and let your editor's autocomplete understand your variables.
+:::
+
+:::predict
+```py
+def f(x: int) -> int:
+    return x + 1
+
+print(f(2.5))
+```
+- Error: x must be an int
+- 3
++ 3.5
+- 4
+= Type hints are not checked when the program runs, so 2.5 + 1 is calculated normally.
+:::
+
+:::recall
+Q: How do you annotate a parameter and a return type?
+A: `def f(name: str, n: int) -> bool:`
+Q: Does Python check type hints when the program runs?
+A: No. They document intent; tools like mypy and editors check them separately.
+Q: What does `-> str | None` mean?
+A: The function returns either a string or None.
+:::
+
+@exercise 14.4a | Add the hints
+Add type hints to both functions, exactly as described:
+
+- `percentage`: `obtained` and `maximum` are `float`, returns `float`
+- `top_subjects`: `marks` is `dict[str, int]`, `n` is `int` with default 3, returns `list[str]`
+
+Keep the bodies as they are.
+
+```starter
+def percentage(obtained, maximum):
+    return round(obtained / maximum * 100, 1)
+
+def top_subjects(marks, n=3):
+    return sorted(marks, key=marks.get, reverse=True)[:n]
+```
+
+```solution
+def percentage(obtained: float, maximum: float) -> float:
+    return round(obtained / maximum * 100, 1)
+
+def top_subjects(marks: dict[str, int], n: int = 3) -> list[str]:
+    return sorted(marks, key=marks.get, reverse=True)[:n]
+```
+
+```test
+need("percentage", "function")
+need("top_subjects", "function")
+a = percentage.__annotations__
+check(a.get("obtained") is float and a.get("maximum") is float and a.get("return") is float, "percentage has float hints", f"annotations: {a}")
+b = top_subjects.__annotations__
+check(b.get("marks") == dict[str, int] and b.get("n") is int and b.get("return") == list[str], "top_subjects has the right hints", f"annotations: {b}")
+expect("percentage(157, 200)", 78.5)
+expect('top_subjects({"a": 1, "b": 3, "c": 2, "d": 0})', ["b", "c", "a"])
+```
+
+:::hints
+- Parameters: `name: type`. Return: `-> type` before the colon.
+- With a default value: `n: int = 3`.
+:::
+
+@lesson 14.5 | Regular expressions | 25
+@goal Search, check and extract text patterns such as phone numbers, PIN codes, years and emails with the `re` module.
+
+String methods like `find` and `replace` look for **exact** text. **Regular expressions** (regex) describe **patterns**: "ten digits", "a word followed by @", "four digits starting with 19 or 20".
+
+```py
+import re
+
+text = "Call 9876543210 or 9123456780 before 15 Jan 2027."
+print(re.findall(r"\d{10}", text))
+print(re.search(r"\d{4}", "Exam in 2027").group())
+```
+
+The `r` before the string makes it a **raw string**, so backslashes reach `re` untouched. Always use raw strings for patterns.
+
+## The building blocks
+
+| Pattern | Matches |
+| --- | --- |
+| `\d` | a digit |
+| `\w` | a letter, digit or underscore |
+| `\s` | a space, tab or newline |
+| `.` | any character except a newline |
+| `[6-9]` | one character from a set or range |
+| `+` | one or more of the previous item |
+| `*` | zero or more |
+| `?` | optional (zero or one) |
+| `{4}` / `{2,5}` | exactly 4 / between 2 and 5 |
+| `^` / `$` | start / end of the text |
+| `( )` | a group you can extract |
+
+## The main functions
+
+```py
+import re
+
+line = "Aman: 9876543210, Riya: 7012345678, Dev: 12345"
+print(re.findall(r"\b[6-9]\d{9}\b", line))          # every valid mobile number
+print(bool(re.fullmatch(r"[1-9]\d{5}", "302017")))   # a valid PIN code?
+print(re.sub(r"\d", "*", "PIN 302017"))               # replace every digit
+m = re.search(r"(\w+)@(\w+)\.com", "Mail aman@example.com today")
+print(m.group(0), m.group(1), m.group(2))
+```
+
+- `re.findall(p, text)`: a list of every match (or of the groups, if the pattern has groups).
+- `re.search(p, text)`: the first match anywhere, or `None`.
+- `re.fullmatch(p, text)`: does the **whole** text match? Perfect for validation.
+- `re.sub(p, new, text)`: replace every match.
+
+`\b` means a word boundary, so `\b[6-9]\d{9}\b` won't match 10 digits buried inside a longer number.
+
+:::warn
+Regex is powerful and easy to get wrong. Test patterns on several examples, including ones that should **not** match, and prefer simple string methods when they're enough.
+:::
+
+:::predict
+```py
+import re
+print(re.findall(r"\d+", "Articles 14, 19 and 21A"))
+```
+- ['14', '19', '21A']
++ ['14', '19', '21']
+- [14, 19, 21]
+- ['1', '4', '1', '9', '2', '1']
+= \d+ grabs each run of digits; the A is not a digit. findall returns strings.
+:::
+
+:::recall
+Q: What do `\d`, `\w` and `\s` match?
+A: A digit; a letter, digit or underscore; a whitespace character.
+Q: When should you use re.fullmatch instead of re.search?
+A: For validation, when the whole text must match the pattern, not just part of it.
+Q: Why write regex patterns as raw strings like r"\d+"?
+A: So Python doesn't treat the backslashes as escape characters before re sees them.
+:::
+
+@exercise 14.5a | Find the years
+Write `years(text)` that returns a list of every 4-digit year from 1900 to 2099 in the text, as strings. `years("Adopted 1949, in force 1950, amended in 2019")` gives `['1949', '1950', '2019']`.
+
+```starter
+import re
+
+def years(text):
+    pass
+```
+
+```solution
+import re
+
+def years(text):
+    return re.findall(r"\b(?:19|20)\d{2}\b", text)
+```
+
+```test
+need("years", "function")
+expect('years("Adopted 1949, in force 1950, amended in 2019")', ["1949", "1950", "2019"])
+expect('years("Roll 20261047 and year 2026")', ["2026"])
+expect('years("The year 1857 and 2101")', [])
+expect('years("no years here")', [])
+```
+
+:::hints
+- A year here starts with 19 or 20 and has two more digits: `(?:19|20)\d{2}`.
+- `(?: )` groups without capturing, so findall returns the whole match.
+- Add `\b` on both sides so digits inside longer numbers don't count.
+:::
+
+@exercise 14.5b | Valid mobile number
+Write `is_mobile(text)` that returns True only for a valid Indian mobile number: exactly 10 digits, starting with 6, 7, 8 or 9. Spaces around it are allowed.
+
+```starter
+import re
+
+def is_mobile(text):
+    pass
+```
+
+```solution
+import re
+
+def is_mobile(text):
+    return re.fullmatch(r"[6-9]\d{9}", text.strip()) is not None
+```
+
+```test
+need("is_mobile", "function")
+for value, ok in [("9876543210", True), (" 7012345678 ", True), ("6000000000", True), ("5876543210", False), ("987654321", False), ("98765432100", False), ("98765 43210", False), ("abcdefghij", False)]:
+    expect(f"is_mobile({value!r})", ok)
+```
+
+:::hints
+- `re.fullmatch` checks that the whole text matches.
+- The pattern: one digit from 6 to 9, then exactly 9 more digits.
+- Return a bool: `... is not None`.
+:::
+
+@exercise 14.5c | Extract emails
+Write `emails(text)` returning every email address in the text, in order. Accept letters, digits, dots, underscores and hyphens before the @, and a domain with at least one dot after it.
+
+```starter
+import re
+
+def emails(text):
+    pass
+```
+
+```solution
+import re
+
+def emails(text):
+    return re.findall(r"[\w.-]+@[\w-]+(?:\.[\w-]+)+", text)
+```
+
+```test
+need("emails", "function")
+expect('emails("Write to aman.sharma@example.com or riya_v@exams.example.org today.")', ["aman.sharma@example.com", "riya_v@exams.example.org"])
+expect('emails("no email here, just an @ sign")', [])
+expect('emails("dev-k@example.net")', ["dev-k@example.net"])
+```
+
+:::hints
+- Before the @: one or more of `[\w.-]`.
+- After it: a name, then one or more groups of a dot plus a name: `[\w-]+(?:\.[\w-]+)+`.
+:::
