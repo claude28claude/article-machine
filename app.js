@@ -5993,11 +5993,15 @@ function sideEarly(seg) {
         e.died ? ['Died', e.died] : null,
         e.tomb ? ['Tomb', e.tomb] : null
       ]),
-      sLinks('The emperors, in order', emps.map(function (x) {
+      /* Only the great Mughals and Sher Shah have pages. The later ones are
+         a line each on the emperors page, so linking them here would have
+         offered fifteen doors with nothing behind them. */
+      sLinks('The emperors, in order', emps.filter(function (x) {
+        return x.kind !== 'later';
+      }).map(function (x) {
         return { href: '#/early/emperor/' + encodeURIComponent(x.id),
-                 k: x.from === x.to ? String(x.from) : String(x.from),
-                 t: x.n, on: x.id === e.id };
-      }), null, 20)
+                 k: String(x.from), t: x.n, on: x.id === e.id };
+      }), 'The later Mughals are a line each on the emperors page.', 20)
     ];
   }
 

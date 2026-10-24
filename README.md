@@ -658,7 +658,10 @@ column comes from.
 | A movement | Who was in charge across its years, the events inside them, the sessions held during it. |
 | A Viceroy | His office and term, and the Acts, sessions and events of his years. |
 | A Congress session | The Viceroy of that year, the other sessions held in the same city, and what else happened that year. |
-| A plan, a pack, a topic | Where it sits, and every other one in its section with this one marked. |
+| A plan, a pack, a topic | Where it sits, and every other one in its section with this one marked. Topics in Ancient and Medieval History, the criminal laws and Geography work the same way. |
+| A Mughal emperor | His reign, and the great Mughals in order. The later Mughals are a line each on the emperors page, so they are not linked as pages that do not exist. |
+| A maths chapter | The other two pages of the same chapter — the formulas, the recall drill and the questions — its band, and every chapter with its counts. |
+| A daily set | Its date and parts, and every other set. |
 
 Two rules keep the joins honest. A **person** is matched in full where a full
 name is given; where only a surname is — the leaders of a movement, "Tilak,
