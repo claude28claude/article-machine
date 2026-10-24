@@ -13,7 +13,8 @@ Object.assign(window.PLAIN, {
 "265": {p:"No tax shall be levied or collected except by authority of law.",
  w:"Eleven words that make every tax in India traceable to a statute. An executive order cannot impose a tax, and a tax collected without legal authority must be refunded. Note that it says “law”, not “Act of Parliament” — a validly made rule under a statute counts."},
 
-"266": {p:"All revenues of the Union go into the Consolidated Fund of India, and of a State into that State's Consolidated Fund. Other public money goes into the public account. No money may leave the Consolidated Fund except as the Constitution allows."},
+"266": {p:"All revenues of the Union go into the Consolidated Fund of India, and of a State into that State's Consolidated Fund. Other public money goes into the public account. No money may leave the Consolidated Fund except as the Constitution allows.",
+ w:"Three pots, and the question is always which is which. The Consolidated Fund takes all revenue, and nothing leaves it until Parliament votes an appropriation (114). The Contingency Fund (267) is a float the executive may dip into for an unforeseen expense and have regularised afterwards. The public account holds money the government is only holding for somebody else — provident funds, small savings — and paying out of it needs no appropriation at all."},
 
 "267": {p:"Parliament and each State legislature may create a Contingency Fund, placed at the disposal of the President or Governor, to meet unforeseen expenditure pending authorisation by the legislature.",
  w:"An advance, not a grant: whatever is taken out must be recouped from the Consolidated Fund once the legislature approves."},
@@ -158,7 +159,8 @@ Object.assign(window.PLAIN, {
 
 "314": {p:"Repealed. It protected the conditions of service of officers appointed by the Secretary of State before independence. The 28th Amendment removed it in 1972 and put article 312A in its place."},
 
-"315": {p:"There shall be a Public Service Commission for the Union and one for each State — and two or more States may agree to have a Joint Public Service Commission, created by Parliament on their request."},
+"315": {p:"There shall be a Public Service Commission for the Union and one for each State — and two or more States may agree to have a Joint Public Service Commission, created by Parliament on their request.",
+ w:"The Commissions are created here; the three articles after this one are where the marks are. Members are appointed by the President for the Union and a Joint Commission and by the Governor for a State Commission (316), and hold office for six years or until sixty-five at the Union and sixty-two in a State, whichever comes first. Removal is the striking part: a member of a State Commission is removed by the President and not by the Governor who appointed him, and only after the Supreme Court has inquired and reported on a reference from the President (317)."},
 
 "316": {p:"Members of a Public Service Commission are appointed by the President or the Governor, and at least half must be people who have held office under the government for at least ten years. They serve six years or until sixty-five at the Union and sixty-two in a State, whichever is earlier."},
 
@@ -212,7 +214,8 @@ Object.assign(window.PLAIN, {
 
 /* ---- PART XVI — SPECIAL PROVISIONS RELATING TO CERTAIN CLASSES ---- */
 
-"330": {p:"Seats are reserved in the Lok Sabha for the Scheduled Castes and the Scheduled Tribes, in proportion to their share of the population of the State or Union territory."},
+"330": {p:"Seats are reserved in the Lok Sabha for the Scheduled Castes and the Scheduled Tribes, in proportion to their share of the population of the State or Union territory.",
+ w:"Seats are reserved, not candidates: in a reserved constituency everybody votes and only the candidates must come from the reserved list. There is no reservation of seats anywhere in the Constitution for the Other Backward Classes. And it was meant to be temporary — article 334 gave it ten years, and every decade since, an amendment has extended it; the 104th in 2019 carried it to 2030 and at the same time let the nominated Anglo-Indian seats lapse."},
 
 "330A": {p:"As nearly as may be, one-third of the seats reserved for Scheduled Castes and Scheduled Tribes in the Lok Sabha, and one-third of the total seats, are reserved for women.",
  w:"Added by the 106th Amendment in 2023 — the women's reservation that had been introduced and failed repeatedly since 1996. It is not yet in force: article 334A makes it wait for the next census and the delimitation that follows."},
@@ -220,7 +223,8 @@ Object.assign(window.PLAIN, {
 "331": {p:"Allowed the President to nominate up to two members of the Anglo-Indian community to the Lok Sabha if he thought them inadequately represented.",
  w:"The nomination lapsed on 25 January 2020, when the 104th Amendment let the special representation of Anglo-Indians expire while extending the SC and ST reservation to 2030."},
 
-"332": {p:"Seats are reserved in every State Legislative Assembly for the Scheduled Castes and the Scheduled Tribes, in proportion to their population."},
+"332": {p:"Seats are reserved in every State Legislative Assembly for the Scheduled Castes and the Scheduled Tribes, in proportion to their population.",
+ w:"The Assembly mirror of article 330, and the pair is asked together: reservation of seats exists in the Lok Sabha and in the State Legislative Assemblies and nowhere else. There is none in the Rajya Sabha and none in a State Legislative Council, because reserving a seat only works where the seat is directly elected."},
 
 "332A": {p:"One-third of the seats in every State Legislative Assembly, including one-third of those reserved for Scheduled Castes and Scheduled Tribes, are reserved for women. Added by the 106th Amendment in 2023, and subject to the same delay under article 334A."},
 
@@ -415,7 +419,8 @@ Object.assign(window.PLAIN, {
 
 /* ---- PART XXII — SHORT TITLE, COMMENCEMENT, HINDI TEXT AND REPEALS ---- */
 
-"393": {p:"This Constitution may be called the Constitution of India."},
+"393": {p:"This Constitution may be called the Constitution of India.",
+ w:"It does one thing — it names the document — and it is asked precisely because it looks like nothing. It opens the last Part: 393 names the Constitution, 394 brings it into force, 395 repeals the Indian Independence Act 1947 and the Government of India Act 1935. And this article did not wait for 26 January 1950. Article 394 names itself and fifteen other articles, this one among them, as coming into force at once on 26 November 1949 — which is how the document could be called the Constitution of India before it was in force."},
 
 "394": {p:"Articles 5 to 9, 60, 324, 366, 367, 379 to 391, 392 and this article came into force on 26 November 1949; the rest on 26 January 1950.",
  w:"Two dates, and both matter. The Constitution was adopted on 26 November 1949 — Constitution Day — and the machinery needed to bring a country into being started at once. The rest waited until 26 January 1950, chosen because the Congress had declared purna swaraj on that day twenty years earlier."},

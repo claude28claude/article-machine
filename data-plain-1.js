@@ -13,7 +13,8 @@ window.PLAIN = {
 "1": {p:"India is a Union of States. Its territory is made up of the States, the Union territories, and any other territory it acquires. The word “Union” was chosen deliberately over “Federation”.",
  w:"Ambedkar explained the choice: India is a Union because it is not the result of an agreement between States, and the States have no right to leave it. That single word decides a great deal — it is why secession has no constitutional footing, and why the Supreme Court in the Article 370 case (2023) held that Jammu and Kashmir never retained a sovereignty of its own."},
 
-"2": {p:"Parliament can admit a new State into the Union, or create one out of territory that was not part of India before, on whatever terms it thinks fit."},
+"2": {p:"Parliament can admit a new State into the Union, or create one out of territory that was not part of India before, on whatever terms it thinks fit.",
+ w:"This is the article for territory that was not India before — it is how Sikkim came in, as an associate State by the 35th Amendment in 1974 and as a full State by the 36th in 1975. Article 3 is the other half of the pair: rearranging territory that is already India. The words “on such terms and conditions as it thinks fit” matter, because a State admitted under this article can be taken in on conditions no existing State is subject to."},
 
 "2A": {p:"Made Sikkim an associate State of India in 1975, with its own special terms. It lasted a year: the 36th Amendment made Sikkim a full State and deleted this article."},
 
@@ -124,7 +125,8 @@ window.PLAIN = {
 "33": {p:"Parliament may by law restrict or abrogate fundamental rights in their application to the armed forces, the police, intelligence organisations and those charged with protecting property.",
  w:"Extended by the 50th Amendment in 1984 to cover intelligence organisations and telecommunication systems set up for the forces."},
 
-"34": {p:"Parliament may pass an Act of indemnity validating what was done under martial law in any area, and such an Act cannot be questioned for offending fundamental rights."},
+"34": {p:"Parliament may pass an Act of indemnity validating what was done under martial law in any area, and such an Act cannot be questioned for offending fundamental rights.",
+ w:"Martial law appears nowhere else in the Constitution and is nowhere defined in it; the expression is borrowed from English common law, where it means ordinary law in a disturbed area giving way to military authority. Note what this article does and does not do: it does not authorise martial law, it lets Parliament validate afterwards what was done while martial law was in force — including acts that broke fundamental rights — and then bars the courts from asking. Distinguish it from a national emergency under article 352: martial law touches one area and the ordinary courts, an emergency touches the whole machinery of government."},
 
 "35": {p:"Only Parliament — not a State legislature — may make laws on certain Part III subjects, including punishing untouchability under article 17 and forced labour under article 23.",
  w:"It keeps offences against fundamental rights uniform across the country, rather than letting each State set its own."},
@@ -148,7 +150,8 @@ window.PLAIN = {
 "40": {p:"The State must organise village panchayats and give them the powers they need to work as units of self-government.",
  w:"It waited forty-three years. The 73rd Amendment in 1992 turned this one sentence into Part IX and the Eleventh Schedule."},
 
-"41": {p:"Within its economic capacity, the State must secure the right to work, to education and to public assistance in unemployment, old age, sickness and disablement."},
+"41": {p:"Within its economic capacity, the State must secure the right to work, to education and to public assistance in unemployment, old age, sickness and disablement.",
+ w:"Every directive principle is unenforceable, but this one carries its escape clause on its face — “within the limits of its economic capacity and development” — and that phrase is what gets quoted whenever the state is asked why a promise has not been kept. It is still the constitutional root of the social-security statutes, and the Court has read it together with article 21 to hold that a right to livelihood follows from the right to life."},
 
 "42": {p:"The State must make provision for just and humane conditions of work, and for maternity relief."},
 
@@ -157,7 +160,8 @@ window.PLAIN = {
 
 "43A": {p:"The State must take steps to secure the participation of workers in the management of undertakings. Added by the 42nd Amendment in 1976."},
 
-"43B": {p:"The State must promote the voluntary formation, autonomous functioning, democratic control and professional management of co-operative societies. Added by the 97th Amendment in 2011, alongside the right in article 19(1)(c) and the new Part IXB."},
+"43B": {p:"The State must promote the voluntary formation, autonomous functioning, democratic control and professional management of co-operative societies. Added by the 97th Amendment in 2011, alongside the right in article 19(1)(c) and the new Part IXB.",
+ w:"Added by the 97th Amendment in 2011, which did three things at once: it wrote co-operative societies into the right to form associations in article 19(1)(c), it added this directive, and it added a whole new Part IXB on how societies are to be run. In 2021 the Supreme Court held that Part IXB had been passed without the ratification by the States that an amendment touching a State subject needs, and struck it down so far as it applies to societies within a single State. The direction in this article was not affected and stands."},
 
 "44": {p:"The State shall endeavour to secure for the citizens a uniform civil code throughout the territory of India.",
  w:"The single most argued-over sentence in Part IV. The Court has pressed for it in Shah Bano (1985) and Sarla Mudgal (1995) without being able to order it, because Part IV is not enforceable. Goa has had one since Portuguese rule; Uttarakhand enacted one in 2024."},
@@ -165,7 +169,8 @@ window.PLAIN = {
 "45": {p:"The State must provide early childhood care and education for all children until they complete six years.",
  w:"This article originally promised free and compulsory education for all children up to fourteen within ten years — a deadline missed by four decades. The 86th Amendment in 2002 moved that promise into article 21A as an enforceable right, and rewrote this article to cover the years before six."},
 
-"46": {p:"The State must promote the educational and economic interests of the Scheduled Castes, Scheduled Tribes and other weaker sections, and protect them from social injustice and exploitation."},
+"46": {p:"The State must promote the educational and economic interests of the Scheduled Castes, Scheduled Tribes and other weaker sections, and protect them from social injustice and exploitation.",
+ w:"This is the directive behind every argument about reservation in education: when a special provision under article 15(4) or 16(4) is defended in court, this is the provision quoted to show what the special provision is for. It is also wider than caste — “other weaker sections” is the phrase that lets it reach beyond the two scheduled lists."},
 
 "47": {p:"The State must raise nutrition levels, the standard of living and public health — and in particular must work towards prohibiting intoxicating drinks and drugs that are not medicinal.",
  w:"The constitutional basis of prohibition. It is why State liquor bans have survived challenge, and why alcohol policy sits with the States."},

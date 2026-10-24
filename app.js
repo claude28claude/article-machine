@@ -512,8 +512,18 @@ function plainOf(a) {
 
 /* --------------------------------------------------------------- rendering */
 
+/* The address, split into its segments, with each one decoded. Built once
+   per render and handed to everything that needs to know where we are. */
+function segOf() {
+  return location.hash.replace(/^#\/?/, '').split('/').map(function (x) {
+    try { return decodeURIComponent(x); } catch (e) { return x; }
+  });
+}
+
 function render(html) {
-  main.innerHTML = secStrip(location.hash.replace(/^#\/?/, '').split('/')) + html;
+  var seg = segOf();
+  main.innerHTML = secStrip(seg) + html;
+  layoutSide(seg);
   syncBack();
   /* Scroll AFTER the new content is in place, not before. route() scrolls
      first, but the page it scrolls is still the OLD one — and when the
@@ -3548,6 +3558,731 @@ function jumpToTop() {
   if (root.scrollTop) root.scrollTop = 0;
   if (document.body && document.body.scrollTop) document.body.scrollTop = 0;
   root.style.scrollBehavior = prev;
+}
+
+/* ==========================================================================
+   THE SIDE COLUMN
+
+   Every page used to end where its own content ended, and on a wide screen
+   that left a third of the window empty. Worse, the things a reader wants
+   NEXT were all somewhere else on the site: the Viceroy who was in office the
+   year of the event they are reading about, the other sessions held in the
+   same city, the pair this article gets mixed up with, the tier the exam
+   layer puts it in. Each of those was two or three taps and a page of
+   choosing away.
+
+   So every study page now carries a column beside it. Nothing in it is a new
+   fact — it is the facts the site already holds, crossed against each other:
+   a year looked up against the roll of administrators, a term looked up
+   against the timeline, an article looked up against the article map. A year
+   is the join between three sections that were previously unaware of one
+   another.
+
+   On a screen too narrow for a second column the cards drop below the page
+   and stay useful — all but the contents list, which is only worth having
+   while the page is still ahead of you.
+   ========================================================================== */
+
+var HY_ART = {};
+(HIGHYIELD.articles || []).forEach(function (x) { HY_ART[x.a] = x; });
+
+/* ------------------------------------------------------------ the cards */
+
+function sCard(lbl, inner, note) {
+  return '<section class="scard"><h2 class="slbl">' + esc(lbl) + '</h2>' + inner +
+    (note ? '<p class="snote">' + esc(note) + '</p>' : '') + '</section>';
+}
+
+/* A list of links. k is the marker on the left — a year, a number, a range. */
+function sLinks(lbl, items, note, cap) {
+  items = (items || []).filter(Boolean);
+  if (!items.length) return '';
+  var lim = cap || 7;
+  if (items.length > lim) {
+    var hidden = items.length - lim;
+    items = items.slice(0, lim);
+    note = (note ? note + ' ' : '') + 'And ' + hidden + ' more.';
+  }
+  return sCard(lbl, '<ul class="slist">' + items.map(function (x) {
+    return '<li><a href="' + x.href + '"' + (x.on ? ' aria-current="true"' : '') + '>' +
+      (x.k ? '<span class="sk">' + esc(x.k) + '</span>' : '') +
+      '<span class="sb">' + esc(x.t) + '</span>' +
+      (x.d ? '<span class="sd">' + esc(x.d) + '</span>' : '') +
+      '</a></li>';
+  }).join('') + '</ul>', note);
+}
+
+/* Key and value, the shape the rest of the site already uses for a fact. A
+   third element in a row makes the value a link. */
+function sFacts(lbl, rows, note) {
+  rows = (rows || []).filter(function (r) { return r && r[1]; });
+  if (!rows.length) return '';
+  return sCard(lbl, '<dl class="sfacts">' + rows.map(function (r) {
+    var v = esc(r[1]);
+    if (r[2]) v = '<a href="' + r[2] + '">' + v + '</a>';
+    return '<dt>' + esc(r[0]) + '</dt><dd>' + v + '</dd>';
+  }).join('') + '</dl>', note);
+}
+
+/* Already-marked-up prose, so this one does NOT escape its argument. */
+function sText(lbl, html, note) {
+  if (!html) return '';
+  return sCard(lbl, '<div class="stext">' + html + '</div>', note);
+}
+
+/* --------------------------------------------------------- the joins
+
+   Four small functions carry most of the new content. Each takes a year or a
+   span of years and asks a different section of the site what it had then. */
+
+function yr4(v) {
+  var m = /(\d{4})/.exec(String(v));
+  return m ? +m[1] : null;
+}
+
+function rulersIn(from, to) {
+  if (!from) return [];
+  if (!to) to = from;
+  return rajAll.filter(function (p) {
+    return !p.acting && p.from <= to && p.to >= from;
+  });
+}
+
+function eventsIn(from, to, skip) {
+  return (HIST.timeline || []).filter(function (e) {
+    return e.y >= from && e.y <= to && e.id !== skip;
+  }).sort(function (a, b) { return a.y - b.y; });
+}
+
+function actsIn(from, to, skip) {
+  return (HIST.acts || []).filter(function (a) {
+    return a.y >= from && a.y <= to && a.id !== skip;
+  });
+}
+
+function sessionsIn(from, to, skip) {
+  return CONG_SESSIONS.filter(function (s) {
+    var y = yr4(s.y);
+    return y && y >= from && y <= to && s.id !== skip && !s.none;
+  });
+}
+
+/* The cards those four produce, so that a page only has to say which it
+   wants. */
+function rulerCard(from, to, lbl) {
+  var hits = rulersIn(from, to);
+  if (!hits.length) return '';
+  return sLinks(lbl || 'Who was in charge', hits.map(function (p) {
+    return { href: '#/history/ruler/' + encodeURIComponent(p.id),
+             k: rajYears(p), t: p.n, d: p.t };
+  }), null, 4);
+}
+
+function eventCard(from, to, skip, lbl) {
+  return sLinks(lbl || 'Happening then', eventsIn(from, to, skip).map(function (e) {
+    return { href: '#/history/event/' + encodeURIComponent(e.id), k: String(e.y), t: e.t };
+  }), null, 6);
+}
+
+function actCard(from, to, skip, lbl) {
+  return sLinks(lbl || 'The law then', actsIn(from, to, skip).map(function (a) {
+    return { href: '#/history/act/' + encodeURIComponent(a.id), k: String(a.y), t: a.n };
+  }), null, 6);
+}
+
+function sessionCard(from, to, skip, lbl) {
+  return sLinks(lbl || 'Congress then', sessionsIn(from, to, skip).map(function (s) {
+    return { href: '#/history/session/' + encodeURIComponent(s.id),
+             k: String(yr4(s.y)), t: s.place, d: s.pres };
+  }), null, 6);
+}
+
+/* A name is matched in full wherever it can be — "Subhas Chandra Bose" inside
+   a president's name. Where only the surname is given, as in the leaders of a
+   movement ("Tilak, Lajpat Rai"), the surname is accepted ONLY if no other
+   person on the site shares it; otherwise Ananda Mohan Bose's session would
+   be offered on Subhas Chandra Bose's page. The list of ambiguous surnames is
+   counted off the data rather than written down, so it cannot go stale. */
+var SURNAMES = {};
+(HIST.people || []).forEach(function (p) {
+  var w = String(p.n).trim().split(/\s+/);
+  var last = w[w.length - 1].replace(/[^A-Za-z-]/g, '');
+  SURNAMES[last.toLowerCase()] = (SURNAMES[last.toLowerCase()] || 0) + 1;
+});
+
+function flat(s) { return String(s || '').replace(/\./g, '').replace(/\s+/g, ' ').toLowerCase(); }
+
+function namesIn(hay, person) {
+  var h = flat(hay);
+  if (h.indexOf(flat(person.n)) >= 0) return true;
+  var w = String(person.n).trim().split(/\s+/);
+  var last = w[w.length - 1].replace(/[^A-Za-z-]/g, '');
+  if (last.length < 4 || SURNAMES[last.toLowerCase()] !== 1) return false;
+  return new RegExp('(^|[^a-z])' + last.toLowerCase() + '([^a-z]|$)').test(h);
+}
+
+/* ---------------------------------------------------- the Constitution */
+
+function sideArticle(n) {
+  var a = byArt[n];
+  if (!a) return [];
+  var out = [], p = partOf[a.a], hy = HY_ART[a.a];
+
+  if (hy) {
+    var tier = null;
+    TIERS.forEach(function (t) { if (t.n === hy.t) tier = t; });
+    out.push(sCard('Why it gets asked',
+      (tier ? '<div class="schip"><span class="chip tier t' + hy.t + '">' +
+        esc(tier.label) + '</span></div>' : '') +
+      '<div class="stext">' + prose(hy.w, 1) + '</div>',
+      tier ? tier.sub : null));
+  }
+
+  /* The pairs this article is mixed up with. Matched on the pair's own title
+     and on the first cell of each of its rows, so that "32 vs 226" is found
+     from either side. */
+  var conf = (HIGHYIELD.confusions || []).filter(function (c) {
+    if (tokenIn(c.k, a.a)) return true;
+    return (c.rows || []).some(function (r) { return tokenIn(r[0], a.a); });
+  });
+  if (conf.length) {
+    out.push(sLinks('Easy to confuse with', conf.map(function (c) {
+      return { href: '#/high-yield/confusions', t: c.k };
+    }), 'Set side by side on the confused-pairs page.', 4));
+  }
+
+  /* Its neighbours in the article map — the Constitution indexed by subject
+     rather than by number. */
+  var grp = null;
+  (AMAP.groups || []).forEach(function (g) {
+    if (grp) return;
+    if ((g.rows || []).some(function (r) { return rowCovers(r[0], a.a); })) grp = g;
+  });
+  if (grp) {
+    var sibs = [];
+    grp.rows.forEach(function (r) {
+      var one = /^Article\s+(\d{1,3}[A-Z]*)$/.exec(String(r[0]).trim());
+      if (!one || one[1] === a.a || !byArt[one[1]]) return;
+      sibs.push({ href: '#/a/' + encodeURIComponent(one[1]), k: one[1], t: shorten(r[1], 74) });
+    });
+    out.push(sLinks('Read with these', sibs, 'From "' + grp.h + '" in the article map.', 6));
+  }
+
+  var inPart = p.arts.indexOf(a) + 1;
+  out.push(sFacts('Where it sits', [
+    ['Part', p.num + ' · ' + titleCase(p.title), '#/part/' + encodeURIComponent(p.num)],
+    a.c ? ['Chapter', a.c] : null,
+    ['In this Part', inPart + ' of ' + p.arts.length],
+    ['Amendments', a.am && a.am.length ? a.am.length + ' so far' : 'never amended'],
+    ['Cases here', casesByArt[a.a] ? casesByArt[a.a].length + ' on this site' : 'none on this site']
+  ]));
+  return out;
+}
+
+/* "32" inside "32 vs 226 — the two writ jurisdictions", but not inside "132". */
+function tokenIn(hay, n) {
+  return new RegExp('(^|[^0-9A-Za-z])' + n + '([^0-9A-Za-z]|$)').test(String(hay || ''));
+}
+
+/* An article-map row is labelled either "Article 21" or "Articles 5 to 11". */
+function rowCovers(label, n) {
+  label = String(label || '');
+  if (tokenIn(label, n)) return true;
+  var m = /^Articles?\s+(\d{1,3})\s*(?:to|–|-)\s*(\d{1,3})\b/.exec(label);
+  if (!m) return false;
+  var base = parseInt(n, 10);
+  return !isNaN(base) && /^\d+$/.test(n) && base >= +m[1] && base <= +m[2];
+}
+
+function sidePart(num) {
+  var p = null, i = -1;
+  parts.forEach(function (x, j) { if (x.num === num) { p = x; i = j; } });
+  if (!p) return [];
+  var live = p.arts.filter(function (x) { return !x.om; }).length;
+  var amd = p.arts.filter(function (x) { return x.am && x.am.length; }).length;
+  var cas = p.arts.filter(function (x) { return casesByArt[x.a]; }).length;
+  var hyn = p.arts.filter(function (x) { return HY_ART[x.a]; }).length;
+  return [
+    sFacts('This Part', [
+      ['Articles', p.arts[0].a + ' to ' + p.arts[p.arts.length - 1].a],
+      ['In force', live + ' of ' + p.arts.length],
+      ['Amended at least once', String(amd)],
+      ['With a case on this site', String(cas)],
+      ['In the exam layer', hyn + ' articles'],
+      ['Part', p.num + ' of ' + parts.length]
+    ]),
+    sLinks('The Parts either side', [
+      parts[i - 1] ? { href: '#/part/' + encodeURIComponent(parts[i - 1].num),
+        k: parts[i - 1].num, t: titleCase(parts[i - 1].title) } : null,
+      parts[i + 1] ? { href: '#/part/' + encodeURIComponent(parts[i + 1].num),
+        k: parts[i + 1].num, t: titleCase(parts[i + 1].title) } : null
+    ])
+  ];
+}
+
+function sideAmendment(no) {
+  var m = amdByNo[+no];
+  if (!m) return [];
+  var hy = null;
+  (HIGHYIELD.amendments || []).forEach(function (x) { if (x.n === m.n) hy = x; });
+  var near = [];
+  for (var i = m.n - 3; i <= m.n + 3; i++) {
+    if (i === m.n || !amdByNo[i]) continue;
+    near.push({ href: '#/amendment/' + i, k: ordinal(i), t: shorten(amdByNo[i].s, 70) });
+  }
+  return [
+    hy ? sText('Why it gets asked', prose(hy.w, 1)) : '',
+    sFacts('This amendment', [
+      ['Passed', String(m.y)],
+      m.wef ? ['In force from', niceDate(m.wef)] : null,
+      ['Articles changed', m.arts.length ? String(m.arts.length) : 'none traced'],
+      ['Number', ordinal(m.n) + ' of ' + AMENDMENTS.length]
+    ]),
+    sLinks('The ones around it', near, null, 6)
+  ];
+}
+
+function sideSchedule(no) {
+  var cur = +no;
+  return [sLinks('The twelve Schedules', SCHEDULES.map(function (s) {
+    return { href: '#/schedule/' + s.n, k: String(s.n), t: s.sub,
+             on: s.n === cur };
+  }), null, 12)];
+}
+
+function sideCase(id) {
+  var c = caseById[id];
+  if (!c) return [];
+  var hy = null;
+  (HIGHYIELD.cases || []).forEach(function (x) { if (x.id === c.id) hy = x; });
+  var out = [];
+  if (hy) out.push(sText('Why it gets asked', prose(hy.w, 1)));
+  out.push(sFacts('This judgment', [
+    ['Decided', String(c.y)],
+    c.c ? ['Citation', c.c] : null,
+    c.b ? ['Bench', c.b + ' judges'] : null,
+    c.court ? ['Court', c.court] : null,
+    c.ov ? ['Standing', c.ov.indexOf('overruled ') === 0 ? 'Overruled an earlier case' : 'Overruled'] : null
+  ]));
+  /* The other judgments on the same article. A case page shows the articles
+     it turns on; this is the way back out of them. */
+  var first = (c.a || [])[0];
+  if (first && casesByArt[first]) {
+    out.push(sLinks('Also on article ' + first,
+      casesByArt[first].filter(function (x) { return x.id !== c.id; })
+        .sort(function (x, y) { return x.y - y.y; }).map(function (x) {
+          return { href: '#/case/' + encodeURIComponent(x.id), k: String(x.y), t: x.n };
+        }), null, 6));
+  }
+  return out;
+}
+
+/* ------------------------------------------------------------- history */
+
+function sideHistory(seg) {
+  var k = seg[0] || '';
+
+  if (k === 'event') {
+    var ev = histEvent[seg[1]];
+    if (!ev) return [];
+    var era = histEra[ev.e] || {};
+    return [
+      rulerCard(ev.y, ev.y, 'Who was in charge'),
+      eventCard(ev.y, ev.y, ev.id, 'The same year'),
+      actCard(ev.y, ev.y, null, 'Passed that year'),
+      sessionCard(ev.y, ev.y, null, 'Congress that year'),
+      era.n ? sFacts('The era', [
+        ['Era', era.n, '#/history'],
+        ['Spans', era.from + ' to ' + era.to],
+        ['Events in it', String(eventsIn(era.from, era.to).filter(function (x) {
+          return x.e === era.id; }).length)]
+      ], era.w) : ''
+    ];
+  }
+
+  if (k === 'act') {
+    var ac = histAct[seg[1]];
+    if (!ac) return [];
+    var all = HIST.acts || [], i = all.indexOf(ac);
+    return [
+      rulerCard(ac.y, ac.y, 'Who was in charge'),
+      eventCard(ac.y, ac.y, null, 'The same year'),
+      sLinks('The Acts either side', [
+        all[i - 1] ? { href: '#/history/act/' + encodeURIComponent(all[i - 1].id),
+          k: String(all[i - 1].y), t: all[i - 1].n } : null,
+        all[i + 1] ? { href: '#/history/act/' + encodeURIComponent(all[i + 1].id),
+          k: String(all[i + 1].y), t: all[i + 1].n } : null
+      ]),
+      sFacts('This Act', [
+        ['Passed', String(ac.y)],
+        ['Provisions here', String((ac.k || []).length)],
+        ['Act', (i + 1) + ' of ' + all.length + ' on this site']
+      ])
+    ];
+  }
+
+  if (k === 'person') {
+    var pe = histPerson[seg[1]];
+    if (!pe) return [];
+    var sess = CONG_SESSIONS.filter(function (s) {
+      return !s.none && namesIn(s.pres, pe);
+    });
+    var movs = (HIST.movements || []).filter(function (m) { return namesIn(m.lead, pe); });
+    var evs = (HIST.timeline || []).filter(function (e) {
+      return namesIn(e.t, pe) || namesIn(e.w, pe);
+    }).sort(function (a, b) { return a.y - b.y; });
+    return [
+      sFacts('In short', [['Lived', pe.y], ['Known as', pe.r]]),
+      sLinks('Presided over Congress', sess.map(function (s) {
+        return { href: '#/history/session/' + encodeURIComponent(s.id),
+                 k: String(yr4(s.y)), t: s.place, d: s.pres };
+      }), null, 6),
+      sLinks('Led or helped lead', movs.map(function (m) {
+        return { href: '#/history/movement/' + encodeURIComponent(m.id),
+                 k: String(m.from), t: m.n };
+      }), null, 5),
+      sLinks('Turns up in', evs.map(function (e) {
+        return { href: '#/history/event/' + encodeURIComponent(e.id), k: String(e.y), t: e.t };
+      }), 'Events on the timeline that name them.', 6)
+    ];
+  }
+
+  if (k === 'movement') {
+    var mv = histMove[seg[1]];
+    if (!mv) return [];
+    return [
+      rulerCard(mv.from, mv.to, 'Who was in charge'),
+      eventCard(mv.from, mv.to, null, 'Inside these years'),
+      sessionCard(mv.from, mv.to, null, 'Congress sessions in it'),
+      sFacts('This movement', [
+        ['Ran', mv.from + ' to ' + mv.to],
+        ['Years', (mv.to - mv.from + 1) + ''],
+        ['Led by', shorten(mv.lead, 90)]
+      ])
+    ];
+  }
+
+  if (k === 'ruler') {
+    var ru = rajById[seg[1]];
+    if (!ru) return [];
+    return [
+      sFacts('The office', [
+        ['Title', ru.t],
+        ['Term', rajYears(ru)],
+        ['Office', ru.grp, '#/history/raj'],
+        ['The office ran', ru.grpYears],
+        ['Policies listed', String((ru.pol || []).length)]
+      ]),
+      actCard(ru.from, ru.to, null, 'Acts in his time'),
+      sessionCard(ru.from, ru.to, null, 'Congress in his time'),
+      eventCard(ru.from, ru.to, null, 'On the timeline')
+    ];
+  }
+
+  if (k === 'session') {
+    var se = congById[seg[1]];
+    if (!se) return [];
+    var y = yr4(se.y);
+    var same = CONG_SESSIONS.filter(function (s) {
+      return s.id !== se.id && !s.none && samePlace(s.place, se.place);
+    });
+    return [
+      rulerCard(y, y, 'Who was Viceroy then'),
+      sLinks('Also at ' + shorten(bareplace(se.place), 28), same.map(function (s) {
+        return { href: '#/history/session/' + encodeURIComponent(s.id),
+                 k: String(yr4(s.y)), t: s.pres };
+      }), 'Sessions held in the same city.', 6),
+      eventCard(y, y, null, 'The same year'),
+      sFacts('This session', [
+        ['Year', String(se.y)],
+        se.n ? ['Number', ordinal(se.n) + ' session'] : null,
+        ['Sessions here', CONG_SESSIONS.filter(function (s) { return !s.none; }).length + ' in all']
+      ])
+    ];
+  }
+
+  if (k === 'raj') {
+    return [sFacts('The roll', RAJ_GROUPS.map(function (g) {
+      var list = RAJ[g[0]] || [];
+      return list.length ? [g[1], list.length + ' · ' + g[2]] : null;
+    }).concat([['Asked in exams', rajAll.filter(function (p) { return p.hy; }).length +
+      ' of ' + rajAll.length]]))];
+  }
+
+  if (k === 'congress') {
+    /* Which cities the Congress kept going back to — counted off the roll of
+       sessions, not written down anywhere. */
+    var by = {};
+    CONG_SESSIONS.forEach(function (s) {
+      if (s.none) return;
+      var p = bareplace(s.place);
+      by[p] = (by[p] || 0) + 1;
+    });
+    var top = Object.keys(by).sort(function (a, b) { return by[b] - by[a] || a.localeCompare(b); });
+    return [
+      sFacts('The venues used most', top.slice(0, 6).map(function (p) {
+        return [p, by[p] + ' sessions'];
+      }), 'Counted off the list of sessions.'),
+      sFacts('The roll', [
+        ['Sessions', String(CONG_SESSIONS.filter(function (s) { return !s.none; }).length)],
+        ['Cities used', String(top.length)],
+        ['Asked in exams', String(CONG_SESSIONS.filter(function (s) { return s.hy; }).length)],
+        ['Years with no session', String(CONG_SESSIONS.filter(function (s) { return s.none; }).length)]
+      ])
+    ];
+  }
+
+  if (k === '') {
+    return [sFacts('The timeline', (HIST.eras || []).map(function (e) {
+      return [e.n, (HIST.timeline || []).filter(function (x) { return x.e === e.id; }).length +
+        ' events · ' + e.from + '–' + e.to];
+    }), 'The whole span is ' + ((HIST.timeline || []).length) + ' events.')];
+  }
+
+  if (k === 'acts') {
+    var acts = HIST.acts || [];
+    return [sFacts('The Acts', [
+      ['How many', String(acts.length)],
+      ['First', acts.length ? acts[0].y + ' · ' + acts[0].n : ''],
+      ['Last', acts.length ? acts[acts.length - 1].y + ' · ' + acts[acts.length - 1].n : ''],
+      ['Spanning', acts.length ? (acts[acts.length - 1].y - acts[0].y) + ' years' : '']
+    ])];
+  }
+
+  if (k === 'people') {
+    var pp = HIST.people || [];
+    var roles = {};
+    pp.forEach(function (x) { roles[x.r] = (roles[x.r] || 0) + 1; });
+    return [sFacts('The people', Object.keys(roles).sort(function (a, b) {
+      return roles[b] - roles[a] || a.localeCompare(b);
+    }).slice(0, 8).map(function (r) { return [r, String(roles[r])]; }),
+      pp.length + ' people in all.')];
+  }
+
+  if (k === 'movements') {
+    var mm = HIST.movements || [];
+    return [sFacts('The movements', mm.map(function (m) {
+      return [m.n, m.from + '–' + m.to];
+    }))];
+  }
+
+  return [];
+}
+
+/* "Bombay (Gowalia Tank)" and "Bombay" are the same city for counting. */
+function bareplace(s) {
+  return String(s || '').replace(/\s*\(.*$/, '').replace(/\s*[,–-].*$/, '').trim();
+}
+function samePlace(a, b) { return bareplace(a).toLowerCase() === bareplace(b).toLowerCase(); }
+
+/* ------------------------------------- economy, static GK and biology */
+
+function sideEcon(seg) {
+  var k = seg[0] || '';
+  if (k === 'plan') {
+    var p = econPlanById[seg[1]];
+    if (!p) return [];
+    return [
+      sFacts('This plan', [
+        ['Ran', p.from + ' to ' + p.to],
+        p.model ? ['Model', p.model] : null,
+        p.kind === 'plan' ? ['Target', p.tgt + '% a year'] : null,
+        p.kind === 'plan' && p.act !== null && p.act !== undefined
+          ? ['Achieved', p.act + '% a year'] : null,
+        ['Theme', shorten(p.theme, 60)]
+      ]),
+      sLinks('Every plan, in order', (ECON.plans || []).map(function (x) {
+        return { href: '#/economy/plan/' + encodeURIComponent(x.id),
+                 k: String(x.from), t: x.n, on: x.id === p.id };
+      }), null, 20)
+    ];
+  }
+  if (k === 'topic') {
+    var t = econTopicById[seg[1]];
+    return [sLinks('The standing topics', (ECON.topics || []).map(function (x) {
+      return { href: '#/economy/topic/' + encodeURIComponent(x.id), t: x.n,
+               on: t && x.id === t.id };
+    }), null, 12)];
+  }
+  if (k === '') {
+    var plans = (ECON.plans || []).filter(function (x) { return x.kind === 'plan'; });
+    return [sFacts('The planning years', [
+      ['Five Year Plans', String(plans.length)],
+      ['First', plans.length ? String(plans[0].from) : ''],
+      ['Last', plans.length ? String(plans[plans.length - 1].to) : ''],
+      ['Standing topics', String((ECON.topics || []).length)],
+      ['Confused pairs', String((ECON.confusions || []).length)]
+    ])];
+  }
+  return [];
+}
+
+function sideGk(seg) {
+  if ((seg[0] || '') === '') {
+    var packs = GKD.packs || [];
+    return [sFacts('Static GK', [
+      ['Packs', String(packs.length)],
+      ['Facts', String(packs.reduce(function (a, p) { return a + gkRows(p); }, 0))],
+      ['Asked often', packs.filter(function (p) { return p.hy; }).length + ' packs'],
+      ['Confused pairs', String((GKD.confusions || []).length)]
+    ])];
+  }
+  var cur = gkPackById[seg[1]];
+  if (!cur) return [];
+  return [
+    sFacts('This pack', [
+      ['Tables', String((cur.blocks || []).length)],
+      ['Facts', String(gkRows(cur))],
+      ['Asked often', cur.hy ? 'yes' : 'less so']
+    ]),
+    sLinks('The other packs', (GKD.packs || []).map(function (p) {
+      return { href: '#/gk/pack/' + encodeURIComponent(p.id), t: p.n, on: p.id === cur.id };
+    }), null, 20)
+  ];
+}
+
+function sideBio(seg) {
+  if ((seg[0] || '') === '') {
+    var tops = BIO.topics || [];
+    return [sFacts('Biology', [
+      ['Topics', String(tops.length)],
+      ['Facts', String(tops.reduce(function (a, t) { return a + bioRows(t); }, 0))],
+      ['Confused pairs', String((BIO.confusions || []).length)]
+    ])];
+  }
+  var cur = bioTopicById[seg[1]];
+  if (!cur) return [];
+  return [
+    sFacts('This topic', [
+      ['Tables', String((cur.blocks || []).length)],
+      ['Facts', String(bioRows(cur))]
+    ]),
+    sLinks('The other topics', (BIO.topics || []).map(function (t) {
+      return { href: '#/biology/topic/' + encodeURIComponent(t.id), t: t.n, on: t.id === cur.id };
+    }), null, 12)
+  ];
+}
+
+/* ----------------------------------------------------- one for every page
+
+   Whatever else a page has beside it, it gets a way on to the rest of its
+   subject: the topics that come after this one in the subject's own list,
+   wrapping round at the end. Nearest-first rather than always the same six,
+   so that walking a subject does not keep offering the same way out. */
+
+function sideElsewhere(seg, anchor) {
+  var sub = subjectById(barKey(seg));
+  if (!sub || !sub.topics) return [];
+  var topics = sub.topics(), here = '#/' + seg.join('/');
+  if (topics.length < 3) return [];
+  /* Where in the subject's list of topics this page counts as being. The
+     page's own address first; failing that the topic it hangs under, so that
+     one Viceroy is placed with the Viceroys and one article with its Part. */
+  var at = -1;
+  /* An exact address first, from any of the three. Starting with "the page
+     begins with this topic's address" instead would put every page in Modern
+     History at the top of the list, because the first topic there is the
+     timeline at #/history and every other address in the subject begins with
+     those characters. Prefix matching is the last resort, and then it is the
+     LONGEST prefix that wins, for the same reason. */
+  [here, anchor, parentOf(here)].forEach(function (k) {
+    if (at >= 0 || !k) return;
+    topics.forEach(function (t, i) { if (at < 0 && k === t.href) at = i; });
+  });
+  if (at < 0) {
+    topics.forEach(function (t, i) {
+      if (here.indexOf(t.href + '/') !== 0) return;
+      if (at < 0 || t.href.length > topics[at].href.length) at = i;
+    });
+  }
+  var out = [];
+  for (var i = 1; i <= topics.length && out.length < 5; i++) {
+    var t = topics[(Math.max(at, 0) + i) % topics.length];
+    if (t.href === here) continue;
+    out.push({ href: t.href, t: t.t, d: t.n || '' });
+  }
+  return [sLinks('Elsewhere in ' + (sub.short || sub.name), out,
+    'Every topic is on the ' + (sub.short || sub.name) + ' page.', 5)];
+}
+
+/* ------------------------------------------------------------ assembling */
+
+/* The hubs - the index, a subject's own page, About - are lists of ways on
+   already, and do not get a second one. */
+function sideSkip(seg) {
+  var k = seg[0] || '';
+  return k === '' || k === 'hub' || k === 'topics' || k === 'index' ||
+         k === 'contents' || k === 's' || k === 'about';
+}
+
+function sideFor(seg) {
+  var k = seg[0] || '', out = [];
+  if (k === 'a') out = sideArticle(seg[1]);
+  else if (k === 'part') out = sidePart(seg[1]);
+  else if (k === 'amendment') out = sideAmendment(seg[1]);
+  else if (k === 'schedule') out = sideSchedule(seg[1]);
+  else if (k === 'case') out = sideCase(seg[1]);
+  else if (k === 'history') out = sideHistory(seg.slice(1));
+  else if (k === 'economy') out = sideEcon(seg.slice(1));
+  else if (k === 'gk') out = sideGk(seg.slice(1));
+  else if (k === 'biology') out = sideBio(seg.slice(1));
+
+  /* An article belongs to its Part, which IS one of the Constitution's
+     topics, so say so rather than leaving it to be guessed. */
+  var anchor = null;
+  if (k === 'a' && byArt[seg[1]]) {
+    anchor = '#/part/' + encodeURIComponent(partOf[byArt[seg[1]].a].num);
+  }
+  return out.concat(sideElsewhere(seg, anchor));
+}
+
+/* The contents of the page itself, read off the headings that are there
+   rather than from a list each page has to keep up to date. */
+function sideContents(flow) {
+  var hs = flow.querySelectorAll('.block > h3, .partband h2, .chapband');
+  if (hs.length < 3) return '';
+  var items = [];
+  for (var i = 0; i < hs.length; i++) {
+    var el = hs[i], t = (el.textContent || '').trim();
+    if (!t) continue;
+    if (!el.id) el.id = 'sx' + i;
+    var band = el.className === 'chapband' || el.parentNode.className === 'partband';
+    items.push('<li' + (band ? ' class="band"' : '') + '>' +
+      '<button type="button" onclick="document.getElementById(\'' + el.id +
+      '\').scrollIntoView()">' + esc(shorten(t, 54)) + '</button></li>');
+  }
+  if (items.length < 3) return '';
+  return '<section class="scard onpage"><h2 class="slbl">On this page</h2>' +
+    '<ol class="sjump">' + items.join('') + '</ol></section>';
+}
+
+/* Done to the finished page rather than inside forty page functions: every
+   one of them builds a .artpage and that is all this needs to know. */
+function layoutSide(seg) {
+  if (sideSkip(seg)) return;
+  var page = main.querySelector('.artpage');
+  if (!page) return;
+
+  var flow = document.createElement('div');
+  flow.className = 'mainflow';
+  while (page.firstChild) flow.appendChild(page.firstChild);
+  page.appendChild(flow);
+
+  var cards;
+  try {
+    cards = sideFor(seg);
+  } catch (e) {
+    cards = [];   /* a page is worth more than its margin */
+  }
+  cards = [sideContents(flow)].concat(cards).filter(Boolean);
+  if (!cards.length) return;
+
+  var aside = document.createElement('aside');
+  aside.className = 'side';
+  aside.setAttribute('aria-label', 'Alongside this page');
+  aside.innerHTML = cards.join('');
+  page.appendChild(aside);
+  page.classList.add('withside');
 }
 
 /* ------------------------------------------------------------------ router */

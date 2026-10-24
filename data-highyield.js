@@ -110,7 +110,7 @@ articles: [
 {a:"51",  t:2, w:"International peace and security — the bridge used with article 253 in Vishaka."},
 {a:"56",  t:2, w:"Term of the President: five years."},
 {a:"58",  t:2, w:"Qualifications for President — age 35, and qualified for election to the Lok Sabha."},
-{a:"65",  t:2, w:"The Vice-President acts as President in a vacancy. Only once used: Hidayatullah in 1969."},
+{a:"65",  t:2, w:"The Vice-President acts as President in a vacancy — twice done: Giri in 1969, Jatti in 1977. Hidayatullah in 1969 is the other case, and it was the Chief Justice, not the Vice-President."},
 {a:"66",  t:2, w:"Vice-Presidential electoral college — both Houses only, and nominated members DO vote here."},
 {a:"67",  t:2, w:"Removal of the Vice-President: a Rajya Sabha resolution agreed to by the Lok Sabha, and no ground need be stated."},
 {a:"75",  t:2, w:"Collective responsibility to the Lok Sabha, the 15 per cent cap, and the six-month rule for a non-member minister."},

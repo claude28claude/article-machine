@@ -48,7 +48,8 @@ Object.assign(window.PLAIN, {
 
 "166": {p:"All executive action of a State government is expressed in the name of the Governor, and authenticated orders cannot be questioned on the ground that he did not make them."},
 
-"167": {p:"The Chief Minister must communicate the council's decisions to the Governor, furnish information he calls for, and put before the council any matter a minister has decided alone. The State mirror of article 78."},
+"167": {p:"The Chief Minister must communicate the council's decisions to the Governor, furnish information he calls for, and put before the council any matter a minister has decided alone. The State mirror of article 78.",
+ w:"Read it beside article 78 and the wording is almost word for word the same — the Union article first, the State article mirroring it, which is the pattern across the whole of Centre-State relations. The sting is in the third clause: where a minister has decided something alone and the Governor asks for it to go to the whole council, the Chief Minister must put it there. With article 163, this is where a Governor's real leverage over a State government sits."},
 
 /* ----------------------- CHAPTER III — THE STATE LEGISLATURE ----------------------- */
 

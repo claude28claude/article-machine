@@ -55,7 +55,7 @@ One page, no framework, no build step, no network calls, no tracking.
 | Articles | **506** — 471 in force, 35 repealed |
 | Parts | 26 (25 in force; Part VII was repealed in 1956) |
 | Plain-English notes | **493**, covering every article in force |
-| ...of which carry a "why it matters" note | 267 |
+| ...of which carry a "why it matters" note | **284** — every article the exam layer calls must-know or should-know |
 | Amendments | All **106**, with the articles each one touched |
 | Schedules | All **12**, with the three legislative Lists in full |
 | Landmark cases | **91** |
@@ -332,12 +332,57 @@ The navigation is the Answer Key's, ported:
 | **A subject's page** — `#/s/<id>` | What the bar opens. Every topic in the subject, numbered, with a line on what each covers, and the subject's sections in a rail beside them (a strip across the top on a phone). |
 | **The section strip** | Across the top of every page inside a subject; the section you are in is underlined in purple. Its first item is the subject itself and leads back to its topics. |
 | **The index** — `#/` | Every subject as a card, every topic inside it, and a filter. The full page-by-page outline is one link away at `#/index`. |
+| **The column beside it** | On every study page, built from the data the site already holds. See *Beside the page*. |
 
 The header used to be replaced by a subject's own tabs as soon as you entered
 it, so changing subject meant going back to the front first. Now it never
 changes, and never grows: the sections moved into the page rather than onto a
 second header row, which on a phone would have cost another 44px of screen for
 good.
+
+## Beside the page
+
+Every study page is two columns on a wide screen: the page, and beside it a
+stack of small cards. Below 1180px the cards drop under the page and lay
+themselves out as a row that wraps, so nothing is lost on a phone — all but
+the contents list, which is worth having while the page is still ahead of you
+and worth nothing underneath it.
+
+Nothing in the column is a new fact. It is the facts the site already holds,
+crossed against each other, and a **year is the join**: four small functions
+(`rulersIn`, `eventsIn`, `actsIn`, `sessionsIn`) take a year or a span of
+years and ask a different section what it had then. That is where most of the
+column comes from.
+
+| On | What is beside it |
+|---|---|
+| Every page | **On this page** — its own headings, read off the rendered page rather than from a list each view has to keep up to date. **Elsewhere in ‹subject›** — the next five topics in the subject, starting from where this page sits in it. |
+| An article | Why it gets asked, with its tier. The confused pairs it belongs to. The other articles in its group in the article map. Its Part, chapter, position, amendments and cases. |
+| A Part | How many of its articles are in force, amended, in the exam layer; the Parts either side. |
+| An amendment | Why it gets asked, the year, the day it came into force, and the amendments either side of it. |
+| A Schedule | All twelve, with this one marked. |
+| A case | Why it gets asked, the citation and the bench, and the other judgments on the same article. |
+| An event, an Act | Who was in charge that year, what else happened in it, what was passed in it, where the Congress met in it. |
+| A person | What they presided over, what they led, and every event on the timeline that names them. |
+| A movement | Who was in charge across its years, the events inside them, the sessions held during it. |
+| A Viceroy | His office and term, and the Acts, sessions and events of his years. |
+| A Congress session | The Viceroy of that year, the other sessions held in the same city, and what else happened that year. |
+| A plan, a pack, a topic | Where it sits, and every other one in its section with this one marked. |
+
+Two rules keep the joins honest. A **person** is matched in full where a full
+name is given; where only a surname is — the leaders of a movement, "Tilak,
+Lajpat Rai" — the surname is accepted only if no other person on the site
+shares it, so Ananda Mohan Bose's session is never offered on Subhas Chandra
+Bose's page. That list of ambiguous surnames is counted off the data, not
+written down. And a page is placed in its subject by its **exact** address
+first: Modern History's first topic is the timeline at `#/history`, and every
+other address in the subject begins with those characters, so prefix matching
+is the last resort and then the longest prefix wins.
+
+The column is built after the page is rendered, from the finished markup
+(`layoutSide`), rather than inside forty view functions: each of them builds a
+`.artpage` and that is all this needs to know. If a card throws, the page
+still renders — a page is worth more than its margin.
 
 ## The palette
 

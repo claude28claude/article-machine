@@ -7,7 +7,8 @@ Object.assign(window.PLAIN, {
 
 /* ------------------------- CHAPTER I — THE EXECUTIVE ------------------------- */
 
-"52": {p:"There shall be a President of India. One sentence, and the office exists."},
+"52": {p:"There shall be a President of India. One sentence, and the office exists.",
+ w:"One sentence is all the office needs here, because everything about it is somewhere else: the executive power of the Union is vested in him by article 53, he is elected by an electoral college under articles 54 and 55, and article 74 tells him to act on the advice of the council of ministers. Article 79 makes him part of Parliament without making him a member of either House — which is why no Bill becomes law until he assents to it."},
 
 "53": {p:"The executive power of the Union is vested in the President, exercised by him directly or through officers subordinate to him. He is also the supreme commander of the armed forces.",
  w:"Read alone this makes the President look powerful. Read with article 74 — which says he acts on the advice of the council of ministers — it becomes formal. The power is his; the decision is the cabinet's."},
@@ -18,12 +19,14 @@ Object.assign(window.PLAIN, {
 "55": {p:"The election uses a single transferable vote with proportional representation, and the value of each vote is weighted so that States are represented in proportion to their population and the States as a whole balance the Union Parliament.",
  w:"The arithmetic is the point. An MLA's vote is worth the State's population divided by its number of MLAs, divided by a thousand; the MPs' votes together equal the value of all the MLAs' votes. So the States and the Union carry equal weight. The 84th Amendment froze the population figure at the 1971 census."},
 
-"56": {p:"The President holds office for five years, and may resign to the Vice-President or be removed by impeachment. He stays in office until his successor takes over."},
+"56": {p:"The President holds office for five years, and may resign to the Vice-President or be removed by impeachment. He stays in office until his successor takes over.",
+ w:"Five years, counted from the day he enters the office, and no limit on how many times the same person may be re-elected — the American two-term bar has no equivalent here. The clause that gets asked is the last one: he continues in office until his successor enters it, so the office is never vacant and India has no caretaker President."},
 
 "57": {p:"A person who has been President is eligible for re-election. There is no term limit.",
  w:"Only Rajendra Prasad has served two full terms."},
 
-"58": {p:"To be President you must be a citizen of India, at least thirty-five, and qualified to be elected to the Lok Sabha. You cannot hold any office of profit under the government."},
+"58": {p:"To be President you must be a citizen of India, at least thirty-five, and qualified to be elected to the Lok Sabha. You cannot hold any office of profit under the government.",
+ w:"The three ages are the whole question: thirty-five for President and Vice-President, thirty for the Rajya Sabha, twenty-five for the Lok Sabha. He must be qualified for election to the Lok Sabha but need not be a member of it. And the office-of-profit bar has an explanation attached to it — a sitting President, Vice-President, Governor or Minister is not treated as holding an office of profit, which is what lets any of them contest without resigning first."},
 
 "59": {p:"The President cannot be a member of either House or of a State legislature, cannot hold any other office of profit, and gets a free official residence and the emoluments Parliament fixes, which cannot be reduced during his term."},
 
@@ -34,12 +37,14 @@ Object.assign(window.PLAIN, {
 
 "62": {p:"An election to fill a vacancy caused by expiry of the term must be completed before the term ends. If the vacancy arises from death, resignation or removal, the election must be held within six months."},
 
-"63": {p:"There shall be a Vice-President of India."},
+"63": {p:"There shall be a Vice-President of India.",
+ w:"The second office of the Republic, and the one with the least attached to it: under article 64 the Vice-President is <em>ex officio</em> Chairman of the Rajya Sabha, and that is his standing job. He is not a member of either House. He cannot be impeached either — article 67 removes him by a resolution of the Rajya Sabha passed by a majority of all its then members and agreed to by the Lok Sabha, after fourteen days' notice, and no ground has to be stated. Learn it with 64, 65 and 67 and the whole office is covered."},
 
 "64": {p:"The Vice-President is the ex officio Chairman of the Rajya Sabha, and draws no salary as Vice-President while acting as President.",
  w:"The office has two quite separate jobs, and the second is the one that fills the day. Unlike the Speaker, the Chairman is not a member of the House he presides over."},
 
-"65": {p:"If the office of President falls vacant, or the President cannot act, the Vice-President takes over — until a new President is elected, or until the President returns."},
+"65": {p:"If the office of President falls vacant, or the President cannot act, the Vice-President takes over — until a new President is elected, or until the President returns.",
+ w:"Used twice, both times by a Vice-President: V. V. Giri acted as President when Zakir Husain died in 1969, and B. D. Jatti when Fakhruddin Ali Ahmed died in 1977. The 1969 vacancy then went further than the Constitution provides for. Giri resigned to contest the election, which left no Vice-President to act, and the Chief Justice of India, M. Hidayatullah, discharged the President's functions for a month under a law Parliament passed for the purpose — the Constitution itself provides for no such case, which is what article 70 is there for."},
 
 "66": {p:"The Vice-President is elected by an electoral college of the members of both Houses of Parliament, by proportional representation with a single transferable vote.",
  w:"A narrower college than the President's: no State legislators, but nominated members of Parliament do vote here."},
@@ -117,7 +122,8 @@ Object.assign(window.PLAIN, {
 
 "92": {p:"Neither the Chairman nor the Deputy Chairman may preside while a resolution for his own removal is being considered, though he may speak and vote on it — except that he cannot vote in the case of an equality of votes."},
 
-"93": {p:"The Lok Sabha chooses a Speaker and a Deputy Speaker from among its members, and fills those offices whenever they fall vacant."},
+"93": {p:"The Lok Sabha chooses a Speaker and a Deputy Speaker from among its members, and fills those offices whenever they fall vacant.",
+ w:"The Speaker's position comes from here and from the three articles after it, and that is where the questions are. He is removed by a resolution of the House passed by a majority of all its then members after fourteen days' notice (94), he may not preside while such a resolution is being considered (96), and he has no vote except a casting vote when the House is equally divided (100). Pair it with 94 for the fact most often asked: when the Lok Sabha is dissolved the Speaker does not vacate his office, he continues until immediately before the first meeting of the new House."},
 
 "94": {p:"The Speaker or Deputy Speaker vacates office on ceasing to be a member, on resigning, or on a resolution passed by a majority of all the members of the House after fourteen days' notice. A Speaker continues in office after the House is dissolved, until the new House meets.",
  w:"That last rule matters: there is never a moment without a Speaker, even between Lok Sabhas."},
