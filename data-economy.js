@@ -37,17 +37,19 @@ window.ECONOMY = {
 plans: [
 
 {id:"first", kind:"plan", no:1, n:"First Five Year Plan", from:1951, to:1956, hy:1,
+ ssc:["Years ==1951-56==; model ==Harrod-Domar==; priority ==agriculture, irrigation and power==.", "Target ==2.1%==, achieved ==3.6%==: beat its target by the ==widest margin== of any plan.", "Economist ==K.N. Raj== drafted much of it.", "==Community Development Programme==, 2 October 1952; Bhakra-Nangal, Hirakud and the Damodar Valley projects."],
  theme:"Agriculture, irrigation and power",
  model:"Harrod–Domar model",
  tgt:2.1, act:3.6,
- w:"India in 1951 was short of food, absorbing eight million refugees and running double-digit inflation. The First Plan did not try to be clever: it put money into land, water and electricity and left industry mostly alone. It is the only plan whose growth comfortably beat its own target.",
- key:["Bhakra–Nangal, Hirakud and the Damodar Valley projects begun — the 'temples of modern India'",
+ w:"India in 1951 was short of food, absorbing eight million refugees and running double-digit inflation. The First Plan did not try to be clever: it put money into land, water and electricity and left industry mostly alone. It beat its own target by a wider margin than any later plan.",
+ key:["Bhakra–Nangal, Hirakud and the Damodar Valley projects (all under way before the plan began) pushed forward as its showpieces — the 'temples of modern India'",
       "Community Development Programme launched 2 October 1952; National Extension Service 1953",
       "IIT Kharagpur (1951) and the University Grants Commission (1953) established",
       "Roughly 45% of outlay went to agriculture, irrigation and power together"],
  note:"Based on the Harrod–Domar model, which makes growth a function of how much a country saves and how efficiently it invests. That was the right question for 1951 and the wrong one by 1956."},
 
 {id:"second", kind:"plan", no:2, n:"Second Five Year Plan", from:1956, to:1961, hy:1,
+ ssc:["Years ==1956-61==; the ==Mahalanobis model==; priority ==heavy and basic industry==.", "==Industrial Policy Resolution 1956==.", "Steel plants: ==Bhilai== (USSR), ==Rourkela== (West Germany), ==Durgapur== (Britain).", "Target 4.5%, achieved about 4.2%."],
  theme:"Heavy and basic industry",
  model:"Mahalanobis model",
  tgt:4.5, act:4.27,
@@ -59,6 +61,7 @@ plans: [
  note:"Mahalanobis founded the Indian Statistical Institute and designed the plan there. The model's weakness is the one that showed up: heavy industry employs few people per rupee, so growth did not translate into jobs."},
 
 {id:"third", kind:"plan", no:3, n:"Third Five Year Plan", from:1961, to:1966, hy:1,
+ ssc:["Years ==1961-66==; aim a ==self-reliant and self-generating economy==.", "Wrecked by the ==1962== war with China, the ==1965== war with Pakistan and the 1965-66 drought.", "Target 5.6%, achieved ==2.4%==: the ==worst failure== of any plan.", "Food Corporation of India and the Agricultural Prices Commission, both ==1965==.", "Coaching books call it the ==Gadgil Yojana==. Careful: the Gadgil formula itself came in 1969, with the Fourth Plan."],
  theme:"A self-reliant and self-generating economy",
  tgt:5.6, act:2.4,
  w:"The plan that failed, and failed for reasons largely outside it. Two wars and the worst drought in decades arrived inside five years. It aimed to make the economy self-sustaining; it ended with India importing wheat under PL-480 and devaluing the rupee.",
@@ -69,6 +72,7 @@ plans: [
  note:"The failure is why the next three years were given to annual plans instead of a fourth Five Year Plan."},
 
 {id:"holiday", kind:"gap", n:"Plan holiday — three Annual Plans", from:1966, to:1969, hy:1,
+ ssc:["==1966-69==: three Annual Plans, the ==plan holiday==.", "Rupee devalued on ==6 June 1966==, by about 36.5%.", "==Green Revolution== begins: high-yielding seeds, fertiliser and irrigation in Punjab, Haryana and western UP."],
  theme:"Devaluation and the Green Revolution",
  w:"Not a plan at all: three one-year plans while the Third Plan's wreckage was cleared. Two things of permanent importance happened in these three years.",
  key:["Rupee devalued on 6 June 1966 by about 36.5% against the dollar — from ₹4.76 to ₹7.50",
@@ -77,6 +81,7 @@ plans: [
  note:"The devaluation is the single most-asked fact from this period. It was demanded in substance by the World Bank and the IMF as a condition of assistance, and it was politically hated."},
 
 {id:"fourth", kind:"plan", no:4, n:"Fourth Five Year Plan", from:1969, to:1974,
+ ssc:["Years ==1969-74==; theme ==growth with stability== and progressive achievement of ==self-reliance==.", "==14 banks nationalised==, 19 July 1969.", "The ==Gadgil formula== for sharing central assistance among states; the ==MRTP Act==, 1969.", "Target 5.7%, achieved 3.3%."],
  theme:"Growth with stability and progressive achievement of self-reliance",
  tgt:5.7, act:3.3,
  w:"Written to make India independent of foreign aid, and overtaken by events: the Bangladesh war and ten million refugees, two droughts, and the first oil shock at the end. Its lasting mark is not growth but ownership — fourteen banks were nationalised in its first year.",
@@ -87,6 +92,7 @@ plans: [
  note:"The Gadgil formula (D.R. Gadgil) weighted population most heavily, and it governed central assistance to states in one revised form or another until the Fourteenth Finance Commission changed the arithmetic in 2015."},
 
 {id:"fifth", kind:"plan", no:5, n:"Fifth Five Year Plan", from:1974, to:1979, hy:1,
+ ssc:["Years ==1974-79== on paper, ended in ==1978==; theme ==Garibi Hatao== (removal of poverty) and self-reliance.", "Drafted by ==D.P. Dhar==.", "==Minimum Needs Programme==; the ==Twenty Point Programme==, 1975; ==Regional Rural Banks==, 2 October 1975.", "Target 4.4%, achieved 4.8%: beat its target."],
  theme:"Removal of poverty (Garibi Hatao) and attainment of self-reliance",
  tgt:4.4, act:4.8,
  w:"The first plan to make poverty itself the target rather than a hoped-for consequence of growth. It was drafted by D.P. Dhar, ran through the Emergency, and was cut short: the Janata government terminated it in 1978, a year early.",
@@ -94,9 +100,10 @@ plans: [
       "Twenty Point Programme announced in 1975",
       "Pokhran-I, India's first nuclear test, 18 May 1974",
       "Terminated in 1978, one year early, by the incoming Janata government"],
- note:"One of only two plans that beat their growth target — the other is the First. It is also the plan most often mis-dated, because it ended in 1978 and not 1979."},
+ note:"One of five plans that beat their growth target, with the First, Sixth, Seventh and Eighth. It is also the plan most often mis-dated, because it ended in 1978 and not 1979."},
 
 {id:"rolling", kind:"gap", n:"The Rolling Plan", from:1978, to:1980,
+ ssc:["==1978-80==: the ==Rolling Plan== of the Janata government.", "The idea of ==Gunnar Myrdal==: targets revised every year.", "It sits between the Fifth and the Sixth Plans."],
  theme:"A plan rewritten every year",
  w:"The Janata government abandoned the fixed five-year frame for a rolling plan — targets revised annually rather than fixed for five years. The idea is associated with the Swedish economist Gunnar Myrdal; D.T. Lakdawala ran the Planning Commission through it.",
  key:["Janata drafted a Sixth Plan for 1978–83; the Congress government that returned in 1980 scrapped it and started its own",
@@ -104,6 +111,7 @@ plans: [
  note:"A favourite trap: 'which plan was a rolling plan' is 1978–80, and it sits between the Fifth and the Sixth."},
 
 {id:"sixth", kind:"plan", no:6, n:"Sixth Five Year Plan", from:1980, to:1985, hy:1,
+ ssc:["Years ==1980-85==; theme a ==direct attack on poverty==.", "==IRDP== extended nationwide (1980); ==NABARD== set up 12 July 1982; TRYSEM and DWCRA.", "The first signs of loosening controls, often called the beginning of liberalisation.", "Target 5.2%, achieved 5.7%."],
  theme:"Direct attack on poverty; removal of unemployment",
  tgt:5.2, act:5.7,
  w:"Poverty programmes stopped being a line item and became the plan's organising idea, with money going straight to households rather than through growth. It is also where the state's grip began to loosen — some price and distribution controls went, though calling it the start of liberalisation overstates a change that only became policy in 1991.",
@@ -114,6 +122,7 @@ plans: [
  note:"Whether the Sixth Plan 'began liberalisation' is genuinely argued about. What is not argued about is that the direction of policy changed here and accelerated after 1985."},
 
 {id:"seventh", kind:"plan", no:7, n:"Seventh Five Year Plan", from:1985, to:1990, hy:1,
+ ssc:["Years ==1985-90==; slogan ==Food, Work and Productivity==.", "==Jawahar Rozgar Yojana==, 1989.", "Target 5%, achieved ==6%==, the best yet.", "Its foreign borrowing set up the ==1991 crisis==."],
  theme:"Food, Work and Productivity",
  tgt:5.0, act:6.0,
  w:"Three words as the whole objective, and the best growth of any plan up to that point. It also ran up the deficits and the external borrowing that produced the crisis two years after it ended.",
@@ -124,6 +133,7 @@ plans: [
  note:"The plan met its growth objective and left the balance of payments in the state that produced 1991. Both facts are true at once."},
 
 {id:"annual9092", kind:"gap", n:"Two Annual Plans", from:1990, to:1992, hy:1,
+ ssc:["==1990-92==: two Annual Plans, during political instability and the ==balance of payments crisis==.", "Gold pledged abroad; the ==New Economic Policy== of July 1991."],
  theme:"Political instability and the balance of payments crisis",
  w:"Four governments in two years and no political basis for a five-year commitment. The Eighth Plan was postponed while the country ran out of foreign exchange.",
  key:["Gulf War 1990: oil prices doubled and remittances from Indian workers in the Gulf stopped",
@@ -133,9 +143,10 @@ plans: [
  note:"See the 1991 reforms in full — this gap is where that story sits."},
 
 {id:"eighth", kind:"plan", no:8, n:"Eighth Five Year Plan", from:1992, to:1997, hy:1,
+ ssc:["Years ==1992-97==; the ==first plan after liberalisation==; core objective ==human development==.", "Often called the ==Rao-Manmohan model==.", "It moved India to ==indicative planning==: the plan sets broad goals and priorities, and the state guides rather than directs, leaving most investment to the market and the private sector.", "Target 5.6%, achieved ==6.8%==.", "India a founder member of the ==WTO==, 1 January 1995; PMRY (1993), MPLADS (1993), the mid-day meal scheme (1995)."],
  theme:"Human development as the core",
  tgt:5.6, act:6.8,
- w:"The first plan of the liberalised economy, and the first to say plainly that the state would now be a facilitator rather than the main investor. It is the plan with the largest gap between target and achievement, in the right direction.",
+ w:"The first plan of the liberalised economy, and the first to say plainly that the state would now be a facilitator rather than the main investor. After the First Plan, it is the plan that beat its target by the widest margin.",
  key:["Written after the 1991 reforms — planning shifts from allocating licences to setting direction",
       "Human development named as the core objective: employment, literacy, health, population",
       "73rd and 74th Amendments (1992–93) put money and functions into panchayats and municipalities",
@@ -143,15 +154,17 @@ plans: [
  note:"Often labelled the Rao–Manmohan model. That is a description of the politics rather than a formal economic model like Mahalanobis's."},
 
 {id:"ninth", kind:"plan", no:9, n:"Ninth Five Year Plan", from:1997, to:2002,
+ ssc:["Years ==1997-2002==; theme ==growth with social justice and equality==.", "Began in the ==50th year of independence==.", "Target 6.5%, achieved 5.4%.", "Antyodaya Anna Yojana and PMGSY (both December 2000); SGSY (1999)."],
  theme:"Growth with social justice and equality",
  tgt:6.5, act:5.4,
  w:"Launched in the fiftieth year of independence with the highest target yet, and undone by the East Asian financial crisis, sanctions after the 1998 nuclear tests and two years of poor agricultural growth.",
  key:["Seven Basic Minimum Services identified for priority funding",
       "East Asian crisis (1997) and post-Pokhran-II sanctions (1998) both fell inside the plan",
       "Emphasis on the private sector as the main source of investment"],
- note:"The first plan since the Third to fall more than a full percentage point short of its target."},
+ note:"The first plan since the Fourth to fall more than a full percentage point short of its target."},
 
 {id:"tenth", kind:"plan", no:10, n:"Tenth Five Year Plan", from:2002, to:2007, hy:1,
+ ssc:["Years ==2002-07==; aim to ==double per capita income in ten years==.", "First with ==monitorable targets==, and with growth targets set ==state by state==.", "Target ==8%==, achieved 7.6%.", "NREGA (2005, in force February 2006); National Rural Health Mission (2005)."],
  theme:"Doubling per capita income in ten years",
  tgt:8.0, act:7.6,
  w:"The first plan to set measurable social targets and publish them as commitments rather than aspirations — literacy, infant mortality, sex ratio, forest cover — and to break the growth target down state by state.",
@@ -159,9 +172,10 @@ plans: [
       "All children in school by 2003; the gender gap in literacy cut by half by 2007",
       "Infant mortality to 45 per 1,000 by 2007; forest cover to 25%",
       "Sarva Shiksha Abhiyan and the National Rural Health Mission (2005) ran through it"],
- note:"The 8% target was the highest ever set and was very nearly met — the closest any plan came to a target above 6%."},
+ note:"The 8% target was the highest set up to then (the Eleventh later set 9%), and it was very nearly met."},
 
 {id:"eleventh", kind:"plan", no:11, n:"Eleventh Five Year Plan", from:2007, to:2012, hy:1,
+ ssc:["Years ==2007-12==; theme ==faster and more inclusive growth==.", "Target 9%, revised to 8.1%; achieved about ==8%== despite the 2008 crisis.", "==27 monitorable targets==; Right to Education Act in force 1 April 2010."],
  theme:"Towards faster and more inclusive growth",
  tgt:9.0, act:8.0,
  w:"'Inclusive growth' entered the vocabulary here and has not left it. The target was set at 9% before the global financial crisis and revised to about 8.1% after it; the achievement of around 8% through a world recession is the plan's real claim.",
@@ -172,6 +186,7 @@ plans: [
  note:"The 9% headline and the 8.1% revision are both quoted as 'the target' by different sources. Both are correct for different moments in the plan."},
 
 {id:"twelfth", kind:"plan", no:12, n:"Twelfth Five Year Plan", from:2012, to:2017, hy:1,
+ ssc:["Years ==2012-17==; theme ==faster, more inclusive and sustainable growth==.", "The ==last Five Year Plan==.", "Target ==8%==, cut from 9%.", "Planning Commission replaced by ==NITI Aayog== on ==1 January 2015==, midway through it."],
  theme:"Faster, more inclusive and sustainable growth",
  tgt:8.0, act:null,
  w:"The last Five Year Plan. Its target was cut from 9% to 8% before it even began, and the body that wrote it was abolished two and a half years in — the Planning Commission was replaced by NITI Aayog on 1 January 2015, though the plan itself was allowed to run to 31 March 2017.",
@@ -183,11 +198,102 @@ plans: [
 
 ],
 
+/* ------------------------------------------------------- the plans, revised
+
+   The plans reduced to what an answer sheet wants. `planNotes` is the whole
+   sequence in a dozen highlighted lines; `planMatch` is the reverse lookup,
+   from a scheme or an event to the plan it belongs to, which is how the
+   question is usually put ("NABARD was set up during which plan?"). The
+   at-a-glance table is not stored: it is built from the plans themselves,
+   so it cannot disagree with them.                                         */
+
+planNotes: [
+ "==Twelve== Five Year Plans, ==1951 to 2017==, and three gaps: the ==plan holiday== (1966-69), the ==Rolling Plan== (1978-80) and two ==Annual Plans== (1990-92).",
+ "The Planning Commission (==15 March 1950==, a Cabinet resolution) drafted them; the ==National Development Council== (1952) approved them; the ==Prime Minister== chaired both.",
+ "1st ==agriculture== (Harrod-Domar); 2nd ==heavy industry== (Mahalanobis); 3rd ==self-reliance==, and the worst failure.",
+ "4th: ==bank nationalisation== (1969) and the ==Gadgil formula==; 5th: ==Garibi Hatao==, ended a year early in 1978.",
+ "6th: ==direct attack on poverty== (IRDP, NABARD); 7th: ==Food, Work and Productivity==.",
+ "8th: first after ==1991==, ==human development==; 9th: ==growth with social justice and equality==.",
+ "10th: ==double per capita income== in ten years, ==monitorable targets==; 11th: ==faster and more inclusive growth==.",
+ "12th, the ==last==: ==faster, more inclusive and sustainable growth==. NITI Aayog took over on ==1 January 2015==.",
+ "Plans that beat their target: the ==1st, 5th, 6th, 7th and 8th==. The biggest miss: the ==3rd== (5.6% target, 2.4% achieved).",
+ "Highest target: the ==11th== (9%). Highest achievement: the ==11th== (about 8%), then the ==10th== (7.6%).",
+ "The idea was borrowed from the ==USSR==, whose first Five Year Plan under Stalin began in ==1928==.",
+ "'Economic and social planning' is ==Entry 20 of the Concurrent List== in the Seventh Schedule."
+],
+
+planMatch: [
+ ["Community Development Programme (1952)","1st Plan"],
+ ["Bhakra-Nangal, Hirakud, Damodar Valley","1st Plan"],
+ ["Industrial Policy Resolution 1956","2nd Plan"],
+ ["Bhilai, Rourkela and Durgapur steel plants","2nd Plan"],
+ ["Panchayati Raj spreads after Nagaur (1959)","2nd and 3rd Plans"],
+ ["Food Corporation of India; Agricultural Prices Commission (1965)","3rd Plan"],
+ ["Rupee devalued (6 June 1966); Green Revolution begins","Plan holiday, 1966-69"],
+ ["14 banks nationalised (1969); MRTP Act (1969)","4th Plan"],
+ ["Pokhran-I (1974); Twenty Point Programme (1975); Regional Rural Banks (1975)","5th Plan"],
+ ["Six more banks nationalised (15 April 1980)","6th Plan"],
+ ["IRDP nationwide (1980); NABARD (1982); DWCRA (1982)","6th Plan"],
+ ["Jawahar Rozgar Yojana (1989)","7th Plan"],
+ ["New Economic Policy (July 1991)","Annual Plans, 1990-92"],
+ ["73rd and 74th Amendments (1992-93); PMRY and MPLADS (1993); WTO (1995); mid-day meals (1995)","8th Plan"],
+ ["SGSY (1999); Antyodaya Anna Yojana and PMGSY (2000)","9th Plan"],
+ ["NREGA and NRHM (2005); Bharat Nirman (2005)","10th Plan"],
+ ["MGNREGA to every district (2008); Right to Education in force (2010)","11th Plan"],
+ ["NITI Aayog replaces the Planning Commission (2015); 14th Finance Commission raises the states' share to 42% (2015)","12th Plan"]
+],
+
 /* ------------------------------------------------------------ the 1991 reforms */
 
 reform: {
   title:"1991 — the year the economy changed shape",
   lede:"Two things happened in 1991. India nearly defaulted, and India stopped running an economy by permit. The first is why the second was possible.",
+
+  /* The reforms in a dozen highlighted lines, and the dates in order. */
+  notes:[
+   "The reforms are called ==LPG==: ==Liberalisation, Privatisation, Globalisation==, announced as the ==New Economic Policy== of 1991.",
+   "Prime Minister ==P.V. Narasimha Rao==; Finance Minister ==Manmohan Singh==. Rao, who also held the industry portfolio, is often called the ==father of economic reforms==.",
+   "The trigger: a ==balance of payments crisis==. Reserves fell to about ==$1 billion==, two to three weeks of imports.",
+   "==67 tonnes of gold== pledged or sold: 20 tonnes via the Union Bank of Switzerland (May), ==47 tonnes to the Bank of England== (July).",
+   "Rupee devalued in two steps, ==1 and 3 July 1991==, by about 18-19% in all.",
+   "==24 July 1991==: the ==New Industrial Policy== and the Union Budget on the same day. Licensing ended for all but ==18== industries (now 4).",
+   "Manmohan Singh's Budget speech closed with ==Victor Hugo==: no power on earth can stop an idea whose time has come.",
+   "Two kinds of reform: ==stabilisation== (short-term: deficit, inflation, reserves) and ==structural== (long-term: licensing, trade, finance).",
+   "The IMF and World Bank loans came with conditions; the package is called the ==Structural Adjustment Programme==.",
+   "Committees: ==Narasimham== (banking, 1991 and 1998), ==Chelliah== (tax, 1991), ==Rangarajan== (disinvestment, 1993), ==Malhotra== (insurance, 1993).",
+   "==SEBI== got statutory powers in ==1992==; the ==NSE== was set up in 1992 and began trading in 1994.",
+   "==FERA 1973== was replaced by ==FEMA 1999==, in force 1 June 2000. ==Current account convertibility==: August 1994."
+  ],
+
+  dates:[
+   ["August 1990","Iraq invades Kuwait. Oil prices double; Gulf remittances stop"],
+   ["January 1991","India draws on the IMF's facilities in the first rescue"],
+   ["May 1991","20 tonnes of gold sold through the Union Bank of Switzerland by the Chandra Shekhar government"],
+   ["21 May 1991","Rajiv Gandhi assassinated during the election campaign"],
+   ["21 June 1991","P.V. Narasimha Rao sworn in as Prime Minister; Manmohan Singh Finance Minister"],
+   ["1 and 3 July 1991","The rupee devalued in two steps"],
+   ["July 1991","47 tonnes of gold flown to the Bank of England as collateral"],
+   ["4 July 1991","New trade policy: export subsidies ended, import licensing cut back (EXIM scrips)"],
+   ["24 July 1991","The New Industrial Policy, and Manmohan Singh's first Budget, the same day"],
+   ["August 1991","The Narasimham Committee on the financial system is set up"],
+   ["1992","SEBI made a statutory body; the National Stock Exchange incorporated"],
+   ["March 1992","LERMS: the dual exchange rate"],
+   ["March 1993","The exchange rate unified: a market-determined rate"],
+   ["August 1994","Current account convertibility"],
+   ["1 January 1995","India a founder member of the WTO"]
+  ],
+
+  terms:[
+   ["LPG","Liberalisation, Privatisation, Globalisation: the three headings the reforms are taught under"],
+   ["New Economic Policy (NEP)","The whole 1991 package. Not to be confused with Lenin's NEP of 1921"],
+   ["Stabilisation","Short-term measures on the demand side: cut the fiscal deficit, control inflation, rebuild reserves"],
+   ["Structural reform","Long-term measures on the supply side: end licensing, open trade, reform banking, tax and the public sector"],
+   ["Structural Adjustment Programme","The name for the IMF and World Bank loans and the conditions attached to them"],
+   ["Licence-permit raj","The pre-1991 system in which a firm needed government permission to set up, expand or change its product. The phrase is C. Rajagopalachari's"],
+   ["Hindu rate of growth","About 3.5% a year, India's average before 1991. Raj Krishna's phrase"],
+   ["Disinvestment","Selling the government's shares in public sector firms; strategic disinvestment sells control"],
+   ["Convertibility","Freedom to change rupees into foreign currency at the market rate: on the current account (trade) since 1994, not fully on the capital account"]
+  ],
 
   crisis:{
     h:"How the crisis built",
@@ -237,6 +343,7 @@ reform: {
     ["Chelliah Committee (1991)","Tax reform. Raja J. Chelliah is called the father of tax reform in India: fewer rates, lower rates, wider base."],
     ["Rangarajan Committee (1993)","The framework for disinvestment of public sector shareholding."],
     ["Malhotra Committee (1993)","Insurance. Led to the opening of insurance to private companies and the creation of IRDA in 1999."],
+    ["Disinvestment Commission (1996)","Constituted 23 August 1996, chaired by G.V. Ramakrishna, to advise on which public sector firms to sell and how."],
     ["Kelkar Task Force (2002)","Direct and indirect taxes. The same Vijay Kelkar's 2003 report first proposed a national goods and services tax."]
   ],
 
@@ -603,7 +710,7 @@ topics: [
    ]},
   {h:"Regional and plurilateral groups",
    rows:[
-    ["BRICS","Brazil, Russia, India, China and South Africa. The term BRIC was Jim O'Neill's, in 2001; South Africa joined in 2010. The New Development Bank, headquartered in Shanghai, is its bank"],
+    ["BRICS","Brazil, Russia, India, China and South Africa, the original five: the term BRIC was Jim O'Neill's, in 2001, and South Africa joined in 2010. Egypt, Ethiopia, Iran and the UAE joined in January 2024 and Indonesia in January 2025; Saudi Arabia was invited and its status is unsettled. India chaired it in 2026. The New Development Bank, headquartered in Shanghai, is its bank"],
     ["Asian Development Bank","1966, headquartered in Manila"],
     ["Asian Infrastructure Investment Bank","2016, headquartered in Beijing. India is the second largest shareholder"],
     ["SAARC","1985, headquartered in Kathmandu — eight members"],
@@ -639,7 +746,7 @@ confusions: [
  rows:[["Beat it","First (2.1 target, 3.6 achieved), Fifth (4.4 / 4.8), Sixth (5.2 / 5.7), Seventh (5.0 / 6.0), Eighth (5.6 / 6.8)"],
        ["Missed it","Second (marginally), Third (5.6 / 2.4 — the worst), Fourth (5.7 / 3.3), Ninth (6.5 / 5.4), Tenth (8.0 / 7.6), Eleventh (9.0 / 8.0)"],
        ["The biggest miss","The Third Plan — it achieved less than half of what it set out to do"],
-       ["The biggest beat","The Eighth Plan — 6.8% against a target of 5.6%"]],
+       ["The biggest beat","The First Plan — 3.6% against a target of 2.1%. The Eighth (6.8% against 5.6%) comes next"]],
  note:"Achieved figures are the Planning Commission's own end-of-plan estimates and vary by a few tenths across sources. The ranking does not change."},
 
 {k:"Planning Commission vs NITI Aayog",

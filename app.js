@@ -129,7 +129,11 @@ var SUBJECTS = [{
         n: amapCount('groups') + ' indexed entries',
         w: 'The Constitution indexed by subject instead of by number, with every article number a link.',
         k: 'which article covers index list ranges parts schedules directive principles emergency panchayat municipality language' },
-      { t: 'The courts, article by article', href: '#/high-yield/courts',
+      { t: 'Centre-State relations and the Seventh Schedule', href: '#/high-yield/centre-state',
+      n: (AMAP.centrestate || []).reduce(function (a, b) { return a + b.rows.length; }, 0) + ' entries',
+      w: 'Who may legislate on what, what happens when two laws collide, which List a subject is in, and the commissions that tried to move the line.',
+      k: 'union list state list concurrent list seventh schedule 246 248 249 254 262 263 residuary repugnancy pith and substance sarkaria punchhi bommai quasi federal 42nd amendment education forests' },
+    { t: 'The courts, article by article', href: '#/high-yield/courts',
         n: amapCount('courts') + ' entries',
         w: 'Supreme Court 124 to 147 and High Courts 214 to 231 in full, the five writs, and the tribunals.',
         k: 'supreme court high court writ habeas corpus mandamus certiorari prohibition quo warranto slp review judicial tribunal district judge' },
@@ -996,7 +1000,7 @@ function hyCount(kind, t) {
 
 function hyShell(active, body) {
   var tabs = [['', 'Overview'], ['articles', 'Articles'], ['map', 'Article map'],
-              ['courts', 'Courts'], ['cases', 'Cases'],
+              ['courts', 'Courts'], ['centre-state', 'Centre and State'], ['cases', 'Cases'],
               ['amendments', 'Amendments'], ['confusions', 'Confused pairs'],
               ['facts', 'Quick facts']];
   return '<div class="wrap artpage">' +
@@ -1326,6 +1330,7 @@ function highYieldPage(slug) {
   if (slug === 'facts')      return render(hyFacts());
   if (slug === 'map')        return render(hyArticleMap());
   if (slug === 'courts')     return render(hyCourts());
+  if (slug === 'centre-state') return render(hyCentreState());
   return notFound('No such high-yield section.');
 }
 
@@ -1367,6 +1372,31 @@ function hyCourts() {
   return hyShell('courts', h);
 }
 
+
+/* Centre-State relations, indexed the way the question asks rather than the
+   way Part XI is numbered. Part XI is already on the site article by
+   article, which is the right shape for reading article 254 once and the
+   wrong shape for answering "who prevails on a Concurrent subject". Every
+   number goes through factsBlockLinked, so a row is one tap from the text.
+
+   The Seventh Schedule gets a block of its own here as well as its own page
+   under Schedules. The Schedules page prints all 219 entries, which is what
+   you want when checking one; this prints the dozen subjects that actually
+   get asked, which is what you want the night before. */
+function hyCentreState() {
+  var rows = (AMAP.centrestate || []).reduce(function (a, b) { return a + b.rows.length; }, 0);
+  var h = '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s3);font-weight:600">' +
+    'Centre and State, and the Seventh Schedule</h1>' +
+    '<p class="sub">The three divisions of power, the doctrines the courts built on them, which List a ' +
+    'subject falls in, and the commissions that have been asked to change the balance.</p>' +
+    '<div class="figs">' + fig(rows, 'entries') + fig(3, 'Lists') +
+      fig((AMAP.centrestateNotes || []).length, 'notes to write down') + '</div>';
+  h += notesBlock(AMAP.centrestateNotes, 'the ones that come back');
+  h += (AMAP.centrestate || []).map(factsBlockLinked).join('');
+  h += '<p class="foot">The Seventh Schedule in full \u2014 all three Lists, every entry \u2014 is on its own ' +
+    '<a href="#/schedule/7">Schedule page</a>. This page is the shortlist.</p>';
+  return hyShell('centre-state', h);
+}
 
 /* =========================================================================
    THE CONSTITUENT ASSEMBLY
@@ -2176,6 +2206,233 @@ SUBJECTS.push({
 });
 
 /* =========================================================================
+   SUBJECT: ANCIENT AND MEDIEVAL HISTORY
+
+   Jainism and its councils, and the Mughals. Modern History here begins
+   with the Company's charter in 1600, and stretching it back two thousand
+   years would make its name mean nothing, so what came before is a subject
+   of its own. It sits next to Modern History on the bar because a reader
+   revising one is usually revising the other.
+   ========================================================================= */
+
+var EARLY = window.EARLY || {};
+var earlyTopicById = {}, emperorById = {};
+(EARLY.topics   || []).forEach(function (t) { earlyTopicById[t.id] = t; });
+(EARLY.emperors || []).forEach(function (e) { emperorById[e.id] = e; });
+
+var EARLY_ERAS = [
+  ['ancient',  'Ancient India'],
+  ['medieval', 'Medieval India: the Mughals']
+];
+
+function earlyRows(t) {
+  return t.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
+}
+function earlyShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+/* `trail` is a list of [label, href]; the last item is where you are and
+   has no href. */
+function earlyCrumb(trail) {
+  if (!trail || !trail.length) return '<div class="crumb">Ancient &amp; Medieval</div>';
+  return '<div class="crumb"><a href="#/early">Ancient &amp; Medieval</a>' +
+    trail.map(function (x) {
+      return ' → ' + (x[1] ? '<a href="' + x[1] + '">' + esc(x[0]) + '</a>' : esc(x[0]));
+    }).join('') + '</div>';
+}
+
+/* 1526-30 inside one century, 1759-1806 across two: "1759-06" would read as
+   a reign that ended before it began. */
+function yrSpan(a, b) {
+  var sa = String(a), sb = String(b);
+  return sa + '–' + (sa.slice(0, 2) === sb.slice(0, 2) ? sb.slice(2) : sb);
+}
+
+function greatEmperors() {
+  return (EARLY.emperors || []).filter(function (e) { return e.kind !== 'later'; });
+}
+
+function emperorRow(e) {
+  return '<a class="arow hy" href="#/early/emperor/' + encodeURIComponent(e.id) + '">' +
+    '<span class="no range">' + yrSpan(e.from, e.to) + '</span>' +
+    '<span class="tx"><b>' + esc(e.n) + '</b><i>' + esc(shorten(e.w, 150)) + '</i></span>' +
+    '<span class="tag">' + (e.kind === 'sur' ? '<span class="chip">Sur dynasty</span>' : '') +
+    '</span></a>';
+}
+
+function earlyHome() {
+  var topics = EARLY.topics || [];
+  var total = topics.reduce(function (a, t) { return a + earlyRows(t); }, 0);
+  var h = earlyCrumb([]) +
+    pageH1('Before the Company',
+      'Jainism and its councils from ancient India, and the Mughal empire from Babur to ' +
+      'Bahadur Shah Zafar. Modern History on this site begins in 1600; this is what came before it.');
+
+  h += '<div class="figs">' + fig(topics.length, 'topics') +
+    fig(greatEmperors().length, 'emperors in detail') + fig(total, 'facts') +
+    fig((EARLY.confusions || []).length, 'confused pairs') + '</div>';
+
+  EARLY_ERAS.forEach(function (era) {
+    var list = topics.filter(function (t) { return t.era === era[0]; });
+    if (!list.length) return;
+    h += '<div class="block"><h3>' + esc(era[1]) + '</h3><div class="grid">' +
+      (era[0] === 'medieval'
+        ? '<a class="pcard" href="#/early/mughals"><div class="pn">1526–1857</div>' +
+          '<div class="pt">The Mughal emperors, in order</div>' +
+          '<div class="pr">Babur to Aurangzeb in full, Sher Shah, and the later Mughals</div></a>'
+        : '') +
+      list.map(function (t) {
+        return '<a class="pcard" href="#/early/topic/' + encodeURIComponent(t.id) + '">' +
+          '<div class="pn">' + esc(t.n) + '</div><div class="pt">' + esc(t.w) + '</div>' +
+          '<div class="pr">' + t.blocks.length + ' tables · ' + earlyRows(t) + ' facts · ' +
+          (t.notes || []).length + ' SSC notes</div></a>';
+      }).join('') + '</div></div>';
+  });
+
+  h += '<div class="block"><h3>The traps</h3><div class="grid">' +
+    '<a class="pcard" href="#/early/confusions"><div class="pn">' +
+    (EARLY.confusions || []).length + '</div><div class="pt">Confused pairs</div>' +
+    '<div class="pr">The two councils at Pataliputra, the three Panipats, four tombs and their builders.</div></a>' +
+    '</div></div>';
+
+  return earlyShell(h);
+}
+
+function earlyTopicPage(id) {
+  var t = earlyTopicById[id];
+  if (!t) return earlyShell(earlyCrumb([['Not found']]) +
+    '<div class="empty"><b>No such topic</b>Nothing on this site is filed under that name.</div>');
+
+  var list = EARLY.topics || [], i = list.indexOf(t);
+  var h = earlyCrumb([[t.n]]) + pageH1(t.n, t.w);
+  if (t.intro) h += '<p class="plain stack">' + prose(t.intro) + '</p>';
+  h += notesBlock(t.notes, 'the page in ' + (t.notes || []).length + ' lines');
+  h += t.blocks.map(factsBlock).join('');
+  if (t.era === 'medieval') {
+    h += '<div class="block"><h3>Reign by reign</h3><div class="grid">' +
+      '<a class="pcard" href="#/early/mughals"><div class="pn">The emperors</div>' +
+      '<div class="pt">Babur to Bahadur Shah Zafar</div>' +
+      '<div class="pr">Each great Mughal on a page of his own</div></a></div></div>';
+  }
+
+  var prev = list[i - 1], next = list[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/early/topic/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Previous</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/early/topic/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">Next</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+  return earlyShell(h);
+}
+
+function emperorsPage() {
+  var later = (EARLY.emperors || []).filter(function (e) { return e.kind === 'later'; });
+  var h = earlyCrumb([['The Mughal emperors']]) +
+    pageH1('The Mughal emperors',
+      'Six great Mughals from 1526 to 1707, the Sur interlude in the middle of them, and the ' +
+      'fifteen decades of decline that ended with an emperor exiled to Rangoon.');
+  h += notesBlock(EARLY.mughalNotes, 'the dynasty in ' + (EARLY.mughalNotes || []).length + ' lines');
+  h += '<div class="block"><h3>The great Mughals, and Sher Shah</h3>' +
+    greatEmperors().map(emperorRow).join('') + '</div>';
+  h += factsBlock({ h: 'After Aurangzeb',
+    note: 'The later Mughals are asked for one fact each, so each gets one line.',
+    rows: later.map(function (e) { return [e.n + ', ' + yrSpan(e.from, e.to), e.w]; }) });
+  h += '<div class="block"><h3>The Mughals by topic</h3><div class="grid">' +
+    (EARLY.topics || []).filter(function (t) { return t.era === 'medieval'; }).map(function (t) {
+      return '<a class="pcard" href="#/early/topic/' + encodeURIComponent(t.id) + '">' +
+        '<div class="pn">' + esc(t.n) + '</div><div class="pt">' + esc(t.w) + '</div></a>';
+    }).join('') + '</div></div>';
+  return earlyShell(h);
+}
+
+function emperorPage(id) {
+  var e = emperorById[id];
+  if (!e || e.kind === 'later') return earlyShell(earlyCrumb([['The Mughal emperors', '#/early/mughals'], ['Not found']]) +
+    '<div class="empty"><b>No page for that name</b>The later Mughals are listed one line each on ' +
+    '<a href="#/early/mughals">the emperors page</a>.</div>');
+
+  var all = greatEmperors(), i = all.indexOf(e);
+  var h = earlyCrumb([['The Mughal emperors', '#/early/mughals'], [e.n]]) +
+    '<div class="arthead"><div class="big">' + e.from + '<span style="font-size:.5em">' +
+    yrSpan(e.from, e.to).slice(4) + '</span></div><div class="ht">' +
+    '<h1>' + esc(e.n) + '</h1>' +
+    '<div class="chips">' + (e.kind === 'sur' ? '<span class="chip">Sur dynasty</span>'
+                                               : '<span class="chip live">Mughal emperor</span>') +
+    (e.full ? '<span class="chip amd">' + esc(e.full) + '</span>' : '') + '</div></div></div>';
+
+  h += notesBlock(e.notes, 'the reign in ' + (e.notes || []).length + ' lines');
+  h += '<div class="block"><h3>Who he was</h3><p class="plain">' + prose(e.w) + '</p></div>';
+  h += factsBlock({ h: 'Life', rows: [['Reigned', yrSpan(e.from, e.to)], ['Born', e.born],
+                                      ['Died', e.died], ['Buried', e.tomb]].filter(function (r) { return r[1]; }) });
+  h += '<div class="block"><h3>What happened in his reign</h3><ul class="trail">' +
+    (e.key || []).map(function (k, j) {
+      return '<li><span class="an">' + (j + 1) + '</span><span class="ad">' + prose(k, 2) + '</span></li>';
+    }).join('') + '</ul></div>';
+
+  var prev = all[i - 1], next = all[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/early/emperor/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Before</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/early/emperor/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">After</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+  return earlyShell(h);
+}
+
+function earlyConfusions() {
+  var h = earlyCrumb([['Confused pairs']]) +
+    pageH1('The pairs that get mixed up',
+      'Two councils in one city, three battles on one field, and four tombs not one of which ' +
+      'was built by the person inside it.');
+  h += (EARLY.confusions || []).map(cmpBlock).join('');
+  return earlyShell(h);
+}
+
+function earlyRoute(seg) {
+  switch (seg[0] || '') {
+    case '':           return render(earlyHome());
+    case 'topic':      return render(earlyTopicPage(seg[1]));
+    case 'mughals':    return render(emperorsPage());
+    case 'emperor':    return render(emperorPage(seg[1]));
+    case 'confusions': return render(earlyConfusions());
+    default:           return notFound('That address does not exist in Ancient and Medieval History.');
+  }
+}
+
+SUBJECTS.push({
+  id: 'early',
+  name: 'Ancient and Medieval History',
+  short: 'Ancient & Medieval',
+  blurb: 'Jainism and the Jain councils, and the Mughal empire from Babur to Bahadur Shah Zafar: the battles, the administration, the buildings and the books.',
+  tabs: [
+    { href: '#/early',            label: 'Topics',          match: ['', 'topic'] },
+    { href: '#/early/mughals',    label: 'Mughal emperors', match: ['mughals', 'emperor'] },
+    { href: '#/early/confusions', label: 'Confused pairs',  match: ['confusions'] }
+  ],
+  stats: function () {
+    var total = (EARLY.topics || []).reduce(function (a, t) { return a + earlyRows(t); }, 0);
+    return [(EARLY.topics || []).length + ' topics', greatEmperors().length + ' emperors',
+            total + ' facts'];
+  },
+  topics: function () {
+    var out = (EARLY.topics || []).map(function (t) {
+      return { t: t.n, href: '#/early/topic/' + encodeURIComponent(t.id), w: t.w,
+               k: t.blocks.map(function (b) { return b.h; }).join(' ') +
+                  (t.era === 'medieval' ? ' mughal mughals medieval' : ' ancient'),
+               n: earlyRows(t) + ' facts' };
+    });
+    out.splice(1, 0, { t: 'The Mughal emperors, 1526 to 1857', href: '#/early/mughals',
+      n: greatEmperors().length + ' in detail',
+      w: 'Babur, Humayun, Sher Shah, Akbar, Jahangir, Shah Jahan and Aurangzeb, each on a page, and the later Mughals in a line each.',
+      k: 'mughal mughals babur humayun akbar jahangir shah jahan aurangzeb sher shah suri bahadur shah zafar medieval' });
+    out.push({ t: 'Ancient and Medieval - confused pairs', href: '#/early/confusions',
+               n: (EARLY.confusions || []).length + ' pairs',
+               w: 'The two councils at Pataliputra, the three Panipats, and four tombs with four builders.' });
+    return out;
+  },
+  route: earlyRoute
+});
+
+/* =========================================================================
    SHARED RENDERERS
 
    Three of the four subjects are written rather than extracted, and they
@@ -2190,26 +2447,52 @@ function pageH1(t, sub) {
          esc(t) + '</h1>' + (sub ? '<p class="sub">' + esc(sub) + '</p>' : '');
 }
 
+/* ------------------------------------------------------------ highlights
+
+   The SSC notes. Everywhere else on the site emphasis is a change of
+   typeface, applied by rule. A highlighted note is different: it is a
+   one-line answer, and inside it ONE phrase is the thing the question
+   asks for. A rule cannot know which phrase that is, so the data says so,
+   by wrapping it in ==double equals==. The marker never appears in the
+   text the reader sees and never reaches the search results.
+
+   The highlight is a low band of yellow behind the words rather than a
+   solid block, so it reads as marked on the dark ground without glaring. */
+function hiMark(html) {
+  return String(html).replace(/==([\s\S]+?)==/g, '<mark class="hi">$1</mark>');
+}
+function unmark(s) { return String(s == null ? '' : s).replace(/==/g, ''); }
+
+/* A box of highlighted one-liners: the page reduced to what to write down. */
+function notesBlock(notes, title) {
+  if (!notes || !notes.length) return '';
+  return '<aside class="ssc"><div class="ssch"><span class="sscl">SSC notes</span>' +
+    (title ? '<span class="ssct">' + esc(title) + '</span>' : '') + '</div><ol>' +
+    notes.map(function (n) { return '<li>' + hiMark(prose(n, 2)) + '</li>'; }).join('') +
+    '</ol></aside>';
+}
+
 /* A confused pair: a heading, two or more labelled rows, and the note that
    says which one the question is actually asking about. */
 function cmpBlock(c) {
   return '<div class="cmp"><div class="cmph">' + esc(c.k) + '</div>' +
     c.rows.map(function (r) {
       return '<div class="cmpr"><div class="cmpk">' + esc(r[0]) + '</div>' +
-             '<div class="cmpv">' + prose(r[1], 2) + '</div></div>';
+             '<div class="cmpv">' + hiMark(prose(r[1], 2)) + '</div></div>';
     }).join('') +
-    (c.note ? '<div class="cmpn">' + prose(c.note, 2) + '</div>' : '') + '</div>';
+    (c.note ? '<div class="cmpn">' + hiMark(prose(c.note, 2)) + '</div>' : '') + '</div>';
 }
 
 /* A table of facts. Modern History calls the group `g` and its rows `items`;
    Economy and Static GK call them `h` and `rows`. Both are accepted rather
-   than rewriting two data files to agree on a letter. */
+   than rewriting two data files to agree on a letter. A row may carry a
+   ==highlight== on the part of it that is the answer. */
 function factsBlock(g) {
   var items = g.items || g.rows || [];
   return '<div class="block"><h3>' + esc(g.g || g.h || '') + '</h3>' +
-    (g.note ? '<p class="foot before">' + esc(g.note) + '</p>' : '') +
+    (g.note ? '<p class="foot before">' + hiMark(esc(g.note)) + '</p>' : '') +
     '<dl class="facts">' + items.map(function (it) {
-      return '<dt>' + esc(it[0]) + '</dt><dd>' + esc(it[1]) + '</dd>';
+      return '<dt>' + hiMark(esc(it[0])) + '</dt><dd>' + hiMark(esc(it[1])) + '</dd>';
     }).join('') + '</dl></div>';
 }
 
@@ -2273,7 +2556,7 @@ function econPlanRow(p) {
   var met = p.kind === 'plan' && p.act !== null && p.act !== undefined && p.act >= p.tgt;
   return '<a class="arow hy" href="#/economy/plan/' + encodeURIComponent(p.id) + '">' +
     '<span class="no range' + (p.kind === 'gap' ? ' dimyear' : '') + '">' +
-      p.from + '–' + String(p.to).slice(2) + '</span>' +
+      yrSpan(p.from, p.to) + '</span>' +
     '<span class="tx"><b>' + esc(p.n) + '</b>' +
       '<i>' + esc(p.theme || '') + (econRate(p) ? ' · ' + econRate(p) : '') + '</i></span>' +
     '<span class="tag">' + (p.kind === 'gap' ? '<span class="chip">no plan</span>' :
@@ -2291,8 +2574,26 @@ function econHome() {
     fig((ECON.topics || []).length, 'standing topics') +
     fig((ECON.confusions || []).length, 'confused pairs') + '</div>';
 
+  h += notesBlock(ECON.planNotes, 'all fifteen in ' + (ECON.planNotes || []).length + ' lines');
+
   h += '<div class="block"><h3>The plans, in order</h3>' +
     (ECON.plans || []).map(econPlanRow).join('') + '</div>';
+
+  /* Built from the plans themselves rather than stored, so the summary can
+     never disagree with the pages it summarises. */
+  h += factsBlock({ h: 'At a glance', note: 'One line each: years, model where there was one, focus, and growth.',
+    rows: (ECON.plans || []).map(function (p) {
+      var head = (p.kind === 'plan' ? ordinal(p.no) + ' Plan' : p.n) + ', ' + yrSpan(p.from, p.to);
+      var bits = [];
+      if (p.model) bits.push(p.model);
+      bits.push(p.theme);
+      if (p.kind === 'plan') bits.push(econRate(p));
+      return [head, bits.join(' \u00b7 ')];
+    }) });
+
+  if (ECON.planMatch && ECON.planMatch.length) h += factsBlock({ h: 'Which plan was it?',
+    note: 'The question is usually put this way round: a scheme, an Act or an event, and the plan it fell in.',
+    rows: ECON.planMatch || [] });
 
   h += '<div class="block"><h3>Start here</h3><div class="grid">' +
     '<a class="pcard" href="#/economy/reforms"><div class="pn">1991</div>' +
@@ -2318,14 +2619,17 @@ function econPlanPage(id) {
   var i = all.indexOf(p);
 
   var h = econCrumb(p.n) +
-    '<div class="arthead"><div class="big">' + p.from + '<span style="font-size:.5em">–' +
-    String(p.to).slice(2) + '</span></div><div class="ht">' +
+    '<div class="arthead"><div class="big">' + p.from + '<span style="font-size:.5em">' +
+    yrSpan(p.from, p.to).slice(4) + '</span></div><div class="ht">' +
     '<h1>' + esc(p.n) + '</h1>' +
     '<div class="chips">' +
       (p.kind === 'gap' ? '<span class="chip">not a Five Year Plan</span>' :
         '<span class="chip live">Plan ' + p.no + '</span>') +
       (p.model ? '<span class="chip amd">' + esc(p.model) + '</span>' : '') +
     '</div></div></div>';
+
+  h += notesBlock(p.ssc, p.kind === 'plan' ? 'the plan in ' + (p.ssc || []).length + ' lines'
+                                            : 'the gap in ' + (p.ssc || []).length + ' lines');
 
   h += '<div class="block"><h3>What it was for</h3>' +
     '<p class="plain">' + prose(p.theme) + '</p>' +
@@ -2366,6 +2670,8 @@ function econPlanPage(id) {
 function econReform() {
   var r = ECON.reform || {};
   var h = econCrumb('1991') + pageH1(r.title || '1991', r.lede || '');
+  h += notesBlock(r.notes, '1991 in ' + (r.notes || []).length + ' lines');
+  if (r.dates) h += factsBlock({ h: 'The dates, in order', rows: r.dates });
 
   h += '<div class="block"><h3>' + esc((r.crisis || {}).h || 'How the crisis built') + '</h3>' +
     '<p class="plain">' + prose((r.crisis || {}).w || '') + '</p>' +
@@ -2381,6 +2687,7 @@ function econReform() {
       }).join('') + '</dl></div>';
   });
 
+  if (r.terms) h += factsBlock({ h: 'The words the questions use', rows: r.terms });
   h += factsBlock({ h: 'The committees behind the reforms', rows: r.committees || [] });
   h += factsBlock({ h: 'What followed, and what did not',
                     note: 'The criticisms are here alongside the achievements, because both are asked.',
@@ -2460,9 +2767,11 @@ SUBJECTS.push({
     var out = [
       { t: 'The Five Year Plans', href: '#/economy',
         n: (ECON.plans || []).length + ' plans and gaps',
-        w: 'Every plan from 1951 to 2017 — its model, its target, what it achieved and what happened in it.' },
+        w: 'Every plan from 1951 to 2017 — its model, its target, what it achieved and what happened in it — with SSC notes, a one-line-each table, and which scheme fell in which plan.',
+        k: 'harrod domar mahalanobis gadgil formula garibi hatao rolling plan plan holiday annual plans nabard irdp which plan at a glance ssc notes' },
       { t: 'The 1991 reforms', href: '#/economy/reforms', n: 'liberalisation, privatisation, globalisation',
-        w: 'The balance of payments crisis, the gold flown to London, and the three kinds of change that followed.' }
+        w: 'The balance of payments crisis, the gold flown to London, the dates in order, and the three kinds of change that followed.',
+        k: 'lpg new economic policy nep narasimha rao manmohan singh gold devaluation stabilisation structural adjustment fera fema sebi narasimham chelliah' }
     ];
     (ECON.topics || []).forEach(function (t) {
       out.push({ t: t.n, href: '#/economy/topic/' + encodeURIComponent(t.id), w: t.w,
@@ -2479,12 +2788,23 @@ SUBJECTS.push({
 
 /* =========================================================================
    SUBJECT: STATIC GENERAL KNOWLEDGE
-   Eighteen packs of the material that does not change from year to year.
+   Twenty-two packs of the material that does not change from year to year.
    ========================================================================= */
 
 var GKD = window.GK || {};
 var gkPackById = {};
 (GKD.packs || []).forEach(function (p) { gkPackById[p.id] = p; });
+
+var GK_SEE_ALSO = {
+  sports: ['cups',   'Every cup and trophy, sport by sport, is in'],
+  cups:   ['sports', 'Players on a side, the terms of each game and the Olympic milestones are in'],
+  space:  ['isro',   'Every ISRO mission in order, the centres, the rockets and what is coming next are in'],
+  isro:   ['space',  'The nuclear programme, the missiles and the armed forces are in'],
+  hq:     ['orgs',   'The UN\'s organs, every agency with its year, the groupings and who heads what are in'],
+  orgs:   ['hq',     'The one-line headquarters list, with the Indian institutions, is in'],
+  'paris-2024': ['sports', 'Every Indian Olympic milestone before Paris is in'],
+  books:  ['awards', 'The other awards and honours, civilian to sporting, are in']
+};
 
 function gkRows(p) {
   return p.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
@@ -2496,8 +2816,8 @@ function gkHome() {
   var total = (GKD.packs || []).reduce(function (a, p) { return a + gkRows(p); }, 0);
   var h = '<div class="crumb">Static GK</div>' +
     pageH1('The facts that do not move',
-      'Eighteen packs of static general knowledge — chosen because the answer is the same this year as ' +
-      'last. Current affairs are deliberately not here: they go stale, and mixing them in is how a ' +
+      (GKD.packs || []).length + ' packs of static general knowledge — chosen because the answer is the same this year as ' +
+      'last. Current affairs are kept apart, in the dated study sets: they go stale, and mixing them in is how a ' +
       'study file quietly stops being true.');
 
   h += '<div class="figs">' + fig((GKD.packs || []).length, 'packs') +
@@ -2522,6 +2842,14 @@ function gkPackPage(id) {
   var h = '<div class="crumb"><a href="#/gk">Static GK</a> → ' + esc(p.n) + '</div>' +
     pageH1(p.n, p.w);
   if (p.intro) h += '<p class="plain stack">' + prose(p.intro) + '</p>';
+  h += notesBlock(p.notes, 'the pack in ' + (p.notes || []).length + ' lines');
+  /* The short pack and the full one on the same ground point at each
+     other, so a reader on the revision version knows the full one exists. */
+  var see = GK_SEE_ALSO[p.id];
+  if (see && gkPackById[see[0]]) {
+    h += '<p class="why stack">' + esc(see[1]) + ' <a href="#/gk/pack/' + see[0] + '">' +
+      esc(gkPackById[see[0]].n) + '</a>.</p>';
+  }
   h += p.blocks.map(factsBlock).join('');
 
   var prev = packs[i - 1], next = packs[i + 1];
@@ -2555,7 +2883,7 @@ SUBJECTS.push({
   id: 'gk',
   name: 'Static General Knowledge',
   short: 'Static GK',
-  blurb: 'National symbols, dances, awards, sports, rivers and dams, parks, heritage sites, days, books, headquarters, science and the states.',
+  blurb: 'National symbols, dances, awards, sports and every cup by sport, Paris 2024, rivers and dams, parks, heritage sites, days, books and authors, international organisations, science, ISRO\'s missions and the states.',
   tabs: [
     { href: '#/gk',             label: 'All packs',      match: ['', 'pack'] },
     { href: '#/gk/confusions',  label: 'Confused pairs', match: ['confusions'] }
@@ -2690,6 +3018,1129 @@ SUBJECTS.push({
   route: bioRoute
 });
 
+/* =========================================================================
+   SUBJECT: ADVANCED MATHS
+
+   The sixth subject, and the first one that is not a thing to read. The
+   other five answer "what is the rule"; this one answers "do I actually
+   know the rule", which is a different question and needs a different
+   page. So every chapter has three views:
+
+     the sheet     every formula with its prompt and its note, open. This
+                   is the reference view - what you read.
+     the recall    the prompt alone, one at a time, with the formula hidden
+                   until you ask for it. You mark whether you had it. This
+                   is the only view that can tell you something you did not
+                   already know.
+     the practice  four options, one right, a worked line for the answer and
+                   a named error for each wrong one. SSC asks the formulas
+                   through questions, so the last step is questions.
+
+   WHAT IS REMEMBERED AND WHERE. The marks you give yourself in the recall
+   drill, and the questions you get wrong in practice, are kept in
+   localStorage under the keys below - on the device, never sent anywhere,
+   and the site works identically with storage blocked (every read and write
+   is wrapped). The Review page is built entirely from those two stores: it
+   is the list of what you have told the site you do not know yet.
+
+   TWO THINGS DELIBERATELY NOT DONE. There is no timer, because a formula
+   you can only produce against a clock is not yet learnt and a clock at
+   this stage teaches guessing. And nothing here is scored across chapters
+   into a single number - a percentage hides which chapter is weak, which is
+   the only thing the page is for.
+   ========================================================================= */
+
+var MATH  = window.MATHS || {};
+var MATHQ = (window.MATHS_MCQ || {}).banks || {};
+var mathChap = {};
+(MATH.chapters || []).forEach(function (c) { mathChap[c.id] = c; });
+
+var MATH_BANDS = [
+  ['advanced', 'Advanced maths',
+   'The eight chapters that make up the advance block of Tier-1 and almost all of Tier-2 Section-1.'],
+  ['arith', 'Profit and mixture',
+   'Arithmetic, not advance maths - kept in its own band so that revising one does not silently mean revising the other.']
+];
+
+function mathRows(c) {
+  return c.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
+}
+function mathQcount(id) { return (MATHQ[id] || []).length; }
+function mathBandChaps(band) {
+  return (MATH.chapters || []).filter(function (c) { return c.band === band; });
+}
+function mathAllRows() {
+  return (MATH.chapters || []).reduce(function (a, c) { return a + mathRows(c); }, 0);
+}
+function mathAllQs() {
+  return Object.keys(MATHQ).reduce(function (a, k) { return a + MATHQ[k].length; }, 0);
+}
+function mathAllFigs() {
+  return (MATH.chapters || []).reduce(function (a, c) { return a + (c.figs || []).length; }, 0);
+}
+
+/* ------------------------------------------------------------- the stores
+
+   Two keys, both optional. A browser in private mode, or one with site data
+   blocked, throws on the first localStorage access - so every read returns a
+   default and every write fails silently. Nothing on these pages depends on
+   a store having worked. */
+
+var MK_RECALL = 'am.maths.recall.v1';   /* { "<chapter>|<block>|<row>": "know" | "again" } */
+var MK_WRONG  = 'am.maths.wrong.v1';    /* { "<chapter>|<index>": 1 } */
+
+function mathGet(key) {
+  try {
+    var raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) || {}) : {};
+  } catch (e) { return {}; }
+}
+function mathPut(key, obj) {
+  try { localStorage.setItem(key, JSON.stringify(obj)); } catch (e) { /* fine */ }
+}
+function mathMark(key, id, value) {
+  var all = mathGet(key);
+  if (value === null) delete all[id]; else all[id] = value;
+  mathPut(key, all);
+}
+
+/* How a chapter is doing, read off the recall store. */
+function mathProgress(c) {
+  var marks = mathGet(MK_RECALL), know = 0, again = 0;
+  c.blocks.forEach(function (b, bi) {
+    b.rows.forEach(function (r, ri) {
+      var v = marks[c.id + '|' + bi + '|' + ri];
+      if (v === 'know') know++; else if (v === 'again') again++;
+    });
+  });
+  return { know: know, again: again, total: mathRows(c) };
+}
+
+function mathShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function mathCrumb(c, here) {
+  return '<div class="crumb"><a href="#/maths">Advanced Maths</a>' +
+    (c ? ' → <a href="#/maths/chapter/' + encodeURIComponent(c.id) + '">' + esc(c.short || c.n) + '</a>' : '') +
+    (here ? ' → ' + esc(here) : '') + '</div>';
+}
+
+/* The three-way switch that sits at the top of every chapter page. It is
+   not subTabs(): these are three different ACTIVITIES on the same chapter,
+   not three views of one list, and they deserve a label each. */
+function mathModes(id, active) {
+  var modes = [['chapter', 'The sheet', 'every formula, open'],
+               ['recall',  'Recall drill', 'prompt first, formula hidden'],
+               ['practice','Practice', mathQcount(id) + ' questions']];
+  return '<div class="mmodes">' + modes.map(function (m) {
+    var on = m[0] === active;
+    return '<a class="mmode' + (on ? ' on' : '') + '" href="#/maths/' + m[0] + '/' +
+      encodeURIComponent(id) + '"' + (on ? ' aria-current="page"' : '') + '>' +
+      '<b>' + esc(m[1]) + '</b><i>' + esc(m[2]) + '</i></a>';
+  }).join('') + '</div>';
+}
+
+/* A figure. The SVG is written in the data file and goes in as-is - it is
+   ours, not user input, and escaping it would print the markup. */
+function mathFig(f) {
+  return '<figure class="mfig" id="fig-' + esc(f.id) + '">' + f.svg +
+    '<figcaption>' + esc(f.cap) + '</figcaption></figure>';
+}
+
+function mathTag(t) {
+  if (t === 'trick') return '<span class="chip mtrick">shortcut</span>';
+  if (t === 'trap')  return '<span class="chip mtrap">commonly wrong</span>';
+  return '';
+}
+
+/* ------------------------------------------------------------------- home */
+
+function mathHome() {
+  var h = '<div class="crumb">Advanced Maths</div>' +
+    pageH1('The formulas, and whether you actually have them',
+      'Eleven chapters. Each one in three views: the sheet to read, the recall drill that hides the ' +
+      'formula until you have produced it, and the practice questions that ask it the way SSC asks it.');
+
+  h += '<div class="figs">' + fig((MATH.chapters || []).length, 'chapters') +
+    fig(mathAllRows(), 'formulas') + fig(mathAllQs(), 'questions') +
+    fig(mathAllFigs(), 'diagrams') + '</div>';
+
+  var wrong = Object.keys(mathGet(MK_WRONG)).length;
+  var marks = mathGet(MK_RECALL);
+  var again = Object.keys(marks).filter(function (k) { return marks[k] === 'again'; }).length;
+  if (wrong || again) {
+    h += '<div class="mresume"><b>Where you left off</b>' +
+      '<span>' + again + ' formula' + (again === 1 ? '' : 's') + ' flagged as needing work, and ' +
+      wrong + ' question' + (wrong === 1 ? '' : 's') + ' got wrong.</span>' +
+      '<a class="pill big" href="#/maths/review">Open the review list →</a></div>';
+  }
+
+  MATH_BANDS.forEach(function (b) {
+    var chaps = mathBandChaps(b[0]);
+    if (!chaps.length) return;
+    h += '<div class="block"><h3>' + esc(b[1]) + '</h3>' +
+      '<p class="foot before">' + esc(b[2]) + '</p><div class="grid">' +
+      chaps.map(function (c) {
+        var p = mathProgress(c);
+        var bar = p.total ? Math.round(100 * p.know / p.total) : 0;
+        return '<a class="pcard mcard" href="#/maths/chapter/' + encodeURIComponent(c.id) + '">' +
+          '<div class="pn">' + esc(c.n) + '</div>' +
+          '<div class="pt">' + esc(c.w) + '</div>' +
+          '<div class="pr">' + mathRows(c) + ' formulas · ' + mathQcount(c.id) + ' questions' +
+          ((c.figs || []).length ? ' · ' + c.figs.length + ' diagrams' : '') + '</div>' +
+          (p.know || p.again
+            ? '<div class="mbar" role="img" aria-label="' + bar + ' per cent marked known">' +
+              '<span style="width:' + bar + '%"></span></div>' +
+              '<div class="pr">' + p.know + ' known · ' + p.again + ' to work on</div>'
+            : '') +
+          '</a>';
+      }).join('') + '</div></div>';
+  });
+
+  h += '<p class="foot">Nothing here is timed and nothing is scored into one number. ' +
+    'A single percentage would hide which chapter is weak, and which chapter is weak is the ' +
+    'only thing these pages are for. The marks you give yourself stay on this device.</p>';
+
+  return mathShell(h);
+}
+
+/* --------------------------------------------------------- the sheet view */
+
+function mathChapterPage(id) {
+  var c = mathChap[id];
+  if (!c) return notFound('There is no such chapter in Advanced Maths.');
+  var chaps = MATH.chapters || [], i = chaps.indexOf(c);
+  var p = mathProgress(c);
+
+  var h = mathCrumb(null, c.n) + pageH1(c.n, c.w) + mathModes(id, 'chapter');
+
+  if (c.intro) h += '<p class="plain stack">' + esc(c.intro) + '</p>';
+
+  h += '<div class="figs">' + fig(mathRows(c), 'formulas') +
+    fig(c.blocks.length, 'groups') + fig(mathQcount(id), 'questions') +
+    (p.know ? fig(p.know, 'marked known') : '') + '</div>';
+
+  /* A jump list, because a sheet of seventy formulas is a page you scroll
+     past rather than a page you use. */
+  if (c.blocks.length > 2) {
+    h += '<nav class="mjump" aria-label="Groups in this chapter"><span class="lbl">In this chapter</span>' +
+      c.blocks.map(function (b, bi) {
+        return '<button type="button" data-jump="mb-' + bi + '">' + esc(b.h) + '</button>';
+      }).join('') + '</nav>';
+  }
+
+  if ((c.figs || []).length) {
+    h += '<div class="block"><h3>The diagrams</h3>' +
+      '<p class="foot before">Each theorem in this chapter is drawn once, in the position the ' +
+      'paper draws it. A theorem you can recite and cannot recognise in a figure is not yet usable.</p>' +
+      '<div class="mfigs">' + c.figs.map(mathFig).join('') + '</div></div>';
+  }
+
+  h += c.blocks.map(function (b, bi) {
+    return '<div class="block" id="mb-' + bi + '"><h3>' + esc(b.h) + '</h3>' +
+      (b.note ? '<p class="foot before">' + esc(b.note) + '</p>' : '') +
+      '<div class="msheet">' + b.rows.map(function (r) {
+        return '<div class="mrow">' +
+          '<div class="mp">' + esc(r.p) + (r.t ? ' ' + mathTag(r.t) : '') + '</div>' +
+          '<div class="mf">' + esc(r.f) + '</div>' +
+          '<div class="md">' + esc(r.d) + '</div></div>';
+      }).join('') + '</div></div>';
+  }).join('');
+
+  h += '<div class="stack"><a class="pill big" href="#/maths/recall/' + encodeURIComponent(id) +
+    '">Now hide them and see what you have →</a></div>';
+
+  var prev = chaps[i - 1], next = chaps[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/maths/chapter/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Previous</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/maths/chapter/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">Next</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+
+  render(mathShell(h));
+  mathWireJump();
+}
+
+/* The jump list scrolls rather than navigating, because a real #hash would
+   fight the router - every address on this site begins #/. */
+function mathWireJump() {
+  var nav = main.querySelector('.mjump');
+  if (!nav) return;
+  nav.addEventListener('click', function (e) {
+    var a = e.target.closest('button[data-jump]');
+    if (!a) return;
+    var el = document.getElementById(a.getAttribute('data-jump'));
+    if (el) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  });
+}
+
+/* -------------------------------------------------------- the recall drill
+
+   One prompt on the screen, the formula hidden, and two buttons once it is
+   shown. Deliberately one at a time: a page of cards with the answers a
+   scroll away is read, not recalled, and reading is what the sheet is for.
+
+   The order is the chapter's own by default. "Shuffle" matters more here
+   than it looks - a formula you only know in position is not known, and the
+   x + 1/x block in particular teaches itself in sequence if you let it. */
+
+var mathDrill = null;
+
+function mathRecallPage(id) {
+  var c = mathChap[id];
+  if (!c) return notFound('There is no such chapter in Advanced Maths.');
+
+  var flat = [];
+  c.blocks.forEach(function (b, bi) {
+    b.rows.forEach(function (r, ri) {
+      flat.push({ r: r, h: b.h, key: c.id + '|' + bi + '|' + ri });
+    });
+  });
+
+  mathDrill = { id: id, all: flat, list: flat.slice(), i: 0, shuffled: false, onlyFlagged: false };
+
+  render(mathShell(mathCrumb(null, c.n) +
+    pageH1(c.n + ' — recall drill',
+      'The prompt first. Produce the formula in your head, out loud or on paper, and only then show it. ' +
+      'Marking honestly is the entire value of this page.') +
+    mathModes(id, 'recall') +
+    '<div id="mdrill"></div>'));
+  mathDrawDrill();
+}
+
+function mathDrawDrill() {
+  var box = document.getElementById('mdrill');
+  if (!box || !mathDrill) return;
+  var d = mathDrill, marks = mathGet(MK_RECALL);
+
+  var know = 0, again = 0;
+  d.all.forEach(function (x) {
+    if (marks[x.key] === 'know') know++; else if (marks[x.key] === 'again') again++;
+  });
+
+  var head = '<div class="mdhead">' +
+    '<div class="mdstat"><b>' + know + '</b> known <b>' + again + '</b> to work on <b>' +
+      (d.all.length - know - again) + '</b> untouched</div>' +
+    '<div class="listtabs">' +
+      '<button type="button" data-act="shuffle" aria-pressed="' + d.shuffled + '">Shuffle</button>' +
+      '<button type="button" data-act="flagged" aria-pressed="' + d.onlyFlagged + '">' +
+        'Only what I flagged (' + again + ')</button>' +
+      '<button type="button" data-act="reset">Clear this chapter’s marks</button>' +
+    '</div></div>';
+
+  if (!d.list.length) {
+    box.innerHTML = head + '<div class="empty"><b>Nothing flagged in this chapter</b>' +
+      'Turn the filter off to run the whole chapter again.</div>';
+    mathWireDrill();
+    return;
+  }
+
+  if (d.i >= d.list.length) {
+    box.innerHTML = head +
+      '<div class="mdone"><b>End of the run</b>' +
+      '<span>' + d.list.length + ' prompt' + (d.list.length === 1 ? '' : 's') + ' seen. ' +
+      (again ? again + ' still flagged — run them again, or go and see them asked as questions.'
+             : 'Nothing left flagged in this chapter.') + '</span>' +
+      '<div class="stack"><button class="pill big" type="button" data-act="restart">Run it again</button> ' +
+      '<a class="pill big" href="#/maths/practice/' + encodeURIComponent(d.id) + '">Practice questions →</a></div></div>';
+    mathWireDrill();
+    return;
+  }
+
+  var it = d.list[d.i], mark = marks[it.key] || '';
+  var pct = Math.round(100 * d.i / d.list.length);
+
+  box.innerHTML = head +
+    '<div class="mprog"><span style="width:' + pct + '%"></span></div>' +
+    '<div class="mcount">' + (d.i + 1) + ' of ' + d.list.length + ' · ' + esc(it.h) + '</div>' +
+    '<div class="mdcard">' +
+      '<div class="mdp">' + esc(it.r.p) + (it.r.t ? ' ' + mathTag(it.r.t) : '') + '</div>' +
+      (mark ? '<div class="mdwas">You marked this “' +
+        (mark === 'know' ? 'known' : 'needs work') + '” last time.</div>' : '') +
+      '<div id="mdans" hidden>' +
+        '<div class="mdf">' + esc(it.r.f) + '</div>' +
+        '<div class="mdd">' + esc(it.r.d) + '</div>' +
+      '</div>' +
+      '<div class="mdacts" id="mdacts">' +
+        '<button class="pill big" type="button" data-act="show">Show the formula</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="mdnav">' +
+      '<button type="button" data-act="back"' + (d.i ? '' : ' disabled') + '>Back</button>' +
+      '<button type="button" data-act="skip">Skip</button>' +
+    '</div>';
+
+  mathWireDrill();
+}
+
+function mathWireDrill() {
+  var box = document.getElementById('mdrill');
+  if (!box || box.getAttribute('data-wired')) return;
+  box.setAttribute('data-wired', '1');
+  box.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-act]');
+    if (!btn) return;
+    var act = btn.getAttribute('data-act'), d = mathDrill;
+    if (!d) return;
+
+    if (act === 'show') {
+      var ans = document.getElementById('mdans');
+      if (ans) ans.hidden = false;
+      var acts = document.getElementById('mdacts');
+      if (acts) acts.innerHTML =
+        '<button class="pill big mgood" type="button" data-act="know">I had it</button>' +
+        '<button class="pill big mbad" type="button" data-act="again">I did not — flag it</button>';
+      return;
+    }
+    if (act === 'know' || act === 'again') {
+      mathMark(MK_RECALL, d.list[d.i].key, act);
+      d.i++;
+      mathDrawDrill();
+      return;
+    }
+    if (act === 'skip')    { d.i++; mathDrawDrill(); return; }
+    if (act === 'back')    { if (d.i) d.i--; mathDrawDrill(); return; }
+    if (act === 'restart') { d.i = 0; mathDrawDrill(); return; }
+    if (act === 'shuffle') {
+      d.shuffled = !d.shuffled;
+      mathRebuildDrill();
+      return;
+    }
+    if (act === 'flagged') {
+      d.onlyFlagged = !d.onlyFlagged;
+      mathRebuildDrill();
+      return;
+    }
+    if (act === 'reset') {
+      var marks = mathGet(MK_RECALL);
+      d.all.forEach(function (x) { delete marks[x.key]; });
+      mathPut(MK_RECALL, marks);
+      d.onlyFlagged = false;
+      mathRebuildDrill();
+      return;
+    }
+  });
+}
+
+function mathRebuildDrill() {
+  var d = mathDrill;
+  if (!d) return;
+  var marks = mathGet(MK_RECALL);
+  d.list = d.all.filter(function (x) {
+    return !d.onlyFlagged || marks[x.key] === 'again';
+  });
+  if (d.shuffled) {
+    for (var j = d.list.length - 1; j > 0; j--) {
+      var k = Math.floor(Math.random() * (j + 1)), t = d.list[j];
+      d.list[j] = d.list[k]; d.list[k] = t;
+    }
+  }
+  d.i = 0;
+  mathDrawDrill();
+}
+
+/* ----------------------------------------------------------- the practice
+
+   One question, four options, and the answer the moment you choose - not at
+   the end. A score at the end of twenty questions tells you a number; the
+   solution the moment you are wrong tells you which step you missed, and
+   that is the only part worth having.
+
+   Every wrong answer is written to the store, so the Review page can show
+   the list later. A question answered right a second time clears it. */
+
+var mathQuiz = null;
+
+function mathPracticePage(id) {
+  var c = mathChap[id];
+  if (!c) return notFound('There is no such chapter in Advanced Maths.');
+  var bank = MATHQ[id] || [];
+
+  if (!bank.length) {
+    return render(mathShell(mathCrumb(null, c.n) + pageH1(c.n + ' — practice', '') +
+      mathModes(id, 'practice') +
+      '<div class="empty"><b>No questions in this chapter yet</b>' +
+      'The formula sheet and the recall drill are both there.</div>'));
+  }
+
+  var order = [];
+  for (var j = 0; j < bank.length; j++) order.push(j);
+  for (var m = order.length - 1; m > 0; m--) {
+    var k = Math.floor(Math.random() * (m + 1)), t = order[m];
+    order[m] = order[k]; order[k] = t;
+  }
+
+  mathQuiz = { id: id, order: order, i: 0, right: 0, wrong: [], answered: false };
+
+  render(mathShell(mathCrumb(null, c.n) +
+    pageH1(c.n + ' — practice',
+      bank.length + ' questions in the SSC shape, in a different order each time. Every wrong option is ' +
+      'a real error rather than filler, and the solution names which one you made.') +
+    mathModes(id, 'practice') +
+    '<div id="mquiz"></div>'));
+  mathDrawQuiz();
+}
+
+function mathDrawQuiz() {
+  var box = document.getElementById('mquiz');
+  if (!box || !mathQuiz) return;
+  var q = mathQuiz, bank = MATHQ[q.id] || [];
+
+  if (q.i >= q.order.length) {
+    var pct = Math.round(100 * q.right / q.order.length);
+    box.innerHTML = '<div class="mdone"><b>' + q.right + ' right out of ' + q.order.length +
+      '</b><span>' + pct + ' per cent. ' +
+      (q.wrong.length
+        ? 'The ' + q.wrong.length + ' you missed are below, and they are kept on the review page too.'
+        : 'Nothing missed. Shuffle the recall drill and try the chapter cold.') + '</span>' +
+      '<div class="stack"><button class="pill big" type="button" data-act="again">Run it again</button> ' +
+      '<a class="pill big" href="#/maths/recall/' + encodeURIComponent(q.id) + '">Back to the drill</a> ' +
+      '<a class="pill big" href="#/maths/review">The whole review list →</a></div></div>' +
+      (q.wrong.length ? '<div class="block"><h3>What you missed</h3>' +
+        q.wrong.map(function (qi) { return mathWrongCard(q.id, qi); }).join('') + '</div>' : '');
+    mathWireQuiz();
+    return;
+  }
+
+  var qi = q.order[q.i], it = bank[qi];
+  var pct2 = Math.round(100 * q.i / q.order.length);
+
+  box.innerHTML =
+    '<div class="mprog"><span style="width:' + pct2 + '%"></span></div>' +
+    '<div class="mcount">Question ' + (q.i + 1) + ' of ' + q.order.length +
+      ' · ' + q.right + ' right so far</div>' +
+    '<div class="mq"><div class="mqq">' + esc(it.q) + '</div>' +
+    '<div class="mqo" id="mqo">' + it.o.map(function (o, oi) {
+      return '<button type="button" class="mopt" data-pick="' + oi + '">' +
+        '<span class="ml">' + 'ABCD'.charAt(oi) + '</span><span class="mt">' + esc(o) + '</span></button>';
+    }).join('') + '</div>' +
+    '<div id="mqs"></div></div>';
+
+  mathWireQuiz();
+}
+
+function mathWrongCard(chId, qi) {
+  var it = (MATHQ[chId] || [])[qi];
+  if (!it) return '';
+  var ch = mathChap[chId];
+  return '<div class="mwrong"><div class="mqq">' + esc(it.q) + '</div>' +
+    '<div class="mans">' + esc('ABCD'.charAt(it.a)) + ' · ' + esc(it.o[it.a]) + '</div>' +
+    '<div class="mqsol">' + esc(it.s) + '</div>' +
+    (ch ? '<div class="pr"><a href="#/maths/chapter/' + encodeURIComponent(chId) + '">' +
+      esc(ch.n) + '</a></div>' : '') + '</div>';
+}
+
+function mathWireQuiz() {
+  var box = document.getElementById('mquiz');
+  if (!box || box.getAttribute('data-wired')) return;
+  box.setAttribute('data-wired', '1');
+  box.addEventListener('click', function (e) {
+    var q = mathQuiz;
+    if (!q) return;
+
+    var next = e.target.closest('[data-act]');
+    if (next) {
+      var act = next.getAttribute('data-act');
+      if (act === 'next')  { q.i++; q.answered = false; mathDrawQuiz(); return; }
+      if (act === 'again') { mathPracticePage(q.id); return; }
+      return;
+    }
+
+    var opt = e.target.closest('.mopt');
+    if (!opt || q.answered) return;
+    q.answered = true;
+
+    var qi = q.order[q.i], it = (MATHQ[q.id] || [])[qi];
+    var pick = parseInt(opt.getAttribute('data-pick'), 10);
+    var ok = pick === it.a;
+
+    var buttons = box.querySelectorAll('.mopt');
+    for (var j = 0; j < buttons.length; j++) {
+      var bi = parseInt(buttons[j].getAttribute('data-pick'), 10);
+      buttons[j].disabled = true;
+      if (bi === it.a) buttons[j].className = 'mopt right';
+      else if (bi === pick) buttons[j].className = 'mopt wrong';
+      else buttons[j].className = 'mopt dim';
+    }
+
+    if (ok) {
+      q.right++;
+      mathMark(MK_WRONG, q.id + '|' + qi, null);
+    } else {
+      q.wrong.push(qi);
+      mathMark(MK_WRONG, q.id + '|' + qi, 1);
+    }
+
+    var sol = document.getElementById('mqs');
+    if (sol) sol.innerHTML =
+      '<div class="mqsol' + (ok ? ' ok' : '') + '">' +
+      '<b>' + (ok ? 'Right.' : 'Not that one — the answer is ' + esc('ABCD'.charAt(it.a)) +
+        ', ' + esc(it.o[it.a]) + '.') + '</b> ' + esc(it.s) + '</div>' +
+      '<div class="stack"><button class="pill big" type="button" data-act="next">' +
+      (q.i + 1 >= q.order.length ? 'See the score' : 'Next question') + '</button></div>';
+  });
+}
+
+/* -------------------------------------------------------------- the review
+
+   Built from nothing but the two stores: the formulas you flagged and the
+   questions you got wrong. If both are empty the page says so rather than
+   inventing a list, because an empty review list is the correct output and
+   not an error state. */
+
+function mathReviewPage() {
+  var marks = mathGet(MK_RECALL), wrongs = mathGet(MK_WRONG);
+
+  var flagged = [];
+  (MATH.chapters || []).forEach(function (c) {
+    c.blocks.forEach(function (b, bi) {
+      b.rows.forEach(function (r, ri) {
+        if (marks[c.id + '|' + bi + '|' + ri] === 'again') {
+          flagged.push({ c: c, b: b, r: r });
+        }
+      });
+    });
+  });
+
+  var missed = [];
+  Object.keys(wrongs).forEach(function (k) {
+    var bits = k.split('|'), chId = bits[0], qi = parseInt(bits[1], 10);
+    if (mathChap[chId] && (MATHQ[chId] || [])[qi]) missed.push({ id: chId, qi: qi });
+  });
+  missed.sort(function (a, b) { return a.id < b.id ? -1 : a.id > b.id ? 1 : a.qi - b.qi; });
+
+  var h = '<div class="crumb"><a href="#/maths">Advanced Maths</a> → Review</div>' +
+    pageH1('What you have told the site you do not know',
+      'Every formula you flagged in a recall drill and every question you got wrong, across all eleven ' +
+      'chapters. Nothing on this page was chosen for you.');
+
+  h += '<div class="figs">' + fig(flagged.length, 'formulas flagged') +
+    fig(missed.length, 'questions missed') + '</div>';
+
+  if (!flagged.length && !missed.length) {
+    h += '<div class="empty"><b>The list is empty</b>' +
+      'Either nothing has been flagged yet, or this browser is not keeping site data. ' +
+      'Run a recall drill and flag what you miss — this page is built from those marks and nothing else.' +
+      '<div class="stack"><a class="pill" href="#/maths">Pick a chapter</a></div></div>';
+    return render(mathShell(h));
+  }
+
+  if (flagged.length) {
+    /* Grouped by chapter, because "weak in algebra" is a useful sentence and
+       "weak in forty scattered formulas" is not. */
+    var byChap = {};
+    flagged.forEach(function (x) {
+      (byChap[x.c.id] = byChap[x.c.id] || { c: x.c, rows: [] }).rows.push(x);
+    });
+    h += '<div class="block"><h3>The formulas you flagged</h3>' +
+      '<p class="foot before">In chapter order, with the group each one came from. ' +
+      'Clearing a mark here is the same as marking it known in the drill.</p>' +
+      Object.keys(byChap).map(function (k) {
+        var g = byChap[k];
+        return '<div class="mrevgrp"><div class="mrevh"><a href="#/maths/recall/' +
+          encodeURIComponent(g.c.id) + '">' + esc(g.c.n) + '</a>' +
+          '<span>' + g.rows.length + ' flagged</span></div>' +
+          '<div class="msheet">' + g.rows.map(function (x) {
+            return '<div class="mrow"><div class="mp">' + esc(x.r.p) + '</div>' +
+              '<div class="mf">' + esc(x.r.f) + '</div>' +
+              '<div class="md">' + esc(x.r.d) + '</div></div>';
+          }).join('') + '</div></div>';
+      }).join('') + '</div>';
+  }
+
+  if (missed.length) {
+    h += '<div class="block"><h3>The questions you got wrong</h3>' +
+      '<p class="foot before">A question leaves this list the next time you answer it correctly.</p>' +
+      missed.map(function (x) { return mathWrongCard(x.id, x.qi); }).join('') + '</div>';
+  }
+
+  h += '<div class="stack"><button class="pill big" type="button" id="mclear">' +
+    'Clear everything on this page</button></div>';
+
+  render(mathShell(h));
+
+  var btn = document.getElementById('mclear');
+  if (btn) btn.addEventListener('click', function () {
+    mathPut(MK_RECALL, {});
+    mathPut(MK_WRONG, {});
+    mathReviewPage();
+  });
+}
+
+/* ------------------------------------------------------------------ route */
+
+function mathsRoute(seg) {
+  switch (seg[0] || '') {
+    case '':         return render(mathHome());
+    case 'chapter':  return mathChapterPage(seg[1]);
+    case 'recall':   return mathRecallPage(seg[1]);
+    case 'practice': return mathPracticePage(seg[1]);
+    case 'review':   return mathReviewPage();
+    default:         return notFound('That address does not exist in Advanced Maths.');
+  }
+}
+
+SUBJECTS.push({
+  id: 'maths',
+  name: 'Advanced Maths',
+  short: 'Maths',
+  blurb: 'Algebra, triangles, circles, polygons, mensuration 2D and 3D, trigonometry, height and distance and coordinate geometry — each with a recall drill and SSC-shaped questions. Profit, loss and mixture are kept separate.',
+  tabs: [
+    { href: '#/maths',        label: 'All chapters', match: ['', 'chapter'] },
+    { href: '#/maths/recall/algebra',   label: 'Recall drill', match: ['recall'] },
+    { href: '#/maths/practice/algebra', label: 'Practice',     match: ['practice'] },
+    { href: '#/maths/review', label: 'Review list', match: ['review'] }
+  ],
+  stats: function () {
+    return [(MATH.chapters || []).length + ' chapters', mathAllRows() + ' formulas',
+            mathAllQs() + ' questions', mathAllFigs() + ' diagrams'];
+  },
+  topics: function () {
+    return (MATH.chapters || []).map(function (c) {
+      return { t: c.n, href: '#/maths/chapter/' + encodeURIComponent(c.id), w: c.w,
+               k: c.blocks.map(function (b) { return b.h; }).join(' ') + ' ' +
+                  (c.band === 'arith' ? 'arithmetic profit mixture' : 'advance maths'),
+               n: mathRows(c) + ' formulas' };
+    }).concat([
+      { t: 'Maths — the review list', href: '#/maths/review', n: 'what you flagged',
+        w: 'Every formula you flagged in a drill and every question you got wrong, in one place.',
+        k: 'wrong answers weak formulas revision mistakes' }
+    ]);
+  },
+  route: mathsRoute
+});
+
+/* =========================================================================
+   SUBJECT: THE NEW CRIMINAL LAWS
+
+   WHY A SUBJECT RATHER THAN A STATIC GK PACK. Because the questions are
+   about numbers. Since 2024 a general awareness paper has asked which
+   Sanhita replaced which Code, which section now carries murder, and what
+   section 152 created in place of sedition. A pack of three names answers
+   none of that - and an answer that still says "IPC 302" is simply wrong
+   for any offence on or after 1 July 2024.
+
+   WHY IT SITS BESIDE THE CONSTITUTION RATHER THAN INSIDE IT. The
+   Constitution subject is one document, extracted from the Government's own
+   publication and printed word for word. These three are a different kind
+   of thing: a reading of three new Acts, written from the police handbooks
+   and the standard commentaries, with the places where those commentaries
+   disagree named rather than smoothed over. Keeping them apart keeps the
+   claim each subject makes about its own reliability honest.
+
+   It reuses factsBlock and cmpBlock, so the whole subject is about ninety
+   lines here and lives in its data file.
+   ========================================================================= */
+
+var LAW = window.LAWS || {};
+var lawTopicById = {};
+(LAW.topics || []).forEach(function (t) { lawTopicById[t.id] = t; });
+
+function lawRows(t) {
+  return t.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
+}
+function lawAllRows() {
+  return (LAW.topics || []).reduce(function (a, t) { return a + lawRows(t); }, 0);
+}
+
+function lawShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function lawHome() {
+  var h = '<div class="crumb">The new criminal laws</div>' +
+    pageH1('Three Acts, one date, and a great many new numbers',
+      'The Bharatiya Nyaya Sanhita, the Bharatiya Nagarik Suraksha Sanhita and the Bharatiya ' +
+      'Sakshya Adhiniyam replaced the Indian Penal Code, the Code of Criminal Procedure and the ' +
+      'Indian Evidence Act on 1 July 2024. The exam asks them by section number, so the numbers ' +
+      'are the content.');
+
+  h += '<div class="figs">' + fig(3, 'Acts') + fig((LAW.topics || []).length, 'topics') +
+    fig(lawAllRows(), 'provisions') + fig((LAW.confusions || []).length, 'confused pairs') + '</div>';
+
+  h += '<div class="block"><h3>The topics</h3><div class="grid">' +
+    (LAW.topics || []).map(function (t) {
+      return '<a class="pcard" href="#/laws/topic/' + encodeURIComponent(t.id) + '">' +
+        '<div class="pn">' + esc(t.n) + '</div><div class="pt">' + esc(t.w) + '</div>' +
+        '<div class="pr">' + t.blocks.length + ' tables · ' + lawRows(t) + ' rows</div></a>';
+    }).join('') + '</div></div>';
+
+  /* The reliability note belongs on the landing page, not buried in a
+     topic, because it governs how to read every number behind it. */
+  h += '<div class="block"><h3>How firm each statement is</h3>' +
+    '<p class="plain">The names of the three Acts, what each replaced, the dates and the rule ' +
+    'that the date of the <em>offence</em> decides which law applies do not move. The section ' +
+    'counts — 358, 531 and 170 against 511, 484 and 167 — are consistent across the official ' +
+    'handbooks. Chapter counts vary between secondary sources, so where one is given the row says ' +
+    'it is the commonly cited figure. Where commentaries genuinely disagree, which is the case for ' +
+    'the undertrial fraction in BNSS 479 and the investigation deadlines in BNSS 193, the row gives ' +
+    'both readings rather than picking one quietly. This is a list of provisions an exam asks you ' +
+    'to name, not legal advice and not a bare act.</p></div>';
+
+  return lawShell(h);
+}
+
+function lawTopicPage(id) {
+  var t = lawTopicById[id];
+  if (!t) return lawShell('<div class="crumb"><a href="#/laws">The new criminal laws</a></div>' +
+    '<div class="empty"><b>No such topic</b>Nothing on this site is filed under that name.</div>');
+
+  var topics = LAW.topics || [], i = topics.indexOf(t);
+  var h = '<div class="crumb"><a href="#/laws">The new criminal laws</a> → ' + esc(t.n) + '</div>' +
+    pageH1(t.n, t.w);
+  if (t.intro) h += '<p class="plain stack">' + esc(t.intro) + '</p>';
+  h += t.blocks.map(factsBlock).join('');
+
+  var prev = topics[i - 1], next = topics[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/laws/topic/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Previous</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/laws/topic/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">Next</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+  return lawShell(h);
+}
+
+function lawConfusions() {
+  return lawShell('<div class="crumb"><a href="#/laws">The new criminal laws</a> → Confused pairs</div>' +
+    pageH1('The pairs that get mixed up',
+      'Which Sanhita replaced which Code, why 302 is now the wrong answer, whether sedition was ' +
+      'renumbered or repealed, and whether BNSS 479 says half or one third.') +
+    (LAW.confusions || []).map(cmpBlock).join(''));
+}
+
+function lawRoute(seg) {
+  switch (seg[0] || '') {
+    case '':           return render(lawHome());
+    case 'topic':      return render(lawTopicPage(seg[1]));
+    case 'confusions': return render(lawConfusions());
+    default:           return notFound('That address does not exist in the criminal laws.');
+  }
+}
+
+SUBJECTS.push({
+  id: 'laws',
+  name: 'The new criminal laws',
+  short: 'Criminal laws',
+  blurb: 'The Bharatiya Nyaya Sanhita, Nagarik Suraksha Sanhita and Sakshya Adhiniyam that replaced the IPC, the CrPC and the Evidence Act on 1 July 2024 — the dates, the counts, the new offences, and the section numbers an exam asks for.',
+  tabs: [
+    { href: '#/laws',            label: 'The topics',     match: ['', 'topic'] },
+    { href: '#/laws/topic/mapping', label: 'IPC → BNS', match: [] },
+    { href: '#/laws/confusions', label: 'Confused pairs', match: ['confusions'] },
+    { href: '#/constitution',    label: '↔ Constitution', match: [] }
+  ],
+  stats: function () {
+    return ['3 Acts', (LAW.topics || []).length + ' topics', lawAllRows() + ' provisions',
+            (LAW.confusions || []).length + ' confused pairs'];
+  },
+  topics: function () {
+    return (LAW.topics || []).map(function (t) {
+      return { t: t.n, href: '#/laws/topic/' + encodeURIComponent(t.id), w: t.w,
+               k: t.blocks.map(function (b) { return b.h; }).join(' ') +
+                  ' bns bnss bsa ipc crpc evidence act criminal law 2023 2024',
+               n: lawRows(t) + ' rows' };
+    }).concat([{ t: 'The criminal laws - confused pairs', href: '#/laws/confusions',
+                 n: (LAW.confusions || []).length + ' pairs',
+                 w: 'Which Sanhita replaced which Code, why 302 is the wrong answer now, and whether sedition was renumbered or repealed.',
+                 k: 'sedition 124a 152 murder 302 103 section counts community service 479' }]);
+  },
+  route: lawRoute
+});
+
+/* =========================================================================
+   SUBJECT: GEOGRAPHY
+
+   WHY THIS EXISTS WHEN STATIC GK ALREADY HAS RIVERS, STATES AND
+   SUPERLATIVES. Those packs are lists of facts to recognise. Geography is
+   the arrangement that holds the facts together, and an exam tests the
+   arrangement: which range lies between two others, which pass joins which
+   two places, why Tamil Nadu gets its rain in a different season from
+   everywhere else. A list cannot answer any of those. So the Static GK
+   packs stay where they are as the revision version and this is the full
+   one.
+
+   THE HIMALAYAS TAKE A THIRD OF THE SUBJECT, ON PURPOSE. Between the three
+   ranges, the four longitudinal divisions, the peaks, the passes, the
+   glaciers, the lakes and the rivers that rise there, they carry more SSC
+   geography marks than any other single topic - and the passes alone come
+   up almost every sitting.
+
+   It reuses the shared renderers: factsBlock for a table and cmpBlock for a
+   compared pair, which is why this section is a tenth the length of the
+   Maths one. The only thing it adds is a figure, and even that borrows
+   mathFig.
+   ========================================================================= */
+
+var GEO = window.GEOGRAPHY || {};
+var geoTopicById = {};
+(GEO.topics || []).forEach(function (t) { geoTopicById[t.id] = t; });
+
+function geoRows(t) {
+  return t.blocks.reduce(function (a, b) { return a + b.rows.length; }, 0);
+}
+function geoAllRows() {
+  return (GEO.topics || []).reduce(function (a, t) { return a + geoRows(t); }, 0);
+}
+function geoAllFigs() {
+  return (GEO.topics || []).reduce(function (a, t) { return a + (t.figs || []).length; }, 0);
+}
+
+function geoShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function geoHome() {
+  var h = '<div class="crumb">Geography</div>' +
+    pageH1('The arrangement, not just the facts',
+      'Seven topics, and the Himalayas take the largest share of them because they take the ' +
+      'largest share of the paper. Everything here is the physical geography an SSC general ' +
+      'awareness section actually asks about, and nothing beyond it.');
+
+  h += '<div class="figs">' + fig((GEO.topics || []).length, 'topics') +
+    fig(geoAllRows(), 'facts') + fig((GEO.confusions || []).length, 'confused pairs') +
+    fig(geoAllFigs(), 'diagrams') + '</div>';
+
+  h += '<div class="block"><h3>The topics</h3><div class="grid">' +
+    (GEO.topics || []).map(function (t) {
+      return '<a class="pcard" href="#/geography/topic/' + encodeURIComponent(t.id) + '">' +
+        '<div class="pn">' + esc(t.n) + '</div><div class="pt">' + esc(t.w) + '</div>' +
+        '<div class="pr">' + t.blocks.length + ' tables · ' + geoRows(t) + ' facts' +
+        ((t.figs || []).length ? ' · ' + t.figs.length + ' diagrams' : '') + '</div></a>';
+    }).join('') + '</div></div>';
+
+  h += '<p class="foot">The Static GK packs on <a href="#/gk/pack/rivers">rivers, dams and lakes</a>, ' +
+    '<a href="#/gk/pack/states">states and capitals</a> and ' +
+    '<a href="#/gk/pack/superlatives">largest, longest, highest</a> cover the same ground as lists ' +
+    'of facts to recognise. They are the revision version; this is the full one.</p>';
+
+  return geoShell(h);
+}
+
+function geoTopicPage(id) {
+  var t = geoTopicById[id];
+  if (!t) return geoShell('<div class="crumb"><a href="#/geography">Geography</a></div>' +
+    '<div class="empty"><b>No such topic</b>Nothing on this site is filed under that name.</div>');
+
+  var topics = GEO.topics || [], i = topics.indexOf(t);
+  var h = '<div class="crumb"><a href="#/geography">Geography</a> → ' + esc(t.n) + '</div>' +
+    pageH1(t.n, t.w);
+  if (t.intro) h += '<p class="plain stack">' + esc(t.intro) + '</p>';
+
+  if ((t.figs || []).length) {
+    h += '<div class="block"><h3>The diagrams</h3><div class="mfigs">' +
+      t.figs.map(mathFig).join('') + '</div></div>';
+  }
+
+  h += t.blocks.map(factsBlock).join('');
+
+  var prev = topics[i - 1], next = topics[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/geography/topic/' + encodeURIComponent(prev.id) + '">' +
+      '<span class="d">Previous</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/geography/topic/' + encodeURIComponent(next.id) + '">' +
+      '<span class="d">Next</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+    '</div>';
+  return geoShell(h);
+}
+
+function geoConfusions() {
+  return geoShell('<div class="crumb"><a href="#/geography">Geography</a> → Confused pairs</div>' +
+    pageH1('The pairs that get mixed up',
+      'Three different mountains answer three different wordings of “highest peak”; bhabar and ' +
+      'terai are not bhangar and khadar; and an estuary rather than a delta is what a rift valley gives you.') +
+    (GEO.confusions || []).map(cmpBlock).join(''));
+}
+
+function geoRoute(seg) {
+  switch (seg[0] || '') {
+    case '':           return render(geoHome());
+    case 'topic':      return render(geoTopicPage(seg[1]));
+    case 'confusions': return render(geoConfusions());
+    default:           return notFound('That address does not exist in Geography.');
+  }
+}
+
+SUBJECTS.push({
+  id: 'geography',
+  name: 'Geography',
+  short: 'Geography',
+  blurb: 'The Himalayas in full — ranges, divisions, peaks, passes, glaciers and lakes — then the physical divisions, the drainage, the monsoon, the soils, agriculture and minerals, and the world geography that gets asked.',
+  tabs: [
+    { href: '#/geography',            label: 'The topics',     match: ['', 'topic'] },
+    { href: '#/geography/confusions', label: 'Confused pairs', match: ['confusions'] },
+    { href: '#/gk',                   label: '↔ Static GK', match: [] }
+  ],
+  stats: function () {
+    return [(GEO.topics || []).length + ' topics', geoAllRows() + ' facts',
+            (GEO.confusions || []).length + ' confused pairs'];
+  },
+  topics: function () {
+    return (GEO.topics || []).map(function (t) {
+      return { t: t.n, href: '#/geography/topic/' + encodeURIComponent(t.id), w: t.w,
+               k: t.blocks.map(function (b) { return b.h; }).join(' '),
+               n: geoRows(t) + ' facts' };
+    }).concat([{ t: 'Geography - confused pairs', href: '#/geography/confusions',
+                 n: (GEO.confusions || []).length + ' pairs',
+                 w: 'Which peak answers which wording, bhabar against bhangar, and why Narmada makes an estuary.',
+                 k: 'k2 kanchenjunga nanda devi bhabar terai khadar bhangar estuary delta el nino' }]);
+  },
+  route: geoRoute
+});
+
+/* =========================================================================
+   SUBJECT: DAILY STUDY SETS
+
+   One page per study day, labelled with its date. Current affairs live
+   here, because here a date can be put on them; the rest of each set is a
+   revision sheet for what was added to the site that day, built from notes
+   that already live on the subject pages rather than copied out of them.
+
+   Each set is also a section of its own in the strip at the top of the
+   page, so "10 October" is one tap from anywhere in the subject.
+   ========================================================================= */
+
+var DAILY = window.DAILY || {};
+var DAILY_SETS = DAILY.sets || [];
+var dailyById = {};
+DAILY_SETS.forEach(function (d) { dailyById[d.id] = d; });
+
+/* A recap part names the notes it shows by address, so the set and the page
+   it summarises can never disagree. */
+function dailyNotesFrom(key) {
+  if (key === 'econ.reform') return (ECON.reform || {}).notes;
+  if (key === 'econ.plans')  return ECON.planNotes;
+  if (key === 'early.mughals') return EARLY.mughalNotes;
+  var m = /^(gk|early)\.(.+)$/.exec(key || '');
+  if (!m) return null;
+  return ((m[1] === 'gk' ? gkPackById : earlyTopicById)[m[2]] || {}).notes;
+}
+
+function dailyNotes(part) {
+  return part.notes || dailyNotesFrom(part.from) || [];
+}
+
+function dailyShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function dailyHome() {
+  var h = '<div class="crumb">Daily sets</div>' +
+    pageH1('Daily study sets',
+      'One page for each study day, labelled with its date. The current affairs live here, where a ' +
+      'date can be put on them; the rest of each set is a sheet of highlighted SSC notes for what was ' +
+      'added that day, with a link to the full page.');
+  h += '<div class="block"><h3>The sets, newest first</h3>' +
+    DAILY_SETS.map(function (d) {
+      var n = d.parts.reduce(function (a, p) { return a + dailyNotes(p).length; }, 0);
+      return '<a class="arow hy" href="#/daily/' + encodeURIComponent(d.id) + '">' +
+        '<span class="no range">' + esc(d.d) + '</span>' +
+        '<span class="tx"><b>' + esc(d.d + ' ' + d.y) + '</b><i>' + esc(d.w) + '</i></span>' +
+        '<span class="tag"><span class="chip live">' + n + ' notes</span></span></a>';
+    }).join('') + '</div>';
+  return dailyShell(h);
+}
+
+function dailyPart(part) {
+  var h = '<section class="setpart" id="part-' + esc(part.id) + '">' +
+    '<p class="eyebrow">' + esc(part.tag || '') + '</p>' +
+    '<h2>' + esc(part.h) + '</h2>' +
+    (part.w ? '<p class="sub">' + esc(part.w) + '</p>' : '');
+  h += notesBlock(dailyNotes(part), part.from ? 'revise these first' : '');
+  (part.blocks || []).forEach(function (b) { h += factsBlock(b); });
+  if (part.cmp && part.cmp.length) {
+    h += '<div class="block"><h3>The pairs that get mixed up</h3>' +
+      part.cmp.map(cmpBlock).join('') + '</div>';
+  }
+  if (part.links && part.links.length) {
+    h += '<div class="setlinks">' + part.links.map(function (l) {
+      return '<a class="pill" href="' + l[0] + '">' + esc(l[1]) + ' →</a>';
+    }).join('') + '</div>';
+  }
+  return h + '</section>';
+}
+
+function dailySetPage(id) {
+  var d = dailyById[id];
+  if (!d) return dailyShell('<div class="crumb"><a href="#/daily">Daily sets</a></div>' +
+    '<div class="empty"><b>No set for that date</b>The sets that exist are listed on ' +
+    '<a href="#/daily">the Daily sets page</a>.</div>');
+
+  var i = DAILY_SETS.indexOf(d);
+  var notes = d.parts.reduce(function (a, p) { return a + dailyNotes(p).length; }, 0);
+  var h = '<div class="crumb"><a href="#/daily">Daily sets</a> → ' + esc(d.d) + '</div>' +
+    '<span class="datebadge">Study set · ' + esc(d.d + ' ' + d.y) + '</span>' +
+    pageH1(d.d, d.w);
+  if (d.intro) h += '<p class="plain stack">' + prose(d.intro) + '</p>';
+  h += '<div class="figs">' + fig(d.parts.length, 'parts') + fig(notes, 'highlighted notes') +
+    fig(d.parts.filter(function (p) { return !p.from; }).length, 'current-affairs parts') + '</div>';
+
+  /* Contents. Buttons rather than links: the address is the router's, so an
+     in-page anchor would be read as a route. */
+  h += '<div class="listtabs stack">' + d.parts.map(function (p) {
+    /* Pressing the part you are already on changes no hash, so no hashchange
+       would fire and nothing would scroll. Fire one by hand in that case. */
+    return '<button type="button" onclick="var h=\'#/daily/' + esc(d.id) + '/' + esc(p.id) +
+      '\';if(location.hash===h)window.dispatchEvent(new HashChangeEvent(\'hashchange\'));else location.hash=h">' +
+      esc(p.h) + '</button>';
+  }).join('') + '</div>';
+
+  h += d.parts.map(dailyPart).join('');
+
+  var newer = DAILY_SETS[i - 1], older = DAILY_SETS[i + 1];
+  h += '<div class="nextprev">' +
+    (older ? '<a href="#/daily/' + encodeURIComponent(older.id) + '">' +
+      '<span class="d">Earlier set</span><span class="t">' + esc(older.d) + '</span></a>' : '<span></span>') +
+    (newer ? '<a class="r" href="#/daily/' + encodeURIComponent(newer.id) + '">' +
+      '<span class="d">Later set</span><span class="t">' + esc(newer.d) + '</span></a>' : '<span></span>') +
+    '</div>';
+  return dailyShell(h);
+}
+
+/* #/daily/10-october/booker opens the set at that part. render() has just
+   put the page at the top, so this scroll happens on the page the reader
+   asked for, and it is instant for the same reason jumpToTop is. */
+function scrollToPart(partId) {
+  var el = document.getElementById('part-' + partId);
+  if (!el) return;
+  var head = document.querySelector('header.top');
+  var off = head ? head.getBoundingClientRect().height : 0;
+  var root = document.documentElement, prev = root.style.scrollBehavior;
+  root.style.scrollBehavior = 'auto';
+  window.scrollTo(0, el.getBoundingClientRect().top + window.pageYOffset - off - 12);
+  root.style.scrollBehavior = prev;
+}
+
+function dailyRoute(seg) {
+  if (!seg[0]) return render(dailyHome());
+  render(dailySetPage(seg[0]));
+  if (seg[1]) scrollToPart(seg[1]);
+}
+
+SUBJECTS.push({
+  id: 'daily',
+  name: 'Daily study sets',
+  short: 'Daily sets',
+  blurb: 'One page per study day, labelled with its date: the current affairs that go stale, and highlighted SSC notes for everything added that day.',
+  tabs: [{ href: '#/daily', label: 'All sets', match: [''] }].concat(DAILY_SETS.map(function (d) {
+    return { href: '#/daily/' + d.id, label: d.d, match: [d.id] };
+  })),
+  stats: function () {
+    return [DAILY_SETS.length + (DAILY_SETS.length === 1 ? ' set' : ' sets'),
+            DAILY_SETS.reduce(function (a, d) {
+              return a + d.parts.reduce(function (b, p) { return b + dailyNotes(p).length; }, 0);
+            }, 0) + ' notes'];
+  },
+  topics: function () {
+    var out = [];
+    DAILY_SETS.forEach(function (d) {
+      out.push({ t: d.d + ' ' + d.y, href: '#/daily/' + d.id, w: d.w,
+                 n: d.parts.length + ' parts',
+                 k: d.parts.map(function (p) { return p.h; }).join(' ') + ' daily set current affairs' });
+      d.parts.filter(function (p) { return !p.from; }).forEach(function (p) {
+        out.push({ t: p.h + ' (' + d.d + ')', href: '#/daily/' + d.id + '/' + p.id, w: p.w,
+                   n: dailyNotes(p).length + ' notes',
+                   k: (p.blocks || []).map(function (b) { return b.h; }).join(' ') + ' current affairs ' + d.d });
+      });
+    });
+    return out;
+  },
+  route: dailyRoute
+});
+
 /* ----------------------------------------------------------------- index
 
    The whole site as a contents page: every subject, every section, and every
@@ -2743,6 +4194,7 @@ function indexPage() {
     { t: 'The exam layer', href: '#/high-yield' },
     { t: 'The article map', href: '#/high-yield/map' },
     { t: 'The courts, article by article', href: '#/high-yield/courts' },
+    { t: 'Centre and State, and the Seventh Schedule', href: '#/high-yield/centre-state' },
     { t: 'The Constituent Assembly', href: '#/assembly' },
     { t: 'The amendments', href: '#/amendments', n: String(AMENDMENTS.length) },
     { t: 'The Schedules', href: '#/schedules', n: String(SCHEDULES.length) },
@@ -2772,6 +4224,7 @@ function indexPage() {
     { t: 'Articles, in three tiers', href: '#/high-yield/articles' },
     { t: 'The article map', href: '#/high-yield/map' },
     { t: 'The courts', href: '#/high-yield/courts' },
+    { t: 'Centre and State', href: '#/high-yield/centre-state' },
     { t: 'Cases', href: '#/high-yield/cases' },
     { t: 'Amendments', href: '#/high-yield/amendments' },
     { t: 'Confused pairs', href: '#/high-yield/confusions' },
@@ -2934,6 +4387,104 @@ function indexPage() {
     idxGroup('Sections', bioSections, true) +
     idxGroup('The topics', bioItems));
 
+  /* --------------------------------------------------------- Advanced Maths */
+  var mathSections = count([
+    { t: 'Every chapter, listed', href: '#/s/maths' },
+    { t: 'All chapters', href: '#/maths' },
+    { t: 'The review list', href: '#/maths/review' }
+  ]);
+  var mathChapItems = count((MATH.chapters || []).map(function (c) {
+    return { t: c.n, href: '#/maths/chapter/' + encodeURIComponent(c.id),
+             n: mathRows(c) + ' formulas' };
+  }));
+  /* The drill and the practice run are separate PAGES, not views of the
+     chapter, so the outline lists them separately - otherwise two thirds of
+     this subject would be missing from a page whose whole claim is that it
+     shows everything. */
+  var mathDrillItems = count((MATH.chapters || []).map(function (c) {
+    return { t: c.n, href: '#/maths/recall/' + encodeURIComponent(c.id) };
+  }));
+  var mathQuizItems = count((MATH.chapters || []).filter(function (c) {
+    return mathQcount(c.id);
+  }).map(function (c) {
+    return { t: c.n, href: '#/maths/practice/' + encodeURIComponent(c.id),
+             n: mathQcount(c.id) + ' questions' };
+  }));
+
+  h += idxSection('Advanced Maths',
+    (MATH.chapters || []).length + ' chapters \u00b7 ' + mathAllRows() + ' formulas \u00b7 ' +
+    mathAllQs() + ' questions \u00b7 ' + mathAllFigs() + ' diagrams',
+    idxGroup('Sections', mathSections, true) +
+    idxGroup('The formula sheets', mathChapItems) +
+    idxGroup('The recall drills', mathDrillItems) +
+    idxGroup('The practice banks', mathQuizItems));
+
+  /* ------------------------------------------------- Ancient and Medieval */
+  var earlySections = count([
+    { t: 'Every topic, listed', href: '#/s/early' },
+    { t: 'The topics', href: '#/early' },
+    { t: 'The Mughal emperors', href: '#/early/mughals' },
+    { t: 'Confused pairs', href: '#/early/confusions' }
+  ]);
+  var earlyItems = count((EARLY.topics || []).map(function (t) {
+    return { t: t.n, href: '#/early/topic/' + encodeURIComponent(t.id), n: earlyRows(t) + ' facts' };
+  }));
+  var empItems = count(greatEmperors().map(function (e) {
+    return { t: e.n, href: '#/early/emperor/' + encodeURIComponent(e.id), n: yrSpan(e.from, e.to) };
+  }));
+
+  h += idxSection('Ancient and Medieval History',
+    (EARLY.topics || []).length + ' topics \u00b7 ' + greatEmperors().length + ' emperors',
+    idxGroup('Sections', earlySections, true) +
+    idxGroup('The topics', earlyItems) +
+    idxGroup('The emperors', empItems));
+
+  /* --------------------------------------------------- The criminal laws */
+  var lawSections = count([
+    { t: 'Every topic, listed', href: '#/s/laws' },
+    { t: 'The topics', href: '#/laws' },
+    { t: 'IPC to BNS mapping', href: '#/laws/topic/mapping' },
+    { t: 'Confused pairs', href: '#/laws/confusions' }
+  ]);
+  var lawItems = count((LAW.topics || []).map(function (t) {
+    return { t: t.n, href: '#/laws/topic/' + encodeURIComponent(t.id), n: lawRows(t) + ' rows' };
+  }));
+
+  h += idxSection('The new criminal laws',
+    '3 Acts \u00b7 ' + lawAllRows() + ' provisions',
+    idxGroup('Sections', lawSections, true) +
+    idxGroup('The topics', lawItems));
+
+  /* ------------------------------------------------------------- Geography */
+  var geoSections = count([
+    { t: 'Every topic, listed', href: '#/s/geography' },
+    { t: 'The topics', href: '#/geography' },
+    { t: 'Confused pairs', href: '#/geography/confusions' }
+  ]);
+  var geoItems = count((GEO.topics || []).map(function (t) {
+    return { t: t.n, href: '#/geography/topic/' + encodeURIComponent(t.id),
+             n: geoRows(t) + ' facts' };
+  }));
+
+  h += idxSection('Geography',
+    (GEO.topics || []).length + ' topics \u00b7 ' + geoAllRows() + ' facts',
+    idxGroup('Sections', geoSections, true) +
+    idxGroup('The topics', geoItems));
+
+  /* ----------------------------------------------------------- Daily sets */
+  var dailyItems = count([{ t: 'Every set', href: '#/daily' }].concat(DAILY_SETS.map(function (d) {
+    return { t: d.d + ' ' + d.y, href: '#/daily/' + d.id, n: d.parts.length + ' parts' };
+  })));
+  var dailyParts = count([].concat.apply([], DAILY_SETS.map(function (d) {
+    return d.parts.map(function (p) {
+      return { t: p.h, href: '#/daily/' + d.id + '/' + p.id, n: d.d };
+    });
+  })));
+
+  h += idxSection('Daily study sets', DAILY_SETS.length + (DAILY_SETS.length === 1 ? ' set' : ' sets'),
+    idxGroup('The sets', dailyItems, true) +
+    idxGroup('Every part of every set', dailyParts));
+
   h += '<p class="foot">' + total + ' pages listed. Every one of them is also ' +
     'reachable from the search box at the top, which looks inside the pages as well ' +
     'as at their names.</p></div>';
@@ -2955,9 +4506,10 @@ function aboutPage() {
   '<h1 style="font-family:var(--serif);font-size:var(--t-h2);margin:0 0 var(--s5);font-weight:600">' +
   'How this was built, and what to trust</h1>' +
 
-  '<p class="plain">Five subjects: the Constitution of India — including the Constituent ' +
-  'Assembly that wrote it — Modern History, the Indian Economy, Static General Knowledge ' +
-  'and Biology. They are organised by topic rather than by subject, because a reader ' +
+  '<p class="plain">' + SUBJECTS.length + ' subjects: the Constitution of India — including the Constituent ' +
+  'Assembly that wrote it — Modern History, Ancient and Medieval History, the Indian Economy, ' +
+  'Static General Knowledge, Biology, Advanced Maths, and the Daily study sets, one dated page per study day. ' +
+  'They are organised by topic rather than by subject, because a reader ' +
   'arrives knowing what they need to revise rather than which subject it belongs to.</p>' +
 
   '<div class="block"><h3>The Constitution: where the text comes from</h3>' +
@@ -2979,7 +4531,8 @@ function aboutPage() {
   'that Act, and shows nothing where it does not. A missing date is deliberate.</p></div>' +
 
   '<div class="block"><h3>The other subjects are written, not extracted</h3>' +
-  '<p class="plain">Modern History, the Indian Economy, Static GK, Biology and the account ' +
+  '<p class="plain">Modern History, Ancient and Medieval History, the Indian Economy, Static GK, ' +
+  'Biology, Advanced Maths, the Daily sets and the account ' +
   'of the Constituent Assembly have no equivalent single government document behind them, ' +
   'so they are written from the established record rather than lifted from a source. That is a weaker guarantee than the ' +
   'Constitution\'s, and it is stated rather than hidden: the head of each data file says ' +
@@ -3065,9 +4618,19 @@ function aboutPage() {
   'removes a word: strip the marks from any paragraph on this site and you get back exactly ' +
   'the text that was written. The official text of the Constitution is not marked at all.</p></div>' +
 
+  '<div class="block"><h3>The one place with a highlighter</h3>' +
+  '<p class="plain">The SSC notes are different. Each is a one-line answer, and inside it one ' +
+  'phrase is what an answer sheet wants, so that phrase is <mark class="hi">highlighted</mark>. ' +
+  'A rule cannot know which phrase that is, so the highlight is written into the data by hand, ' +
+  'and the boxes sit at the top of the pages that have them: every new topic, every Five Year ' +
+  'Plan, the 1991 reforms, every Mughal emperor and each daily set.</p>' +
+  '<p class="why">Current affairs are kept to the Daily sets, where each page carries its date. ' +
+  'A Booker winner or a cup holder changes every year; on a dated page an old answer reads as ' +
+  'old rather than as wrong.</p></div>' +
+
   '<div class="block"><h3>Offline, and installable as an app</h3>' +
-  '<p class="plain">All five subjects are loaded into your browser the first time you open ' +
-  'the page — about 1.6 MB in total, once, fonts and all. After that the site works with no network at ' +
+  '<p class="plain">Every subject is loaded into your browser the first time you open ' +
+  'the page — about 2 MB in total, once, fonts and all. After that the site works with no network at ' +
   'all: on a train, on a plane, or with the data switched off.</p>' +
   '<p class="plain stack">You can also install it, so it gets its own icon and opens in its ' +
   'own window without the browser bars. In Chrome and Edge the button below installs it in ' +
@@ -3172,8 +4735,9 @@ function buildIndex() {
       kind: 'plan', id: p.id, no: String(p.from), title: p.n,
       sub: p.theme + (p.kind === 'plan' ? ' \u00b7 target ' + p.tgt + '%' : ''),
       near: (p.n + ' ' + p.theme + ' ' + p.w).toLowerCase(),
-      hay: (p.n + ' ' + p.from + ' ' + p.to + ' ' + p.theme + ' ' + p.w + ' ' +
-            (p.model || '') + ' ' + (p.key || []).join(' ') + ' ' + (p.note || '')).toLowerCase(),
+      hay: unmark(p.n + ' ' + p.from + ' ' + p.to + ' ' + p.theme + ' ' + p.w + ' ' +
+            (p.model || '') + ' ' + (p.key || []).join(' ') + ' ' + (p.note || '') + ' ' +
+            (p.ssc || []).join(' ')).toLowerCase(),
       href: '#/economy/plan/' + encodeURIComponent(p.id), num: ''
     });
   });
@@ -3209,8 +4773,21 @@ function buildIndex() {
               return p.k + ' ' + p.w + ' ' + p.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ');
             }).join(' ') + ' ' +
             (ECON.reform.committees || []).map(function (r) { return r[0] + ' ' + r[1]; }).join(' ') + ' ' +
-            (ECON.reform.after || []).map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+            (ECON.reform.after || []).map(function (r) { return r[0] + ' ' + r[1]; }).join(' ') + ' ' +
+            unmark((ECON.reform.notes || []).join(' ')) + ' ' +
+            (ECON.reform.dates || []).concat(ECON.reform.terms || []).map(function (r) {
+              return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
       href: '#/economy/reforms', num: ''
+    });
+  }
+  if (ECON.planMatch) {
+    searchIndex.push({
+      kind: 'plan', id: 'plan-match', no: '', title: 'Which plan was it?',
+      sub: 'Schemes, Acts and events matched to the Five Year Plan they fell in',
+      near: 'which plan five year plan scheme',
+      hay: ('which plan five year plans at a glance ' + unmark((ECON.planNotes || []).join(' ')) + ' ' +
+            ECON.planMatch.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+      href: '#/economy', num: ''
     });
   }
 
@@ -3230,7 +4807,7 @@ function buildIndex() {
       searchIndex.push({
         kind: 'static gk', id: p.id + '-' + i, no: '', title: b.h, sub: p.n,
         near: b.h.toLowerCase(),
-        hay: (b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+        hay: unmark(b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
         href: href, num: ''
       });
     });
@@ -3298,6 +4875,151 @@ function buildIndex() {
     });
   });
 
+
+  /* Ancient and Medieval History: every topic and every table inside it,
+     every emperor with his reign in the haystack, and the confused pairs. */
+  function rowsText(rows) {
+    return (rows || []).map(function (r) { return r[0] + ' ' + r[1]; }).join(' ');
+  }
+  (EARLY.topics || []).forEach(function (t) {
+    var href = '#/early/topic/' + encodeURIComponent(t.id);
+    searchIndex.push({
+      kind: t.era === 'medieval' ? 'medieval' : 'ancient', id: 'e-' + t.id, no: '', title: t.n, sub: t.w,
+      near: (t.n + ' ' + t.w).toLowerCase(),
+      hay: unmark(t.n + ' ' + t.w + ' ' + (t.intro || '') + ' ' + (t.notes || []).join(' ') + ' ' +
+            t.blocks.map(function (b) { return b.h + ' ' + rowsText(b.rows); }).join(' ')).toLowerCase(),
+      href: href, num: ''
+    });
+    t.blocks.forEach(function (b, i) {
+      searchIndex.push({
+        kind: t.era === 'medieval' ? 'medieval' : 'ancient', id: 'e-' + t.id + '-' + i, no: '',
+        title: b.h, sub: t.n, near: b.h.toLowerCase(),
+        hay: unmark(b.h + ' ' + (b.note || '') + ' ' + rowsText(b.rows)).toLowerCase(),
+        href: href, num: ''
+      });
+    });
+  });
+  (EARLY.emperors || []).forEach(function (e) {
+    searchIndex.push({
+      kind: e.kind === 'sur' ? 'sur dynasty' : 'mughal', id: 'emp-' + e.id, no: String(e.from), title: e.n,
+      sub: (e.kind === 'sur' ? 'Sur dynasty' : 'Mughal emperor') + ' · ' + yrSpan(e.from, e.to),
+      near: (e.n + ' ' + (e.full || '')).toLowerCase(),
+      hay: unmark(e.n + ' ' + (e.full || '') + (e.kind === 'sur' ? ' sur dynasty ' : ' mughal emperor ') + e.from + ' ' + e.to + ' ' + e.w + ' ' +
+            (e.key || []).join(' ') + ' ' + (e.notes || []).join(' ') + ' ' + (e.born || '') + ' ' +
+            (e.tomb || '')).toLowerCase(),
+      href: e.kind === 'later' ? '#/early/mughals' : '#/early/emperor/' + encodeURIComponent(e.id), num: ''
+    });
+  });
+  (EARLY.confusions || []).forEach(function (c, i) {
+    searchIndex.push({
+      kind: 'medieval', id: 'ecmp-' + i, no: '', title: c.k,
+      sub: 'Ancient and Medieval · confused pair', near: c.k.toLowerCase(),
+      hay: unmark(c.k + ' ' + (c.note || '') + ' ' + rowsText(c.rows)).toLowerCase(),
+      href: '#/early/confusions', num: ''
+    });
+  });
+
+  /* The daily sets: each current-affairs table on its own, so "Szalay" or
+     "Thomas Cup 2026" lands on the part of the set that holds it. */
+  DAILY_SETS.forEach(function (d) {
+    d.parts.forEach(function (p) {
+      var href = '#/daily/' + d.id + '/' + p.id;
+      searchIndex.push({
+        kind: 'daily set', id: d.id + '-' + p.id, no: d.d, title: p.h, sub: d.d + ' ' + d.y + ' · ' + (p.w || ''),
+        near: p.h.toLowerCase(),
+        hay: unmark(p.h + ' ' + (p.w || '') + ' ' + d.d + ' ' + dailyNotes(p).join(' ')).toLowerCase(),
+        href: href, num: ''
+      });
+      (p.blocks || []).forEach(function (b, i) {
+        searchIndex.push({
+          kind: 'daily set', id: d.id + '-' + p.id + '-' + i, no: d.d, title: b.h, sub: d.d + ' · ' + p.h,
+          near: b.h.toLowerCase(),
+          hay: unmark(b.h + ' ' + (b.note || '') + ' ' + rowsText(b.rows) + ' ' + p.h).toLowerCase(),
+          href: href, num: ''
+        });
+      });
+    });
+  });
+
+  /* GK packs may carry SSC notes; keep them reachable. */
+  (GKD.packs || []).forEach(function (p) {
+    if (!p.notes) return;
+    searchIndex.push({
+      kind: 'static gk', id: p.id + '-notes', no: '', title: p.n + ': SSC notes', sub: p.w,
+      near: (p.n + ' ssc notes').toLowerCase(),
+      hay: unmark(p.n + ' ssc notes ' + p.notes.join(' ')).toLowerCase(),
+      href: '#/gk/pack/' + encodeURIComponent(p.id), num: ''
+    });
+  });
+
+  /* The criminal laws, topic then table, so that a bare section number -
+     "152", "BNS 103", "479" - reaches the table that explains it. The old
+     IPC numbers are in the haystack too, because that is what a reader who
+     learnt the law before 2024 will type. */
+  (LAW.topics || []).forEach(function (t) {
+    var href = '#/laws/topic/' + encodeURIComponent(t.id);
+    var all = t.blocks.map(function (b) {
+      return b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ');
+    }).join(' ');
+    searchIndex.push({
+      kind: 'criminal law', id: 'law-' + t.id, no: '', title: t.n, sub: t.w,
+      near: (t.n + ' ' + t.w + ' ' + (t.intro || '')).toLowerCase(),
+      hay: (t.n + ' ' + t.w + ' ' + (t.intro || '') + ' bns bnss bsa ipc crpc ' + all).toLowerCase(),
+      href: href, num: ''
+    });
+    t.blocks.forEach(function (b, i) {
+      searchIndex.push({
+        kind: 'criminal law', id: 'law-' + t.id + '-' + i, no: '', title: b.h, sub: t.n,
+        near: b.h.toLowerCase(),
+        hay: (b.h + ' ' + (b.note || '') + ' ' +
+              b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+        href: href, num: ''
+      });
+    });
+  });
+  (LAW.confusions || []).forEach(function (c, i) {
+    searchIndex.push({
+      kind: 'criminal law', id: 'lcmp-' + i, no: '', title: c.k,
+      sub: 'Criminal laws \u00b7 confused pair', near: c.k.toLowerCase(),
+      hay: (c.k + ' ' + (c.note || '') + ' ' +
+            c.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+      href: '#/laws/confusions', num: ''
+    });
+  });
+
+  /* Geography, topic then table, so that a feature named in one row - "Zoji
+     La", "karewas", "Mawsynram", "regur" - reaches the table it sits in
+     rather than only the topic that contains it. */
+  (GEO.topics || []).forEach(function (t) {
+    var href = '#/geography/topic/' + encodeURIComponent(t.id);
+    var all = t.blocks.map(function (b) {
+      return b.h + ' ' + b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ');
+    }).join(' ');
+    searchIndex.push({
+      kind: 'geography', id: 'geo-' + t.id, no: '', title: t.n, sub: t.w,
+      near: (t.n + ' ' + t.w + ' ' + (t.intro || '')).toLowerCase(),
+      hay: (t.n + ' ' + t.w + ' ' + (t.intro || '') + ' ' + all).toLowerCase(),
+      href: href, num: ''
+    });
+    t.blocks.forEach(function (b, i) {
+      searchIndex.push({
+        kind: 'geography', id: 'geo-' + t.id + '-' + i, no: '', title: b.h, sub: t.n,
+        near: b.h.toLowerCase(),
+        hay: (b.h + ' ' + (b.note || '') + ' ' +
+              b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+        href: href, num: ''
+      });
+    });
+  });
+  (GEO.confusions || []).forEach(function (c, i) {
+    searchIndex.push({
+      kind: 'geography', id: 'gcmp-' + i, no: '', title: c.k,
+      sub: 'Geography \u00b7 confused pair', near: c.k.toLowerCase(),
+      hay: (c.k + ' ' + (c.note || '') + ' ' +
+            c.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+      href: '#/geography/confusions', num: ''
+    });
+  });
 
   /* Every Congress session, by year, by place and by president — those are
      the three ways a question can name the same thing, so all three have to
@@ -3393,14 +5115,22 @@ function buildIndex() {
      SUBJECT reaches its article number - the reverse of what the article
      entries above do, and the whole point of the map. */
   (function () {
-    var view = { framework: 'map', groups: 'map', courts: 'courts' };
+    var view = { framework: 'map', groups: 'map', courts: 'courts',
+                 centrestate: 'centre-state' };
     Object.keys(view).forEach(function (key) {
       (AMAP[key] || []).forEach(function (b, i) {
         searchIndex.push({
           kind: 'article map', id: key + '-' + i, no: '', title: b.h,
-          sub: key === 'courts' ? 'The courts, article by article' : 'The article map',
-          near: b.h.toLowerCase(),
+          sub: key === 'courts' ? 'The courts, article by article'
+             : key === 'centrestate' ? 'Centre and State' : 'The article map',
+          /* "centre state" without the hyphen is how it gets typed, and the
+             hyphenated form in the headings does not match it, so the whole
+             topic was unreachable by its own name. */
+          near: (b.h + (key === 'centrestate'
+            ? ' centre state centre-state center state union state relations federalism seventh schedule'
+            : '')).toLowerCase(),
           hay: (b.h + ' ' + (b.note || '') + ' ' +
+                (key === 'centrestate' ? 'centre state centre-state center state relations federalism ' : '') +
                 b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
           href: '#/high-yield/' + view[key], num: ''
         });
@@ -3408,16 +5138,76 @@ function buildIndex() {
     });
   })();
 
+  /* Advanced Maths, indexed three ways so that the box reaches the right
+     page whatever the reader types. A chapter name reaches the sheet. A
+     GROUP name ("the x + 1/x family", "alternate segment theorem") reaches
+     the sheet too, because that is where the formula is printed. And a
+     formula's own PROMPT is in the haystack, so searching "median" or
+     "frustum" or "componendo" lands on the chapter holding it rather than
+     on nothing. */
+  (MATH.chapters || []).forEach(function (c) {
+    var href = '#/maths/chapter/' + encodeURIComponent(c.id);
+    var all = c.blocks.map(function (b) {
+      return b.h + ' ' + b.rows.map(function (r) {
+        return r.p + ' ' + r.f + ' ' + r.d;
+      }).join(' ');
+    }).join(' ');
+    searchIndex.push({
+      kind: 'maths', id: c.id, no: '', title: c.n, sub: c.w,
+      near: (c.n + ' ' + c.w + ' ' + (c.intro || '')).toLowerCase(),
+      hay: (c.n + ' ' + (c.short || '') + ' ' + c.w + ' ' + (c.intro || '') + ' ' +
+            (c.band === 'arith' ? 'arithmetic ' : 'advance maths ') + all).toLowerCase(),
+      href: href, num: ''
+    });
+    c.blocks.forEach(function (b, i) {
+      searchIndex.push({
+        kind: 'maths', id: c.id + '-' + i, no: '', title: b.h, sub: c.n,
+        near: b.h.toLowerCase(),
+        hay: (b.h + ' ' + (b.note || '') + ' ' + b.rows.map(function (r) {
+          return r.p + ' ' + r.f + ' ' + r.d;
+        }).join(' ')).toLowerCase(),
+        href: href, num: ''
+      });
+    });
+    /* The drill is a page in its own right and has to be findable by name,
+       since "algebra drill" is a thing a reader types. */
+    searchIndex.push({
+      kind: 'maths', id: c.id + '-drill', no: '', title: c.n + ' \u2014 recall drill',
+      sub: 'Formula recall, one prompt at a time',
+      near: (c.n + ' recall drill practice formulas').toLowerCase(),
+      hay: (c.n + ' recall drill flashcard test myself formulas hidden ' + c.w).toLowerCase(),
+      href: '#/maths/recall/' + encodeURIComponent(c.id), num: ''
+    });
+    if (mathQcount(c.id)) {
+      searchIndex.push({
+        kind: 'maths', id: c.id + '-mcq', no: '', title: c.n + ' \u2014 practice questions',
+        sub: mathQcount(c.id) + ' questions with worked solutions',
+        near: (c.n + ' practice questions mcq').toLowerCase(),
+        hay: (c.n + ' practice questions mcq options solutions ' +
+              (MATHQ[c.id] || []).map(function (q) { return q.q; }).join(' ')).toLowerCase(),
+        href: '#/maths/practice/' + encodeURIComponent(c.id), num: ''
+      });
+    }
+  });
+
   SCHEDULES.forEach(function (s) {
     var extra = '';
     if (s.items) extra = s.items.map(function (e) { return e.t; }).join(' ');
     if (s.lists) Object.keys(s.lists).forEach(function (k) {
       extra += ' ' + k + ' ' + s.lists[k].map(function (e) { return e.t; }).join(' ');
     });
+    /* A reader types "schedule 7" or "7th schedule" far more often than
+       "seventh schedule", and the digit appears nowhere in the Schedule's own
+       name, so without these aliases the commonest query for this page misses
+       it entirely. The List names go into `near` as well as `hay` so that
+       "union list" ranks the Seventh Schedule near the article that creates
+       it rather than fifty entries below. */
+    var listNames = s.lists ? Object.keys(s.lists).join(' ') : '';
+    var alias = 'schedule ' + s.n + ' ' + ordinal(s.n) + ' schedule schedule ' + ordinal(s.n);
     searchIndex.push({
       kind: 'schedule', id: s.n, no: ORD[s.n], title: s.name + ' — ' + s.sub,
-      sub: s.stat, near: (s.sub + ' ' + s.p).toLowerCase(),
-      hay: (s.name + ' ' + s.sub + ' ' + s.p + ' ' + extra).toLowerCase(),
+      sub: s.stat, near: (s.sub + ' ' + listNames + ' ' + alias + ' ' + s.p).toLowerCase(),
+      hay: (s.name + ' ' + alias + ' ' + s.sub + ' ' + s.p + ' ' + extra).toLowerCase(),
       href: '#/schedule/' + s.n, num: ''
     });
   });
@@ -3466,6 +5256,9 @@ function runSearch(raw) {
           near = r.near || '';
       if (t.indexOf(q) >= 0) score += 120;
       if (t.indexOf(q) === 0) score += 60;
+      /* The page that IS the query beats a table that merely starts with it:
+         "akbar" is the emperor, before "Akbar's nine jewels". */
+      if (t === q) score += 150;
       /* A phrase like "basic structure" or "President's rule" is in no
          heading — it lives in the explanation and in the case holdings. Rank
          a whole-phrase hit there above a record that merely contains the
@@ -4163,6 +5956,178 @@ function sideBio(seg) {
   ];
 }
 
+/* ------------------------ the five subjects added since
+
+   Ancient and Medieval History, Advanced Maths, the new criminal laws,
+   Geography and the daily sets. Each one is a list of topics with one page
+   per topic, so each gets the same two things: where this page sits, and
+   every other page in the section with this one marked. */
+
+function sideEarly(seg) {
+  var k = seg[0] || '';
+  var topics = EARLY.topics || [], emps = EARLY.emperors || [];
+
+  if (k === 'topic') {
+    var t = earlyTopicById[seg[1]];
+    return [
+      t ? sFacts('This topic', [
+        ['Tables', String((t.blocks || []).length)],
+        ['Facts', String(earlyRows(t))],
+        ['Asked often', t.hy ? 'yes' : 'less so']
+      ]) : '',
+      sLinks('The other topics', topics.map(function (x) {
+        return { href: '#/early/topic/' + encodeURIComponent(x.id), t: x.n,
+                 on: t && x.id === t.id };
+      }), null, 12)
+    ];
+  }
+
+  if (k === 'emperor') {
+    var e = emperorById[seg[1]];
+    if (!e) return [];
+    return [
+      sFacts('The reign', [
+        ['Reigned', e.from === e.to ? String(e.from) : e.from + '–' + e.to],
+        e.full ? ['In full', e.full] : null,
+        e.born ? ['Born', e.born] : null,
+        e.died ? ['Died', e.died] : null,
+        e.tomb ? ['Tomb', e.tomb] : null
+      ]),
+      sLinks('The emperors, in order', emps.map(function (x) {
+        return { href: '#/early/emperor/' + encodeURIComponent(x.id),
+                 k: x.from === x.to ? String(x.from) : String(x.from),
+                 t: x.n, on: x.id === e.id };
+      }), null, 20)
+    ];
+  }
+
+  if (k === '') {
+    return [sFacts('Ancient and Medieval', [
+      ['Topics', String(topics.length)],
+      ['Facts', String(topics.reduce(function (a, t) { return a + earlyRows(t); }, 0))],
+      ['Mughal rulers', String(emps.length)],
+      ['Confused pairs', String((EARLY.confusions || []).length)]
+    ])];
+  }
+  return [];
+}
+
+function sideMath(seg) {
+  var k = seg[0] || '', chaps = MATH.chapters || [];
+  var c = mathChap[seg[1]];
+
+  /* Every chapter has three pages - the formulas, the recall drill and the
+     questions - and the one thing a reader always wants from any of them is
+     one of the other two. */
+  function trio(ch, now) {
+    return sLinks('This chapter', [
+      { href: '#/maths/chapter/' + encodeURIComponent(ch.id), t: 'The formulas',
+        d: mathRows(ch) + ' rows', on: now === 'chapter' },
+      { href: '#/maths/recall/' + encodeURIComponent(ch.id), t: 'The recall drill',
+        d: 'Cover the answer and say it', on: now === 'recall' },
+      mathQcount(ch.id) ? { href: '#/maths/practice/' + encodeURIComponent(ch.id),
+        t: 'The questions', d: mathQcount(ch.id) + ' asked in SSC papers',
+        on: now === 'practice' } : null
+    ], null, 3);
+  }
+
+  if (c && (k === 'chapter' || k === 'recall' || k === 'practice')) {
+    var band = null;
+    MATH_BANDS.forEach(function (b) { if (b[0] === c.band) band = b; });
+    return [
+      trio(c, k),
+      sFacts('Where it sits', [
+        band ? ['Band', band[1]] : null,
+        ['Formulas here', String(mathRows(c))],
+        ['Questions here', String(mathQcount(c.id))],
+        ['Asked often', c.hy ? 'yes' : 'less so']
+      ]),
+      sLinks('Every chapter', chaps.map(function (x) {
+        return { href: '#/maths/chapter/' + encodeURIComponent(x.id), t: x.n,
+                 d: mathRows(x) + ' rows · ' + mathQcount(x.id) + ' questions',
+                 on: x.id === c.id };
+      }), null, 20)
+    ];
+  }
+
+  if (k === '' || k === 'review') {
+    return [sFacts('Advanced Maths', [
+      ['Chapters', String(chaps.length)],
+      ['Formulas', String(mathAllRows())],
+      ['Questions', String(chaps.reduce(function (a, x) { return a + mathQcount(x.id); }, 0))]
+    ])];
+  }
+  return [];
+}
+
+function sideLaw(seg) {
+  var topics = LAW.topics || [];
+  if ((seg[0] || '') === 'topic') {
+    var t = lawTopicById[seg[1]];
+    return [
+      t ? sFacts('This topic', [
+        ['Tables', String((t.blocks || []).length)],
+        ['Provisions', String(lawRows(t))],
+        ['Asked often', t.hy ? 'yes' : 'less so']
+      ]) : '',
+      sLinks('The other topics', topics.map(function (x) {
+        return { href: '#/laws/topic/' + encodeURIComponent(x.id), t: x.n,
+                 on: t && x.id === t.id };
+      }), null, 12)
+    ];
+  }
+  if ((seg[0] || '') === '') {
+    return [sFacts('The new criminal laws', [
+      ['Acts', '3'],
+      ['Topics', String(topics.length)],
+      ['Provisions', String(lawAllRows())],
+      ['Confused pairs', String((LAW.confusions || []).length)],
+      ['In force from', '1 July 2024']
+    ])];
+  }
+  return [];
+}
+
+function sideGeo(seg) {
+  var topics = GEO.topics || [];
+  if ((seg[0] || '') === 'topic') {
+    var t = geoTopicById[seg[1]];
+    return [
+      t ? sFacts('This topic', [
+        ['Tables', String((t.blocks || []).length)],
+        ['Facts', String(geoRows(t))],
+        ['Asked often', t.hy ? 'yes' : 'less so']
+      ]) : '',
+      sLinks('The other topics', topics.map(function (x) {
+        return { href: '#/geography/topic/' + encodeURIComponent(x.id), t: x.n,
+                 on: t && x.id === t.id };
+      }), null, 12)
+    ];
+  }
+  if ((seg[0] || '') === '') {
+    return [sFacts('Geography', [
+      ['Topics', String(topics.length)],
+      ['Facts', String(topics.reduce(function (a, t) { return a + geoRows(t); }, 0))],
+      ['Confused pairs', String((GEO.confusions || []).length)]
+    ])];
+  }
+  return [];
+}
+
+function sideDaily(seg) {
+  var cur = dailyById[seg[0] || ''];
+  return [
+    cur ? sFacts('This set', [
+      ['Date', cur.d + ' ' + cur.y],
+      ['Parts', String((cur.parts || []).length)]
+    ]) : '',
+    sLinks('The sets', DAILY_SETS.map(function (d) {
+      return { href: '#/daily/' + encodeURIComponent(d.id), k: String(d.y),
+               t: d.d, on: cur && d.id === cur.id };
+    }), null, 20)
+  ];
+}
+
 /* ----------------------------------------------------- one for every page
 
    Whatever else a page has beside it, it gets a way on to the rest of its
@@ -4226,6 +6191,11 @@ function sideFor(seg) {
   else if (k === 'economy') out = sideEcon(seg.slice(1));
   else if (k === 'gk') out = sideGk(seg.slice(1));
   else if (k === 'biology') out = sideBio(seg.slice(1));
+  else if (k === 'early') out = sideEarly(seg.slice(1));
+  else if (k === 'maths') out = sideMath(seg.slice(1));
+  else if (k === 'laws') out = sideLaw(seg.slice(1));
+  else if (k === 'geography') out = sideGeo(seg.slice(1));
+  else if (k === 'daily') out = sideDaily(seg.slice(1));
 
   /* An article belongs to its Part, which IS one of the Constitution's
      topics, so say so rather than leaving it to be guessed. */
@@ -4360,7 +6330,13 @@ qBox.addEventListener('keydown', function (e) {
 });
 
 resBox.addEventListener('click', function (e) {
-  if (e.target.closest('.res')) { qBox.value = ''; closeResults(); }
+  /* A result for the page you are already on changes no hash, so nothing
+     would happen; a daily set's tables all share their part's address. */
+  var hit = e.target.closest('.res');
+  if (hit) {
+    qBox.value = ''; closeResults();
+    if (hit.getAttribute('href') === location.hash) { e.preventDefault(); route(); }
+  }
 });
 
 document.addEventListener('keydown', function (e) {
@@ -4482,7 +6458,7 @@ document.addEventListener('click', function (e) {
       '<div class="label tight">Install</div><h2>' + esc(d.t) + '</h2>' +
       '<ol>' + d.s.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ol>' +
       (d.n ? '<p class="note">' + esc(d.n) + '</p>' : '') +
-      '<p class="note">Once installed it opens in its own window, keeps all four subjects on ' +
+      '<p class="note">Once installed it opens in its own window, keeps every subject on ' +
       'the device, and works with no network at all.</p></div>';
     sheet.hidden = false;
     var x = sheet.querySelector('.sheetx');
