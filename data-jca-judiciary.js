@@ -1,14 +1,14 @@
-/* The Rule Book - data-judiciary.js
-   The judiciary provisions of the Constitution: the 15-question section of
-   the Supreme Court JCA 2026 objective test.
+/* The Article Machine - data-jca-judiciary.js
+   The JCA section, part one: the judiciary provisions of the Constitution,
+   the 15-question section of the Supreme Court JCA 2026 objective test.
 
    What is extracted and what is written. The official text of every article
-   is NOT copied into this file. The article pages read it from
-   ../data-articles.js, the Article Machine's verbatim extract of The
-   Constitution of India [As on 1st May, 2024], together with its plain-English
-   notes and cases, so the two sites cannot drift apart. Everything in this
-   file is written for this site: the notes, the tables, the confused pairs and
-   the questions, each checked against that official text.
+   is NOT copied into this file: the JCA pages link to the site's own article
+   pages, which print it verbatim from The Constitution of India [As on 1st
+   May, 2024] with the plain-English note and the cases, so the two can never
+   drift apart. Everything in this file is written for the JCA section: the
+   notes, the tables, the confused pairs and the questions, each checked
+   against that official text.
 
    Two kinds of statement. Constitutional text is firm. Current facts (the
    Chief Justice, the strength of the Court, the number of High Courts) carry

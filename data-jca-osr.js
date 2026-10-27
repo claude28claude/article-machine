@@ -1,10 +1,11 @@
-/* The Rule Book - data-osr.js
-   The Supreme Court Officers and Servants (Conditions of Service and Conduct)
-   Rules, 1961: the 10-question section of the Supreme Court JCA 2026
-   objective test, and the rules a Junior Court Assistant will serve under.
+/* The Article Machine - data-jca-osr.js
+   The JCA section, part three: the Supreme Court Officers and Servants
+   (Conditions of Service and Conduct) Rules, 1961, the 10-question section of
+   the Supreme Court JCA 2026 objective test, and the rules a Junior Court
+   Assistant will serve under.
 
    How firm this is. The consolidated text on the Supreme Court's website
-   (amended up to 6 November 2024) could not be fetched for this site, so
+   (amended up to 6 November 2024) could not be fetched for this section, so
    nothing here is quoted from it. Rule numbers and headings were checked
    against the indexed text of that official PDF and the Court's own amendment
    notices; the 2025 reservation change against the Court's roster documents
@@ -12,7 +13,7 @@
    `chk: 1`. Rules whose headings could not be confirmed are left out rather
    than guessed.
 
-   Fields: as in data-judiciary.js.                                           */
+   Fields: as in data-jca-judiciary.js.                                           */
 
 window.JCA = window.JCA || {};
 
