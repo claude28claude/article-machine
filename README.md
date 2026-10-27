@@ -67,6 +67,67 @@ it.
 
 One page, no framework, no build step, no network calls, no tracking.
 
+**A second site lives in `jca/`: The Rule Book**, the law paper of the
+Supreme Court Junior Court Assistant 2026 objective test, at
+<https://claude28claude.github.io/article-machine/jca/>. It shares this
+site's stylesheet, fonts and official text of the Constitution; see
+[The Rule Book](#the-rule-book-jca) below.
+
+---
+
+## The Rule Book (`jca/`)
+
+The three law sections of the Supreme Court JCA 2026 objective test, which
+are 35 of its 100 questions and the only part of the paper with a fixed text
+behind it:
+
+| Section | Questions on the paper | On the site |
+|---|---|---|
+| Judiciary provisions in the Constitution | 15 | 7 topics, the 62 articles from 32 to 361 that matter, **102** questions |
+| Supreme Court Rules, 2013 | 10 | 9 topics, all **57** Orders mapped, **70** questions |
+| SC Officers and Servants Rules, 1961 | 10 | 6 topics, **53** questions |
+
+English, aptitude, general knowledge and computers are left out on purpose
+for now.
+
+**It is a separate installable app, not a tenth subject.** It has its own
+shell, router, manifest and service worker (scope `jca/`, cache
+`rule-book-*`), and reads `../styles.css`, `../fonts/`, `../data-articles.js`,
+`../data-cases.js` and four of the `data-plain-*.js` files from this site
+rather than copying them. An article page there shows exactly the official
+text and plain-English note that this site shows, and a fix here reaches
+both. Where the official edition still prints the struck-down NJAC wording
+(Articles 124, 127, 128, 217, 222, 224, 224A, 231), the page says which
+wording operates.
+
+**Three ways to work.** Every topic page carries JCA notes (the same
+highlighted one-liners as the SSC notes here), fact tables and confused
+pairs. Practice is one question at a time with the reason for the answer;
+the rule a question tests is shown only after it is answered, because shown
+first it would answer the "which Order" questions by itself. The mock test is
+the law block at the paper's pace: 35 questions in the 15/10/10 split, 32
+minutes, minus 0.25 for a wrong answer, with a palette, mark-for-review, and
+a clock that survives a reload. Both prefer the questions you have tried
+least.
+
+**How firm the rule-book material is.** The bare text of the two rule books
+could not be fetched while the site was written, so nothing in
+`data-scr.js` or `data-osr.js` is quoted from it. Every Order heading and
+every rule a question tests was checked against at least two independent
+copies or reports of the text; a statement with one source is flagged
+`chk: 1` and printed with a "check the bare text" mark, and rules whose
+headings could not be confirmed are left out. The 1966 Rules number many
+things differently, and the site uses the 2013 numbering throughout.
+
+**What it remembers**, in `localStorage` only, every access wrapped:
+`rb.wrong.v1` (questions answered wrong, until answered right),
+`rb.seen.v1` (right and wrong counts per question), `rb.mocks.v1` and
+`rb.mock.last.v1` (mock history and the last result), `rb.mock.live.v1`
+(a test in progress). Questions are keyed by a hash of their wording, so
+adding a question never moves anyone's marks.
+
+The icons come from `tools/make-jca-icons.py`.
+
 ---
 
 ## What is in it
