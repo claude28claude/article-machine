@@ -3541,7 +3541,10 @@ function mathWireQuiz() {
     var next = e.target.closest('[data-act]');
     if (next) {
       var act = next.getAttribute('data-act');
-      if (act === 'next')  { q.i++; q.answered = false; mathDrawQuiz(); return; }
+      /* On a phone the Next button sits below the solution; the next question
+         goes just under the header, not the page top, where the intro would
+         push it off the screen. */
+      if (act === 'next')  { q.i++; q.answered = false; mathDrawQuiz(); jcaScrollTo(box); return; }
       if (act === 'again') { mathPracticePage(q.id); return; }
       return;
     }
@@ -3578,8 +3581,21 @@ function mathWireQuiz() {
         ', ' + esc(it.o[it.a]) + '.') + '</b> ' + esc(it.s) + '</div>' +
       '<div class="stack"><button class="pill big" type="button" data-act="next">' +
       (q.i + 1 >= q.order.length ? 'See the score' : 'Next question') + '</button></div>';
+    /* Focused, so Enter moves on: the same keys as JCA practice. */
+    var nb = box.querySelector('[data-act="next"]');
+    if (nb) nb.focus({ preventScroll: true });
   });
 }
+
+/* A to D (or 1 to 4) answer the question on screen. */
+document.addEventListener('keydown', function (e) {
+  if (!mathQuiz || mathQuiz.answered || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+  var k = e.key.toLowerCase(), oi = 'abcd'.indexOf(k);
+  if (oi < 0 && /^[1-4]$/.test(k)) oi = parseInt(k, 10) - 1;
+  var opt = oi >= 0 && document.querySelector('#mquiz .mopt[data-pick="' + oi + '"]');
+  if (opt) { e.preventDefault(); opt.click(); }
+});
 
 /* -------------------------------------------------------------- the review
 
@@ -4264,7 +4280,8 @@ function jcaLoad(key, dflt) {
     var raw = localStorage.getItem(key);
     if (raw) return JSON.parse(raw);
   } catch (e) { /* fall through to memory */ }
-  return JCA_MEM.hasOwnProperty(key) ? JCA_MEM[key] : dflt;
+  /* A key saved as null (a finished test, a cleared list) is absent, not null. */
+  return JCA_MEM[key] != null ? JCA_MEM[key] : dflt;
 }
 function jcaSave(key, val) {
   JCA_MEM[key] = val;
@@ -4673,7 +4690,7 @@ function jcaWireQuiz() {
     var act = e.target.closest('[data-act]');
     if (act) {
       var a = act.getAttribute('data-act');
-      if (a === 'next' && jcaQuiz) { jcaQuiz.i++; jcaQuiz.answered = false; jcaDrawQuiz(); jumpToTop(); }
+      if (a === 'next' && jcaQuiz) { jcaQuiz.i++; jcaQuiz.answered = false; jcaDrawQuiz(); jcaScrollTo(box); }
       else if (a === 'again') route();
       return;
     }
@@ -4888,7 +4905,10 @@ function jcaConfirmSubmit(live) {
   document.getElementById('jcno').addEventListener('click', close);
   document.getElementById('jcyes').addEventListener('click', function () {
     close();
-    jcaFinishMock(jcaLoad(JK_LIVE, live));
+    /* The clock may have run out and handed the test in while this was open. */
+    var cur = jcaLoad(JK_LIVE, null);
+    if (cur) jcaFinishMock(cur);
+    else location.hash = '#/jca/mock/result';
   });
   document.getElementById('jcyes').focus();
 }
@@ -6059,6 +6079,18 @@ function buildIndex() {
           href: href, num: ''
         });
       });
+    });
+  });
+  /* The JCA tools themselves, so "mock" or "wrong answers" is one search away. */
+  [['Mock test', '#/jca/mock', '35 questions, 32 minutes, minus 0.25 for a wrong answer', 'mock test timed exam paper negative marking'],
+   ['Practice', '#/jca/practice', 'Every topic, twenty mixed, or one section', 'practice practise questions mcq quiz'],
+   ['Review', '#/jca/review', 'Your wrong answers and every mock score', 'review wrong answers mistakes mock history score'],
+   ['Only my wrong answers', '#/jca/practice/wrong', 'Practise the questions you got wrong', 'wrong answers mistakes revise']
+  ].forEach(function (x, i) {
+    searchIndex.push({
+      kind: 'jca', id: 'jcatool-' + i, no: '', title: x[0], sub: 'JCA \u00b7 ' + x[2],
+      near: x[0].toLowerCase(), hay: (x[0] + ' ' + x[3] + ' jca junior court assistant').toLowerCase(),
+      href: x[1], num: ''
     });
   });
   ((jcaSec.r && jcaSec.r.orders) || []).forEach(function (o) {
@@ -7358,8 +7390,13 @@ function route() {
   recordStep(location.hash || '#/');
   lastHash = location.hash || '#/';
   closeResults();
+  /* A dialog belongs to the page that opened it: the mock's Submit box must not
+     outlive the test it would submit. */
+  var sheet = document.getElementById('sheet');
+  if (sheet && !sheet.hidden) { sheet.hidden = true; sheet.innerHTML = ''; }
   jcaStopTick();
   jcaQuiz = null;
+  mathQuiz = null;
   jumpToTop();
 
   renderNav(seg);
