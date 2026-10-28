@@ -107,9 +107,10 @@ article page that already exists, with its official text, plain-English note
 and cases, and that article page carries a JCA card back (the questions that
 test it, and a warning where the official edition still prints the
 struck-down NJAC wording). The two rule books exist nowhere else on the site.
-Its data is `data-jca-judiciary.js`, `data-jca-scr.js` and `data-jca-osr.js`.
+Its data is `data-jca-judiciary.js`, `data-jca-scr.js` and `data-jca-osr.js`,
+with the mind maps in `data-jca-maps.js`.
 
-**Three ways to work.** Every topic page carries JCA notes (the SSC-note box,
+**Four ways to work.** Every topic page carries JCA notes (the SSC-note box,
 relabelled), fact tables and confused pairs. Practice is one question at a
 time with the reason for the answer; the rule a question tests is shown only
 after it is answered, because shown first it would answer the "which Order"
@@ -117,6 +118,24 @@ questions by itself. The mock test is the law block at the paper's pace: 35
 questions in the 15/10/10 split, 32 minutes, minus 0.25 for a wrong answer,
 with a palette, mark-for-review, and a clock that survives a reload. Both
 prefer the questions you have tried least.
+
+**Mind maps** (`#/jca/maps`). One map for each of the 23 topics and an
+overview of each part: the notes reduced to keywords, 568 lines on 26 maps.
+Nothing on them is new; every line is taken from the checked notes, and a
+point the notes flag as resting on one source is left off, so nothing on a
+map needs checking before it is learnt. A branch may carry a hook, a line
+made to be said aloud ("Judge 5, Advocate 10, or a Jurist").
+
+On a wide screen the branches stand either side of the centre and SVG curves
+join them to it; the curves are measured off the laid-out page, so they are
+redrawn on a resize, once the fonts arrive, and when covering changes the
+layout. Below 900px the same markup becomes a tree down the left edge (the
+columns turn into `display: contents`), so a map never scrolls sideways.
+**Cover the details** turns a map into a recall drill: the branch names and
+the keys (an article, an Order, a rule) stay as prompts, every line becomes
+a blank bar the length of its words, and a tap, Enter or Space uncovers it.
+The words are made invisible rather than removed, so uncovering moves
+nothing. The maps take the whole width: they have no side column.
 
 **How firm the rule-book material is.** The Court's website cannot be
 reached from where this was written, so the two rule books were read in
@@ -663,6 +682,8 @@ of them so a reader can check what a summary lost.
 | `data-early.js` | Ancient and Medieval History: Jainism and its councils, and the Mughals |
 | `data-geography.js` | Geography: 7 topics, 260 facts, the Himalayas in full, 10 confused pairs |
 | `data-laws.js` | The BNS, BNSS and BSA: dates, counts, the new offences, and the IPC mapping |
+| `data-jca-judiciary.js`, `data-jca-scr.js`, `data-jca-osr.js` | The JCA law paper: notes, tables, confused pairs and 543 questions |
+| `data-jca-maps.js` | The 26 JCA mind maps, every line taken from those three files |
 | `data-daily.js` | The dated daily study sets: current affairs, and recaps of what was added |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline. A data file whose new fields app.js now reads carries a `?v=` query in `index.html` and in `ASSETS`; bump it on such a deploy, or the first visit afterwards pairs new code with old cached data |
