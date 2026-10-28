@@ -3,103 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Rule Book: Supreme Court JCA law paper</title>
-<meta name="description" content="The 35-mark law block of the Supreme Court Junior Court Assistant 2026 objective test, in one place: the judiciary provisions of the Constitution (15 questions) with the official text of every article, the Supreme Court Rules, 2013 (10 questions) with all 57 Orders mapped, and the Supreme Court Officers and Servants Rules, 1961 (10 questions). Notes, tables, confused pairs, 225 practice questions with explanations, a timed mock test with negative marking, and a review list of what you got wrong. Works offline, installable.">
-<meta name="theme-color" content="#0b0b0f">
+<title>JCA has moved into the Article Machine</title>
+<meta name="robots" content="noindex">
 <meta name="color-scheme" content="dark">
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="application-name" content="The Rule Book">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Rule Book">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="icon-180.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%230b0b0f'/%3E%3Ccircle cx='50' cy='50' r='31' fill='none' stroke='%23c9a227' stroke-width='6'/%3E%3Cpath d='M50 31 V69 M35 38 H65 M40 69 H60' stroke='%23c9a227' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M35 38 L28 53 H42 Z M65 38 L58 53 H72 Z' fill='none' stroke='%23c9a227' stroke-width='3' stroke-linejoin='round'/%3E%3C/svg%3E">
-<!-- The stylesheet and the fonts are the Article Machine's own, one level up,
-     so the two sites cannot drift apart in how they look. jca.css carries only
-     what this site adds: the countdown, the mock test and its palette. -->
-<link rel="preload" href="../fonts/inter-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="../fonts/literata-400.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../styles.css">
-<link rel="stylesheet" href="jca.css">
+<!-- The JCA section was its own app at this address for its first day. It
+     now lives inside the Article Machine at #/jca, so this page forwards
+     there, carrying the old address across: #/c/sc-bench becomes
+     #/jca/c/sc-bench, and an article (#/a/124) goes to the site's own
+     article page. With scripts off, the link below does the same job. -->
+<style>
+  html,body{margin:0;background:#0b0b0f;color:#f1efe9;font:17px/1.6 system-ui,sans-serif}
+  main{max-width:36rem;margin:18vh auto 0;padding:0 24px}
+  a{color:#e3b93c}
+</style>
+<script>
+(function () {
+  var h = location.hash.replace(/^#\/?/, '');
+  var first = h.split('/')[0];
+  var to;
+  if (first === 'a' || first === 'about') to = h;
+  else if (!h) to = 'jca';
+  else to = 'jca/' + h;
+  location.replace('../#/' + to);
+})();
+</script>
 </head>
 <body>
-
-<a class="skip" href="#main">Skip to content</a>
-
-<header class="top">
-  <div class="topin">
-    <a class="brand" href="#/" aria-label="The Rule Book, home">
-      <svg class="mk" viewBox="0 0 100 100" aria-hidden="true">
-        <circle cx="50" cy="50" r="31" fill="none" stroke="#e3b93c" stroke-width="6"/>
-        <path d="M50 31 V69 M35 38 H65 M40 69 H60" stroke="#e3b93c" stroke-width="4" stroke-linecap="round"/>
-        <path d="M35 38 L28 53 H42 Z M65 38 L58 53 H72 Z" fill="none" stroke="#e3b93c" stroke-width="3" stroke-linejoin="round"/>
-      </svg>
-      <span style="display:block">
-        <b>The Rule Book</b>
-        <span id="brandsub">Supreme Court JCA · law paper</span>
-      </span>
-    </a>
-
-    <div class="searchwrap">
-      <span class="ico" aria-hidden="true">⌕</span>
-      <input id="q" type="search" placeholder="Search…  try “136”, “curative”, “Order IV” or “probation”"
-             autocomplete="off" spellcheck="false" aria-label="Search the law paper"
-             aria-controls="results" aria-expanded="false">
-      <kbd>/</kbd>
-    </div>
-
-    <button id="install" class="installbtn" hidden aria-haspopup="dialog">
-      <span aria-hidden="true">↓</span> Install<span class="lbl"> app</span>
-    </button>
-  </div>
-
-  <nav class="tabs" id="tabs" aria-label="Sections"></nav>
-</header>
-
-<div id="results" hidden role="listbox" aria-label="Search results"></div>
-<div id="sheet" hidden></div>
-
-<main id="main" tabindex="-1"></main>
-
-<button type="button" class="backfab" id="backfab" aria-label="Go back a step" hidden>Back</button>
-
-<footer>
-  <div class="wrap">
-    <p><b>What this covers.</b> The three law sections of the Supreme Court Junior Court
-      Assistant 2026 objective test, 35 of its 100 questions: judiciary provisions in the
-      Constitution (15), the Supreme Court Rules, 2013 (10), and the Supreme Court Officers
-      and Servants (Conditions of Service and Conduct) Rules, 1961 (10). English, aptitude,
-      general knowledge and computers are deliberately left out for now.</p>
-    <p><b>Extracted.</b> The official text of every article is read from the Article
-      Machine's verbatim extract of <em>The Constitution of India [As on 1st May, 2024]</em>,
-      with its plain-English notes and cases, so the two sites say the same thing.</p>
-    <p><b>Written, and how firmly.</b> The notes, tables and questions on the two rule books
-      are written for this site. The bare text of the Rules could not be fetched while it
-      was written, so every Order heading and every rule used in a question was checked
-      against at least two independent copies or reports. Anything resting on one source is
-      marked <span class="chip chk">check the bare text</span>, and rules whose headings could
-      not be confirmed are left out rather than guessed. Read the bare text on the Supreme
-      Court's website before the exam: the Rules under <em>Supreme Court Rules</em>, the 1961
-      Rules under <em>Officers Servant Rules</em>.</p>
-    <p class="colophon">
-      No tracking. No network calls. Works offline once loaded. Your answers stay in this
-      browser. Press <kbd>/</kbd> to search, <kbd>Esc</kbd> to close.
-      Part of <a href="../">the Article Machine</a>.
-    </p>
-  </div>
-</footer>
-
-<script src="../data-articles.js"></script>
-<script src="../data-cases.js"></script>
-<script src="../data-plain-1.js"></script>
-<script src="../data-plain-2.js"></script>
-<script src="../data-plain-3.js"></script>
-<script src="../data-plain-5.js"></script>
-<script src="data-judiciary.js"></script>
-<script src="data-scr.js"></script>
-<script src="data-osr.js"></script>
-<script src="app.js"></script>
+<main>
+  <p>The JCA section has moved into the Article Machine.</p>
+  <p><a href="../#/jca">Open JCA in the Article Machine</a></p>
+</main>
 </body>
 </html>

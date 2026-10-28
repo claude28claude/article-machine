@@ -2464,9 +2464,9 @@ function hiMark(html) {
 function unmark(s) { return String(s == null ? '' : s).replace(/==/g, ''); }
 
 /* A box of highlighted one-liners: the page reduced to what to write down. */
-function notesBlock(notes, title) {
+function notesBlock(notes, title, label) {
   if (!notes || !notes.length) return '';
-  return '<aside class="ssc"><div class="ssch"><span class="sscl">SSC notes</span>' +
+  return '<aside class="ssc"><div class="ssch"><span class="sscl">' + esc(label || 'SSC notes') + '</span>' +
     (title ? '<span class="ssct">' + esc(title) + '</span>' : '') + '</div><ol>' +
     notes.map(function (n) { return '<li>' + hiMark(prose(n, 2)) + '</li>'; }).join('') +
     '</ol></aside>';
@@ -4141,6 +4141,1016 @@ SUBJECTS.push({
   route: dailyRoute
 });
 
+/* =========================================================================
+   SUBJECT: JCA
+
+   The law paper of the Supreme Court Junior Court Assistant 2026 objective
+   test: the three sections with a fixed text behind them, 35 of its 100
+   questions. Judiciary provisions of the Constitution (15), the Supreme
+   Court Rules, 2013 (10), and the Supreme Court Officers and Servants Rules,
+   1961 (10). English, aptitude, general knowledge and computers are not in
+   it, on purpose.
+
+   WHY ONE EXAM GETS A SUBJECT OF ITS OWN. Every other subject is organised
+   by what a thing is; this one is organised by what one paper asks. Its
+   Constitution part is not a second copy of the Constitution: it is the
+   articles that paper picks out, indexed by question, and every article in
+   it links to the article page that already exists here. The two rule books
+   exist nowhere else on the site.
+
+   WHY IT CARRIES ITS OWN QUESTIONS AND A TIMED MOCK. It is the one subject
+   studied against a date and a marking scheme. So practice gives the reason
+   for every answer and hides the rule a question tests until it is answered,
+   and the mock runs at the paper's pace with the paper's quarter-mark
+   deduction.
+
+   It was a separate app at jca/ for its first day; that address now
+   forwards here, and the marks it kept are carried over below.
+   ========================================================================= */
+
+var JCA = window.JCA || {};
+var JCA_SECS = [JCA.judiciary, JCA.scr, JCA.osr].filter(Boolean);
+var jcaSec = {};
+JCA_SECS.forEach(function (s) { jcaSec[s.id] = s; });
+
+/* The objective test date in the advertisement of 30 September 2026, which
+   marks it tentative. Month is 0-based. */
+var JCA_EXAM = { y: 2026, m: 10, d: 20, label: '20 November 2026' };
+
+/* The law block at the paper's pace: 35 of its 100 questions in the same
+   15/10/10 split, at 54 seconds a question (90 minutes for 100) rounded up
+   to 32 minutes, with a quarter mark off for a wrong answer. */
+var JCA_MOCK = { split: [['c', 15], ['r', 10], ['s', 10]], minutes: 32, neg: 0.25 };
+
+/* The judiciary articles in reading order, each filed under its topic, so
+   an article page can say which JCA topic it belongs to. */
+var JCA_ARTS = [], jcaArtTopic = {};
+if (jcaSec.c) jcaSec.c.topics.forEach(function (t) {
+  (t.arts || []).forEach(function (n) {
+    if (!jcaArtTopic[n] && byArt[n]) { jcaArtTopic[n] = t; JCA_ARTS.push(n); }
+  });
+});
+
+function jcaTopic(secId, tid) {
+  var s = jcaSec[secId], hit = null;
+  if (s) s.topics.forEach(function (t) { if (t.id === tid) hit = t; });
+  return hit;
+}
+
+function jcaTopicCount() {
+  return JCA_SECS.reduce(function (a, s) { return a + s.topics.length; }, 0);
+}
+
+/* A question is stored by a hash of its wording, not by its position, so
+   adding a question never moves anyone's marks onto a different one. */
+function jcaHash(s) {
+  var h = 5381;
+  for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(36);
+}
+
+var JCA_Q = [], JCA_QBY = {}, jcaQByArt = {};
+JCA_SECS.forEach(function (s) {
+  s.qs.forEach(function (q) {
+    var item = { id: s.id + '.' + jcaHash(q.q), sec: s, q: q };
+    JCA_Q.push(item);
+    JCA_QBY[item.id] = item;
+    /* "Art. 124(4)", "Arts. 32, 226", "Art. 125; Art. 112(3)(d)" */
+    String(q.r || '').split(';').forEach(function (part) {
+      if (!/^\s*Arts?\./.test(part)) return;
+      (part.replace(/\([^)]*\)/g, '').match(/\d{1,3}[A-Z]{0,2}/g) || []).forEach(function (n) {
+        (jcaQByArt[n] = jcaQByArt[n] || []).push(item.id);
+      });
+    });
+  });
+});
+
+function jcaQs(secId, tid) {
+  return JCA_Q.filter(function (x) {
+    return x.sec.id === secId && (!tid || x.q.t === tid);
+  }).map(function (x) { return x.id; });
+}
+
+/* --------------------------------------------------------------- storage
+
+   What you answer stays on this device. Every read falls back to a copy
+   held in memory for the visit, so with site data blocked the pages behave
+   the same and simply forget when the tab closes; a test in progress needs
+   that, or a blocked store would end it at the first tap. */
+
+var JK_WRONG = 'am.jca.wrong.v1';   /* { qid: 1 } */
+var JK_SEEN  = 'am.jca.seen.v1';    /* { qid: [right, wrong] } */
+var JK_MOCKS = 'am.jca.mocks.v1';   /* [ summary, newest first ] */
+var JK_LIVE  = 'am.jca.live.v1';    /* the test in progress */
+var JK_LAST  = 'am.jca.last.v1';    /* the last finished test, in full */
+
+/* The day this was its own app at jca/ it kept the same marks under rb.*.
+   Same origin, same browser, so they are carried over once. */
+(function () {
+  try {
+    [['rb.wrong.v1', JK_WRONG], ['rb.seen.v1', JK_SEEN], ['rb.mocks.v1', JK_MOCKS],
+     ['rb.mock.live.v1', JK_LIVE], ['rb.mock.last.v1', JK_LAST]].forEach(function (p) {
+      var old = localStorage.getItem(p[0]);
+      if (old === null) return;
+      if (localStorage.getItem(p[1]) === null) localStorage.setItem(p[1], old);
+      localStorage.removeItem(p[0]);
+    });
+  } catch (e) { /* no storage, nothing to carry */ }
+})();
+
+var JCA_MEM = {};
+function jcaLoad(key, dflt) {
+  try {
+    var raw = localStorage.getItem(key);
+    if (raw) return JSON.parse(raw);
+  } catch (e) { /* fall through to memory */ }
+  return JCA_MEM.hasOwnProperty(key) ? JCA_MEM[key] : dflt;
+}
+function jcaSave(key, val) {
+  JCA_MEM[key] = val;
+  try {
+    if (val === null) localStorage.removeItem(key);
+    else localStorage.setItem(key, JSON.stringify(val));
+  } catch (e) { /* fine */ }
+}
+
+function jcaMark(qid, ok) {
+  var seen = jcaLoad(JK_SEEN, {}), rec = seen[qid] || [0, 0];
+  rec[ok ? 0 : 1]++;
+  seen[qid] = rec;
+  jcaSave(JK_SEEN, seen);
+  var wrong = jcaLoad(JK_WRONG, {});
+  if (ok) delete wrong[qid]; else wrong[qid] = 1;
+  jcaSave(JK_WRONG, wrong);
+}
+
+function jcaWrongIds() {
+  return Object.keys(jcaLoad(JK_WRONG, {})).filter(function (id) { return JCA_QBY[id]; });
+}
+
+/* How far a set of questions has got: how many tried, and the share of
+   attempts that were right. */
+function jcaProgress(ids) {
+  var seen = jcaLoad(JK_SEEN, {}), tried = 0, r = 0, w = 0;
+  ids.forEach(function (id) {
+    var s = seen[id];
+    if (s) { tried++; r += s[0]; w += s[1]; }
+  });
+  return { tried: tried, total: ids.length, pct: (r + w) ? Math.round(100 * r / (r + w)) : null };
+}
+
+function jcaProgressLine(p) {
+  if (!p.tried) return 'Not started';
+  return p.tried + ' of ' + p.total + ' tried' + (p.pct === null ? '' : ' · ' + p.pct + ' per cent right');
+}
+
+function jcaPlural(n, one, many) { return n + ' ' + (n === 1 ? one : (many || one + 's')); }
+
+/* ------------------------------------------------------------ rendering */
+
+function jcaShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function jcaCrumb(items) {
+  return '<div class="crumb"><a href="#/jca">JCA</a>' + items.map(function (x) {
+    return ' → ' + (x[1] ? '<a href="' + x[1] + '">' + esc(x[0]) + '</a>' : esc(x[0]));
+  }).join('') + '</div>';
+}
+
+function jcaChk() { return '<span class="chip chk">check the bare text</span>'; }
+
+/* A table, as factsBlock draws one, plus two things this subject needs: an
+   article number anywhere in a row is a link, and a table resting on one
+   source carries the mark that says so. */
+function jcaFacts(g) {
+  return '<div class="block"><h3>' + esc(g.h) + (g.chk ? ' ' + jcaChk() : '') + '</h3>' +
+    (g.note ? '<p class="foot jcnote">' + hiMark(linkArts(g.note)) + '</p>' : '') +
+    '<dl class="facts">' + g.rows.map(function (r) {
+      return '<dt>' + hiMark(linkArts(r[0])) + '</dt><dd>' + hiMark(linkArts(r[1])) + '</dd>';
+    }).join('') + '</dl></div>';
+}
+
+function jcaDaysLeft() {
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return Math.round((new Date(JCA_EXAM.y, JCA_EXAM.m, JCA_EXAM.d) - today) / 86400000);
+}
+
+function jcaCountdown() {
+  var n = jcaDaysLeft();
+  var big = n > 1 ? n + ' days' : n === 1 ? '1 day' : n === 0 ? 'Today' : 'Done';
+  var line = n > 0 ? 'to the objective test on ' + JCA_EXAM.label + ' (tentative in the advertisement)'
+    : n === 0 ? 'The objective test is today. Read the JCA notes, not new material.'
+    : 'The objective test date (' + JCA_EXAM.label + ') has passed.';
+  return '<div class="jccount"><b>' + esc(big) + '</b><span>' + esc(line) + '</span></div>';
+}
+
+function jcaBar(p) {
+  var w = p.total ? Math.round(100 * p.tried / p.total) : 0;
+  return '<div class="jcbar"><span style="width:' + w + '%"></span></div>';
+}
+
+function jcaSecLine(s) {
+  return s.marks + ' marks · ' + jcaPlural(s.topics.length, 'topic') + ' · ' +
+    jcaPlural(jcaQs(s.id).length, 'question');
+}
+
+function jcaLiveBanner() {
+  var live = jcaLoad(JK_LIVE, null);
+  if (!live || !live.ids) return '';
+  var left = Math.max(0, live.start + live.dur - Date.now());
+  return '<div class="mresume"><b>A mock test is running</b><span>' +
+    (left ? Math.ceil(left / 60000) + ' minutes left on the clock, which keeps running while you are away.'
+          : 'Its time is up; open it to see the score.') +
+    '</span><a class="pill big" href="#/jca/mock">' + (left ? 'Back to the test' : 'See the score') + '</a></div>';
+}
+
+/* ------------------------------------------------------------------ home */
+
+function jcaHome() {
+  var wrong = jcaWrongIds().length;
+  var h = jcaShell('<div class="crumb">JCA</div>' +
+    pageH1('The Supreme Court JCA law paper, all 35 marks of it',
+      'Judiciary provisions of the Constitution (15 questions), the Supreme Court Rules, 2013 (10) ' +
+      'and the Supreme Court Officers and Servants Rules, 1961 (10): the notes, the tables, and ' +
+      JCA_Q.length + ' questions with the reason for every answer.') +
+    jcaCountdown() +
+    '<div class="figs">' + fig(JCA_Q.length, 'questions') + fig(jcaTopicCount(), 'topics') +
+      fig(JCA_ARTS.length, 'articles') + fig(((jcaSec.r && jcaSec.r.orders) || []).length, 'Orders mapped') +
+    '</div>' + jcaLiveBanner() +
+
+    '<div class="label stack-lg">Start here</div><div class="mmodes jcmodes">' +
+      '<a class="mmode" href="#/jca/mock"><b>Mock test</b><i>35 questions · ' + JCA_MOCK.minutes +
+        ' minutes · minus ' + JCA_MOCK.neg + '</i></a>' +
+      '<a class="mmode" href="#/jca/practice/mixed"><b>Twenty mixed</b><i>From all three sections, least-tried first</i></a>' +
+      '<a class="mmode" href="' + (wrong ? '#/jca/practice/wrong' : '#/jca/r/scr-orders') + '"><b>' +
+        (wrong ? 'Your ' + jcaPlural(wrong, 'wrong answer') : 'Every Order, in one table') + '</b><i>' +
+        (wrong ? 'Until each one is right' : 'The 57 Orders of the 2013 Rules') + '</i></a>' +
+    '</div>' +
+
+    '<div class="label stack-lg">The three sections</div><div class="grid">' +
+    JCA_SECS.map(function (s) {
+      var p = jcaProgress(jcaQs(s.id));
+      return '<a class="pcard" href="#/jca/' + s.id + '"><div class="pn">' + s.marks + ' of the 100 questions</div>' +
+        '<div class="pt">' + esc(s.name) + '</div><div class="jcdesc">' + esc(shorten(s.lede, 140)) + '</div>' +
+        jcaBar(p) + '<div class="pr">' + esc(jcaSecLine(s)) + '</div>' +
+        '<div class="pr">' + esc(jcaProgressLine(p)) + '</div></a>';
+    }).join('') + '</div>' +
+
+    '<div class="block"><h3>The paper, and where this subject fits</h3>' +
+    '<p class="foot jcnote">The objective test as the 2026 advertisement is reported: 100 questions, ' +
+    '90 minutes, a quarter mark off for a wrong answer, 50 to qualify. The law block is the part with ' +
+    'a fixed text behind it, so it repays revision more than any other.</p>' +
+    '<dl class="facts jcpaper">' + [
+      ['General English, with comprehension', '20', 0],
+      ['General Aptitude', '15', 0],
+      ['General Knowledge', '15', 0],
+      ['Judiciary provisions in the Constitution', '15', 'c'],
+      ['Supreme Court Rules, 2013', '10', 'r'],
+      ['SC Officers and Servants Rules, 1961', '10', 's'],
+      ['Computer Knowledge', '15', 0]
+    ].map(function (r) {
+      return '<dt>' + (r[2] ? '<a href="#/jca/' + r[2] + '">' + esc(r[0]) + '</a>' : '<span class="jcout">' + esc(r[0]) + '</span>') +
+        '</dt><dd>' + r[1] + ' questions' + (r[2] ? ' · <b class="jcin">here</b>' : ' · not covered here') + '</dd>';
+    }).join('') + '</dl></div>' + jcaPlan() +
+
+    '<div class="block"><h3>How firm this is</h3><p class="plain">The official text of every article is the ' +
+    'site\'s own verbatim extract. The notes and questions on the two rule books are written, not quoted: ' +
+    'their bare text could not be fetched while they were written, so every Order heading and every rule a ' +
+    'question tests was checked against at least two independent sources. A point with one source carries ' +
+    jcaChk() + ', and rules whose headings could not be confirmed are left out. Read both rule books once ' +
+    'in full on the Supreme Court\'s website before the test.</p>' +
+    '<div class="stack"><a class="pill big" href="https://www.sci.gov.in/supreme-court-rules-2013/" rel="noopener">' +
+    'Supreme Court Rules, 2013</a> <a class="pill big" href="https://www.sci.gov.in/officers-servant-rules/" rel="noopener">' +
+    'Officers and Servants Rules, 1961</a></div></div>');
+  render(h);
+}
+
+/* A suggestion for the days that are left, worked out from the clock. The
+   two rule books come first because they are short, fixed and new to most
+   candidates, which makes them the cheapest marks on the paper. */
+function jcaPlan() {
+  var n = jcaDaysLeft();
+  if (n <= 0) return '';
+  if (n < 4) {
+    return '<div class="block"><h3>The last ' + jcaPlural(n, 'day') + '</h3><p class="plain">No new ' +
+      'material now. Read the JCA notes of every topic, take one mock test, and clear the review list.</p></div>';
+  }
+  var a = Math.round(n * 0.4), b = Math.round(n * 0.35), c = n - a - b;
+  return '<div class="block"><h3>A plan for the ' + jcaPlural(n, 'day') + ' left</h3>' +
+    '<p class="foot jcnote">A suggestion, not a rule.</p><dl class="facts">' +
+    '<dt>Next ' + jcaPlural(a, 'day') + '</dt><dd>The SC Rules 2013 and the 1961 Rules: read each topic, then practise it until you score above 80 per cent.</dd>' +
+    '<dt>Then ' + jcaPlural(b, 'day') + '</dt><dd>The Constitution topics, with the official text of every article you get wrong.</dd>' +
+    '<dt>Last ' + jcaPlural(c, 'day') + '</dt><dd>A mock test every other day, and the review list on the days between.</dd>' +
+    '</dl></div>';
+}
+
+/* --------------------------------------------------------------- sections */
+
+function jcaTopicCard(s, t, practise) {
+  var ids = jcaQs(s.id, t.id), p = jcaProgress(ids);
+  return '<a class="topic" href="#/jca/' + (practise ? 'practice/' : '') + s.id + '/' + encodeURIComponent(t.id) + '">' +
+    '<b>' + esc(t.t) + '</b>' + (practise ? '' : '<i>' + esc(t.w) + '</i>') +
+    '<em>' + jcaPlural(ids.length, 'question') + (p.tried ? ' · ' + p.tried + ' tried' +
+    (p.pct === null ? '' : ', ' + p.pct + '% right') : '') + '</em></a>';
+}
+
+function jcaSectionPage(s) {
+  var ids = jcaQs(s.id);
+  var h = jcaCrumb([[s.short]]) +
+    '<div class="pagehead"><p class="eyebrow">' + s.marks + ' of the 100 questions</p>' +
+    '<h1>' + esc(s.name) + '</h1><p class="lede">' + esc(s.lede) + '</p>' +
+    '<div class="stack"><a class="pill big" href="#/jca/practice/' + s.id + '">Practise all ' + ids.length +
+    ' questions</a> <a class="pill big" href="#/jca/mock">Mock test</a>' +
+    (s.id === 'r' ? ' <a class="pill big" href="#/jca/r/scr-orders">Every Order, in one table</a>' : '') +
+    '</div></div>';
+
+  h += '<div class="block"><h3>The topics</h3><div class="topics">' +
+    s.topics.map(function (t) { return jcaTopicCard(s, t); }).join('') + '</div></div>';
+
+  /* The Constitution part lists every article it covers, each a link to the
+     article's own page with the official text. */
+  if (s.id === 'c') {
+    s.topics.forEach(function (t) {
+      if (!t.arts || !t.arts.length) return;
+      h += '<div class="block"><h3><a class="jch3a" href="#/jca/c/' + t.id + '">' + esc(t.t) + '</a></h3>' +
+        t.arts.map(function (n) { return byArt[n] ? artRow(byArt[n]) : ''; }).join('') + '</div>';
+    });
+  }
+  render(jcaShell(h));
+}
+
+function jcaOrders() {
+  var orders = (jcaSec.r && jcaSec.r.orders) || [], groups = [], at = {};
+  orders.forEach(function (o) {
+    if (!at.hasOwnProperty(o[2])) { at[o[2]] = groups.length; groups.push({ g: o[2], rows: [] }); }
+    groups[at[o[2]]].rows.push(o);
+  });
+  return groups.map(function (g) {
+    var first = g.rows[0][0], last = g.rows[g.rows.length - 1][0];
+    return '<div class="block"><h3>' + esc(g.g) + ' · ' +
+      (first === last ? 'Order ' + first : 'Orders ' + first + ' to ' + last) + '</h3>' +
+      '<dl class="facts jcorders">' + g.rows.map(function (o) {
+        return '<dt>Order ' + esc(o[0]) + '</dt><dd>' + esc(o[1]) + '</dd>';
+      }).join('') + '</dl></div>';
+  }).join('');
+}
+
+function jcaTopicPage(s, t) {
+  var ids = jcaQs(s.id, t.id), p = jcaProgress(ids);
+  var h = jcaCrumb([[s.short, '#/jca/' + s.id], [t.t]]) + pageH1(t.t, t.w);
+
+  h += '<div class="stack-sm"><a class="pill big" href="#/jca/practice/' + s.id + '/' + t.id + '">' +
+    'Practise these ' + jcaPlural(ids.length, 'question') + '</a>' +
+    (p.tried ? ' <span class="jcmeta">' + esc(jcaProgressLine(p)) + '</span>' : '') + '</div>';
+
+  h += notesBlock(t.notes, '', 'JCA notes');
+  if (t.special === 'orders') h += jcaOrders();
+
+  if (t.arts && t.arts.length) {
+    h += '<div class="block"><h3>The articles</h3>' +
+      '<p class="foot jcnote">Each opens on its own page, with the plain-English note and the official text.</p>' +
+      t.arts.map(function (n) { return byArt[n] ? artRow(byArt[n]) : ''; }).join('') + '</div>';
+  }
+
+  (t.blocks || []).forEach(function (b) { h += jcaFacts(b); });
+
+  if (t.pairs && t.pairs.length) {
+    h += '<div class="block"><h3>Confused pairs</h3>' + t.pairs.map(cmpBlock).join('') + '</div>';
+  }
+
+  var cs = (t.cases || []).map(function (id) { return caseById[id]; }).filter(Boolean);
+  if (cs.length) {
+    h += '<div class="block"><h3>The cases</h3><div class="caselist">' + cs.map(caseCard).join('') + '</div></div>';
+  }
+
+  var i = s.topics.indexOf(t), prev = s.topics[i - 1], next = s.topics[i + 1];
+  h += '<div class="nextprev">' +
+    (prev ? '<a href="#/jca/' + s.id + '/' + prev.id + '"><span class="d">Previous</span><span class="t">' + esc(prev.t) + '</span></a>' : '<span></span>') +
+    (next ? '<a class="r" href="#/jca/' + s.id + '/' + next.id + '"><span class="d">Next</span><span class="t">' + esc(next.t) + '</span></a>' : '<span></span>') +
+    '</div>';
+  render(jcaShell(h));
+}
+
+/* --------------------------------------------------------------- practice
+
+   One question at a time, the answer the moment you choose, and the reason
+   for it. Every wrong option is a real confusion (65 for 62, the President
+   for the Governor, Order XLVII for XLVIII), never filler. */
+
+function jcaShuffle(a) {
+  for (var m = a.length - 1; m > 0; m--) {
+    var k = Math.floor(Math.random() * (m + 1)), t = a[m];
+    a[m] = a[k]; a[k] = t;
+  }
+  return a;
+}
+
+/* Least-tried first, shuffled within each level, so repeated sessions work
+   through the whole bank rather than meeting the same favourites. */
+function jcaFreshFirst(ids) {
+  var seen = jcaLoad(JK_SEEN, {});
+  function tries(x) { return seen[x] ? seen[x][0] + seen[x][1] : 0; }
+  return jcaShuffle(ids.slice()).sort(function (x, y) { return tries(x) - tries(y); });
+}
+
+function jcaPracticeHub() {
+  var wrong = jcaWrongIds().length;
+  var h = jcaCrumb([['Practice']]) +
+    pageH1('Practice', JCA_Q.length + ' questions in the paper\'s own shape, with the reason for every ' +
+      'answer. What you get wrong goes on the review list until you get it right.') +
+    '<div class="mmodes jcmodes">' +
+      '<a class="mmode" href="#/jca/practice/mixed"><b>Twenty mixed</b><i>All three sections, least-tried first</i></a>' +
+      '<a class="mmode" href="#/jca/practice/wrong"><b>Only my wrong answers</b><i>' + jcaPlural(wrong, 'question') + ' waiting</i></a>' +
+      '<a class="mmode" href="#/jca/mock"><b>Mock test</b><i>35 questions, timed, negative marking</i></a></div>';
+
+  JCA_SECS.forEach(function (s) {
+    var p = jcaProgress(jcaQs(s.id));
+    h += '<div class="hubsec"><div class="hubhead"><a href="#/jca/practice/' + s.id + '">' + esc(s.name) + '</a>' +
+      '<span>' + esc(jcaSecLine(s)) + ' · ' + esc(jcaProgressLine(p)) + '</span></div><div class="topics">' +
+      s.topics.map(function (t) { return jcaQs(s.id, t.id).length ? jcaTopicCard(s, t, true) : ''; }).join('') +
+      '</div></div>';
+  });
+  render(jcaShell(h));
+}
+
+var jcaQuiz = null;
+
+function jcaStartQuiz(ids, title, sub, back) {
+  if (!ids.length) {
+    return render(jcaShell(jcaCrumb([['Practice', '#/jca/practice']]) + pageH1(title, '') +
+      '<div class="empty"><b>Nothing to practise here</b>' +
+      (location.hash === '#/jca/practice/wrong'
+        ? 'No wrong answers are waiting, or this browser is not keeping site data.'
+        : 'This set has no questions yet.') +
+      '<div class="stack"><a class="pill big" href="#/jca/practice">Pick a set</a></div></div>'));
+  }
+  jcaQuiz = { ids: ids, i: 0, right: 0, wrong: [], answered: false };
+  render(jcaShell(jcaCrumb(back ? [back, ['Practice']] : [['Practice']]) + pageH1(title, sub) +
+    '<div id="jquiz"></div>'));
+  jcaDrawQuiz();
+  jcaWireQuiz();
+}
+
+/* The rule a question tests ("Order IV", "Art. 217(3)") is shown only once
+   the question is answered: printed above the options, it would answer the
+   "which Order" questions by itself. */
+function jcaQMeta(item, withRef) {
+  var t = jcaTopic(item.sec.id, item.q.t);
+  return '<div class="jcqmeta"><span>' + esc(item.sec.short) + '</span>' +
+    (t ? '<a href="#/jca/' + item.sec.id + '/' + t.id + '">' + esc(t.t) + '</a>' : '') +
+    (withRef ? '<span>' + esc(item.q.r) + '</span>' : '') + '</div>';
+}
+
+function jcaAnswerCard(id, pick) {
+  var item = JCA_QBY[id];
+  if (!item) return '';
+  var q = item.q;
+  return '<div class="mwrong"><div class="mqq">' + esc(q.q) + '</div>' +
+    (pick != null && pick !== q.a ? '<div class="mans jcyours">You chose ' + 'ABCD'.charAt(pick) +
+      ' · ' + esc(q.o[pick]) + '</div>' : '') +
+    '<div class="mans">' + 'ABCD'.charAt(q.a) + ' · ' + esc(q.o[q.a]) + '</div>' +
+    '<div class="mqsol">' + hiMark(prose(q.s, 1)) + '</div>' + jcaQMeta(item, true) + '</div>';
+}
+
+function jcaDrawQuiz() {
+  var box = document.getElementById('jquiz'), z = jcaQuiz;
+  if (!box || !z) return;
+
+  if (z.i >= z.ids.length) {
+    var pct = Math.round(100 * z.right / z.ids.length), n = z.wrong.length;
+    box.innerHTML = '<div class="mdone"><b>' + z.right + ' right out of ' + z.ids.length + '</b><span>' +
+      pct + ' per cent. ' + (n
+        ? 'The ' + jcaPlural(n, 'one') + ' you missed ' + (n === 1 ? 'is' : 'are') + ' below, and on the ' +
+          'review list until you get ' + (n === 1 ? 'it' : 'them') + ' right.'
+        : 'Nothing missed. Try the mock test, against the clock.') + '</span>' +
+      '<div class="stack"><button class="pill big" type="button" data-act="again">Run it again</button> ' +
+      '<a class="pill big" href="#/jca/review">The review list</a> ' +
+      '<a class="pill big" href="#/jca/practice">Another set</a></div></div>' +
+      (n ? '<div class="block"><h3>What you missed</h3>' +
+        z.wrong.map(function (x) { return jcaAnswerCard(x[0], x[1]); }).join('') + '</div>' : '');
+    return;
+  }
+
+  var item = JCA_QBY[z.ids[z.i]], q = item.q;
+  box.innerHTML =
+    '<div class="mprog"><span style="width:' + Math.round(100 * z.i / z.ids.length) + '%"></span></div>' +
+    '<div class="mcount">Question ' + (z.i + 1) + ' of ' + z.ids.length + ' · ' + z.right + ' right so far</div>' +
+    '<div class="mq">' + jcaQMeta(item, false) + '<div class="mqq">' + esc(q.q) + '</div>' +
+    '<div class="mqo">' + q.o.map(function (o, oi) {
+      return '<button type="button" class="mopt" data-pick="' + oi + '"><span class="ml">' +
+        'ABCD'.charAt(oi) + '</span><span class="mt">' + esc(o) + '</span></button>';
+    }).join('') + '</div><div id="jqs"></div></div>';
+}
+
+function jcaPick(pick) {
+  var z = jcaQuiz, box = document.getElementById('jquiz');
+  if (!z || z.answered || z.i >= z.ids.length || !box) return;
+  z.answered = true;
+  var id = z.ids[z.i], q = JCA_QBY[id].q, ok = pick === q.a;
+  var buttons = box.querySelectorAll('.mopt');
+  for (var j = 0; j < buttons.length; j++) {
+    var bi = parseInt(buttons[j].getAttribute('data-pick'), 10);
+    buttons[j].disabled = true;
+    buttons[j].className = 'mopt ' + (bi === q.a ? 'right' : bi === pick ? 'wrong' : 'dim');
+  }
+  if (ok) z.right++; else z.wrong.push([id, pick]);
+  jcaMark(id, ok);
+  var sol = document.getElementById('jqs');
+  if (sol) sol.innerHTML = '<div class="mqsol' + (ok ? ' ok' : '') + '"><b>' +
+    (ok ? 'Right.' : 'Not that one: the answer is ' + 'ABCD'.charAt(q.a) + ', ' + esc(q.o[q.a]) + '.') +
+    '</b> ' + hiMark(prose(q.s, 1)) + ' <span class="jctests">Tests ' + esc(q.r) + '</span></div>' +
+    '<div class="stack"><button class="pill big" type="button" data-act="next">' +
+    (z.i + 1 >= z.ids.length ? 'See the score' : 'Next question') + '</button></div>';
+  var nb = box.querySelector('[data-act="next"]');
+  if (nb) nb.focus({ preventScroll: true });
+}
+
+function jcaWireQuiz() {
+  var box = document.getElementById('jquiz');
+  if (!box || box.getAttribute('data-wired')) return;
+  box.setAttribute('data-wired', '1');
+  box.addEventListener('click', function (e) {
+    var act = e.target.closest('[data-act]');
+    if (act) {
+      var a = act.getAttribute('data-act');
+      if (a === 'next' && jcaQuiz) { jcaQuiz.i++; jcaQuiz.answered = false; jcaDrawQuiz(); jumpToTop(); }
+      else if (a === 'again') route();
+      return;
+    }
+    var opt = e.target.closest('.mopt');
+    if (opt) jcaPick(parseInt(opt.getAttribute('data-pick'), 10));
+  });
+}
+
+function jcaPractice(seg) {
+  var k = seg[0] || '';
+  if (!k) return jcaPracticeHub();
+  if (k === 'wrong') {
+    return jcaStartQuiz(jcaShuffle(jcaWrongIds()), 'Your wrong answers',
+      'Each one leaves this list the next time you answer it right.', ['Review', '#/jca/review']);
+  }
+  if (k === 'mixed') {
+    return jcaStartQuiz(jcaFreshFirst(JCA_Q.map(function (x) { return x.id; })).slice(0, 20), 'Twenty mixed',
+      'From all three sections, the ones you have tried least first.');
+  }
+  if (k === 'a') {
+    var num = seg[1], a = byArt[num];
+    if (!a) return notFound('There is no Article ' + num + '.');
+    return jcaStartQuiz(jcaShuffle((jcaQByArt[num] || []).slice()), 'Article ' + num + ': ' + a.h,
+      'Every JCA question that tests this article.', ['Article ' + num, '#/a/' + encodeURIComponent(num)]);
+  }
+  var s = jcaSec[k];
+  if (!s) return notFound('There is no such practice set in JCA.');
+  if (seg[1]) {
+    var t = jcaTopic(k, seg[1]);
+    if (!t) return notFound('There is no such topic in JCA.');
+    return jcaStartQuiz(jcaFreshFirst(jcaQs(k, t.id)), t.t, s.name + ', in a different order each time.',
+      [t.t, '#/jca/' + k + '/' + t.id]);
+  }
+  jcaStartQuiz(jcaFreshFirst(jcaQs(k)), s.name, jcaPlural(jcaQs(k).length, 'question') + ', least-tried first.',
+    [s.short, '#/jca/' + k]);
+}
+
+/* ------------------------------------------------------------- mock test
+
+   The test in progress lives in storage, not in the page, so a reload, a
+   phone call or a wander to another subject loses nothing. The clock is the
+   wall clock: it keeps running while you are away, as the real one would. */
+
+var jcaTick = null, jcaSel = 0;
+
+function jcaStopTick() { if (jcaTick) { clearInterval(jcaTick); jcaTick = null; } }
+
+function jcaClock(ms) {
+  var s = Math.max(0, Math.ceil(ms / 1000)), m = Math.floor(s / 60);
+  s = s % 60;
+  return m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function jcaNewMock() {
+  var ids = [];
+  JCA_MOCK.split.forEach(function (x) {
+    if (jcaSec[x[0]]) ids = ids.concat(jcaFreshFirst(jcaQs(x[0])).slice(0, x[1]));
+  });
+  var live = { v: 1, ids: ids, ans: {}, mark: {}, cur: 0, start: Date.now(), dur: JCA_MOCK.minutes * 60000 };
+  jcaSave(JK_LIVE, live);
+  return live;
+}
+
+function jcaMockTable(list) {
+  return '<div class="jctable"><table><thead><tr><th>When</th><th>Score</th><th>Right</th><th>Wrong</th>' +
+    '<th>Blank</th><th>Time</th></tr></thead><tbody>' + list.map(function (m) {
+      var d = new Date(m.at);
+      var when = d.getDate() + ' ' + JCA_MON[d.getMonth()] + ', ' +
+        (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+      return '<tr><td>' + esc(when) + '</td><td><b>' + jcaNet(m.net) + '</b> / ' + m.n + '</td><td>' +
+        m.right + '</td><td>' + m.wrong + '</td><td>' + m.skip + '</td><td>' + jcaClock(m.used) + '</td></tr>';
+    }).join('') + '</tbody></table></div>';
+}
+
+function jcaNet(n) { return String(Math.round(n * 100) / 100); }
+
+/* Its own month names: MONTHS above is redefined as a regular expression
+   source further up the file, so it cannot be indexed. */
+var JCA_MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function jcaMockPage() {
+  var live = jcaLoad(JK_LIVE, null);
+  if (live && live.ids && live.ids.every(function (id) { return JCA_QBY[id]; })) {
+    if (Date.now() >= live.start + live.dur) return jcaFinishMock(live);
+    return jcaMockRun(live);
+  }
+  if (live) jcaSave(JK_LIVE, null);
+
+  var hist = jcaLoad(JK_MOCKS, []);
+  var h = jcaCrumb([['Mock test']]) +
+    pageH1('Mock test', 'The law block of the real paper, at the real pace.') +
+    '<dl class="facts">' +
+      '<dt>Questions</dt><dd>35: Constitution 15, SC Rules 2013 10, O&amp;S Rules 1961 10, in that order</dd>' +
+      '<dt>Time</dt><dd>' + JCA_MOCK.minutes + ' minutes, the paper\'s 54 seconds a question; the clock keeps running if you leave the page</dd>' +
+      '<dt>Marking</dt><dd>One mark for a right answer, minus ' + JCA_MOCK.neg + ' for a wrong one, nothing for a blank</dd>' +
+      '<dt>Which questions</dt><dd>The ones you have tried least, so each test brings new ones</dd>' +
+      '<dt>Moving about</dt><dd>Jump to any question from the palette, mark one to come back to, change an answer until you submit. Keys: A to D to choose, the arrows to move</dd>' +
+    '</dl><div class="stack"><button class="pill big jcgo" type="button" id="jcgo">Start the test</button></div>';
+  if (hist.length) {
+    h += '<div class="block"><h3>Your last tests</h3>' + jcaMockTable(hist.slice(0, 5)) +
+      '<p class="foot">All of them are on the <a href="#/jca/review">review page</a>.</p></div>';
+  }
+  render(jcaShell(h));
+  var go = document.getElementById('jcgo');
+  if (go) go.addEventListener('click', function () { jcaSel = 0; jcaMockRun(jcaNewMock()); });
+}
+
+function jcaMockRun(live) {
+  jcaStopTick();
+  jcaSel = live.cur || 0;
+  render('<div class="wrap artpage jcmock">' + jcaCrumb([['Mock test']]) +
+    '<div class="jcbarline" id="jcmbar"></div><div id="jcmbody"></div>' +
+    '<div class="block"><h3>All 35</h3><div class="jcpal" id="jcmpal"></div>' +
+    '<p class="foot jcnote">Gold: answered. Purple ring: marked to come back to. Outlined: where you are.</p></div></div>');
+  /* No floating Back button over the test's own controls. */
+  var fab = document.getElementById('backfab');
+  if (fab) fab.hidden = true;
+  jcaDrawMock(live);
+  var box = main.querySelector('.jcmock');
+  if (box) box.addEventListener('click', function (e) {
+    var el = e.target.closest('[data-m]');
+    if (el) jcaMockAct(el.getAttribute('data-m'), el);
+  });
+  jcaTick = setInterval(function () {
+    var cur = jcaLoad(JK_LIVE, null);
+    if (!cur || !document.getElementById('jcmbar')) { jcaStopTick(); return; }
+    if (Date.now() >= cur.start + cur.dur) { jcaStopTick(); jcaFinishMock(cur); return; }
+    jcaDrawMockBar(cur);
+  }, 1000);
+}
+
+function jcaDrawMockBar(live) {
+  var bar = document.getElementById('jcmbar');
+  if (!bar) return;
+  var left = live.start + live.dur - Date.now();
+  bar.innerHTML = '<span class="jcclock' + (left < 300000 ? ' low' : '') + '">' + jcaClock(left) + '</span>' +
+    '<span class="jcdone">' + Object.keys(live.ans).length + ' of ' + live.ids.length + ' answered</span>' +
+    '<button class="pill big jcsubmit" type="button" data-m="submit">Submit</button>';
+}
+
+function jcaDrawMock(live) {
+  jcaDrawMockBar(live);
+  var body = document.getElementById('jcmbody'), pal = document.getElementById('jcmpal');
+  if (!body || !pal) return;
+  var i = jcaSel, id = live.ids[i], item = JCA_QBY[id], q = item.q, pick = live.ans[id];
+  body.innerHTML = '<div class="mcount">Question ' + (i + 1) + ' of ' + live.ids.length + ' · ' +
+    esc(item.sec.short) + '</div><div class="mq"><div class="mqq">' + esc(q.q) + '</div><div class="mqo">' +
+    q.o.map(function (o, oi) {
+      return '<button type="button" class="mopt' + (pick === oi ? ' jcpick' : '') + '" data-m="pick" data-o="' + oi + '">' +
+        '<span class="ml">' + 'ABCD'.charAt(oi) + '</span><span class="mt">' + esc(o) + '</span></button>';
+    }).join('') + '</div></div>' +
+    '<div class="stack jcnav">' +
+      '<button class="pill big" type="button" data-m="prev"' + (i ? '' : ' disabled') + '>Previous</button>' +
+      '<button class="pill big" type="button" data-m="mark">' + (live.mark[id] ? 'Unmark' : 'Mark for review') + '</button>' +
+      (pick != null ? '<button class="pill big" type="button" data-m="clear">Clear answer</button>' : '') +
+      '<button class="pill big" type="button" data-m="next"' + (i + 1 < live.ids.length ? '' : ' disabled') + '>Next</button>' +
+    '</div>';
+  pal.innerHTML = live.ids.map(function (qid, k) {
+    var cls = (live.ans.hasOwnProperty(qid) ? ' ans' : '') + (live.mark[qid] ? ' mk' : '') + (k === i ? ' cur' : '');
+    return '<button type="button" class="jcp' + cls + '" data-m="go" data-i="' + k + '" aria-label="Question ' +
+      (k + 1) + '">' + (k + 1) + '</button>';
+  }).join('');
+}
+
+/* An instant scroll that leaves the element just below the sticky header;
+   the stylesheet's smooth scrolling would be abandoned half-way by a redraw. */
+function jcaScrollTo(el) {
+  var root = document.documentElement, prev = root.style.scrollBehavior;
+  var head = document.querySelector('header.top'), off = head ? head.getBoundingClientRect().height : 0;
+  root.style.scrollBehavior = 'auto';
+  window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - off - 12));
+  root.style.scrollBehavior = prev;
+}
+
+function jcaMockAct(act, el) {
+  var live = jcaLoad(JK_LIVE, null);
+  if (!live) return;
+  var id = live.ids[jcaSel];
+  if (act === 'pick') live.ans[id] = parseInt(el.getAttribute('data-o'), 10);
+  else if (act === 'clear') delete live.ans[id];
+  else if (act === 'mark') { if (live.mark[id]) delete live.mark[id]; else live.mark[id] = 1; }
+  else if (act === 'prev' && jcaSel > 0) jcaSel--;
+  else if (act === 'next' && jcaSel + 1 < live.ids.length) jcaSel++;
+  else if (act === 'go') jcaSel = parseInt(el.getAttribute('data-i'), 10) || 0;
+  else if (act === 'submit') return jcaConfirmSubmit(live);
+  live.cur = jcaSel;
+  jcaSave(JK_LIVE, live);
+  jcaDrawMock(live);
+  if (act === 'prev' || act === 'next' || act === 'go') {
+    var body = document.getElementById('jcmbody');
+    if (body && body.getBoundingClientRect().top < 0) jcaScrollTo(document.getElementById('jcmbar') || body);
+  }
+}
+
+function jcaConfirmSubmit(live) {
+  var sheet = document.getElementById('sheet');
+  if (!sheet) return jcaFinishMock(live);
+  var blank = live.ids.length - Object.keys(live.ans).length, marked = Object.keys(live.mark).length;
+  sheet.innerHTML = '<div class="sheetbg"></div><div class="sheetbox" role="dialog" aria-modal="true" ' +
+    'aria-label="Submit the test"><button class="sheetx" aria-label="Close">✕</button>' +
+    '<div class="label tight">Mock test</div><h2>Submit now?</h2><p class="note">' +
+    (blank ? jcaPlural(blank, 'question') + ' still blank. A blank costs nothing; a guess that is wrong costs a quarter mark. '
+           : 'Every question is answered. ') +
+    (marked ? jcaPlural(marked, 'question') + ' marked for review. ' : '') +
+    jcaClock(live.start + live.dur - Date.now()) + ' left.</p>' +
+    '<div class="stack"><button class="pill big jcgo" type="button" id="jcyes">Submit the test</button> ' +
+    '<button class="pill big" type="button" id="jcno">Keep going</button></div></div>';
+  sheet.hidden = false;
+  function close() { sheet.hidden = true; sheet.innerHTML = ''; }
+  sheet.querySelector('.sheetx').addEventListener('click', close);
+  sheet.querySelector('.sheetbg').addEventListener('click', close);
+  document.getElementById('jcno').addEventListener('click', close);
+  document.getElementById('jcyes').addEventListener('click', function () {
+    close();
+    jcaFinishMock(jcaLoad(JK_LIVE, live));
+  });
+  document.getElementById('jcyes').focus();
+}
+
+function jcaFinishMock(live) {
+  jcaStopTick();
+  var secs = {}, right = 0, wrong = 0, items = [];
+  JCA_MOCK.split.forEach(function (x) { secs[x[0]] = { n: 0, r: 0, w: 0 }; });
+  live.ids.forEach(function (id) {
+    var item = JCA_QBY[id];
+    if (!item) return;
+    var pick = live.ans.hasOwnProperty(id) ? live.ans[id] : null, s = secs[item.sec.id];
+    s.n++;
+    if (pick !== null) {
+      var ok = pick === item.q.a;
+      if (ok) { right++; s.r++; } else { wrong++; s.w++; }
+      jcaMark(id, ok);
+    }
+    items.push([id, pick]);
+  });
+  var res = { at: Date.now(), n: items.length, right: right, wrong: wrong, skip: items.length - right - wrong,
+              net: right - JCA_MOCK.neg * wrong, used: Math.min(live.dur, Date.now() - live.start), secs: secs };
+  var hist = jcaLoad(JK_MOCKS, []);
+  hist.unshift(res);
+  jcaSave(JK_MOCKS, hist.slice(0, 30));
+  res.items = items;
+  jcaSave(JK_LAST, res);
+  jcaSave(JK_LIVE, null);
+  if (location.hash !== '#/jca/mock/result') location.hash = '#/jca/mock/result';
+  else jcaMockResult();
+}
+
+function jcaMockResult(filter) {
+  var res = jcaLoad(JK_LAST, null);
+  if (!res || !res.items) {
+    return render(jcaShell(jcaCrumb([['Mock test', '#/jca/mock'], ['Result']]) + pageH1('Mock test', '') +
+      '<div class="empty"><b>No finished test yet</b>Take one and the score and every answer appear here.' +
+      '<div class="stack"><a class="pill big" href="#/jca/mock">Start a test</a></div></div>'));
+  }
+  var f = filter || 'all';
+  var pct = res.n ? Math.round(100 * res.net / res.n) : 0;
+  var h = jcaCrumb([['Mock test', '#/jca/mock'], ['Result']]) +
+    pageH1('Your score: ' + jcaNet(res.net) + ' out of ' + res.n,
+      res.right + ' right, ' + res.wrong + ' wrong (minus ' + jcaNet(JCA_MOCK.neg * res.wrong) + '), ' +
+      res.skip + ' blank, in ' + jcaClock(res.used) + '.') +
+    '<div class="figs">' + fig(pct + '%', 'net score') + fig(res.right, 'right') + fig(res.wrong, 'wrong') +
+      fig(res.skip, 'blank') + '</div>' +
+    '<p class="foot">The paper needs 50 out of 100 to qualify, so at the same rate this block wants 17.5 ' +
+    'out of 35. Treat that as the floor: the law block is the part you can push close to full marks.</p>';
+
+  h += '<div class="block"><h3>By section</h3><dl class="facts">' + JCA_MOCK.split.map(function (x) {
+    var s = res.secs[x[0]], sec = jcaSec[x[0]];
+    if (!s || !sec) return '';
+    return '<dt><a href="#/jca/' + x[0] + '">' + esc(sec.name) + '</a></dt><dd>' + jcaNet(s.r - JCA_MOCK.neg * s.w) +
+      ' out of ' + s.n + ' · ' + s.r + ' right, ' + s.w + ' wrong, ' + (s.n - s.r - s.w) + ' blank</dd>';
+  }).join('') + '</dl></div>';
+
+  h += '<div class="block"><h3>Every question</h3><div class="listtabs" id="jcrtabs">' +
+    [['all', 'All ' + res.n], ['wrong', 'Wrong ' + res.wrong], ['blank', 'Blank ' + res.skip], ['right', 'Right ' + res.right]]
+    .map(function (t) {
+      return '<button type="button" data-f="' + t[0] + '" aria-pressed="' + (t[0] === f) + '">' + esc(t[1]) + '</button>';
+    }).join('') + '</div>' + res.items.map(function (x, k) {
+      var item = JCA_QBY[x[0]];
+      if (!item) return '';
+      var st = x[1] === null ? 'blank' : x[1] === item.q.a ? 'right' : 'wrong';
+      if (f !== 'all' && f !== st) return '';
+      return '<div class="jcres ' + st + '"><div class="jcresn">' + (k + 1) + ' · ' +
+        (st === 'right' ? 'Right' : st === 'wrong' ? 'Wrong' : 'Blank') + '</div>' + jcaAnswerCard(x[0], x[1]) + '</div>';
+    }).join('') + '</div>';
+
+  h += '<div class="stack"><a class="pill big" href="#/jca/mock">Another test</a> ' +
+    '<a class="pill big" href="#/jca/practice/wrong">Practise what you got wrong</a></div>';
+  render(jcaShell(h));
+  var rt = document.getElementById('jcrtabs');
+  if (!rt) return;
+  if (filter) jcaScrollTo(rt);
+  rt.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-f]');
+    if (b) jcaMockResult(b.getAttribute('data-f'));
+  });
+}
+
+/* ------------------------------------------------------------------ review */
+
+function jcaReviewPage() {
+  var ids = jcaWrongIds(), hist = jcaLoad(JK_MOCKS, []);
+  var best = hist.reduce(function (m, x) { return Math.max(m, x.net); }, -Infinity);
+  var h = jcaCrumb([['Review']]) +
+    pageH1('Review', 'Everything you have told the site you do not know yet. Nothing here was chosen for you.') +
+    '<div class="figs">' + fig(ids.length, 'wrong answers') + fig(hist.length, 'mock tests') +
+      fig(hist.length ? jcaNet(best) : 'none', 'best mock') + '</div>';
+
+  h += '<div class="block"><h3>By section</h3><dl class="facts">' + JCA_SECS.map(function (s) {
+    return '<dt><a href="#/jca/practice/' + s.id + '">' + esc(s.name) + '</a></dt><dd>' +
+      esc(jcaProgressLine(jcaProgress(jcaQs(s.id)))) + '</dd>';
+  }).join('') + '</dl></div>';
+
+  if (ids.length) {
+    h += '<div class="block"><h3>The questions you got wrong</h3>' +
+      '<p class="foot jcnote">A question leaves this list the next time you answer it right.</p>' +
+      '<div class="stack-sm"><a class="pill big" href="#/jca/practice/wrong">Practise these ' + ids.length + '</a></div>';
+    JCA_SECS.forEach(function (s) {
+      var mine = ids.filter(function (id) { return JCA_QBY[id].sec === s; });
+      if (!mine.length) return;
+      h += '<div class="label stack-lg">' + esc(s.name) + ' · ' + mine.length + '</div>' +
+        mine.map(function (id) { return jcaAnswerCard(id, null); }).join('');
+    });
+    h += '</div>';
+  } else {
+    h += '<div class="empty"><b>The list is empty</b>Either nothing has been answered wrong yet, or this ' +
+      'browser is not keeping site data. Practise a topic and anything you miss lands here.' +
+      '<div class="stack"><a class="pill big" href="#/jca/practice">Practise</a></div></div>';
+  }
+
+  if (hist.length) h += '<div class="block"><h3>Every mock test</h3>' + jcaMockTable(hist) + '</div>';
+
+  h += '<div class="stack"><button class="pill big" type="button" id="jcclear">Clear everything on this page</button></div>';
+  render(jcaShell(h));
+  var btn = document.getElementById('jcclear');
+  if (btn) btn.addEventListener('click', function () {
+    if (btn.getAttribute('data-sure')) {
+      [JK_WRONG, JK_SEEN, JK_MOCKS, JK_LAST].forEach(function (k) { jcaSave(k, null); delete JCA_MEM[k]; });
+      jcaReviewPage();
+    } else {
+      btn.setAttribute('data-sure', '1');
+      btn.textContent = 'Press again to clear your answers and mock history';
+    }
+  });
+}
+
+/* ------------------------------------------------------------------ keys
+
+   In a mock, A to D (or 1 to 4) choose and the arrows move; in practice,
+   A to D choose and Enter takes the Next button, which has the focus. */
+document.addEventListener('keydown', function (e) {
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  var sheet = document.getElementById('sheet');
+  if (sheet && !sheet.hidden) return;
+  var k = e.key.toLowerCase(), oi = 'abcd'.indexOf(k);
+  if (oi < 0 && /^[1-4]$/.test(k)) oi = parseInt(k, 10) - 1;
+  if (main.querySelector('.jcmock')) {
+    if (oi >= 0) { e.preventDefault(); jcaMockAct('pick', { getAttribute: function () { return String(oi); } }); }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); jcaMockAct('next'); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); jcaMockAct('prev'); }
+  } else if (jcaQuiz && document.getElementById('jquiz') && oi >= 0 && !jcaQuiz.answered) {
+    e.preventDefault();
+    jcaPick(oi);
+  }
+});
+
+/* ------------------------------------------------------------------ route */
+
+function jcaRoute(seg) {
+  var k = seg[0] || '';
+  if (!k) return jcaHome();
+  if (k === 'practice') return jcaPractice(seg.slice(1));
+  if (k === 'mock') return seg[1] === 'result' ? jcaMockResult() : jcaMockPage();
+  if (k === 'review') return jcaReviewPage();
+  var s = jcaSec[k];
+  if (!s) return notFound('That address does not exist in JCA.');
+  if (!seg[1]) return jcaSectionPage(s);
+  var t = jcaTopic(k, seg[1]);
+  if (!t) return notFound('There is no such topic in ' + s.name + '.');
+  jcaTopicPage(s, t);
+}
+
+SUBJECTS.push({
+  id: 'jca',
+  name: 'Supreme Court JCA',
+  short: 'JCA',
+  blurb: 'The law paper of the Supreme Court Junior Court Assistant 2026 objective test: the judiciary provisions of the Constitution, the Supreme Court Rules, 2013 and the Officers and Servants Rules, 1961, with questions, a timed mock test and a review list.',
+  tabs: [
+    { href: '#/jca',          label: 'Overview',       match: [''] },
+    { href: '#/jca/c',        label: 'Constitution',   match: ['c'] },
+    { href: '#/jca/r',        label: 'SC Rules 2013',  match: ['r'] },
+    { href: '#/jca/s',        label: 'O&S Rules 1961', match: ['s'] },
+    { href: '#/jca/practice', label: 'Practice',       match: ['practice'] },
+    { href: '#/jca/mock',     label: 'Mock test',      match: ['mock'] },
+    { href: '#/jca/review',   label: 'Review',         match: ['review'] }
+  ],
+  stats: function () {
+    return ['35 marks', JCA_Q.length + ' questions', ((jcaSec.r && jcaSec.r.orders) || []).length + ' Orders'];
+  },
+  topics: function () {
+    var out = [];
+    JCA_SECS.forEach(function (s) {
+      s.topics.forEach(function (t) {
+        out.push({ t: t.t, href: '#/jca/' + s.id + '/' + encodeURIComponent(t.id), w: t.w,
+                   n: jcaPlural(jcaQs(s.id, t.id).length, 'question'),
+                   k: s.name + ' ' + (t.blocks || []).map(function (b) { return b.h; }).join(' ') +
+                      ' jca junior court assistant supreme court exam' });
+      });
+    });
+    return out.concat([
+      { t: 'JCA mock test', href: '#/jca/mock', n: '35 questions',
+        w: 'The law block at the paper\'s pace: 32 minutes, a quarter mark off for a wrong answer.',
+        k: 'mock test timed negative marking jca practice exam' },
+      { t: 'JCA practice and review', href: '#/jca/practice', n: JCA_Q.length + ' questions',
+        w: 'Every question with the reason for its answer, and the list of the ones you got wrong.',
+        k: 'mcq practice wrong answers review jca' }
+    ]);
+  },
+  route: jcaRoute
+});
+
+/* The side column on a JCA page: where you stand in this topic or section,
+   and the way to practise it. Practice and the mock have no side column at
+   all: they are pages to concentrate on. */
+function sideJca(seg) {
+  var k = seg[0] || '', s = jcaSec[k];
+  if (!k) {
+    var n = jcaDaysLeft();
+    return [sFacts('The law paper', [
+      ['Questions', '35 of the 100'],
+      ['On the paper', '90 minutes for all 100'],
+      ['Marking', 'plus 1, minus 0.25'],
+      ['Test date', JCA_EXAM.label + ', tentative'],
+      ['Days left', n > 0 ? String(n) : 'none']
+    ])];
+  }
+  if (!s) return [];
+  var t = seg[1] ? jcaTopic(k, seg[1]) : null;
+  var ids = jcaQs(k, t ? t.id : null), p = jcaProgress(ids);
+  return [
+    sFacts(t ? 'This topic' : s.short, [
+      ['Questions', String(ids.length)],
+      ['Tried', p.tried ? p.tried + ' of ' + ids.length : 'none yet'],
+      ['Right', p.pct === null ? 'not yet' : p.pct + ' per cent']
+    ]),
+    sLinks('Practise', [
+      { href: '#/jca/practice/' + k + (t ? '/' + t.id : ''), t: t ? 'This topic' : 'All of ' + s.short,
+        d: jcaPlural(ids.length, 'question') },
+      { href: '#/jca/mock', t: 'A mock test', d: '35 questions, 32 minutes' },
+      { href: '#/jca/review', t: 'Your review list', d: jcaPlural(jcaWrongIds().length, 'wrong answer') }
+    ]),
+    t ? sLinks('The other topics in ' + s.short, s.topics.map(function (x) {
+      return { href: '#/jca/' + k + '/' + x.id, t: x.t, on: x.id === t.id };
+    }), null, 12) : ''
+  ];
+}
+
+/* On an article page: the JCA questions that test it, and a warning where
+   the official edition still prints the struck-down NJAC wording. */
+function jcaArticleCards(n) {
+  var a = byArt[n], out = [], qn = (jcaQByArt[n] || []).length, t = jcaArtTopic[n];
+  if (!a) return out;
+  if (qn || t) {
+    out.push(sLinks('Supreme Court JCA', [
+      qn ? { href: '#/jca/practice/a/' + encodeURIComponent(n), t: 'Practise its ' + jcaPlural(qn, 'question'),
+             d: 'With the reason for every answer' } : null,
+      t ? { href: '#/jca/c/' + t.id, t: t.t, d: 'The JCA topic it belongs to' } : null
+    ]));
+  }
+  if (a.t && /National Judicial Appointments Commission/.test(a.t)) {
+    out.push(sText('Read this text with care', esc(/^124[ABC]$/.test(a.a)
+      ? 'Inserted by the 99th Amendment (2014), which the Supreme Court struck down on 16 October 2015. It has no effect; the official edition still prints it.'
+      : 'The words about the National Judicial Appointments Commission came with the 99th Amendment (2014), struck down on 16 October 2015. The wording from before 2014, with the Chief Justice of India and the collegium, is what operates.')));
+  }
+  return out;
+}
+
 /* ----------------------------------------------------------------- index
 
    The whole site as a contents page: every subject, every section, and every
@@ -4485,6 +5495,25 @@ function indexPage() {
     idxGroup('The sets', dailyItems, true) +
     idxGroup('Every part of every set', dailyParts));
 
+  /* ------------------------------------------------------------------ JCA */
+  var jcaSections = count([
+    { t: 'Every topic, listed', href: '#/s/jca' },
+    { t: 'Overview', href: '#/jca' },
+    { t: 'Every Order of the SC Rules, 2013', href: '#/jca/r/scr-orders', n: '57' },
+    { t: 'Practice', href: '#/jca/practice', n: JCA_Q.length + ' questions' },
+    { t: 'Mock test', href: '#/jca/mock', n: '35 questions' },
+    { t: 'Review', href: '#/jca/review' }
+  ]);
+  var jcaItems = count([].concat.apply([], JCA_SECS.map(function (s) {
+    return [{ t: s.name, href: '#/jca/' + s.id, n: s.marks + ' marks' }].concat(s.topics.map(function (t) {
+      return { t: t.t, href: '#/jca/' + s.id + '/' + encodeURIComponent(t.id), n: s.short };
+    }));
+  })));
+
+  h += idxSection('Supreme Court JCA', JCA_Q.length + ' questions \u00b7 ' + jcaTopicCount() + ' topics',
+    idxGroup('Sections', jcaSections, true) +
+    idxGroup('The topics', jcaItems));
+
   h += '<p class="foot">' + total + ' pages listed. Every one of them is also ' +
     'reachable from the search box at the top, which looks inside the pages as well ' +
     'as at their names.</p></div>';
@@ -4508,7 +5537,8 @@ function aboutPage() {
 
   '<p class="plain">' + SUBJECTS.length + ' subjects: the Constitution of India — including the Constituent ' +
   'Assembly that wrote it — Modern History, Ancient and Medieval History, the Indian Economy, ' +
-  'Static General Knowledge, Biology, Advanced Maths, and the Daily study sets, one dated page per study day. ' +
+  'Static General Knowledge, Biology, Advanced Maths, the Daily study sets, one dated page per study day, ' +
+  'and the law paper of the Supreme Court JCA test. ' +
   'They are organised by topic rather than by subject, because a reader ' +
   'arrives knowing what they need to revise rather than which subject it belongs to.</p>' +
 
@@ -4552,6 +5582,17 @@ function aboutPage() {
   'says so instead of repeating it. India has no national game and no national language. ' +
   'Malaria is protozoan, not bacterial. Only three of the national emblem\'s four lions ' +
   'are visible. Those corrections are worth more than the easy rows around them.</p></div>' +
+
+  '<div class="block"><h3>The JCA section: one exam, two rule books</h3>' +
+  '<p class="plain">The JCA subject is the law paper of the Supreme Court Junior Court Assistant ' +
+  'test. Its Constitution part links to the article pages above, so its official text is the ' +
+  'extracted one. Its two rule books, the Supreme Court Rules, 2013 and the Officers and Servants ' +
+  'Rules, 1961, are written, not quoted: their bare text could not be fetched when the section was ' +
+  'made, so every Order heading and every rule a question tests was checked against at least two ' +
+  'independent sources.</p>' +
+  '<p class="why">A point with one source only is marked <span class="chip chk">check the bare text</span>, ' +
+  'and a rule whose heading could not be confirmed is left out rather than guessed. Read both rule ' +
+  'books once in full on the Supreme Court\'s website before the test.</p></div>' +
 
   '<div class="block"><h3>What was written rather than extracted</h3>' +
   '<p class="plain">The plain-English explanation under each article, the one-line summary ' +
@@ -4984,6 +6025,48 @@ function buildIndex() {
       hay: (c.k + ' ' + (c.note || '') + ' ' +
             c.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
       href: '#/laws/confusions', num: ''
+    });
+  });
+
+  /* JCA, topic then table, and every Order of the 2013 Rules by its numeral,
+     so that "Order XLVII" finds review and "curative" finds Order XLVIII. */
+  JCA_SECS.forEach(function (s) {
+    s.topics.forEach(function (t) {
+      var href = '#/jca/' + s.id + '/' + encodeURIComponent(t.id);
+      searchIndex.push({
+        kind: 'jca', id: 'jca-' + t.id, no: '', title: t.t, sub: s.short + ' \u00b7 ' + t.w,
+        near: (t.t + ' ' + t.w).toLowerCase(),
+        hay: unmark([t.t, t.w, s.name].concat(t.notes || []).join(' ') +
+             ' jca junior court assistant').toLowerCase(),
+        href: href, num: ''
+      });
+      (t.blocks || []).forEach(function (b, i) {
+        searchIndex.push({
+          kind: 'jca', id: 'jca-' + t.id + '-' + i, no: '', title: b.h, sub: s.short + ' \u00b7 ' + t.t,
+          near: b.h.toLowerCase(),
+          hay: unmark(b.h + ' ' + (b.note || '') + ' ' +
+                b.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+          href: href, num: ''
+        });
+      });
+      (t.pairs || []).forEach(function (c, i) {
+        searchIndex.push({
+          kind: 'jca', id: 'jcmp-' + t.id + '-' + i, no: '', title: c.k,
+          sub: s.short + ' \u00b7 confused pair', near: c.k.toLowerCase(),
+          hay: unmark(c.k + ' ' + (c.note || '') + ' ' +
+                c.rows.map(function (r) { return r[0] + ' ' + r[1]; }).join(' ')).toLowerCase(),
+          href: href, num: ''
+        });
+      });
+    });
+  });
+  ((jcaSec.r && jcaSec.r.orders) || []).forEach(function (o) {
+    searchIndex.push({
+      kind: 'sc rules', id: 'order-' + o[0], no: 'Order ' + o[0], title: o[1],
+      sub: 'Supreme Court Rules, 2013 \u00b7 ' + o[2],
+      near: ('order ' + o[0] + ' ' + o[1]).toLowerCase(),
+      hay: ('order ' + o[0] + ' ' + o[1] + ' supreme court rules 2013 jca').toLowerCase(),
+      href: '#/jca/r/scr-orders', num: ''
     });
   });
 
@@ -6181,12 +7264,13 @@ function sideElsewhere(seg, anchor) {
 function sideSkip(seg) {
   var k = seg[0] || '';
   return k === '' || k === 'hub' || k === 'topics' || k === 'index' ||
-         k === 'contents' || k === 's' || k === 'about';
+         k === 'contents' || k === 's' || k === 'about' ||
+         (k === 'jca' && (seg[1] === 'practice' || seg[1] === 'mock'));
 }
 
 function sideFor(seg) {
   var k = seg[0] || '', out = [];
-  if (k === 'a') out = sideArticle(seg[1]);
+  if (k === 'a') out = sideArticle(seg[1]).concat(jcaArticleCards(seg[1]));
   else if (k === 'part') out = sidePart(seg[1]);
   else if (k === 'amendment') out = sideAmendment(seg[1]);
   else if (k === 'schedule') out = sideSchedule(seg[1]);
@@ -6200,6 +7284,7 @@ function sideFor(seg) {
   else if (k === 'laws') out = sideLaw(seg.slice(1));
   else if (k === 'geography') out = sideGeo(seg.slice(1));
   else if (k === 'daily') out = sideDaily(seg.slice(1));
+  else if (k === 'jca') out = sideJca(seg.slice(1));
 
   /* An article belongs to its Part, which IS one of the Constitution's
      topics, so say so rather than leaving it to be guessed. */
@@ -6272,6 +7357,8 @@ function route() {
   recordStep(location.hash || '#/');
   lastHash = location.hash || '#/';
   closeResults();
+  jcaStopTick();
+  jcaQuiz = null;
   jumpToTop();
 
   renderNav(seg);

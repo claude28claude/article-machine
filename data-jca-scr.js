@@ -1,9 +1,9 @@
-/* The Rule Book - data-scr.js
-   The Supreme Court Rules, 2013: the 10-question section of the Supreme Court
-   JCA 2026 objective test.
+/* The Article Machine - data-jca-scr.js
+   The JCA section, part two: the Supreme Court Rules, 2013, the 10-question
+   section of the Supreme Court JCA 2026 objective test.
 
    How firm this is. The bare text of the Rules could not be fetched for this
-   site, so nothing here is quoted from it. Every Order heading and every rule
+   section, so nothing here is quoted from it. Every Order heading and every rule
    used in a question was checked against at least two independent copies or
    reports of the 2013 text (the Supreme Court's own pages, LiveLaw, SCC Online,
    and the published mirrors of the Rules), and any statement resting on one
@@ -12,9 +12,9 @@
    everything here is the 2013 numbering.
 
    Fields:  orders[]  [roman numeral, heading, group]
-            topics[]  as in data-judiciary.js, plus `special: "orders"` for the
+            topics[]  as in data-jca-judiciary.js, plus `special: "orders"` for the
                       page that prints the whole Order map
-            qs[]      as in data-judiciary.js                                 */
+            qs[]      as in data-jca-judiciary.js                                 */
 
 window.JCA = window.JCA || {};
 
