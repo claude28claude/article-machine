@@ -80,9 +80,15 @@ questions.
 
 | Part | Questions on the paper | Here |
 |---|---|---|
-| Judiciary provisions in the Constitution | 15 | 7 topics over the 62 articles that matter, **102** questions |
-| Supreme Court Rules, 2013 | 10 | 9 topics, all **57** Orders mapped, **70** questions |
-| SC Officers and Servants Rules, 1961 | 10 | 6 topics, **53** questions |
+| Judiciary provisions in the Constitution | 15 | 7 topics over the 70 articles that matter, **228** questions |
+| Supreme Court Rules, 2013 | 10 | 9 topics, all **57** Orders mapped, **127** questions |
+| SC Officers and Servants Rules, 1961 | 10 | 6 topics, **90** questions |
+
+445 questions in all, the answer evenly spread over A to D in each part. No
+rule-book question tests a statement that rests on one source; those sit in
+the flagged tables only. The questions added in October 2026 were also
+checked so that none names, in its own wording, the answer to another, since
+any two can be drawn into the same mock test.
 
 English, aptitude, general knowledge and computers are left out on purpose.
 
