@@ -80,9 +80,23 @@ questions.
 
 | Part | Questions on the paper | Here |
 |---|---|---|
-| Judiciary provisions in the Constitution | 15 | 7 topics over the 62 articles that matter, **102** questions |
-| Supreme Court Rules, 2013 | 10 | 9 topics, all **57** Orders mapped, **70** questions |
-| SC Officers and Servants Rules, 1961 | 10 | 6 topics, **53** questions |
+| Judiciary provisions in the Constitution | 15 | 7 topics over the 70 articles that matter, **228** questions |
+| Supreme Court Rules, 2013 | 10 | 10 topics, all **57** Orders mapped, **179** questions |
+| SC Officers and Servants Rules, 1961 | 10 | 6 topics, all five Parts and Rules 1 to 49 covered, **136** questions |
+
+543 questions in all, the answer evenly spread over A to D in each part. No
+rule-book question tests a statement that rests on one source; those sit in
+the flagged tables only. The questions added in October 2026 were also
+checked so that none names, in its own wording, the answer to another, since
+any two can be drawn into the same mock test.
+
+The rule-book notes now cover every Order of the 2013 Rules with what it
+says, not just its heading (Orders VII to XIV have a topic of their own), and
+every rule of the 1961 Rules from 1 to 49 by number, the conduct rules 37 to
+45 and the Parts included. Two things are still not here because no copy of
+them could be read: the rupee figures of the Third Schedule (court fees), and
+the wording of 1961 Rules 5 (qualifications) and 8 (seniority) beyond their
+subject.
 
 English, aptitude, general knowledge and computers are left out on purpose.
 
@@ -104,14 +118,16 @@ questions in the 15/10/10 split, 32 minutes, minus 0.25 for a wrong answer,
 with a palette, mark-for-review, and a clock that survives a reload. Both
 prefer the questions you have tried least.
 
-**How firm the rule-book material is.** The bare text of the two rule books
-could not be fetched while it was written, so nothing in `data-jca-scr.js`
-or `data-jca-osr.js` is quoted from it. Every Order heading and every rule a
-question tests was checked against at least two independent copies or
-reports of the text; a statement with one source is flagged `chk: 1` and
-printed with a "check the bare text" mark, and rules whose headings could
-not be confirmed are left out. The 1966 Rules number many things
-differently, and the section uses the 2013 numbering throughout.
+**How firm the rule-book material is.** The Court's website cannot be
+reached from where this was written, so the two rule books were read in
+search excerpts of the official copies on the Court's own document server:
+the 2014 Gazette text of the 2013 Rules, the consolidated 1961 Rules, the
+Handbook on Practice and Procedure, and the Court's notices. Every Order
+heading and every rule a question tests rests on that official text or on two
+independent sources; a statement with one source is flagged `chk: 1` and
+printed with a "check the bare text" mark. Where a rule's heading was not
+seen, its subject is given and the table says so. The 1966 Rules number many
+things differently, and the section uses the 2013 numbering throughout.
 
 **What it remembers**, in `localStorage` only, every access wrapped:
 `am.jca.wrong.v1` (questions answered wrong, until answered right),

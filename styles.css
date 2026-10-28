@@ -1358,6 +1358,8 @@ details.idx > summary b{font-weight:400;color:var(--dimmer);letter-spacing:.06em
   .arow,.res,.amdrow{gap:var(--s3);padding-left:var(--s2);padding-right:var(--s2)}
   .arow .no,.res .no{min-width:70px;font-size:20px}
   .arow .no.range{min-width:84px;font-size:var(--t-copy)}
+  /* a second term, "(and again 1765–1767)", wraps rather than pushing the row off a small phone */
+  .arow .no.range{flex-shrink:1;max-width:42%}
   .topics{grid-template-columns:1fr}
   .idxgrid{grid-template-columns:1fr}
   /* On a phone the date column would leave about 140px for a place name
