@@ -4395,10 +4395,11 @@ function jcaHome() {
       fig(JCA_ARTS.length, 'articles') + fig(((jcaSec.r && jcaSec.r.orders) || []).length, 'Orders mapped') +
     '</div>' + jcaLiveBanner() +
 
-    '<div class="label stack-lg">Start here</div><div class="mmodes jcmodes">' +
+    '<div class="label stack-lg">Start here</div><div class="mmodes jcmodes jcmodes4">' +
       '<a class="mmode" href="#/jca/mock"><b>Mock test</b><i>35 questions · ' + JCA_MOCK.minutes +
         ' minutes · minus ' + JCA_MOCK.neg + '</i></a>' +
       '<a class="mmode" href="#/jca/practice/mixed"><b>Twenty mixed</b><i>From all three sections, least-tried first</i></a>' +
+      '<a class="mmode" href="#/jca/maps"><b>Mind maps</b><i>Every topic as keywords, with a cover-and-recall mode</i></a>' +
       '<a class="mmode" href="' + (wrong ? '#/jca/practice/wrong' : '#/jca/r/scr-orders') + '"><b>' +
         (wrong ? 'Your ' + jcaPlural(wrong, 'wrong answer') : 'Every Order, in one table') + '</b><i>' +
         (wrong ? 'Until each one is right' : 'The 57 Orders of the 2013 Rules') + '</i></a>' +
@@ -4432,10 +4433,10 @@ function jcaHome() {
 
     '<div class="block"><h3>How firm this is</h3><p class="plain">The official text of every article is the ' +
     'site\'s own verbatim extract. The notes and questions on the two rule books are written, not quoted: ' +
-    'their bare text could not be fetched while they were written, so every Order heading and every rule a ' +
-    'question tests was checked against at least two independent sources. A point with one source carries ' +
-    jcaChk() + ', and rules whose headings could not be confirmed are left out. Read both rule books once ' +
-    'in full on the Supreme Court\'s website before the test.</p>' +
+    'they were read in excerpts of the official copies on the Court\'s own document server, and every Order ' +
+    'heading and every rule a question tests rests on that text or on two independent sources. A point with ' +
+    'one source carries ' + jcaChk() + ' and is never tested. Read both rule books once in full on the ' +
+    'Supreme Court\'s website before the test.</p>' +
     '<div class="stack"><a class="pill big" href="https://www.sci.gov.in/supreme-court-rules-2013/" rel="noopener">' +
     'Supreme Court Rules, 2013</a> <a class="pill big" href="https://www.sci.gov.in/officers-servant-rules/" rel="noopener">' +
     'Officers and Servants Rules, 1961</a></div></div>');
@@ -4450,14 +4451,14 @@ function jcaPlan() {
   if (n <= 0) return '';
   if (n < 4) {
     return '<div class="block"><h3>The last ' + jcaPlural(n, 'day') + '</h3><p class="plain">No new ' +
-      'material now. Read the JCA notes of every topic, take one mock test, and clear the review list.</p></div>';
+      'material now. Fill the three part maps from memory, take one mock test, and clear the review list.</p></div>';
   }
   var a = Math.round(n * 0.4), b = Math.round(n * 0.35), c = n - a - b;
   return '<div class="block"><h3>A plan for the ' + jcaPlural(n, 'day') + ' left</h3>' +
     '<p class="foot jcnote">A suggestion, not a rule.</p><dl class="facts">' +
-    '<dt>Next ' + jcaPlural(a, 'day') + '</dt><dd>The SC Rules 2013 and the 1961 Rules: read each topic, then practise it until you score above 80 per cent.</dd>' +
-    '<dt>Then ' + jcaPlural(b, 'day') + '</dt><dd>The Constitution topics, with the official text of every article you get wrong.</dd>' +
-    '<dt>Last ' + jcaPlural(c, 'day') + '</dt><dd>A mock test every other day, and the review list on the days between.</dd>' +
+    '<dt>Next ' + jcaPlural(a, 'day') + '</dt><dd>The SC Rules 2013 and the 1961 Rules: read each topic, cover its <a href="#/jca/maps">mind map</a> and fill it, then practise it until you score above 80 per cent.</dd>' +
+    '<dt>Then ' + jcaPlural(b, 'day') + '</dt><dd>The Constitution topics, the same way, with the official text of every article you get wrong.</dd>' +
+    '<dt>Last ' + jcaPlural(c, 'day') + '</dt><dd>A mock test every other day; on the days between, the review list and a covered mind map of each part.</dd>' +
     '</dl></div>';
 }
 
@@ -4518,6 +4519,7 @@ function jcaTopicPage(s, t) {
 
   h += '<div class="stack-sm"><a class="pill big" href="#/jca/practice/' + s.id + '/' + t.id + '">' +
     'Practise these ' + jcaPlural(ids.length, 'question') + '</a>' +
+    (jcaMap(s.id, t.id) ? ' <a class="pill big" href="#/jca/maps/' + s.id + '/' + t.id + '">Mind map</a>' : '') +
     (p.tried ? ' <span class="jcmeta">' + esc(jcaProgressLine(p)) + '</span>' : '') + '</div>';
 
   h += notesBlock(t.notes, '', 'JCA notes');
@@ -5039,6 +5041,242 @@ function jcaReviewPage() {
   });
 }
 
+/* --------------------------------------------------------------- mind maps
+
+   One map for each part of the paper and one for each topic, from
+   data-jca-maps.js: the notes reduced to keywords, for revision.
+
+   On a wide screen the branches stand either side of the centre and curves
+   drawn in SVG join them to it. On a narrow one the same markup becomes a
+   tree down the left edge (the columns turn into `display: contents`), so a
+   phone never has to scroll sideways to see a map. The curves are measured
+   off the laid-out page, so they are redrawn when the window changes size
+   and once the fonts have arrived.
+
+   Covering the details turns a map into a recall drill: the branch names
+   stay, and every line under them becomes a blank bar the length of the
+   words until it is tapped. The text stays where it was, only made
+   invisible, so uncovering a line moves nothing. Covering does move things
+   (each branch shows an Uncover button), so the curves are redrawn then. */
+
+var JCA_MAPS = window.JCA_MAPS || {};
+var JCA_HUES = ['gold', 'purple', 'red', 'violet'];
+
+function jcaMap(secId, tid) {
+  var m = JCA_MAPS[secId];
+  if (!m) return null;
+  return tid ? ((m.topics || {})[tid] || null) : m;
+}
+
+/* Every topic map in syllabus order, for Previous and Next. */
+function jcaMapOrder() {
+  var out = [];
+  JCA_SECS.forEach(function (s) {
+    s.topics.forEach(function (t) { if (jcaMap(s.id, t.id)) out.push([s, t]); });
+  });
+  return out;
+}
+
+function jcaMapFacts(m) {
+  return m.br.reduce(function (n, b) { return n + b.lv.length; }, 0);
+}
+
+/* A leaf is "text" or [key, text]. On the Constitution maps a key that is an
+   article opens the article; on the rule books a key is a rule or an Order
+   number, and "Rule 6" must not become a link to Article 6. */
+function jcaMapLeaf(lf, arts) {
+  var key = Array.isArray(lf) ? lf[0] : '', txt = Array.isArray(lf) ? lf[1] : lf;
+  var num = key.replace(/\(.*$/, '');
+  var k = !key ? '' : arts && byArt[num]
+    ? '<a class="mmk" href="#/a/' + encodeURIComponent(num) + '">' + esc(key) + '</a>'
+    : '<span class="mmk">' + esc(key) + '</span>';
+  return '<li>' + k + '<span class="mmt">' + hiMark(linkArts(txt)) + '</span></li>';
+}
+
+function jcaMapBranch(b, i, secId, arts) {
+  var title = hiMark(esc(b.h));
+  if (b.to) title = '<a href="#/jca/maps/' + secId + '/' + encodeURIComponent(b.to) + '">' + title + '</a>';
+  return '<section class="mmbr h-' + JCA_HUES[i % JCA_HUES.length] + '">' +
+    '<h3 class="mmbt">' + title + '</h3>' +
+    '<ul class="mmlv">' + b.lv.map(function (lf) { return jcaMapLeaf(lf, arts); }).join('') + '</ul>' +
+    (b.m ? '<p class="mmhook"><b>Hook</b> <span class="mmt">' + hiMark(esc(b.m)) + '</span></p>' : '') +
+    '<button type="button" class="mmopen" data-mm="branch">Uncover this branch</button></section>';
+}
+
+function jcaMapHtml(m, secId) {
+  var arts = secId === 'c', half = Math.ceil(m.br.length / 2);
+  function col(list, from) {
+    return list.map(function (b, i) { return jcaMapBranch(b, from + i, secId, arts); }).join('');
+  }
+  return '<div class="mmtools" id="mmtools">' +
+      '<button type="button" class="pill big" data-mm="cover">Cover the details</button>' +
+      '<button type="button" class="pill big" data-mm="show" hidden>Show everything</button>' +
+      '<span class="mmprog" id="mmprog" aria-live="polite" hidden></span></div>' +
+    '<div class="mmap" id="mmap">' +
+      '<svg class="mmlinks" aria-hidden="true" focusable="false"></svg>' +
+      '<div class="mmcol">' + col(m.br.slice(0, half), 0) + '</div>' +
+      '<div class="mmhub"><b>' + esc(m.hub) + '</b>' + (m.sub ? '<span>' + esc(m.sub) + '</span>' : '') + '</div>' +
+      '<div class="mmcol">' + col(m.br.slice(half), half) + '</div>' +
+    '</div>';
+}
+
+/* The curves: from the side of the centre to the title of each branch. Not
+   drawn at all when the map is a tree, where CSS draws the joins. */
+function jcaMapLinks() {
+  var map = document.getElementById('mmap');
+  if (!map) return;
+  var svg = map.querySelector('.mmlinks'), hub = map.querySelector('.mmhub');
+  if (!svg || !hub) return;
+  if (getComputedStyle(map).display !== 'grid') { svg.innerHTML = ''; return; }
+  var box = map.getBoundingClientRect(), hb = hub.getBoundingClientRect(), mid = hb.left + hb.width / 2;
+  function f(n) { return Math.round(n * 10) / 10; }
+  svg.setAttribute('viewBox', '0 0 ' + f(box.width) + ' ' + f(box.height));
+  svg.innerHTML = Array.prototype.map.call(map.querySelectorAll('.mmbr'), function (br) {
+    var r = br.getBoundingClientRect(), t = br.querySelector('.mmbt').getBoundingClientRect();
+    var left = r.left + r.width / 2 < mid;
+    var x1 = (left ? hb.left : hb.right) - box.left, y1 = hb.top + hb.height / 2 - box.top;
+    var x2 = (left ? r.left + r.width : r.left) - box.left, y2 = t.top + t.height / 2 - box.top;
+    var cx = (x1 + x2) / 2;
+    return '<path class="' + ((br.className.match(/h-\w+/) || [''])[0]) + '" d="M' + f(x1) + ' ' + f(y1) +
+      ' C' + f(cx) + ' ' + f(y1) + ' ' + f(cx) + ' ' + f(y2) + ' ' + f(x2) + ' ' + f(y2) + '"/>';
+  }).join('');
+}
+
+var jcaMapTimer = null;
+window.addEventListener('resize', function () {
+  clearTimeout(jcaMapTimer);
+  jcaMapTimer = setTimeout(jcaMapLinks, 120);
+});
+
+function jcaMapWire() {
+  var map = document.getElementById('mmap'), tools = document.getElementById('mmtools');
+  if (!map || !tools) return;
+  requestAnimationFrame(jcaMapLinks);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(jcaMapLinks);
+
+  function lines(root) { return (root || map).querySelectorAll('.mmlv li, .mmhook'); }
+  function uncover(x) {
+    x.classList.add('shown');
+    x.removeAttribute('tabindex'); x.removeAttribute('role'); x.removeAttribute('aria-label');
+  }
+  function count() {
+    var p = document.getElementById('mmprog'), all = lines().length,
+        shown = map.querySelectorAll('.mmlv li.shown, .mmhook.shown').length;
+    if (!p) return;
+    p.hidden = !map.classList.contains('recall');
+    p.textContent = shown >= all ? 'All ' + all + ' uncovered. Cover it again tomorrow.'
+                                 : shown + ' of ' + all + ' uncovered';
+  }
+  function recall(on) {
+    map.classList.toggle('recall', on);
+    Array.prototype.forEach.call(lines(), function (x) {
+      x.classList.remove('shown');
+      if (on) { x.setAttribute('tabindex', '0'); x.setAttribute('role', 'button'); x.setAttribute('aria-label', 'Covered line: press to uncover'); }
+      else { x.removeAttribute('tabindex'); x.removeAttribute('role'); x.removeAttribute('aria-label'); }
+    });
+    tools.querySelector('[data-mm="cover"]').hidden = on;
+    tools.querySelector('[data-mm="show"]').hidden = !on;
+    count();
+    /* covering shows each branch's Uncover button, which moves the titles */
+    jcaMapLinks();
+  }
+  function act(e) {
+    if (!map.classList.contains('recall')) return;
+    var open = e.target.closest('[data-mm="branch"]');
+    if (open) {
+      Array.prototype.forEach.call(lines(open.closest('.mmbr')), uncover);
+      return count();
+    }
+    var line = e.target.closest('.mmlv li, .mmhook');
+    if (line && !line.classList.contains('shown')) {
+      /* A covered article key is still a link underneath: the first tap uncovers. */
+      e.preventDefault();
+      uncover(line);
+      count();
+    }
+  }
+  tools.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-mm]');
+    if (b) recall(b.getAttribute('data-mm') === 'cover');
+  });
+  map.addEventListener('click', act);
+  map.addEventListener('keydown', function (e) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.mmlv li, .mmhook')) act(e);
+  });
+}
+
+function jcaMapsHub() {
+  var all = jcaMapOrder(), facts = 0;
+  all.forEach(function (x) { facts += jcaMapFacts(jcaMap(x[0].id, x[1].id)); });
+  var h = jcaCrumb([['Mind maps']]) +
+    pageH1('Mind maps', 'The whole law paper as keywords: a map for each of the ' + all.length + ' topics, ' +
+      facts + ' lines between them, and an overview of each part. Every line is taken from the notes.') +
+    '<div class="block"><h3>How to learn from a map</h3><ol class="mmhow">' +
+      '<li><b>Read it once, out loud,</b> branch by branch. A hook is a line to say, not to read.</li>' +
+      '<li><b>Press Cover the details.</b> The branch names stay; every line becomes a blank. ' +
+        'Say each one, then tap it to check.</li>' +
+      '<li><b>Come back tomorrow, and again in three days.</b> A map you still cannot fill is the topic to practise.</li>' +
+    '</ol></div>';
+  JCA_SECS.forEach(function (s) {
+    var m = jcaMap(s.id);
+    if (!m) return;
+    h += '<div class="hubsec"><div class="hubhead"><a href="#/jca/maps/' + s.id + '">' + esc(s.name) + '</a>' +
+      '<span>The overview, then a map for each topic</span></div><div class="topics">' +
+      '<a class="topic" href="#/jca/maps/' + s.id + '"><b>' + esc(s.short) + ': the whole part</b>' +
+        '<i>Every topic on one map, with the lines most worth knowing.</i>' +
+        '<em>' + jcaPlural(m.br.length, 'branch', 'branches') + '</em></a>' +
+      s.topics.map(function (t) {
+        var tm = jcaMap(s.id, t.id);
+        if (!tm) return '';
+        return '<a class="topic" href="#/jca/maps/' + s.id + '/' + encodeURIComponent(t.id) + '"><b>' + esc(t.t) + '</b>' +
+          '<i>' + esc(tm.br.map(function (b) { return unmark(b.h); }).join(' · ')) + '</i>' +
+          '<em>' + jcaPlural(tm.br.length, 'branch', 'branches') + ' · ' + jcaPlural(jcaMapFacts(tm), 'line') + '</em></a>';
+      }).join('') + '</div></div>';
+  });
+  render(jcaShell(h));
+}
+
+function jcaMapPage(s, t) {
+  var m = jcaMap(s.id, t ? t.id : null);
+  if (!m) return notFound(t ? 'There is no mind map for that topic yet.' : 'There is no mind map for that part.');
+  var crumb = [['Mind maps', '#/jca/maps']];
+  if (t) crumb.push([s.short, '#/jca/maps/' + s.id]);
+  crumb.push([t ? t.t : s.short]);
+  var h = jcaCrumb(crumb) +
+    pageH1(t ? t.t : s.name, (t ? 'Mind map' : 'Mind map of the whole part') + ' · ' +
+      jcaPlural(m.br.length, 'branch', 'branches') + ' · ' + jcaPlural(jcaMapFacts(m), 'line') +
+      (t ? '' : '. Each branch opens its topic\'s own map.')) +
+    jcaMapHtml(m, s.id);
+
+  if (t) {
+    var order = jcaMapOrder(), i = -1;
+    order.forEach(function (x, k) { if (x[1] === t) i = k; });
+    var prev = order[i - 1], next = order[i + 1], ids = jcaQs(s.id, t.id);
+    h += '<div class="stack"><a class="pill big" href="#/jca/practice/' + s.id + '/' + encodeURIComponent(t.id) + '">Practise its ' +
+      jcaPlural(ids.length, 'question') + '</a> <a class="pill big" href="#/jca/' + s.id + '/' + encodeURIComponent(t.id) +
+      '">The full notes</a></div>' +
+      '<div class="nextprev">' +
+      (prev ? '<a href="#/jca/maps/' + prev[0].id + '/' + encodeURIComponent(prev[1].id) + '"><span class="d">Previous map</span><span class="t">' + esc(prev[1].t) + '</span></a>' : '<span></span>') +
+      (next ? '<a class="r" href="#/jca/maps/' + next[0].id + '/' + encodeURIComponent(next[1].id) + '"><span class="d">Next map</span><span class="t">' + esc(next[1].t) + '</span></a>' : '<span></span>') +
+      '</div>';
+  } else {
+    h += '<div class="stack"><a class="pill big" href="#/jca/practice/' + s.id + '">Practise all of ' + esc(s.short) + '</a> ' +
+      '<a class="pill big" href="#/jca/maps">Every map</a></div>';
+  }
+  render(jcaShell(h));
+  jcaMapWire();
+}
+
+function jcaMaps(seg) {
+  if (!seg[0]) return jcaMapsHub();
+  var s = jcaSec[seg[0]];
+  if (!s) return notFound('There is no such part of JCA.');
+  if (!seg[1]) return jcaMapPage(s, null);
+  var t = jcaTopic(s.id, seg[1]);
+  if (!t) return notFound('There is no such topic in ' + s.name + '.');
+  jcaMapPage(s, t);
+}
+
 /* ------------------------------------------------------------------ keys
 
    In a mock, A to D (or 1 to 4) choose and the arrows move; in practice,
@@ -5068,6 +5306,7 @@ function jcaRoute(seg) {
   if (k === 'practice') return jcaPractice(seg.slice(1));
   if (k === 'mock') return seg[1] === 'result' ? jcaMockResult() : jcaMockPage();
   if (k === 'review') return jcaReviewPage();
+  if (k === 'maps') return jcaMaps(seg.slice(1));
   var s = jcaSec[k];
   if (!s) return notFound('That address does not exist in JCA.');
   if (!seg[1]) return jcaSectionPage(s);
@@ -5086,6 +5325,7 @@ SUBJECTS.push({
     { href: '#/jca/c',        label: 'Constitution',   match: ['c'] },
     { href: '#/jca/r',        label: 'SC Rules 2013',  match: ['r'] },
     { href: '#/jca/s',        label: 'O&S Rules 1961', match: ['s'] },
+    { href: '#/jca/maps',     label: 'Mind maps',      match: ['maps'] },
     { href: '#/jca/practice', label: 'Practice',       match: ['practice'] },
     { href: '#/jca/mock',     label: 'Mock test',      match: ['mock'] },
     { href: '#/jca/review',   label: 'Review',         match: ['review'] }
@@ -6085,7 +6325,8 @@ function buildIndex() {
   [['Mock test', '#/jca/mock', '35 questions, 32 minutes, minus 0.25 for a wrong answer', 'mock test timed exam paper negative marking'],
    ['Practice', '#/jca/practice', 'Every topic, twenty mixed, or one section', 'practice practise questions mcq quiz'],
    ['Review', '#/jca/review', 'Your wrong answers and every mock score', 'review wrong answers mistakes mock history score'],
-   ['Only my wrong answers', '#/jca/practice/wrong', 'Practise the questions you got wrong', 'wrong answers mistakes revise']
+   ['Only my wrong answers', '#/jca/practice/wrong', 'Practise the questions you got wrong', 'wrong answers mistakes revise'],
+   ['Mind maps', '#/jca/maps', 'Every part and topic as keywords, with cover and recall', 'mind map mindmap maps revision memory remember recall keywords']
   ].forEach(function (x, i) {
     searchIndex.push({
       kind: 'jca', id: 'jcatool-' + i, no: '', title: x[0], sub: 'JCA \u00b7 ' + x[2],
@@ -7298,7 +7539,8 @@ function sideSkip(seg) {
   var k = seg[0] || '';
   return k === '' || k === 'hub' || k === 'topics' || k === 'index' ||
          k === 'contents' || k === 's' || k === 'about' ||
-         (k === 'jca' && (seg[1] === 'practice' || seg[1] === 'mock'));
+         /* a mind map needs the whole width for its two wings */
+         (k === 'jca' && (seg[1] === 'practice' || seg[1] === 'mock' || seg[1] === 'maps'));
 }
 
 function sideFor(seg) {

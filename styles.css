@@ -1755,3 +1755,102 @@ footer .chip.chk,.why .chip.chk,.plain .chip.chk{margin-left:0}
   .jcsubmit{margin-left:0}
   .jccount b{font-size:var(--n-sm)}
 }
+
+/* ------------------------------------------------------------ JCA mind maps
+
+   Two layouts from one piece of markup. Wide: three grid columns, the
+   branches either side of the centre, joined to it by the curves app.js draws
+   in SVG. Narrow: the columns dissolve (display: contents), the centre goes
+   to the top, and the branches hang off a line down the left edge, joined by
+   CSS, so a phone never scrolls sideways. Colour is in the borders and the
+   type, never the ground, as everywhere else; the four branch colours are
+   the palette's own.
+
+   Covered, a line keeps its words but makes them invisible over a bar of
+   --line, so it reads as a blank of the right length and uncovering it moves
+   nothing. The key (an article, an Order, a rule) stays visible: it is the
+   prompt the covered line answers. */
+.jcmodes4{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.h-gold{--hue:var(--gold)}
+.h-purple{--hue:var(--purple)}
+.h-red{--hue:var(--red)}
+.h-violet{--hue:var(--violet)}
+
+.mmtools{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2) var(--s3);margin:var(--s4) 0 0}
+.mmprog{font-family:var(--mono);font-size:var(--t-tiny);letter-spacing:.06em;color:var(--dim)}
+
+.mmap{
+  position:relative;display:grid;align-items:center;
+  grid-template-columns:minmax(0,1fr) minmax(150px,210px) minmax(0,1fr);
+  column-gap:clamp(40px,5vw,84px);margin:var(--s5) 0 var(--s6);
+}
+.mmlinks{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.mmlinks path{fill:none;stroke:var(--hue);stroke-width:1.6;opacity:.55}
+.mmcol{display:flex;flex-direction:column;gap:var(--s4);position:relative}
+.mmhub{
+  position:relative;text-align:center;padding:var(--s5) var(--s4);
+  border:1px solid var(--line2);border-radius:20px;background:var(--panel);
+  box-shadow:0 0 0 6px var(--bg),0 0 0 7px var(--line);
+}
+.mmhub b{display:block;font-family:var(--serif);font-weight:600;font-size:var(--t-h4);line-height:1.25;color:var(--ink)}
+.mmhub span{
+  display:block;margin-top:var(--s2);font-family:var(--mono);font-size:var(--t-micro);
+  letter-spacing:.1em;text-transform:uppercase;color:var(--dim);
+}
+.mmbr{
+  position:relative;background:var(--panel);border:1px solid var(--line);
+  border-left:3px solid var(--hue);border-radius:var(--r-sm);padding:var(--s3) var(--s4);
+}
+.mmbt{margin:0 0 var(--s2);font-family:var(--serif);font-weight:600;font-size:var(--t-base);line-height:1.3;color:var(--hue)}
+.mmbt a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;text-decoration-color:var(--line2)}
+.mmbt a:hover{text-decoration-color:var(--hue)}
+.mmlv{list-style:none;margin:0;padding:0}
+/* The words around a keyword are dimmed and the keyword itself is bright,
+   with no band behind it: on a map every line has its answer marked, and a
+   page of yellow bands would mark nothing. */
+.mmlv li{position:relative;padding:4px 0 4px 15px;font-size:var(--t-copy);line-height:1.5;color:var(--dim)}
+.mmap mark.hi{background:none;padding:0;color:var(--ink);font-weight:600}
+.mmlv li::before{
+  content:'';position:absolute;left:1px;top:.8em;width:6px;height:6px;border-radius:50%;
+  background:var(--hue);opacity:.75;
+}
+.mmk{font-family:var(--mono);font-size:var(--t-small);color:var(--gold);margin-right:.55em;text-decoration:none;white-space:nowrap}
+a.mmk:hover{text-decoration:underline}
+.mmhook{
+  margin:var(--s2) 0 0;padding-top:var(--s2);border-top:1px dashed var(--line2);
+  font-size:var(--t-small);line-height:1.5;color:var(--dim);font-style:italic;
+}
+.mmhook b{
+  font-style:normal;font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--hue);margin-right:.3em;
+}
+.mmopen{display:none}
+
+.mmap.recall .mmlv li:not(.shown),.mmap.recall .mmhook:not(.shown){cursor:pointer}
+.mmap.recall li:not(.shown) .mmt,.mmap.recall .mmhook:not(.shown) .mmt{
+  color:transparent;background:var(--line);border-radius:3px;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+}
+.mmap.recall li:not(.shown) .mmt *,.mmap.recall .mmhook:not(.shown) .mmt *{color:transparent;background:none}
+.mmap.recall li:not(.shown):hover .mmt,.mmap.recall .mmhook:not(.shown):hover .mmt{background:var(--line2)}
+.mmap.recall .mmlv li:focus-visible,.mmap.recall .mmhook:focus-visible{outline:2px solid var(--hue);outline-offset:2px;border-radius:4px}
+.mmap.recall .mmopen{
+  display:inline-block;margin-top:var(--s2);padding:4px 0;background:none;border:0;cursor:pointer;
+  font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.1em;text-transform:uppercase;color:var(--hue);
+}
+.mmap.recall li.shown .mmt,.mmap.recall .mmhook.shown .mmt{animation:mmfade .25s var(--ease)}
+@keyframes mmfade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.mmap.recall li.shown .mmt,.mmap.recall .mmhook.shown .mmt{animation:none}}
+
+.mmhow{margin:0;padding-left:1.3em;color:var(--dim);line-height:1.6;max-width:74ch}
+.mmhow li{margin:0 0 var(--s2)}
+.mmhow b{color:var(--ink);font-weight:600}
+
+@media (max-width:900px){
+  .mmap{display:flex;flex-direction:column;gap:var(--s3);padding-left:22px}
+  .mmap::before{content:'';position:absolute;left:7px;top:28px;bottom:28px;width:2px;border-radius:1px;background:var(--line2)}
+  .mmcol{display:contents}
+  .mmhub{order:-1;margin-left:-22px;text-align:left;padding:var(--s4);box-shadow:none}
+  .mmbr::before{content:'';position:absolute;left:-16px;top:22px;width:13px;height:2px;background:var(--hue);opacity:.6}
+  .mmlinks{display:none}
+}
