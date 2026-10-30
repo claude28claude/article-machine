@@ -131,8 +131,9 @@ section, the kicker being the rule it covers ("Rule 13(5) to (8)"), and a
 table whose `after` names that kicker sits straight under it. Section edges
 take the mind maps' four colours in turn. A marked phrase is bold with a fine
 gold underline rather than a yellow band, because a rule-book note marks
-four or five phrases a line. On a phone, where the side column's contents
-list goes to the bottom, a row of chips at the top jumps to each section. A
+four or five phrases a line. Below 1000px (a phone, or a tablet held
+upright), where the side column's contents list goes to the bottom, a row of
+chips at the top jumps to each section. A
 part's topics are numbered and grouped under the rule book's own divisions
 (`part` on each topic: the Parts of the 1961 Rules, the groups of Orders),
 with the rules each covers (`span`) above its title. Practice is one question at a
@@ -715,6 +716,37 @@ of them so a reader can check what a summary lost.
 | `fonts/*.woff2` | Literata, Inter and IBM Plex Mono, latin subsets, 139 KB in total |
 | `tools/make-icons.py` | Regenerates the PWA icons |
 
+## A tablet held sideways
+
+On its side a tablet is 1024 to 1366px wide but only 744 to 1024 tall: width
+to spare, height scarce. The layout spends the first to save the second, and
+hides nothing for good: each change moves a thing, resizes it, or lets it
+step aside until it is called back.
+
+- **The side column stays** from 1000px (above), with the contents list in it.
+- **The header steps aside.** On a short touch screen held sideways (landscape,
+  900px tall or less) it slides up while you swipe down a page and drops back
+  the moment you swipe up, reach the top, or move into it from the keyboard.
+  Only a swipe, a wheel or a key moves it: the page's own jumps (a contents
+  link, the next question) leave it as it is, so they land where they were
+  aimed. Everything that sticks under it reads `--headh`, which `syncHead`
+  sets to nothing while it is away.
+- **Practice is two columns** from 1000px: the question and its four options
+  on the left, and on the right the count, then the reason and the Next
+  button the moment you answer, so neither the options nor Next moves below
+  the fold.
+- **The mock test is the real test's screen**: the question on the left, and
+  on the right one panel with the clock, Submit and the palette, five to a
+  row so the Constitution's 15 are the first three rows and each rule book's
+  10 the next two.
+- **Every control a finger presses is at least 44px tall** on a touch screen.
+  Links inside a sentence keep their size, as words do; the short links that
+  stand alone (the trail at the top of a page, the topic above a question)
+  get the height as padding pulled back by an equal negative margin, so their
+  line does not move.
+- **Back moves to the bottom right** from 1000px, under the right thumb and
+  off the reading column, where it sat over a question's fourth option.
+
 ## Going back
 
 Every page except the front one carries a **Back** control, fixed to the
@@ -755,7 +787,9 @@ good.
 ## Beside the page
 
 Every study page is two columns on a wide screen: the page, and beside it a
-stack of small cards. Below 1180px the cards drop under the page and lay
+stack of small cards. From 1000 to 1180px, a tablet held sideways, the column
+narrows to 260px rather than leaving, so its contents list stays in view
+while you read. Below 1000px the cards drop under the page and lay
 themselves out as a row that wraps, so nothing is lost on a phone — all but
 the contents list, which is worth having while the page is still ahead of you
 and worth nothing underneath it.

@@ -308,10 +308,17 @@ function renderNav(seg) {
    header instead — and measure it AFTER the nav is filled, since the nav is
    rendered by JS and the header is 43px shorter without it. */
 function syncHead() {
-  var head = document.querySelector('header.top');
+  var head = document.querySelector('header.top'), root = document.documentElement;
   if (!head) return;
-  document.documentElement.style.setProperty('--headh',
-    Math.round(head.getBoundingClientRect().height) + 'px');
+  /* Stepped aside (below), the header needs no room at all. */
+  root.style.setProperty('--headh',
+    (root.classList.contains('hdhide') ? 0 : Math.round(head.getBoundingClientRect().height)) + 'px');
+}
+
+/* Where the sticky header ends, for a scroll that must land just under it. */
+function headOff() {
+  var head = document.querySelector('header.top');
+  return head && !document.documentElement.classList.contains('hdhide') ? head.getBoundingClientRect().height : 0;
 }
 
 /* A resize event is not always enough — a font finishing loading, or the tab
@@ -320,6 +327,52 @@ function syncHead() {
 (function () {
   var head = document.querySelector('header.top');
   if (head && window.ResizeObserver) new ResizeObserver(syncHead).observe(head);
+})();
+
+/* A tablet on its side is about 750px tall, and the header is an eighth of
+   that all the way down every page. So on a short touch screen held
+   sideways it steps up out of the way while you swipe down through a page,
+   and drops back the moment you swipe up, reach the top, or move into it
+   from the keyboard. Only a swipe, a wheel or a key moves it: the jumps the
+   page makes itself (a contents link, the next question) leave it as it
+   is, so they land where they were aimed. Everything that sticks under it
+   reads --headh, which syncHead sets to nothing while it is away. */
+var headHides = window.matchMedia ?
+  window.matchMedia('(orientation: landscape) and (max-height: 900px) and (pointer: coarse)') : null;
+
+function setHeadHidden(on) {
+  var root = document.documentElement;
+  if (root.classList.contains('hdhide') === !!on) return;
+  root.classList.toggle('hdhide', !!on);
+  syncHead();
+}
+
+(function () {
+  var head = document.querySelector('header.top');
+  if (!headHides || !head) return;
+  var lastY = window.pageYOffset, run = 0, userUntil = 0;
+  function user() { userUntil = Date.now() + 400; }
+  window.addEventListener('touchmove', user, { passive: true });
+  window.addEventListener('wheel', user, { passive: true });
+  window.addEventListener('keydown', function (e) {
+    if (/^(ArrowDown|ArrowUp|PageDown|PageUp|Home|End| )$/.test(e.key)) user();
+  });
+  window.addEventListener('scroll', function () {
+    var y = window.pageYOffset, d = y - lastY, now = Date.now();
+    lastY = y;
+    if (!headHides.matches || y < 160 || head.contains(document.activeElement)) {
+      run = 0; setHeadHidden(false); return;
+    }
+    if (now > userUntil || !d) return;
+    userUntil = now + 250;   /* the glide after the finger lifts is still the swipe */
+    run = (d > 0) === (run > 0) ? run + d : d;
+    if (run > 40) setHeadHidden(true);
+    else if (run < -40) setHeadHidden(false);
+  }, { passive: true });
+  head.addEventListener('focusin', function () { setHeadHidden(false); });
+  function turned() { if (!headHides.matches) setHeadHidden(false); }
+  if (headHides.addEventListener) headHides.addEventListener('change', turned);
+  else if (headHides.addListener) headHides.addListener(turned);
 })();
 
 /* ------------------------------------------------------------------ back
@@ -4112,8 +4165,7 @@ function dailySetPage(id) {
 function scrollToPart(partId) {
   var el = document.getElementById('part-' + partId);
   if (!el) return;
-  var head = document.querySelector('header.top');
-  var off = head ? head.getBoundingClientRect().height : 0;
+  var off = headOff();
   var root = document.documentElement, prev = root.style.scrollBehavior;
   root.style.scrollBehavior = 'auto';
   window.scrollTo(0, el.getBoundingClientRect().top + window.pageYOffset - off - 12);
@@ -4728,15 +4780,21 @@ function jcaDrawQuiz() {
     return;
   }
 
+  /* The answer box follows the question rather than sitting inside its card,
+     so a wide screen can set the two side by side: the options never move,
+     and the reason and the Next button appear beside them, on the same
+     screen, instead of under the fold. */
   var item = JCA_QBY[z.ids[z.i]], q = item.q;
   box.innerHTML =
     '<div class="mprog"><span style="width:' + Math.round(100 * z.i / z.ids.length) + '%"></span></div>' +
+    '<div class="jcqgrid">' +
     '<div class="mcount">Question ' + (z.i + 1) + ' of ' + z.ids.length + ' · ' + z.right + ' right so far</div>' +
     '<div class="mq">' + jcaQMeta(item, false) + '<div class="mqq">' + esc(q.q) + '</div>' +
     '<div class="mqo">' + q.o.map(function (o, oi) {
       return '<button type="button" class="mopt" data-pick="' + oi + '"><span class="ml">' +
         'ABCD'.charAt(oi) + '</span><span class="mt">' + esc(o) + '</span></button>';
-    }).join('') + '</div><div id="jqs"></div></div>';
+    }).join('') + '</div></div>' +
+    '<div id="jqs"><p class="jcqhint">Pick one. The reason, and the rule it tests, open here.</p></div></div>';
 }
 
 function jcaPick(pick) {
@@ -4883,7 +4941,7 @@ function jcaMockRun(live) {
   jcaSel = live.cur || 0;
   render('<div class="wrap artpage jcmock">' + jcaCrumb([['Mock test']]) +
     '<div class="jcbarline" id="jcmbar"></div><div id="jcmbody"></div>' +
-    '<div class="block"><h3>All 35</h3><div class="jcpal" id="jcmpal"></div>' +
+    '<div class="block jcmside"><h3>All 35</h3><div class="jcpal" id="jcmpal"></div>' +
     '<p class="foot jcnote">Gold: answered. Purple ring: marked to come back to. Outlined: where you are.</p></div></div>');
   /* No floating Back button over the test's own controls. */
   var fab = document.getElementById('backfab');
@@ -4938,8 +4996,7 @@ function jcaDrawMock(live) {
 /* An instant scroll that leaves the element just below the sticky header;
    the stylesheet's smooth scrolling would be abandoned half-way by a redraw. */
 function jcaScrollTo(el) {
-  var root = document.documentElement, prev = root.style.scrollBehavior;
-  var head = document.querySelector('header.top'), off = head ? head.getBoundingClientRect().height : 0;
+  var root = document.documentElement, prev = root.style.scrollBehavior, off = headOff();
   root.style.scrollBehavior = 'auto';
   window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - off - 12));
   root.style.scrollBehavior = prev;
@@ -6781,6 +6838,7 @@ function moveSel(d) {
 function jumpToTop() {
   var root = document.documentElement;
   var prev = root.style.scrollBehavior;
+  setHeadHidden(false);   /* a new page starts with its header in view */
   root.style.scrollBehavior = 'auto';   // beats the stylesheet for this call
   window.scrollTo(0, 0);
   if (root.scrollTop) root.scrollTop = 0;
