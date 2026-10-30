@@ -4325,7 +4325,7 @@ function jcaPlural(n, one, many) { return n + ' ' + (n === 1 ? one : (many || on
 
 /* ------------------------------------------------------------ rendering */
 
-function jcaShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+function jcaShell(body) { return '<div class="wrap artpage jcpage">' + body + '</div>'; }
 
 function jcaCrumb(items) {
   return '<div class="crumb"><a href="#/jca">JCA</a>' + items.map(function (x) {
@@ -4338,8 +4338,8 @@ function jcaChk() { return '<span class="chip chk">check the bare text</span>'; 
 /* A table, as factsBlock draws one, plus two things this subject needs: an
    article number anywhere in a row is a link, and a table resting on one
    source carries the mark that says so. */
-function jcaFacts(g) {
-  return '<div class="block"><h3>' + esc(g.h) + (g.chk ? ' ' + jcaChk() : '') + '</h3>' +
+function jcaFacts(g, cls) {
+  return '<div class="block' + (cls ? ' ' + cls : '') + '"><h3>' + esc(g.h) + (g.chk ? ' ' + jcaChk() : '') + '</h3>' +
     (g.note ? '<p class="foot jcnote">' + hiMark(linkArts(g.note)) + '</p>' : '') +
     '<dl class="facts">' + g.rows.map(function (r) {
       return '<dt>' + hiMark(linkArts(r[0])) + '</dt><dd>' + hiMark(linkArts(r[1])) + '</dd>';
@@ -4465,12 +4465,30 @@ function jcaPlan() {
 
 /* --------------------------------------------------------------- sections */
 
-function jcaTopicCard(s, t, practise) {
+/* A topic card: its place in the part and the rules it covers above the
+   title, so the list reads as a course in order rather than a pile. */
+function jcaTopicCard(s, t, practise, num) {
   var ids = jcaQs(s.id, t.id), p = jcaProgress(ids);
-  return '<a class="topic" href="#/jca/' + (practise ? 'practice/' : '') + s.id + '/' + encodeURIComponent(t.id) + '">' +
+  var top = (num ? '<span class="jcnum">' + num + '</span>' : '') + (t.span ? '<span class="jcspan">' + esc(t.span) + '</span>' : '');
+  return '<a class="topic jctopic" href="#/jca/' + (practise ? 'practice/' : '') + s.id + '/' + encodeURIComponent(t.id) + '">' +
+    (top ? '<span class="jctop">' + top + '</span>' : '') +
     '<b>' + esc(t.t) + '</b>' + (practise ? '' : '<i>' + esc(t.w) + '</i>') +
     '<em>' + jcaPlural(ids.length, 'question') + (p.tried ? ' · ' + p.tried + ' tried' +
     (p.pct === null ? '' : ', ' + p.pct + '% right') : '') + '</em></a>';
+}
+
+/* The topics of a part under the headings of the rule book itself (the
+   Parts of the 1961 Rules, the groups of Orders), each numbered in order. */
+function jcaTopicParts(s) {
+  var parts = [], at = {};
+  s.topics.forEach(function (t, i) {
+    var k = t.part || 'The topics';
+    if (!at.hasOwnProperty(k)) { at[k] = parts.length; parts.push({ k: k, items: [] }); }
+    parts[at[k]].items.push(jcaTopicCard(s, t, false, i + 1));
+  });
+  return parts.map(function (pt) {
+    return '<div class="block jcpart"><h3>' + esc(pt.k) + '</h3><div class="topics">' + pt.items.join('') + '</div></div>';
+  }).join('');
 }
 
 function jcaSectionPage(s) {
@@ -4483,8 +4501,7 @@ function jcaSectionPage(s) {
     (s.id === 'r' ? ' <a class="pill big" href="#/jca/r/scr-orders">Every Order, in one table</a>' : '') +
     '</div></div>';
 
-  h += '<div class="block"><h3>The topics</h3><div class="topics">' +
-    s.topics.map(function (t) { return jcaTopicCard(s, t); }).join('') + '</div></div>';
+  h += jcaTopicParts(s);
 
   /* The Constitution part lists every article it covers, each a link to the
      article's own page with the official text. */
@@ -4514,34 +4531,94 @@ function jcaOrders() {
   }).join('');
 }
 
+/* A topic's notes in short sections. An entry "## Kicker | Title" starts a
+   section; the kicker is the rule, Order or article it covers. A table
+   whose `after` names a section's kicker or title is drawn under that
+   section, beside the notes it sums up. A topic without headings keeps
+   the single notes box. */
+function jcaGroups(t) {
+  var groups = [], cur = null;
+  (t.notes || []).forEach(function (n) {
+    var m = /^## (.*)$/.exec(n);
+    if (m) {
+      var bits = m[1].split(' | ');
+      cur = { kick: bits.length > 1 ? bits[0] : '', title: bits.length > 1 ? bits.slice(1).join(' | ') : bits[0], notes: [] };
+      groups.push(cur);
+    } else {
+      if (!cur) { cur = { kick: '', title: '', notes: [] }; groups.push(cur); }
+      cur.notes.push(n);
+    }
+  });
+  return groups;
+}
+
+var JCA_GHUES = ['gold', 'purple', 'red', 'violet'];
+
+function jcaJumpChip(id, label) {
+  return '<button type="button" onclick="document.getElementById(\'' + id + '\').scrollIntoView()">' +
+    esc(shorten(label, 34)) + '</button>';
+}
+
 function jcaTopicPage(s, t) {
   var ids = jcaQs(s.id, t.id), p = jcaProgress(ids);
-  var h = jcaCrumb([[s.short, '#/jca/' + s.id], [t.t]]) + pageH1(t.t, t.w);
+  var groups = jcaGroups(t), grouped = groups.some(function (g) { return g.title; });
+  var blocks = t.blocks || [], placed = {}, jump = [], body = '';
+
+  var h = jcaCrumb([[s.short, '#/jca/' + s.id], [t.t]]) +
+    (t.span ? '<p class="eyebrow jceyebrow">' + esc(t.span) + '</p>' : '') + pageH1(t.t, t.w);
 
   h += '<div class="stack-sm"><a class="pill big" href="#/jca/practice/' + s.id + '/' + t.id + '">' +
     'Practise these ' + jcaPlural(ids.length, 'question') + '</a>' +
     (jcaMap(s.id, t.id) ? ' <a class="pill big" href="#/jca/maps/' + s.id + '/' + t.id + '">Mind map</a>' : '') +
     (p.tried ? ' <span class="jcmeta">' + esc(jcaProgressLine(p)) + '</span>' : '') + '</div>';
 
-  h += notesBlock(t.notes, '', 'JCA notes');
-  if (t.special === 'orders') h += jcaOrders();
+  if (grouped) {
+    groups.forEach(function (g, gi) {
+      var id = 'jg' + gi, hue = JCA_GHUES[gi % JCA_GHUES.length];
+      jump.push(jcaJumpChip(id, g.kick || g.title));
+      body += '<section class="block jcgrp g-' + hue + '" id="' + id + '">' +
+        (g.kick ? '<p class="jcgk">' + esc(g.kick) + '</p>' : '') +
+        (g.title ? '<h3>' + esc(g.title) + '</h3>' : '') +
+        '<ol class="jcnl">' + g.notes.map(function (n) { return '<li>' + hiMark(linkArts(n)) + '</li>'; }).join('') + '</ol></section>';
+      blocks.forEach(function (b, bi) {
+        if (placed[bi] || !b.after || (b.after !== g.kick && b.after !== g.title)) return;
+        placed[bi] = 1;
+        body += jcaFacts(b, 'jcafter');
+      });
+    });
+  } else {
+    body = notesBlock(t.notes, '', 'JCA notes');
+  }
+  if (t.special === 'orders') body += jcaOrders();
 
   if (t.arts && t.arts.length) {
-    h += '<div class="block"><h3>The articles</h3>' +
+    jump.push(jcaJumpChip('jcarts', 'The articles'));
+    body += '<div class="block" id="jcarts"><h3>The articles</h3>' +
       '<p class="foot jcnote">Each opens on its own page, with the plain-English note and the official text.</p>' +
       t.arts.map(function (n) { return byArt[n] ? artRow(byArt[n]) : ''; }).join('') + '</div>';
   }
 
-  (t.blocks || []).forEach(function (b) { h += jcaFacts(b); });
+  var rest = blocks.filter(function (b, bi) { return !placed[bi]; });
+  if (rest.length) {
+    jump.push(jcaJumpChip('jctables', rest.length === 1 ? rest[0].h : 'Tables'));
+    body += '<div id="jctables"></div>' + rest.map(function (b) { return jcaFacts(b); }).join('');
+  }
 
   if (t.pairs && t.pairs.length) {
-    h += '<div class="block"><h3>Confused pairs</h3>' + t.pairs.map(cmpBlock).join('') + '</div>';
+    jump.push(jcaJumpChip('jcpairs', 'Confused pairs'));
+    body += '<div class="block" id="jcpairs"><h3>Confused pairs</h3>' + t.pairs.map(cmpBlock).join('') + '</div>';
   }
 
   var cs = (t.cases || []).map(function (id) { return caseById[id]; }).filter(Boolean);
   if (cs.length) {
-    h += '<div class="block"><h3>The cases</h3><div class="caselist">' + cs.map(caseCard).join('') + '</div></div>';
+    jump.push(jcaJumpChip('jccases', 'The cases'));
+    body += '<div class="block" id="jccases"><h3>The cases</h3><div class="caselist">' + cs.map(caseCard).join('') + '</div></div>';
   }
+
+  /* On a phone the side column, with its list of what is on the page, goes
+     to the bottom; this row keeps that list at the top. */
+  if (grouped && jump.length > 2) h += '<nav class="jcjump" aria-label="On this page"><span>On this page</span>' + jump.join('') + '</nav>';
+  h += body;
 
   var i = s.topics.indexOf(t), prev = s.topics[i - 1], next = s.topics[i + 1];
   h += '<div class="nextprev">' +
@@ -6298,7 +6375,7 @@ function buildIndex() {
       searchIndex.push({
         kind: 'jca', id: 'jca-' + t.id, no: '', title: t.t, sub: s.short + ' \u00b7 ' + t.w,
         near: (t.t + ' ' + t.w).toLowerCase(),
-        hay: unmark([t.t, t.w, s.name].concat(t.notes || []).join(' ') +
+        hay: unmark([t.t, t.w, s.name, t.span || ''].concat(t.notes || []).join(' ').replace(/## | \| /g, ' ') +
              ' jca junior court assistant').toLowerCase(),
         href: href, num: ''
       });

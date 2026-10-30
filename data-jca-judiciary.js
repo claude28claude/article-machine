@@ -36,21 +36,28 @@ window.JCA.judiciary = {
   topics: [
   {
     id: "sc-bench",
+    span: "Articles 124 to 128", part: "The Supreme Court",
     t: "The Supreme Court: who sits on it",
     w: "Composition, appointment, qualifications, oath, removal, and the acting, ad hoc and retired judges.",
     arts: ["124", "124A", "125", "126", "127", "128"],
     notes: [
+      "## Article 124 | Who sits on the Court",
       "The Supreme Court exists because ==Article 124== says so: a ==Chief Justice of India== and, as enacted, ==not more than seven== other judges until Parliament prescribes more.",
       "Parliament raises the number by law. Since the ==2019 amendment== to the Supreme Court (Number of Judges) Act it is ==33 judges plus the CJI, 34 in all==.",
+      "## Appointment | Appointment, age and the three routes in",
       "Every judge is appointed by the ==President by warrant under his hand and seal==, and the ==CJI is always consulted== for any appointment other than his own.",
       "A Supreme Court judge holds office until ==65==; a High Court judge until ==62==.",
       "Three routes in: ==5 years a High Court judge==, ==10 years a High Court advocate==, or a ==distinguished jurist== in the President's opinion. There is ==no minimum age==.",
+      "## Removal | Article 124(4) and (5)",
       "Removal: an address by ==each House==, passed by a ==majority of its total membership and two-thirds of those present and voting==, in the ==same session==, for ==proved misbehaviour or incapacity==.",
       "The procedure sits in the ==Judges (Inquiry) Act, 1968==, made under Article 124(5). A motion needs ==100 Lok Sabha== or ==50 Rajya Sabha== signatures; a ==three-member committee== (a Supreme Court judge, a High Court Chief Justice and a distinguished jurist) investigates.",
+      "## Service | Pay, oath, and after retiring",
       "Pay cannot be cut after appointment (125(2)), except by the President's direction in a ==Financial Emergency== (Article 360(4)(b)).",
       "Oath before the ==President== in the form in the ==Third Schedule==; resignation by writing ==addressed to the President==.",
       "A retired Supreme Court judge may ==not plead or act in any court or before any authority in India== (Article 124(7)).",
+      "## Articles 126 to 128 | Acting, ad hoc and retired judges",
       "Acting CJI: ==Article 126==. Ad hoc judges: ==Article 127==. Retired judges sitting again: ==Article 128==.",
+      "## NJAC | The 99th Amendment, and its end",
       "The ==99th Amendment (2014)== put a National Judicial Appointments Commission into Articles 124A to 124C. The Court struck it down on ==16 October 2015==, 4 to 1, and the ==collegium== continues. The Commission would have had ==six members==, chaired by the ==CJI==; the 2015 bench had ==five judges==, the Second Judges case (1993) ==nine==."
     ],
     blocks: [
@@ -66,7 +73,7 @@ window.JCA.judiciary = {
           ["124(6)", "Oath or affirmation before the President or a person he appoints, in the Third Schedule form"],
           ["124(7)", "After retirement, no pleading or acting in any court or before any authority in India"]
         ] },
-      { h: "Acting, ad hoc, retired, and the pay",
+      { h: "Acting, ad hoc, retired, and the pay", after: "Articles 126 to 128",
         rows: [
           ["Article 126 · acting CJI", "When the office of CJI is vacant, or the CJI is absent or unable to act, the President appoints one of the other judges to perform the duties"],
           ["Article 127 · ad hoc judges", "When there is no quorum of permanent judges, the CJI, with the previous consent of the President and after consulting the Chief Justice of the High Court concerned, asks a High Court judge qualified for the Supreme Court to sit"],
@@ -100,20 +107,26 @@ window.JCA.judiciary = {
 
   {
     id: "sc-powers",
+    span: "Articles 129 to 147", part: "The Supreme Court",
     t: "The Supreme Court: what it can hear",
     w: "Court of record, original, appellate, special leave, review, transfer, advisory, rules of court and its own staff.",
     arts: ["129", "130", "131", "132", "133", "134", "134A", "135", "136", "137", "138", "139", "139A", "140", "141", "142", "143", "144", "145", "146", "147"],
     notes: [
+      "## Articles 129 and 130 | A court of record, and its seat",
       "==Article 129==: a court of record, with the power to ==punish for contempt of itself==. Each High Court gets the same under ==Article 215==.",
       "Its seat is ==Delhi==, or anywhere else the ==CJI, with the approval of the President==, appoints (Article 130).",
+      "## Article 131 | Original jurisdiction",
       "Original jurisdiction, ==Article 131==: disputes between the ==Union and States== or ==between States== that turn on a legal right. A private party ==cannot== bring a 131 suit.",
       "Disputes from a ==pre-Constitution treaty, covenant or sanad== are outside Article 131; the President may refer one under ==Article 143(2)==.",
+      "## Articles 132 to 136 | Appeals and special leave",
       "Appeals from a High Court: constitutional (==132==), civil (==133==) and criminal (==134==), each on a ==certificate== granted under ==Article 134A== (44th Amendment, 1978).",
       "A criminal appeal lies ==as of right== where a High Court ==reverses an acquittal and sentences to death==, or withdraws a case, tries it and sentences to death (134(1)).",
       "==Article 136==: special leave to appeal from ==any court or tribunal== in India, at the Court's ==discretion==, except those under the ==Armed Forces== laws (136(2)).",
+      "## Articles 137 to 142 | Review, transfer and binding law",
       "==Article 137==: the Court may ==review its own judgments==, subject to Parliament's law and the rules under Article 145.",
       "==Article 139A== (42nd Amendment): the Court may ==withdraw to itself== cases on the same question pending in different courts, and ==transfer== a case from one High Court to another.",
       "==Article 141==: the law it declares ==binds all courts in India==. ==Article 142==: it may make any order needed for ==complete justice==.",
+      "## Articles 143 to 146 | Advice, rules and the staff",
       "==Article 143(1)==: the Court ==may== give its opinion. ==143(2)==: on a pre-Constitution treaty dispute it ==shall==.",
       "==Article 145(3)==: at least ==five judges== to decide a substantial question of interpretation of the Constitution, or to hear an Article 143 reference.",
       "==Article 146==: the staff are appointed by the ==CJI==, and their service conditions are set by rules the CJI makes, with the ==President's approval== for salaries, allowances, leave and pensions. That is where the ==1961 Rules== come from."
@@ -132,7 +145,7 @@ window.JCA.judiciary = {
           ["Advisory · 143", "The President refers a question; the Court reports its opinion"],
           ["Curative", "Not in the text at all: created by the Court in ==Rupa Ashok Hurra (2002)== for use after a review fails"]
         ] },
-      { h: "Article 145: the rule-making article",
+      { h: "Article 145: the rule-making article", after: "Articles 143 to 146",
         rows: [
           ["Who makes the rules", "The Supreme Court, with the approval of the President, to regulate its practice and procedure. The current set is the ==Supreme Court Rules, 2013=="],
           ["What they may cover", "Who may practise before it, appeals, proceedings under Part III, Article 139A, review, costs and fees, bail, stay, frivolous appeals, and the Article 317 inquiry"],
@@ -172,27 +185,34 @@ window.JCA.judiciary = {
 
   {
     id: "high-courts",
+    span: "Articles 214 to 231", part: "The High Courts and the courts below",
     t: "The High Courts",
     w: "Articles 214 to 231: appointment, qualifications, transfer, additional and retired judges, writs and superintendence.",
     arts: ["214", "215", "216", "217", "218", "219", "220", "221", "222", "223", "224", "224A", "225", "226", "227", "228", "229", "230", "231"],
     notes: [
+      "## Articles 214 to 216 | One for each State",
       "==Article 214==: a High Court for each State. ==Article 231==: Parliament may set up ==one High Court for two or more States==.",
       "The Constitution fixes no number of judges: the ==President== decides how many each High Court needs (Article 216).",
+      "## Article 217 | Appointment, age and leaving office",
       "Appointment by the ==President== after consulting the ==CJI==, the ==Governor==, and, for a puisne judge, the ==Chief Justice of that High Court== (217(1)).",
       "Qualifications: ==10 years in judicial office== or ==10 years as a High Court advocate==, and ==no distinguished-jurist route==.",
       "A High Court judge retires at ==62==; a dispute about his age is decided by the ==President after consulting the CJI==, and the decision is ==final== (217(3)).",
       "A High Court judge ==resigns to the President==, and his office falls vacant on ==appointment to the Supreme Court or transfer== (217(1)).",
+      "## Articles 222 to 224A | Transfers and extra judges",
       "Transfer from one High Court to another: the ==President after consulting the CJI== (Article 222), with a ==compensatory allowance== fixed by Parliament (222(2)).",
       "Additional judges for up to ==two years== to clear arrears (224); retired judges may be asked back by the ==Chief Justice of the High Court with the President's previous consent== (224A).",
+      "## Articles 226 to 228 | Writs and superintendence",
       "==Article 226==: writs for the fundamental rights ==and for any other purpose==, which makes a High Court's writ power ==wider== than Article 32.",
       "==Article 227==: superintendence over ==every court and tribunal== in its territory, except those under the ==Armed Forces== laws.",
       "==Article 228==: a High Court may ==withdraw a case== from a subordinate court if it turns on a substantial question of interpretation of the Constitution.",
+      "## Article 221 | Pay",
       "Pay: a High Court judge's salary is charged on the ==Consolidated Fund of the State==, his pension on the ==Consolidated Fund of India==.",
       "==Article 221==: a High Court judge's salary is ==determined by Parliament by law== (until then, the Second Schedule), and his allowances and rights to leave and pension may ==not be varied to his disadvantage== after his appointment.",
+      "## Article 230 | Union territories",
       "==Article 230==: ==Parliament== may by law extend a High Court's jurisdiction to, or exclude it from, a ==Union territory==. The State's Legislature then cannot ==increase, restrict or abolish== that jurisdiction, and for that territory's courts Article 227's ==Governor== reads as the ==President==."
     ],
     blocks: [
-      { h: "Article 226, clause by clause",
+      { h: "Article 226, clause by clause", after: "Articles 226 to 228",
         rows: [
           ["226(1)", "Writs, orders and directions to any person or authority, including a government, for the fundamental rights and for any other purpose"],
           ["226(2)", "May issue wherever the ==cause of action arises==, wholly or in part, in its territory, even if the authority sits elsewhere (15th Amendment)"],
@@ -231,22 +251,26 @@ window.JCA.judiciary = {
 
   {
     id: "subordinate",
+    span: "Articles 233 to 237", part: "The High Courts and the courts below",
     t: "The subordinate courts",
     w: "Articles 233 to 237: district judges, the judicial service, and the High Court's control over both.",
     arts: ["233", "233A", "234", "235", "236", "237", "247"],
     notes: [
+      "## Articles 233 and 234 | Who appoints the judges below",
       "District judges are appointed by the ==Governor in consultation with the High Court== (Article 233).",
       "A lawyer becomes eligible after ==seven years as an advocate or pleader==, and only on the ==High Court's recommendation== (233(2)).",
       "The rest of the judicial service is appointed by the ==Governor under rules made after consulting the State PSC and the High Court== (234).",
+      "## Articles 235 to 237 | Control, and who counts",
       "==Control== over the district courts and the courts below them is ==vested in the High Court== (235): posting, promotion and leave.",
       "“District judge” (236) includes a ==sessions judge==, a ==chief presidency magistrate==, a judge of a ==city civil court== and the chief judge of a ==small cause court==.",
       "==Article 237==: the Governor may, by public notification, apply this Chapter to ==magistrates==.",
+      "## Elsewhere | The Lists, an all-India service, a validation",
       "Administration of justice and every court below the High Courts: ==Concurrent List entry 11A==, moved there from the State List by the ==42nd Amendment==.",
       "An ==All India Judicial Service== may be created under ==Article 312==, but it cannot include any post ==inferior to a district judge==.",
       "==Article 233A== (20th Amendment, 1966) validated district-judge appointments made outside Article 233, after ==Chandra Mohan (1966)==. ==Article 247==: Parliament may set up ==additional courts== for Union laws."
     ],
     blocks: [
-      { h: "Who counts as a district judge (Article 236)",
+      { h: "Who counts as a district judge (Article 236)", after: "Articles 235 to 237",
         rows: [
           ["Included", "Judge of a city civil court; additional, joint and assistant district judges; chief judge of a small cause court; chief presidency magistrate and additional chief presidency magistrate; sessions, additional sessions and assistant sessions judges"],
           ["Judicial service", "A service made up only of people meant to fill the post of district judge and the civil judicial posts below it"],
@@ -269,22 +293,27 @@ window.JCA.judiciary = {
 
   {
     id: "writs",
+    span: "Articles 32 and 226", part: "Writs, the rest, and the records",
     t: "Writs: Articles 32 and 226",
     w: "The five writs, the two writ courts, and the cases that opened the door to public interest litigation.",
     arts: ["32", "226", "139", "359"],
     notes: [
+      "## Article 32 | A right in itself",
       "==Article 32== is itself a ==fundamental right==; Ambedkar called it the ==very soul and heart== of the Constitution.",
+      "## The five writs | What each one does",
       "The five writs: ==habeas corpus==, ==mandamus==, ==prohibition==, ==certiorari== and ==quo warranto==.",
       "==Habeas corpus== (“to have the body”) lies even against a ==private person== holding someone.",
       "==Mandamus== (“we command”) orders a public authority to do its duty; it does not lie against the ==President or a Governor== or a private person.",
       "==Prohibition== stops a lower court or tribunal ==before== it decides; ==certiorari== quashes what it has ==already decided==.",
       "==Quo warranto== (“by what authority”) tests a claim to a ==public office==, and anyone may ask for it.",
+      "## Limits | Other courts, and the Emergency",
       "Parliament may let ==other courts== issue writs within local limits (32(3)), and may give the Supreme Court writ power for ==other purposes== (Article 139).",
       "During an Emergency the President may suspend the enforcement of rights (Article 359), but never ==Articles 20 and 21== (44th Amendment, 1978).",
+      "## Cases | The early cases",
       "Two early cases on Article 32 itself: ==Romesh Thappar (1950)==, the Court as ==protector and guarantor== of the rights; ==Daryao (1961)==, ==res judicata== applies to writ petitions decided on the merits."
     ],
     blocks: [
-      { h: "The five writs",
+      { h: "The five writs", after: "The five writs",
         rows: [
           ["Habeas corpus", "“To have the body”: produce the detained person and justify the detention; against public authorities and private persons alike"],
           ["Mandamus", "“We command”: perform a public duty; not against the President, a Governor, a private person, or a chief justice acting judicially"],
@@ -319,26 +348,34 @@ window.JCA.judiciary = {
 
   {
     id: "elsewhere",
+    span: "Articles 39A to 361", part: "Writs, the rest, and the records",
     t: "The judiciary in the rest of the Constitution",
     w: "Legal aid, separation of powers, the bar on debating judges, presidential election disputes, tribunals, the courts' language, the judicial service, and the Schedules.",
     arts: ["39A", "50", "71", "121", "122", "211", "262", "312", "323A", "323B", "329", "348", "360", "361", "363"],
     notes: [
+      "## Article 39A | Legal aid and Lok Adalats",
       "==Article 39A== (42nd Amendment, 1976): equal justice and ==free legal aid==, delivered through the Legal Services Authorities Act, 1987.",
       "That Act came into force on ==9 November 1995==. The ==CJI== is Patron-in-Chief of NALSA, and a ==Lok Adalat award is final==, with no appeal.",
+      "## Articles 71 and 348 | Elections and language",
       "==Article 71==: the Supreme Court decides disputes about a ==President's or Vice-President's election==; acts done before its decision ==stand==. ==Article 262(2)==: Parliament may bar every court from ==inter-State river water disputes==.",
       "==Article 348==: proceedings in the Supreme Court and the High Courts are in ==English==; a Governor may allow Hindi in a High Court, but ==not for its judgments==.",
+      "## The 42nd and 43rd | Articles that came and went",
       "==Articles 32A, 131A, 144A, 226A and 228A== came in with the ==42nd Amendment== and went out with the ==43rd== (1977).",
+      "## Articles 50 and 121 | Separation, and silence in Parliament",
       "==Article 50==: separate the ==judiciary from the executive==; a directive principle.",
       "==Article 121==: Parliament may not discuss a judge's conduct in the discharge of his duties ==except on a motion for removal==. ==Article 211==: a State Legislature may not discuss it ==at all==.",
+      "## Articles 312 and 323A | A judicial service, and tribunals",
       "==Article 312==: an All India Judicial Service needs a Rajya Sabha resolution backed by ==two-thirds of those present and voting==.",
       "==Articles 323A and 323B== (Part XIVA, ==42nd Amendment==): administrative tribunals, and tribunals for other matters.",
+      "## Article 361 | Immunity",
       "==Article 361==: the President and the Governors are ==not answerable to any court== for the exercise of their powers.",
+      "## The Schedules | The Seventh and the Third",
       "Union List ==entry 77==: the Supreme Court's constitution, organisation, jurisdiction, powers and contempt. ==Entry 78==: the High Courts' constitution and organisation, ==except their officers and servants==.",
       "State List ==entry 3==: the ==officers and servants of the High Court==. Concurrent List ==entry 11A==: administration of justice and every court except the Supreme Court and the High Courts.",
       "Oaths: the ==Third Schedule==, Form ==IV== for Supreme Court judges (shared with the CAG) and Form ==VIII== for High Court judges. Pay: the ==Second Schedule, Part D=="
     ],
     blocks: [
-      { h: "The courts in the Seventh Schedule",
+      { h: "The courts in the Seventh Schedule", after: "The Schedules",
         note: "Entry texts verbatim from the official edition.",
         rows: [
           ["Union List 77", "Constitution, organisation, jurisdiction and powers of the Supreme Court (including contempt of such Court), and the fees taken therein; persons entitled to practise before the Supreme Court"],
@@ -366,20 +403,25 @@ window.JCA.judiciary = {
 
   {
     id: "cases-numbers",
+    span: "Cases, firsts and records", part: "Writs, the rest, and the records",
     t: "Cases, firsts and numbers",
     w: "The judgments that shaped the Court's own powers, and the figures an exam asks for.",
     arts: [],
     notes: [
+      "## Beginnings | The Court and its firsts",
       "The Supreme Court was inaugurated on ==28 January 1950==, two days after the Constitution came into force, and succeeded the ==Federal Court of India== (1937 to 1950).",
       "First Chief Justice: ==H. J. Kania==. First woman judge: ==M. Fathima Beevi== (1989).",
+      "## Now | The present Chief Justice",
       "The present Chief Justice is ==Surya Kant==, the ==53rd==, in office since ==24 November 2025== until 9 February 2027.",
+      "## On itself | Removal, review and curative",
       "No judge of the Supreme Court or a High Court has ever been removed. The motion against ==V. Ramaswami== failed in the Lok Sabha in ==1993==.",
       "The curative petition comes from ==Rupa Ashok Hurra (2002)==; open-court hearing of death-sentence reviews from ==Mohd. Arif (2014)==.",
+      "## History and records | The Federal Court, and the biggest numbers",
       "The ==Federal Court== sat from ==1 October 1937==; its first Chief Justice was ==Sir Maurice Gwyer==. The Supreme Court moved to its present building in ==1958==, and its motto is ==Yato Dharmastato Jayah==.",
       "Records: the largest bench, ==13 judges== (Kesavananda Bharati, 1973); the longest-serving CJI, ==Y. V. Chandrachud== (1978 to 1985); the shortest, ==K. N. Singh== (17 days, 1991); the first Dalit CJI, ==K. G. Balakrishnan== (2007)."
     ],
     blocks: [
-      { h: "Judgments on the Court's own procedure",
+      { h: "Judgments on the Court's own procedure", after: "On itself",
         rows: [
           ["Rupa Ashok Hurra v. Ashok Hurra (2002)", "Created the ==curative petition==, a last remedy after a review is dismissed, to cure a gross miscarriage of justice"],
           ["P. N. Eswara Iyer v. Registrar (1980)", "Upheld deciding ==review petitions by circulation==, without an oral hearing"],
@@ -390,7 +432,7 @@ window.JCA.judiciary = {
           ["Ismail Faruqui (1994)", "The Court ==declined to answer== the Ayodhya reference under Article 143"],
           ["Indira Jaising v. Supreme Court (2017)", "Laid down guidelines for ==designating Senior Advocates=="]
         ] },
-      { h: "Numbers and firsts",
+      { h: "Numbers and firsts", after: "History and records",
         note: "True as on 27 October 2026.",
         rows: [
           ["Inaugurated", "==28 January 1950==, first sitting in the Chamber of Princes in Parliament House; the present building from 1958"],

@@ -90,21 +90,26 @@ window.JCA.scr = {
   topics: [
   {
     id: "scr-basics",
+    span: "Order I, and the layout", part: "The rule book",
     t: "The rule book: where it comes from",
     w: "Article 145, the dates, the repeal of the 1966 Rules, and how the fifty-seven Orders are laid out.",
     notes: [
+      "## Origin | Made under Article 145",
       "The Rules are made by the ==Supreme Court under Article 145==, with the ==approval of the President==.",
       "Published by notification dated ==27 May 2014== (G.S.R. 368(E)), and in force from ==19 August 2014==, a date the ==Chief Justice of India== appointed.",
       "They ==repealed the Supreme Court Rules, 1966==; the repeal is the last Order, ==Order LVII==.",
+      "## Layout | 57 Orders in three Parts",
       "==57 Orders== in all, from Order I (interpretation) to Order LVII (repeal), with the Forms after them. ==Form No. 28== is the special leave petition (civil).",
       "Part I is ==General== (Orders I to XV); Part II, ==Appellate Jurisdiction==, opens at ==Order XVI==; Part III, ==Original Jurisdiction==, opens with original suits at ==Order XXV==.",
+      "## Changes | Amendments, and the old numbering",
       "Three amendments worth knowing: ==2019==, single Judges for bail matters and transfers (Order VI); ==2024==, “summer vacation” renamed ==partial court working days== (Order II); ==2025==, the Registry's hours and ==working Saturdays== (Order II).",
       "The ==1966 numbering is different==. Review was Order XL then and is ==Order XLVII== now; Article 32 petitions are ==Order XXXVIII== now. Old guides mix the two.",
+      "## Order I | The words defined",
       "Order I defines the words the Rules use. An ==Advocate-on-Record== is an advocate entitled under the Rules to ==act as well as to plead== for a party; ==“Chief Justice”== includes a Judge appointed under ==Article 126==; ==“Registrar”== includes an ==Additional Registrar==; the ==“rules”== include the ==Forms==.",
       "A ==“judgment”== includes a ==decree, order, sentence or determination== of any Court, Tribunal, Judge or Judicial Officer. ==Court fees== are those set out in the ==Third Schedule==."
     ],
     blocks: [
-      { h: "The Rules at a glance",
+      { h: "The Rules at a glance", after: "Origin",
         rows: [
           ["Made under", "Article 145 of the Constitution"],
           ["Made by", "The Supreme Court, with the approval of the President"],
@@ -115,7 +120,7 @@ window.JCA.scr = {
           ["Parts", "I General (Orders I to XV) · II Appellate Jurisdiction (from XVI) · III Original Jurisdiction (from XXV)"],
           ["Staff rules are separate", "The officers and servants of the Court are governed by the 1961 Rules, made under Article 146, not by these"]
         ] },
-      { h: "Order I: the words defined",
+      { h: "Order I: the words defined", after: "Order I",
         rows: [
           ["Advocate", "An advocate entered in a State roll under the Advocates Act, 1961"],
           ["Advocate-on-Record", "An advocate entitled under these Rules to act as well as to plead for a party"],
@@ -140,10 +145,12 @@ window.JCA.scr = {
 
   {
     id: "scr-orders",
+    span: "Orders I to LVII", part: "The rule book",
     special: "orders",
     t: "Every Order, in one table",
     w: "All fifty-seven headings in order, grouped by what they deal with. The group names are this site's, not the Rules'.",
     notes: [
+      "## Landmarks | How to learn the 57",
       "Fix the ==landmarks== first, then fill in between: ==IV== advocates, ==V== chambers, ==VI== benches, ==XV== petitions, ==XXI and XXII== special leave, ==XXXVIII== Article 32, ==XLII== Article 143, ==XLVI== election petitions, ==XLVII== review, ==XLVIII== curative, ==LV== inherent powers, ==LVII== repeal.",
       "Orders ==XXV to XXXVII== are a civil trial in miniature, for an original suit under Article 131.",
       "Three transfers in a row: ==XXXIX== (Section 406 CrPC), ==XL== (139A(1)), ==XLI== (139A(2) and Section 25 CPC).",
@@ -153,30 +160,35 @@ window.JCA.scr = {
 
   {
     id: "scr-advocates",
+    span: "Order IV", part: "People and procedure",
     t: "Advocates and Advocates-on-Record",
     w: "Order IV: who may appear, how a Senior Advocate is designated, what it takes to become an AoR, and how an AoR is removed.",
     notes: [
+      "## Order IV | Who may appear",
       "Order IV is ==Advocates==: who may appear, Senior Advocates, and Advocates-on-Record.",
       "Only the ==Advocate-on-Record== for a party may appear, plead and address the Court, unless another advocate is ==instructed by the AoR== or ==permitted by the Court== (Rule 1(b)).",
+      "## Senior Advocates | Designation, and what they may not do",
       "Senior Advocates are designated by the ==Chief Justice and the Judges==, with the ==advocate's consent==, for ability, standing at the Bar, or special knowledge or experience in law (Rule 2(a)).",
       "A Senior Advocate may ==not appear without an Advocate-on-Record== in the Supreme Court, or without a junior in any other court (Rule 2(b)).",
       "A Senior Advocate may ==not accept instructions to draw pleadings or affidavits==, though he may settle them with a junior.",
+      "## Advocates-on-Record | Registration and duties",
       "To register as an AoR: ==four years== on a State Bar Council roll by the day training starts, ==one year's training== with an AoR, then the ==AoR examination== the Court conducts.",
       "An AoR must keep an ==office in Delhi within 16 km== of the Court House and undertake to employ a ==registered clerk within one month== of registration (Rule 5). Older guides say ten miles, the same distance.",
       "Rule 4: an advocate ==not designated a Senior Advocate== who meets the conditions in ==Rule 5== may be registered as an Advocate-on-Record. No candidate gets ==more than five chances== at the AoR examination.",
       "Rule 7(b): an AoR filing a vakalatnama ==certifies its due execution==. Rule 13 provides for the ==registration of clerks==.",
+      "## Discipline | Misconduct, and a change of status",
       "Rule 10: if the Court finds an AoR guilty of ==misconduct or conduct unbecoming==, on a complaint or otherwise, it may ==remove his name from the register==, ==permanently or for a period==.",
       "The Explanations to Rule 10's proviso count as misconduct ==mere name-lending== without further part in the case, absence without justifiable cause when the case is called, and not filing a signed appearance slip.",
       "An AoR who is designated Senior must ==tell his clients== and report to the Registry, or he cannot appear (Rule 18)."
     ],
     blocks: [
-      { h: "Three kinds of advocate in the Supreme Court",
+      { h: "Three kinds of advocate in the Supreme Court", after: "Order IV",
         rows: [
           ["Advocate-on-Record", "Registered after training and the AoR examination; the only one who may file and act for a party"],
           ["Senior Advocate", "Designated by the Chief Justice and the Judges; argues, but never without an AoR, and drafts no pleadings"],
           ["Any other advocate", "On a State Bar Council roll; may appear and argue only if instructed by an AoR or allowed by the Court"]
         ] },
-      { h: "Explanations (b) and (c), from one source only",
+      { h: "Explanations (b) and (c), from one source only", after: "Discipline",
         chk: 1,
         note: "From a 2014 report of a notification; check it against the bare text before relying on it.",
         rows: [
@@ -196,26 +208,32 @@ window.JCA.scr = {
 
   {
     id: "scr-registry",
+    span: "Orders II, III, V, VI and XV", part: "People and procedure",
     t: "The Registry, the Registrar and the benches",
     w: "Orders II, III, V, VI and XV: sittings and vacations, the Secretary General and the seal, the Registrar's powers and appeals from them, who sits on a bench, and caveats.",
     notes: [
+      "## Orders II and III | The offices and the officers",
       "Order II is ==Offices of the Court; sittings and vacation==. Order III is ==Officers of the Court==.",
       "Order III: the ==Secretary General== has ==custody of the records== of the Court (under the 1966 Rules it was the ==Registrar==). In his absence his functions are exercised by the ==Registrar nominated by the Chief Justice==.",
       "The Secretary General keeps the ==seal==, and it goes on a writ, order, summons, process or certified copy only under ==authority in writing==.",
+      "## Order V | Business in chambers",
       "Order V, ==Business in chambers==: the ==Registrar== may exercise the Court's powers in listed matters, such as uncontested formal interlocutory applications, discovery, inspection and interrogatories, ==substituted service==, and time to plead. He may ==refer any matter to the Judge in Chambers==, who may refer it to the ==Court==.",
       "An order of the Registrar under Order V may be appealed to the ==Judge in Chambers within fifteen days== (Rule 3).",
+      "## Order XV | Petitions generally",
       "Order XV, ==Petitions generally==: paragraphs and pages are ==numbered consecutively==. Once a ==caveat== is lodged, ==notice of the petition goes to the caveator==.",
       "Order XV, Rule 5: the Registrar may ==refuse to receive a petition== that discloses no reasonable cause, is frivolous or contains scandalous matter. The petitioner may appeal ==within fifteen days==, and that appeal goes to the ==Court==.",
+      "## Order VI | Who sits on a Bench",
       "Order VI, Rule 1: every cause, appeal or matter is heard by a Bench of ==not less than two Judges nominated by the Chief Justice==.",
       "A Bench that thinks a question should go to a ==larger Bench== refers it to the ==Chief Justice==, who constitutes one. The Chief Justice also appoints the ==Judge in Chambers==.",
       "A case in which a High Court has ==confirmed or awarded a death sentence== goes to a Bench of ==not less than three Judges==; a smaller Bench that thinks death should be awarded ==refers it to the Chief Justice== for such a Bench.",
       "The ==2019 amendment== lets a ==single Judge==, nominated by the ==Chief Justice==, hear SLPs from bail and anticipatory-bail orders under ==Sections 437, 438 and 439 CrPC== in offences punishable with ==up to seven years==, transfer petitions under ==Section 406 CrPC==, and urgent ones under ==Section 25 CPC==. Its root is ==Article 145(2)==.",
+      "## The calendar | Sittings, vacations and the 2025 hours",
       "The ==2024 amendment== renamed the summer vacation ==partial court working days==, and capped those days and the holidays together at ==95, excluding Sundays== (it had been 103). The ==Chief Justice== fixes them.",
       "The ==2025 amendment==, in force from ==14 July 2025==, rewrote Order II Rules 1 to 3: the Registry is open ==10 a.m. to 5 p.m.== Monday to Friday and ==10 a.m. to 1 p.m. on every Saturday==; on partial court working days and holidays, as the Chief Justice directs.",
       "“Vacation Judge” is now just ==Judge==: the Chief Justice names the Judges who take urgent matters during partial court working days."
     ],
     blocks: [
-      { h: "Order VI: who sits",
+      { h: "Order VI: who sits", after: "Order VI",
         rows: [
           ["Ordinary Bench", "Not less than two Judges, nominated by the Chief Justice"],
           ["A single Judge (2019)", "Bail SLPs in offences punishable with up to seven years, Section 406 CrPC transfers, urgent Section 25 CPC transfers"],
@@ -236,16 +254,20 @@ window.JCA.scr = {
 
   {
     id: "scr-general",
+    span: "Orders VII to XIV", part: "People and procedure",
     t: "Minors, papers, affidavits and judgments",
     w: "Orders VII to XIV: minors and persons of unsound mind, documents, affidavits, inspection, notices of motion, judgments, copies and suitors' funds.",
     notes: [
+      "## Order VII | Minors and persons of unsound mind",
       "Order VII: a ==minor== sues or appeals through a ==next friend==, and is defended by a ==guardian==; the Order also covers ==persons of unsound mind==.",
       "No next friend or guardian may ==compromise== on the minor's behalf ==without the Court's leave==.",
       "A ==new next friend== is appointed on an application with an ==affidavit== that he is ==fit and proper== and has ==no interest adverse== to the minor's. A party who has ==come of age== applies to be declared a major, on an ==affidavit of his age and the date he attained majority==.",
+      "## Orders VIII to XI | Documents, affidavits, inspection, motions",
       "Order VIII is ==Documents==: papers are filed in ==English==, the language of the Supreme Court under ==Article 348(1)==, and a document in another language goes in with a translation.",
       "Order IX, ==Affidavits==: drawn up in the ==first person==, in ==paragraphs numbered consecutively==, and confined to facts the deponent can prove from his ==own knowledge==; in an ==interlocutory application== statements of belief may be admitted, with their grounds.",
       "Evidence on an application may be given ==by affidavit==, but the Court may order the deponent to ==attend for cross-examination==.",
       "Order X: ==inspection and search== of the Court's records, with leave. Order XI: a ==notice of motion== states ==all the grounds== of the motion.",
+      "## Orders XII to XIV | Judgments, copies and suitors' funds",
       "Order XII: a judgment is ==pronounced in open court==, at once or on a ==later day with notice to the parties==, and ==one Judge may pronounce== the judgment of another.",
       "Once pronounced, a judgment is ==not altered or added to== afterwards, save on ==review== or to correct a ==clerical or arithmetical mistake== or an accidental slip or omission.",
       "Order XIII, ==Copying==: a ==party== is entitled to copies; a ==non-party== applies with an ==affidavit of his reasons==. Certified copies are certified by an ==Assistant Registrar or Branch Officer== and ==sealed==.",
@@ -268,19 +290,24 @@ window.JCA.scr = {
 
   {
     id: "scr-appeals",
+    span: "Orders XVI to XXIV", part: "Kinds of case",
     t: "Appeals and special leave",
     w: "Orders XVI to XXIV: indigent appeals, certificate appeals, criminal appeals, both kinds of SLP, and the two statutory appeals.",
     notes: [
+      "## Orders XVI to XX | Hearing, indigent and certificate appeals",
       "Part II, ==Appellate Jurisdiction==, runs from Order XVI (hearing of appeals) to Order XXIV. At the hearing of an appeal ==not more than one advocate== is heard for the appellants, and one for each respondent or set of respondents, unless the Court directs otherwise (Order XVI).",
       "Order XVIII: appeals and applications by an ==indigent person==. One allowed to proceed as such pays ==no court fee on the papers filed and no process fee==, but ==pays for copies== (Rule 4).",
       "Order XIX: appeals on a ==certificate by the High Court== (Articles 132 to 134A), filed with a certified copy of the ==judgment== and of the ==order granting the certificate==. Order XX: ==criminal appeals==; the Court's Handbook registers the appeals under ==Article 134(1)(a) and (b)== as criminal appeals.",
+      "## Orders XXI and XXII | Special leave petitions",
       "Order XXI: ==special leave petitions in civil proceedings==, drawn up in ==Form No. 28==. Order XXII: ==special leave petitions in criminal proceedings==.",
       "The SLP sets out the ==questions of law== and the ==grounds== separately, and says on affidavit whether the petitioner filed an ==earlier SLP== against the same judgment.",
       "Unless a ==caveat== is lodged, an SLP is first heard ==ex parte==, and ==delay is not condoned without notice== to the respondent. Once leave is granted, the ==petition itself is treated as the appeal==, subject to any additional court fee.",
       "Time: an SLP within ==90 days== of the judgment, or ==60 days== of the High Court's ==refusal of a certificate==; an appeal on a certificate within ==60 days== of the certificate (Order XIX). Delay can be ==condoned for sufficient cause==.",
+      "## Order XXII, Rule 5 | Surrender",
       "A petitioner ==sentenced to imprisonment== must say whether he has surrendered (==Order XXII, Rule 5==). If he has not, the petition is not taken in without an ==application for exemption from surrendering==, which is listed first.",
       "Proof of surrender is a ==certified copy of the order recording it== or a ==certificate from the jail officer==; a jail attestation on the vakalatnama is not proof.",
       "The surrender rule applies only where there is a ==sentence of imprisonment== (Jasminbhai Kothari, 2025).",
+      "## Orders XXIII and XXIV | Appeals under two Acts",
       "Order XXIII: appeals under ==Section 38 of the Advocates Act, 1961==, against the Bar Council of India's disciplinary orders. The ==person aggrieved==, the ==Attorney-General of India== or the State's ==Advocate-General== may appeal, within ==60 days== of the order being ==communicated==.",
       "Order XXIV: appeals from the ==National Commission== under ==Section 23 of the Consumer Protection Act, 1986==, within ==30 days==, with delay excused for ==sufficient cause==. The 1986 Act was ==repealed on 20 July 2020==, when the ==2019 Act== came into force; such appeals now lie under its ==Section 67==."
     ],
@@ -308,18 +335,22 @@ window.JCA.scr = {
 
   {
     id: "scr-original",
+    span: "Orders XXV to XXXVIII", part: "Kinds of case",
     t: "Suits, writs and PIL",
     w: "Orders XXV to XXXVIII: the original suit under Article 131, petitions under Article 32, and public interest litigation, with what the PIL guidelines take up.",
     notes: [
+      "## Orders XXV to XXXVII | The original suit",
       "Orders ==XXV to XXXVII== run an ==original suit== (an Article 131 dispute) like a civil trial: parties, plaint, summons, written statement, discovery, admissions, witnesses, adjournments, hearing, withdrawal, payment into court, and the special case.",
+      "## Order XXXVIII | Article 32 petitions",
       "Order XXXVIII: ==applications for enforcement of fundamental rights under Article 32==. One in a ==criminal matter==, ==habeas corpus== included, is registered as a ==Writ Petition (Criminal)== (the Court's Handbook).",
+      "## Order XXXVIII, Rule 12 | Public interest litigation",
       "PIL sits in ==Order XXXVIII, Rule 12==. It can begin ==suo motu==, on a ==letter or representation==, by the Court ==treating a petition as a PIL==, or by ==filing a petition==.",
       "A PIL filed directly must disclose the petitioner's details, the cause of action and the public injury, and carry an ==affidavit of no personal gain, private motive or oblique reason==.",
       "The Court's ==PIL guidelines== list ten kinds of ==letter-petition== it takes up: ==bonded labour==; ==neglected children==; ==minimum wages== and casual workers; complaints from ==jails==; complaints against the ==police==; ==atrocities on women==; harassment of ==Scheduled Caste and Scheduled Tribe== villagers; the ==environment==, ecology, drugs, food adulteration, heritage, forests and wildlife; ==riot victims==; and ==family pension==.",
       "Not taken up as PIL: ==landlord and tenant== matters; ==service matters==, including ==pension and gratuity==; complaints against government departments and local bodies outside the ten; ==admission== to medical and other colleges; and petitions for the ==early hearing== of cases pending in the High Courts and lower courts."
     ],
     blocks: [
-      { h: "An original suit, Order by Order",
+      { h: "An original suit, Order by Order", after: "Orders XXV to XXXVII",
         rows: [
           ["XXV", "Parties to suits"],
           ["XXVI", "Plaints"],
@@ -335,7 +366,7 @@ window.JCA.scr = {
           ["XXXVI", "Payment into Court"],
           ["XXXVII", "Special case"]
         ] },
-      { h: "Article 32 petitions, from one source only",
+      { h: "Article 32 petitions, from one source only", after: "Order XXXVIII",
         chk: 1,
         note: "These two points come from a single published copy of the Rules. Check them against the bare text before relying on them.",
         rows: [
@@ -355,20 +386,24 @@ window.JCA.scr = {
 
   {
     id: "scr-transfer",
+    span: "Orders XXXIX to XLVI", part: "Kinds of case",
     t: "Transfers, references and election petitions",
     w: "Orders XXXIX to XLVI: the three transfer Orders, the four reference Orders, and presidential election petitions.",
     notes: [
+      "## Orders XXXIX to XLV | Transfers and references",
       "Three transfer Orders: ==XXXIX== (criminal cases, Section 406 CrPC), ==XL== (Article 139A(1)), ==XLI== (Article 139A(2) and Section 25 CPC).",
       "Four reference Orders: ==XLII== (Article 143), ==XLIII== (Article 317(1), or a statute), ==XLIV== (statutory references by the Central Government or tribunals), ==XLV== (Section 257, Income Tax Act).",
       "On a reference under Article 143 the ==Registrar gives notice to the Attorney-General==, and the Court ==reports its opinion to the President==. On an Article 317(1) reference, notice goes to the ==person concerned== and to the ==Attorney-General== or the State's ==Advocate-General==.",
       "Transfer applications are registered as ==Transfer Petitions==, civil or criminal. A case actually withdrawn under Article 139A(1) is registered, once the High Court sends it, as a ==Transferred Case==.",
+      "## Order XLVI | Election petitions",
       "Order XLVI: election petitions under the ==Presidential and Vice-Presidential Elections Act, 1952==, heard by a Bench of ==not less than five Judges==, which also takes the preliminary hearing.",
       "A Presidential election petition may be filed by a candidate or by ==20 or more electors== joined together; for the ==Vice-President== it is ==10 or more== (Section 14A of the 1952 Act).",
       "The petition is presented within ==30 days== of the publication of the declaration of the result, with ==₹50,000== as security. At the end the Court ==dismisses it==, declares the election ==void==, or declares it void and ==the petitioner or another candidate duly elected== (Section 17).",
+      "## The statutes | Section 406 CrPC and Section 25 CPC",
       "Section 406 CrPC moves a criminal case ==between High Courts==, or between courts under them; its successor is ==Section 446 of the BNSS, 2023==. Section 25 CPC moves a civil case ==from a court in one State to one in another==."
     ],
     blocks: [
-      { h: "Transfers and references",
+      { h: "Transfers and references", after: "Orders XXXIX to XLV",
         rows: [
           ["XXXIX", "Transfer of criminal proceedings: Section 406 CrPC, 1973, and Section 11 of the Terrorist Affected Areas (Special Courts) Act, 1984"],
           ["XL", "Transfer under Article 139A(1): the Court withdraws cases on a common question to itself"],
@@ -378,7 +413,7 @@ window.JCA.scr = {
           ["XLIV", "Reference by the Central Government or a statutory tribunal under a statute"],
           ["XLV", "Reference under Section 257 of the Income Tax Act, 1961"]
         ] },
-      { h: "Election petitions under Order XLVI",
+      { h: "Election petitions under Order XLVI", after: "Order XLVI",
         rows: [
           ["Bench", "Not less than five Judges, for the preliminary hearing too"],
           ["Who may file", "A candidate; or 20 or more electors (President), 10 or more (Vice-President)"],
@@ -386,7 +421,7 @@ window.JCA.scr = {
           ["Security", "₹50,000, deposited when the petition is presented"],
           ["Outcome", "Dismissed; the election void; or void, with the petitioner or another candidate declared elected (Section 17)"]
         ] },
-      { h: "Election petitions, from one source only",
+      { h: "Election petitions, from one source only", after: "Order XLVI",
         chk: 1,
         note: "From a single published copy of Order XLVI; check it against the bare text.",
         rows: [
@@ -397,14 +432,17 @@ window.JCA.scr = {
 
   {
     id: "scr-review",
+    span: "Orders XLVII and XLVIII", part: "Kinds of case",
     t: "Review and curative petitions",
     w: "Orders XLVII and XLVIII: the time limits, the grounds, the certificates, and who sees the papers first.",
     notes: [
+      "## Order XLVII | Review",
       "Order XLVII, ==Review==: filed within ==30 days== of the judgment or order, setting out the grounds clearly.",
       "Grounds: in a ==civil== case only those in ==Order XLVII Rule 1 of the CPC==; in a ==criminal== case only an ==error apparent on the face of the record==.",
       "The ==Advocate-on-Record certifies== that it is the ==first application for review== and rests on admissible grounds.",
       "Decided ==by circulation, without oral arguments==, unless the Court orders otherwise, and sent as far as practicable to the ==same Bench== that decided the case. The petitioner may file ==written arguments==.",
       "Once a review is disposed of, ==no further review== is entertained in the same matter.",
+      "## Order XLVIII | The curative petition",
       "Order XLVIII, the ==curative petition==, is governed by ==Rupa Ashok Hurra (2002)==.",
       "It must say its grounds were ==taken in the review==, and that the review was ==dismissed by circulation==, and carry a ==Senior Advocate's certificate==.",
       "Filed within a ==reasonable time== of the order in the review; first circulated to the ==three senior-most Judges== and the Judges who passed the judgment, if available.",
@@ -424,20 +462,24 @@ window.JCA.scr = {
 
   {
     id: "scr-tail",
+    span: "Orders XLIX to LVII", part: "The closing Orders",
     t: "Costs to repeal",
     w: "Orders XLIX to LVII: costs, taxation, notice to the law officers, forms, service, commissions, inherent powers, records and repeal.",
     notes: [
+      "## Orders XLIX to LVII | The closing Orders",
       "Order XLIX ==Costs==; Order L ==Taxation== of costs.",
       "Order LI: notice of proceedings to the ==Attorney-General for India== or the ==Advocate-General== of a State.",
       "Order LII ==Forms==; Order LIII ==Service of documents==; Order LIV ==Commissions==.",
       "Order LV: ==power to dispense and inherent powers==. Order LVI: ==destruction of records==. Order LVII: ==repeal== of the 1966 Rules.",
+      "## Order LV | Inherent powers, and the power to dispense",
       "Order LV, Rule 6: nothing in the Rules ==limits or affects the inherent powers== of the Court to make orders ==for the ends of justice== or to ==prevent abuse of its process== (applied in Gagan Banga v. State of West Bengal, 2024).",
       "Under the ==power to dispense==, the Court may, for sufficient cause, ==excuse a party from complying== with any requirement of the Rules; such an application goes to a ==Judge in Chambers==.",
+      "## Costs and records | Taxation, and what is kept",
       "Costs are taxed by the ==Taxing Officer==, with whom the Advocate-on-Record files a ==certificate of fees==.",
       "Order LVI sorts the records: ==Part I== records are ==kept permanently==; ==Part II== records are destroyed after the period fixed."
     ],
     blocks: [
-      { h: "The tail, Order by Order",
+      { h: "The tail, Order by Order", after: "Orders XLIX to LVII",
         rows: [
           ["XLIX", "Costs"],
           ["L", "Taxation: by the Taxing Officer, on the Advocate-on-Record's certificate of fees"],

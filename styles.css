@@ -1683,6 +1683,85 @@ footer .chip.chk,.why .chip.chk,.plain .chip.chk{margin-left:0}
 .jcin{color:var(--gold);font-weight:500}
 .jcorders dt{font-family:var(--mono)}
 
+/* A JCA topic is read in short sections, one for each rule, Order or
+   article, each a card with its rule above the title and its own numbered
+   notes, and the tables that sum it up straight under it. The card edges
+   take the mind maps' four colours in turn, so a section is found again by
+   where it sits rather than read again from the top. */
+.jcgrp{
+  margin-top:var(--s5);padding:var(--s4) var(--s5) var(--s2);max-width:78ch;
+  background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:var(--r-lg);
+}
+.jcgrp.g-purple{border-left-color:var(--purple)}
+.jcgrp.g-red{border-left-color:var(--red)}
+.jcgrp.g-violet{border-left-color:var(--violet)}
+.jcgk{
+  margin:0 0 var(--s1);font-family:var(--mono);font-size:var(--t-micro);
+  letter-spacing:.14em;text-transform:uppercase;color:var(--gold);
+}
+.g-purple .jcgk{color:var(--purple)}
+.g-red .jcgk{color:var(--red)}
+.g-violet .jcgk{color:var(--violet)}
+.jcgrp > h3{
+  font-family:var(--serif);font-size:var(--t-h4);font-weight:600;line-height:1.3;
+  letter-spacing:0;text-transform:none;color:var(--ink);
+  margin:0 0 var(--s3);padding:0;border:0;
+}
+.jcnl{margin:0;padding-left:1.4em}
+.jcnl li{font-size:var(--t-body);line-height:1.62;margin:0 0 var(--s3);padding-left:var(--s1);color:#dcd8d0}
+.jcnl li::marker{color:var(--dimmer);font-family:var(--mono);font-size:.8em}
+.jcnl a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(var(--gold-rgb),.4)}
+/* a table that sums up a section sits close under it */
+.jcgrp + .jcafter,.jcafter + .jcafter{margin-top:var(--s4)}
+.jcafter > h3{margin-bottom:var(--s3)}
+#jctables{scroll-margin-top:calc(var(--headh) + 20px)}
+
+/* Inside the JCA section the marked phrase is set in bold with a fine gold
+   underline rather than a highlighter band: a rule-book note marks four or
+   five phrases a line, and four or five yellow bands a line is a page that
+   glares. The mind maps do the same. */
+.jcpage mark.hi{
+  background:none;padding:0;color:var(--ink);font-weight:600;
+  text-decoration:underline;text-decoration-color:rgba(var(--gold-rgb),.38);
+  text-decoration-thickness:1px;text-underline-offset:.24em;
+}
+.jcpage .cmpk mark.hi,.jcpage dl.facts dt mark.hi{color:inherit}
+
+/* The page's own contents, at the top, for a phone: on a wide screen the
+   side column carries the same list. */
+.jcjump{
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+  margin:var(--s5) 0 0;padding:var(--s3) 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.jcjump > span{
+  font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--red);margin-right:var(--s2);
+}
+.jcjump button{
+  font:inherit;font-size:var(--t-small);line-height:1.3;color:var(--dim);cursor:pointer;
+  background:var(--panel);border:1px solid var(--line2);border-radius:999px;padding:5px 11px;
+}
+.jcjump button:hover,.jcjump button:focus-visible{color:var(--gold);border-color:var(--gold);outline:none}
+@media (min-width:1181px){.jcjump{display:none}}
+.jceyebrow{margin-top:var(--s4)}
+
+/* The topics of a part, numbered and placed under the rule book's own
+   headings, with the rules each covers above its title. */
+.jctop{display:flex;align-items:center;gap:var(--s2);margin-bottom:var(--s2)}
+.jcnum{
+  display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+  min-width:24px;height:24px;padding:0 6px;border-radius:999px;
+  font-family:var(--mono);font-size:var(--t-micro);color:var(--gold);
+  border:1px solid rgba(var(--gold-rgb),.45);
+}
+.jcspan{
+  font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--dim);line-height:1.3;
+}
+.jcpart{margin-top:var(--s6)}
+.jcpart:first-of-type{margin-top:var(--s5)}
+
 /* The Maths options are set in mono because they are formulas. These are
    sentences, so inside the JCA section they go back to the reading face. */
 #jquiz .mopt .mt,.jcmock .mopt .mt{font-family:var(--sans);font-size:var(--t-body);line-height:1.45}
