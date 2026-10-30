@@ -271,9 +271,9 @@ window.JCA.scr = {
     t: "Appeals and special leave",
     w: "Orders XVI to XXIV: indigent appeals, certificate appeals, criminal appeals, both kinds of SLP, and the two statutory appeals.",
     notes: [
-      "Part II, ==Appellate Jurisdiction==, runs from Order XVI (hearing of appeals) to Order XXIV.",
+      "Part II, ==Appellate Jurisdiction==, runs from Order XVI (hearing of appeals) to Order XXIV. At the hearing of an appeal ==not more than one advocate== is heard for the appellants, and one for each respondent or set of respondents, unless the Court directs otherwise (Order XVI).",
       "Order XVIII: appeals and applications by an ==indigent person==. One allowed to proceed as such pays ==no court fee on the papers filed and no process fee==, but ==pays for copies== (Rule 4).",
-      "Order XIX: appeals on a ==certificate by the High Court== (Articles 132 to 134A), filed with a certified copy of the ==judgment== and of the ==order granting the certificate==. Order XX: ==criminal appeals==.",
+      "Order XIX: appeals on a ==certificate by the High Court== (Articles 132 to 134A), filed with a certified copy of the ==judgment== and of the ==order granting the certificate==. Order XX: ==criminal appeals==; the Court's Handbook registers the appeals under ==Article 134(1)(a) and (b)== as criminal appeals.",
       "Order XXI: ==special leave petitions in civil proceedings==, drawn up in ==Form No. 28==. Order XXII: ==special leave petitions in criminal proceedings==.",
       "The SLP sets out the ==questions of law== and the ==grounds== separately, and says on affidavit whether the petitioner filed an ==earlier SLP== against the same judgment.",
       "Unless a ==caveat== is lodged, an SLP is first heard ==ex parte==, and ==delay is not condoned without notice== to the respondent. Once leave is granted, the ==petition itself is treated as the appeal==, subject to any additional court fee.",
@@ -287,7 +287,7 @@ window.JCA.scr = {
     blocks: [
       { h: "The appeal Orders",
         rows: [
-          ["XVI", "Hearing of appeals"],
+          ["XVI", "Hearing of appeals: not more than one advocate for the appellants, and one for each respondent or set of respondents, unless the Court directs otherwise"],
           ["XVII", "Miscellaneous"],
           ["XVIII", "Appeals and applications by an indigent person: no court fee or process fee, but copies are paid for"],
           ["XIX", "Appeals on certificate by High Court (Articles 132, 133, 134 with 134A); filed within 60 days of the certificate, with the judgment and the certificate order"],
@@ -299,9 +299,8 @@ window.JCA.scr = {
         ] },
       { h: "Appeals, from one source only",
         chk: 1,
-        note: "Each from a single published copy of the Rules; check them against the bare text before relying on them.",
+        note: "From a single published copy of the Rules; check it against the bare text before relying on it.",
         rows: [
-          ["Order XVI", "Not more than one advocate is heard for each party at the hearing of an appeal, unless the Court directs otherwise"],
           ["Order XIX", "The appellant lodges the bound copies not less than ten clear days before the date fixed for the hearing"]
         ] }
     ]
@@ -313,7 +312,7 @@ window.JCA.scr = {
     w: "Orders XXV to XXXVIII: the original suit under Article 131, petitions under Article 32, and public interest litigation, with what the PIL guidelines take up.",
     notes: [
       "Orders ==XXV to XXXVII== run an ==original suit== (an Article 131 dispute) like a civil trial: parties, plaint, summons, written statement, discovery, admissions, witnesses, adjournments, hearing, withdrawal, payment into court, and the special case.",
-      "Order XXXVIII: ==applications for enforcement of fundamental rights under Article 32==.",
+      "Order XXXVIII: ==applications for enforcement of fundamental rights under Article 32==. One in a ==criminal matter==, ==habeas corpus== included, is registered as a ==Writ Petition (Criminal)== (the Court's Handbook).",
       "PIL sits in ==Order XXXVIII, Rule 12==. It can begin ==suo motu==, on a ==letter or representation==, by the Court ==treating a petition as a PIL==, or by ==filing a petition==.",
       "A PIL filed directly must disclose the petitioner's details, the cause of action and the public injury, and carry an ==affidavit of no personal gain, private motive or oblique reason==.",
       "The Court's ==PIL guidelines== list ten kinds of ==letter-petition== it takes up: ==bonded labour==; ==neglected children==; ==minimum wages== and casual workers; complaints from ==jails==; complaints against the ==police==; ==atrocities on women==; harassment of ==Scheduled Caste and Scheduled Tribe== villagers; the ==environment==, ecology, drugs, food adulteration, heritage, forests and wildlife; ==riot victims==; and ==family pension==.",
@@ -362,7 +361,7 @@ window.JCA.scr = {
       "Three transfer Orders: ==XXXIX== (criminal cases, Section 406 CrPC), ==XL== (Article 139A(1)), ==XLI== (Article 139A(2) and Section 25 CPC).",
       "Four reference Orders: ==XLII== (Article 143), ==XLIII== (Article 317(1), or a statute), ==XLIV== (statutory references by the Central Government or tribunals), ==XLV== (Section 257, Income Tax Act).",
       "On a reference under Article 143 the ==Registrar gives notice to the Attorney-General==, and the Court ==reports its opinion to the President==. On an Article 317(1) reference, notice goes to the ==person concerned== and to the ==Attorney-General== or the State's ==Advocate-General==.",
-      "Transfer applications are registered as ==Transfer Petitions==, civil or criminal.",
+      "Transfer applications are registered as ==Transfer Petitions==, civil or criminal. A case actually withdrawn under Article 139A(1) is registered, once the High Court sends it, as a ==Transferred Case==.",
       "Order XLVI: election petitions under the ==Presidential and Vice-Presidential Elections Act, 1952==, heard by a Bench of ==not less than five Judges==, which also takes the preliminary hearing.",
       "A Presidential election petition may be filed by a candidate or by ==20 or more electors== joined together; for the ==Vice-President== it is ==10 or more== (Section 14A of the 1952 Act).",
       "The petition is presented within ==30 days== of the publication of the declaration of the result, with ==₹50,000== as security. At the end the Court ==dismisses it==, declares the election ==void==, or declares it void and ==the petitioner or another candidate duly elected== (Section 17).",
@@ -796,6 +795,9 @@ window.JCA.scr = {
   { t: "scr-appeals", q: "The surrender requirement for a petitioner sentenced to imprisonment is in:",
     o: ["Order XXI, Rule 3", "Order XX, Rule 1", "Order XXII, Rule 5", "Order XLVII, Rule 1"], a: 2,
     s: "Order XXII governs criminal special leave petitions.", r: "Order XXII, Rule 5" },
+  { t: "scr-appeals", q: "At the hearing of an appeal, how many advocates are heard for the appellants, unless the Court directs otherwise?",
+    o: ["Not more than two", "Not more than one", "Not more than three", "As many as they engage"], a: 1,
+    s: "Order XVI: one for the appellants, and one for each respondent or set of respondents.", r: "Order XVI" },
 
   /* ---------------------------------------------------- original side */
   { t: "scr-original", q: "Orders XXV to XXXVII of the 2013 Rules (parties, plaints, summons, written statement, discovery and the rest) govern:",
@@ -855,6 +857,21 @@ window.JCA.scr = {
   { t: "scr-original", q: "Under the PIL guidelines, a petition for the early hearing of a case pending in a High Court is:",
     o: ["excluded from PIL", "one of the ten categories taken up", "sent to the High Court's Chief Justice", "heard by the Judge in Chambers"], a: 0,
     s: "Such petitions are among the excluded classes.", r: "PIL guidelines" },
+  { t: "scr-original", q: "Order XXVII of the 2013 Rules deals with:",
+    o: ["issue and service of summons", "discovery and inspection", "payment into Court", "the special case"], a: 0,
+    s: "Orders XXV to XXXVII run an original suit: XXX is discovery and inspection, XXXVI payment into Court, XXXVII the special case.", r: "Order XXVII" },
+  { t: "scr-original", q: "Which Order of the 2013 Rules is headed “Pleadings generally”?",
+    o: ["Order XXIX", "Order XXVI", "Order XXXI", "Order XXXV"], a: 0,
+    s: "Order XXVI is Plaints, XXXI Admissions, XXXV Withdrawal and adjustment of suits.", r: "Order XXIX" },
+  { t: "scr-original", q: "Order XXXIV of the 2013 Rules deals with:",
+    o: ["adjournments", "admissions", "parties to suits", "the hearing of the suit"], a: 3,
+    s: "Order XXXIII is Adjournments, XXXI Admissions, XXV Parties to suits.", r: "Order XXXIV" },
+  { t: "scr-original", q: "In an original suit, payment into Court is dealt with in:",
+    o: ["Order XIV", "Order XXX", "Order XXXVI", "Order XXXII"], a: 2,
+    s: "Order XIV is the general Order on payment into and out of Court of suitors' funds; XXX is discovery and inspection, XXXII the summoning of witnesses.", r: "Order XXXVI" },
+  { t: "scr-original", q: "An Article 32 petition arising from a criminal matter is registered as a:",
+    o: ["Writ Petition (Criminal)", "Writ Petition (Civil)", "Special Leave Petition (Criminal)", "Criminal Appeal"], a: 0,
+    s: "So the Court's Handbook on Practice and Procedure directs, habeas corpus petitions included. Article 32 petitions are governed by Order XXXVIII.", r: "Order XXXVIII; Handbook" },
 
   /* ---------------------------------------------------- transfers, references, elections */
   { t: "scr-transfer", q: "Applications to transfer criminal proceedings under Section 406 of the CrPC are dealt with in:",
@@ -917,6 +934,9 @@ window.JCA.scr = {
   { t: "scr-transfer", q: "Applications to transfer cases under Article 139A or Section 25 of the CPC are registered as:",
     o: ["Transfer Petitions", "Special Leave Petitions", "Writ Petitions", "Original Suits"], a: 0,
     s: "Transfer Petitions, civil or criminal.", r: "Orders XL and XLI; Art. 139A" },
+  { t: "scr-transfer", q: "A case pending in a High Court that the Supreme Court withdraws to itself, because it raises the same question as cases before it, is registered as a:",
+    o: ["Transfer Petition", "Writ Petition (Civil)", "Transferred Case", "Reference Case"], a: 2,
+    s: "Under Article 139A(1), read with Order XL. The application to transfer is the Transfer Petition; the case that comes up, once the High Court sends it, is the Transferred Case.", r: "Order XL; Handbook" },
 
   /* ---------------------------------------------------- review and curative */
   { t: "scr-review", q: "Review of a judgment or order of the Supreme Court is governed by:",

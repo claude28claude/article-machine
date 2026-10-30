@@ -628,6 +628,9 @@ window.JCA.osr = {
   { t: "osr-basics", q: "Interpreting a Part II rule on salaries or allowances needs the approval of:",
     o: ["a Bench of three Judges", "the Union Law Minister", "the President", "the full Court"], a: 2,
     s: "Rule 48, proviso: the Chief Justice decides questions on Part II rules relating to salaries, allowances, leave or pensions with the President's approval. Every other question he decides finally.", r: "Rule 48, proviso" },
+  { t: "osr-basics", q: "Under Rule 1, the 1961 Rules came into force:",
+    o: ["on 26 January 1961", "with immediate effect", "on publication in the Gazette", "from 1 April 1961"], a: 1,
+    s: "Rule 1(2): they apply to all officers and servants of the Court and come into force at once. The notification is dated 10 January 1961.", r: "Rule 1(2)" },
 
   /* ---------------------------------------------------- recruitment */
   { t: "osr-recruitment", q: "Under Rule 4, which is NOT one of the ways a post may be filled?",
@@ -1070,6 +1073,9 @@ window.JCA.osr = {
   { t: "osr-conduct", q: "Which of these is expressly declared a breach of the conduct rules?",
     o: ["Helping his wife with the household accounts", "Buying an insurance policy for his family", "Canvassing for an insurance agency run by his wife", "Attending the opening of his brother's shop"], a: 2,
     s: "Rule 33, Explanation: canvassing for an insurance or commission agency owned or managed by his wife or another family member.", r: "Rule 33, Explanation" },
+  { t: "osr-conduct", q: "Rule 24(2) forbids a Court servant to act in a manner prejudicial to:",
+    o: ["the private interests of the Judges", "the business of the Bar Association", "the finances of his own family", "discipline and good order in the Registry"], a: 3,
+    s: "Rule 24(1) asks for absolute integrity and devotion to duty at all times.", r: "Rule 24(2)" },
 
   /* ---------------------------------------------------- conduct, Rules 34 to 46 */
   { t: "osr-conduct-2", q: "A Court servant who becomes the subject of insolvency proceedings must report the facts at once to:",
