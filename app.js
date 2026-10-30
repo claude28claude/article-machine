@@ -4432,11 +4432,12 @@ function jcaHome() {
     }).join('') + '</dl></div>' + jcaPlan() +
 
     '<div class="block"><h3>How firm this is</h3><p class="plain">The official text of every article is the ' +
-    'site\'s own verbatim extract. The notes and questions on the two rule books are written, not quoted: ' +
-    'they were read in excerpts of the official copies on the Court\'s own document server, and every Order ' +
-    'heading and every rule a question tests rests on that text or on two independent sources. A point with ' +
-    'one source carries ' + jcaChk() + ' and is never tested. Read both rule books once in full on the ' +
-    'Supreme Court\'s website before the test.</p>' +
+    'site\'s own verbatim extract. The notes and questions on the two rule books are written, not quoted. ' +
+    'The 1961 Rules were checked line by line against the Court\'s full consolidated text, amended up to ' +
+    '6 November 2024; the 2013 Rules were read in excerpts of the official copy on the Court\'s own document ' +
+    'server. Every Order heading and every rule a question tests rests on that official text or on two ' +
+    'independent sources. A point with one source carries ' + jcaChk() + ' and is never tested. Read the ' +
+    '2013 Rules once in full on the Supreme Court\'s website before the test.</p>' +
     '<div class="stack"><a class="pill big" href="https://www.sci.gov.in/supreme-court-rules-2013/" rel="noopener">' +
     'Supreme Court Rules, 2013</a> <a class="pill big" href="https://www.sci.gov.in/officers-servant-rules/" rel="noopener">' +
     'Officers and Servants Rules, 1961</a></div></div>');
@@ -5847,13 +5848,13 @@ function aboutPage() {
   '<p class="plain">The JCA subject is the law paper of the Supreme Court Junior Court Assistant ' +
   'test. Its Constitution part links to the article pages above, so its official text is the ' +
   'extracted one. Its two rule books, the Supreme Court Rules, 2013 and the Officers and Servants ' +
-  'Rules, 1961, are written, not quoted: the Court\'s website cannot be reached from where the ' +
-  'section is made, so both were read in search excerpts of the official copies on the Court\'s own ' +
-  'document server, and every Order heading and every rule a question tests rests on that official ' +
-  'text or on two independent sources.</p>' +
-  '<p class="why">A point with one source only is marked <span class="chip chk">check the bare text</span>, ' +
-  'and where a rule\'s heading was not seen, its subject is given instead and the table says so. ' +
-  'Read both rule books once in full on the Supreme Court\'s website before the test.</p></div>' +
+  'Rules, 1961, are written, not quoted. The 1961 Rules were checked line by line against the ' +
+  'Court\'s full consolidated text, amended up to 6 November 2024. The Court\'s website cannot be ' +
+  'reached from where the section is made, so the 2013 Rules were read in search excerpts of the ' +
+  'official copy on the Court\'s own document server. Every Order heading and every rule a question ' +
+  'tests rests on that official text or on two independent sources.</p>' +
+  '<p class="why">A point with one source only is marked <span class="chip chk">check the bare text</span> ' +
+  'and is never tested. Read the 2013 Rules once in full on the Supreme Court\'s website before the test.</p></div>' +
 
   '<div class="block"><h3>What was written rather than extracted</h3>' +
   '<p class="plain">The plain-English explanation under each article, the one-line summary ' +

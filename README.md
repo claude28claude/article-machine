@@ -82,9 +82,9 @@ questions.
 |---|---|---|
 | Judiciary provisions in the Constitution | 15 | 7 topics over the 70 articles that matter, **228** questions |
 | Supreme Court Rules, 2013 | 10 | 10 topics, all **57** Orders mapped, **179** questions |
-| SC Officers and Servants Rules, 1961 | 10 | 6 topics, all five Parts and Rules 1 to 49 covered, **136** questions |
+| SC Officers and Servants Rules, 1961 | 10 | 8 topics, Rules 1 to 49 checked line by line against the full text, **229** questions |
 
-543 questions in all, the answer evenly spread over A to D in each part. No
+636 questions in all, the answer evenly spread over A to D in each part. No
 rule-book question tests a statement that rests on one source; those sit in
 the flagged tables only. The questions added in October 2026 were also
 checked so that none names, in its own wording, the answer to another, since
@@ -92,11 +92,25 @@ any two can be drawn into the same mock test.
 
 The rule-book notes now cover every Order of the 2013 Rules with what it
 says, not just its heading (Orders VII to XIV have a topic of their own), and
-every rule of the 1961 Rules from 1 to 49 by number, the conduct rules 37 to
-45 and the Parts included. Two things are still not here because no copy of
-them could be read: the rupee figures of the Third Schedule (court fees), and
-the wording of 1961 Rules 5 (qualifications) and 8 (seniority) beyond their
-subject.
+every rule of the 1961 Rules from 1 to 49 with its provisos and
+Explanations. In October 2026 the 1961 notes were checked line by line
+against the Court's full consolidated text (amended up to 6 November 2024).
+That fixed five statements the excerpts had got wrong: recovery from pay is
+of a loss caused to the Registry, not the Court (Rule 11(iii)); helping an
+outsider into a court room is barred by Rule 30(2), for subscriptions, not by
+Rule 26; private trade needs the Registrar's previous permission, not a
+sanction (Rule 33); the intoxicant laws bind a Court servant wherever he
+happens to be, not only where he serves (Rule 24A); and deemed suspension in
+custody is by an order of the Chief Justice (Rule 15(2)). It filled in what
+they had left short, among them the religious functions among the gift
+occasions (Rule 31), the five groups of the 2007 Rule 4A, and the exact
+headings of all 24 conduct rules. It added the six Explanations to Rule 11, the whole Rule 13 procedure,
+suspension and servants on loan (Rules 15 to 17, now a topic of their own),
+and every conduct proviso, Rules 34 to 46 also on a page of their own. One
+thing is still not here because no copy of it could be read: the rupee
+figures of the Third Schedule to the 2013 Rules (court fees). The 1961 text
+does not reprint its own Schedule, so the posts and pay rest on the Court's
+recruitment notices.
 
 English, aptitude, general knowledge and computers are left out on purpose.
 
@@ -119,8 +133,8 @@ questions in the 15/10/10 split, 32 minutes, minus 0.25 for a wrong answer,
 with a palette, mark-for-review, and a clock that survives a reload. Both
 prefer the questions you have tried least.
 
-**Mind maps** (`#/jca/maps`). One map for each of the 23 topics and an
-overview of each part: the notes reduced to keywords, 568 lines on 26 maps.
+**Mind maps** (`#/jca/maps`). One map for each of the 25 topics and an
+overview of each part: the notes reduced to keywords, 619 lines on 28 maps.
 Nothing on them is new; every line is taken from the checked notes, and a
 point the notes flag as resting on one source is left off, so nothing on a
 map needs checking before it is learnt. A branch may carry a hook, a line
@@ -137,15 +151,16 @@ a blank bar the length of its words, and a tap, Enter or Space uncovers it.
 The words are made invisible rather than removed, so uncovering moves
 nothing. The maps take the whole width: they have no side column.
 
-**How firm the rule-book material is.** The Court's website cannot be
-reached from where this was written, so the two rule books were read in
-search excerpts of the official copies on the Court's own document server:
-the 2014 Gazette text of the 2013 Rules, the consolidated 1961 Rules, the
+**How firm the rule-book material is.** The 1961 Rules were checked line by
+line against the Court's full consolidated text (amended up to 6 November
+2024): every heading is its own and every amendment date is from its
+footnotes. The Court's website cannot be reached from where this was
+written, so the 2013 Rules were read in search excerpts of the official
+copies on the Court's own document server: the 2014 Gazette text, the
 Handbook on Practice and Procedure, and the Court's notices. Every Order
 heading and every rule a question tests rests on that official text or on two
 independent sources; a statement with one source is flagged `chk: 1` and
-printed with a "check the bare text" mark. Where a rule's heading was not
-seen, its subject is given and the table says so. The 1966 Rules number many
+printed with a "check the bare text" mark. The 1966 Rules number many
 things differently, and the section uses the 2013 numbering throughout.
 
 **What it remembers**, in `localStorage` only, every access wrapped:
@@ -682,8 +697,8 @@ of them so a reader can check what a summary lost.
 | `data-early.js` | Ancient and Medieval History: Jainism and its councils, and the Mughals |
 | `data-geography.js` | Geography: 7 topics, 260 facts, the Himalayas in full, 10 confused pairs |
 | `data-laws.js` | The BNS, BNSS and BSA: dates, counts, the new offences, and the IPC mapping |
-| `data-jca-judiciary.js`, `data-jca-scr.js`, `data-jca-osr.js` | The JCA law paper: notes, tables, confused pairs and 543 questions |
-| `data-jca-maps.js` | The 26 JCA mind maps, every line taken from those three files |
+| `data-jca-judiciary.js`, `data-jca-scr.js`, `data-jca-osr.js` | The JCA law paper: notes, tables, confused pairs and 636 questions |
+| `data-jca-maps.js` | The 28 JCA mind maps, every line taken from those three files |
 | `data-daily.js` | The dated daily study sets: current affairs, and recaps of what was added |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline. A data file whose new fields app.js now reads carries a `?v=` query in `index.html` and in `ASSETS`; bump it on such a deploy, or the first visit afterwards pairs new code with old cached data |
