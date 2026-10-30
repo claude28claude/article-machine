@@ -110,7 +110,7 @@ window.JCA_MAPS = {
         br: [
           { h: "Set-up",
             lv: [["214", "A High Court for ==each State=="], ["231", "One High Court for ==two or more States=="], ["215", "A ==court of record==, like the Supreme Court"],
-                 ["216", "Number of judges: the ==President== decides"]] },
+                 ["216", "Number of judges: the ==President== decides"], ["230", "A Union territory: ==Parliament== extends or excludes"]] },
           { h: "Appointment", m: "High Court: 10 and 10, and no jurist",
             lv: [["217(1)", "By the ==President==, after consulting the ==CJI==, the ==Governor== and the High Court's Chief Justice"],
                  "==10 years== in judicial office, or ==10 years== a High Court advocate", "==No distinguished-jurist route==",
@@ -125,7 +125,7 @@ window.JCA_MAPS = {
                  ["226(3)", "Ex parte interim order lapses if a vacate plea is not decided in ==2 weeks=="],
                  ["227", "Superintendence of every court and tribunal; ==not military=="], ["228", "Withdraws a case that turns on the ==Constitution=="]] },
           { h: "Money", m: "Salary from the State, pension from India",
-            lv: ["Salary: ==Consolidated Fund of the State==", "Pension: ==Consolidated Fund of India=="] },
+            lv: ["Salary: ==Consolidated Fund of the State==", "Pension: ==Consolidated Fund of India==", ["221", "Salary fixed by ==Parliament by law=="]] },
           { h: "In numbers, October 2026",
             lv: ["==25== High Courts", "Oldest: ==Calcutta== (1862)", "Newest: ==Andhra Pradesh==, Amaravati (2019)", "==Gauhati== serves four States",
                  "Delhi has its own (1966)"] }
@@ -383,7 +383,8 @@ window.JCA_MAPS = {
             lv: ["Sentenced to ==imprisonment==? Say if surrendered", "Not yet: an ==exemption== application, listed first",
                  "Proof: certified copy, or the ==jail officer's certificate==", "Only for a ==sentence of imprisonment== (Jasminbhai Kothari, 2025)"] },
           { h: "Other appeals",
-            lv: [["XVIII", "Indigent: no court or process fee; ==pays for copies=="], ["XIX", "Certificate appeals, with the ==certificate order=="], ["XX", "Criminal appeals"]] },
+            lv: [["XVI", "At the hearing: ==one advocate== a side"], ["XVIII", "Indigent: no court or process fee; ==pays for copies=="],
+                 ["XIX", "Certificate appeals, with the ==certificate order=="], ["XX", "Criminal appeals, as under ==134(1)(a) and (b)=="]] },
           { h: "Statute appeals",
             lv: [["XXIII", "Advocates Act s.38: ==60 days==; aggrieved person, ==AG== or State AG"],
                  ["XXIV", "Consumer Act 1986 s.23: ==30 days==; repealed ==20 July 2020==; now ==s.67== of 2019"]] }
@@ -397,7 +398,7 @@ window.JCA_MAPS = {
             lv: ["An ==Article 131== dispute, run like a civil trial", "Parties, plaint, summons, written statement", "Discovery, admissions, witnesses, adjournments",
                  "Hearing, withdrawal, payment in, ==special case=="] },
           { h: "Article 32, XXXVIII",
-            lv: ["Enforcing the ==fundamental rights==", "PIL is ==Rule 12=="] },
+            lv: ["Enforcing the ==fundamental rights==", "PIL is ==Rule 12==", "Criminal matter, habeas corpus: ==Writ Petition (Criminal)=="] },
           { h: "How a PIL starts",
             lv: ["==Suo motu==", "A ==letter== or representation", "The Court ==treats a petition== as PIL",
                  "A filed petition: details, cause, public injury, ==no personal gain== affidavit"] },
@@ -415,7 +416,8 @@ window.JCA_MAPS = {
         br: [
           { h: "Three transfers",
             lv: [["XXXIX", "s.406 CrPC (now s.446 BNSS): criminal cases"], ["XL", "Article 139A(1): cases on a ==common question=="],
-                 ["XLI", "139A(2) and s.25 CPC: civil, ==State to State=="], "All registered as ==Transfer Petitions=="] },
+                 ["XLI", "139A(2) and s.25 CPC: civil, ==State to State=="], "All registered as ==Transfer Petitions==",
+                 "The case withdrawn under 139A(1): a ==Transferred Case=="] },
           { h: "Four references", m: "XLII to XLV: 143, 317, a statute, income tax",
             lv: [["XLII", "Article 143: ==AG== notified; opinion ==reported to the President=="], ["XLIII", "Article 317(1): a ==PSC member's== removal"],
                  ["XLIV", "Statutory: the Centre or tribunals"], ["XLV", "Income Tax Act, ==s.257=="]] },

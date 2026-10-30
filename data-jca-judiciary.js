@@ -187,7 +187,9 @@ window.JCA.judiciary = {
       "==Article 226==: writs for the fundamental rights ==and for any other purpose==, which makes a High Court's writ power ==wider== than Article 32.",
       "==Article 227==: superintendence over ==every court and tribunal== in its territory, except those under the ==Armed Forces== laws.",
       "==Article 228==: a High Court may ==withdraw a case== from a subordinate court if it turns on a substantial question of interpretation of the Constitution.",
-      "Pay: a High Court judge's salary is charged on the ==Consolidated Fund of the State==, his pension on the ==Consolidated Fund of India==."
+      "Pay: a High Court judge's salary is charged on the ==Consolidated Fund of the State==, his pension on the ==Consolidated Fund of India==.",
+      "==Article 221==: a High Court judge's salary is ==determined by Parliament by law== (until then, the Second Schedule), and his allowances and rights to leave and pension may ==not be varied to his disadvantage== after his appointment.",
+      "==Article 230==: ==Parliament== may by law extend a High Court's jurisdiction to, or exclude it from, a ==Union territory==. The State's Legislature then cannot ==increase, restrict or abolish== that jurisdiction, and for that territory's courts Article 227's ==Governor== reads as the ==President==."
     ],
     blocks: [
       { h: "Article 226, clause by clause",
@@ -675,6 +677,12 @@ window.JCA.judiciary = {
   { t: "sc-powers", q: "Under Article 146(3), fees and other moneys taken by the Supreme Court:",
     o: ["form part of the Consolidated Fund of India", "go into a separate Court Fund", "are kept by the Registrar for the staff", "are paid to the Bar Council of India"], a: 0,
     s: "The same clause charges the Court's administrative expenses on that Fund.", r: "Art. 146(3)" },
+  { t: "sc-powers", q: "A High Court finds that the Supreme Court has already decided the same point of law. The High Court:",
+    o: ["may depart from it, giving reasons", "follows it only if a Constitution Bench gave it", "must refer the point to the President", "is bound to follow that decision"], a: 3,
+    s: "Article 141: the law declared by the Supreme Court is binding on all courts within the territory of India.", r: "Art. 141" },
+  { t: "sc-powers", q: "Under Article 134(1)(b), an appeal lies to the Supreme Court as of right where a High Court has withdrawn a case from a court below, tried it, convicted the accused and:",
+    o: ["sentenced him to life imprisonment", "sentenced him to ten years or more", "sentenced him to death", "refused him bail pending appeal"], a: 2,
+    s: "The other as-of-right case is 134(1)(a): the High Court reversed an acquittal on appeal and sentenced to death. The 2013 Rules deal with criminal appeals in Order XX.", r: "Art. 134(1)(b)" },
 
   /* ---------------------------------------------------- the High Courts */
   { t: "high-courts", q: "Which article provides that there shall be a High Court for each State?",
@@ -800,6 +808,18 @@ window.JCA.judiciary = {
   { t: "high-courts", q: "For a common High Court whose principal seat is in a Union territory, the Governor and the State Public Service Commission in Articles 219 and 229 are read as:",
     o: ["the Lieutenant Governor and the State Public Service Commission", "the Chief Justice of India and the Union Public Service Commission", "Parliament and the Election Commission", "the President and the Union Public Service Commission"], a: 3,
     s: "The proviso to Article 231(2).", r: "Art. 231(2)" },
+  { t: "high-courts", q: "The salaries of High Court Judges are determined by:",
+    o: ["Parliament, by law", "the State Legislature, by law", "the Governor, by order", "the Chief Justice of the High Court"], a: 0,
+    s: "Article 221(1); until Parliament so provides, as specified in the Second Schedule. The salary is charged on the Consolidated Fund of the State.", r: "Art. 221(1)" },
+  { t: "high-courts", q: "Under Article 221, a High Court Judge's allowances, and his rights to leave and pension, may NOT be:",
+    o: ["fixed by a law made by Parliament", "varied to his disadvantage after his appointment", "set out in the Second Schedule", "revised for Judges appointed later"], a: 1,
+    s: "The proviso to Article 221(2), the same protection Article 125(2) gives a Supreme Court Judge.", r: "Art. 221(2), proviso" },
+  { t: "high-courts", q: "Where a State's High Court has jurisdiction over a Union territory, Article 230 bars the State Legislature from:",
+    o: ["making laws for that High Court's staff", "fixing that High Court's sittings", "increasing, restricting or abolishing it", "naming that High Court's Judges"], a: 2,
+    s: "Article 230(2)(a). Only Parliament may extend a High Court's jurisdiction to a Union territory, or exclude it (230(1)).", r: "Art. 230(2)" },
+  { t: "high-courts", q: "Rules, forms and tables that a State's High Court makes for the courts of a Union territory it serves need the approval of:",
+    o: ["the State's Governor", "the President", "the Lieutenant Governor", "the Chief Justice of India"], a: 1,
+    s: "Article 230(2)(b): for a Union territory's courts, Article 227's reference to the Governor is read as the President. For the State's own courts it is the Governor.", r: "Art. 230(2)" },
 
   /* ---------------------------------------------------- subordinate courts */
   { t: "subordinate", q: "District judges are appointed by:",

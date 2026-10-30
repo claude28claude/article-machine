@@ -80,11 +80,11 @@ questions.
 
 | Part | Questions on the paper | Here |
 |---|---|---|
-| Judiciary provisions in the Constitution | 15 | 7 topics over the 70 articles that matter, **228** questions |
-| Supreme Court Rules, 2013 | 10 | 10 topics, all **57** Orders mapped, **179** questions |
-| SC Officers and Servants Rules, 1961 | 10 | 8 topics, Rules 1 to 49 checked line by line against the full text, **229** questions |
+| Judiciary provisions in the Constitution | 15 | 7 topics over the 70 articles that matter, **234** questions |
+| Supreme Court Rules, 2013 | 10 | 10 topics, all **57** Orders mapped, **186** questions |
+| SC Officers and Servants Rules, 1961 | 10 | 8 topics, Rules 1 to 49 checked line by line against the full text, **231** questions |
 
-636 questions in all, the answer evenly spread over A to D in each part. No
+651 questions in all, the answer evenly spread over A to D in each part. No
 rule-book question tests a statement that rests on one source; those sit in
 the flagged tables only. The questions added in October 2026 were also
 checked so that none names, in its own wording, the answer to another, since
@@ -134,7 +134,7 @@ with a palette, mark-for-review, and a clock that survives a reload. Both
 prefer the questions you have tried least.
 
 **Mind maps** (`#/jca/maps`). One map for each of the 25 topics and an
-overview of each part: the notes reduced to keywords, 619 lines on 28 maps.
+overview of each part: the notes reduced to keywords, 624 lines on 28 maps.
 Nothing on them is new; every line is taken from the checked notes, and a
 point the notes flag as resting on one source is left off, so nothing on a
 map needs checking before it is learnt. A branch may carry a hook, a line
@@ -697,7 +697,7 @@ of them so a reader can check what a summary lost.
 | `data-early.js` | Ancient and Medieval History: Jainism and its councils, and the Mughals |
 | `data-geography.js` | Geography: 7 topics, 260 facts, the Himalayas in full, 10 confused pairs |
 | `data-laws.js` | The BNS, BNSS and BSA: dates, counts, the new offences, and the IPC mapping |
-| `data-jca-judiciary.js`, `data-jca-scr.js`, `data-jca-osr.js` | The JCA law paper: notes, tables, confused pairs and 636 questions |
+| `data-jca-judiciary.js`, `data-jca-scr.js`, `data-jca-osr.js` | The JCA law paper: notes, tables, confused pairs and 651 questions |
 | `data-jca-maps.js` | The 28 JCA mind maps, every line taken from those three files |
 | `data-daily.js` | The dated daily study sets: current affairs, and recaps of what was added |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
