@@ -1032,7 +1032,11 @@ a.sesshead:hover{background:var(--panel2)}
    already holds, so the column is as wide as a card needs to be and not a
    pixel wider - 300px, which takes a city name, a year and a president.
 
-   Below 1180px there is no room for a second column, so the cards drop under
+   From 1000 to 1180px, a tablet held sideways, the column narrows to 260px
+   rather than leaving: that is where the contents list earns its place, in
+   view beside the page while you read down it.
+
+   Below 1000px there is no room for a second column, so the cards drop under
    the page and lay themselves out as a row that wraps. The contents list is
    the one card that does NOT survive that move: a list of what is further
    down the page is worth having while the page is still ahead of you, and
@@ -1134,7 +1138,10 @@ a.sesshead:hover{background:var(--panel2)}
   scroll-margin-top:calc(var(--headh) + 20px);
 }
 
-@media (max-width:1180px){
+@media (min-width:1000px) and (max-width:1180px){
+  .artpage.withside{grid-template-columns:minmax(0,1fr) 260px;gap:var(--s6)}
+}
+@media (max-width:999px){
   .artpage.withside{grid-template-columns:minmax(0,1fr)}
   .side{
     position:static;max-height:none;overflow:visible;
@@ -1743,7 +1750,7 @@ footer .chip.chk,.why .chip.chk,.plain .chip.chk{margin-left:0}
   background:var(--panel);border:1px solid var(--line2);border-radius:999px;padding:5px 11px;
 }
 .jcjump button:hover,.jcjump button:focus-visible{color:var(--gold);border-color:var(--gold);outline:none}
-@media (min-width:1181px){.jcjump{display:none}}
+@media (min-width:1000px){.jcjump{display:none}}
 .jceyebrow{margin-top:var(--s4)}
 
 /* The topics of a part, numbered and placed under the rule book's own
@@ -1932,4 +1939,114 @@ a.mmk:hover{text-decoration:underline}
   .mmhub{order:-1;margin-left:-22px;text-align:left;padding:var(--s4);box-shadow:none}
   .mmbr::before{content:'';position:absolute;left:-16px;top:22px;width:13px;height:2px;background:var(--hue);opacity:.6}
   .mmlinks{display:none}
+}
+
+/* ==========================================================================
+   A TABLET HELD SIDEWAYS
+
+   On its side a tablet is 1024 to 1366px wide but only 744 to 1024 tall:
+   width to spare, height scarce. So from 1000px the side column stays
+   beside the page (above), a practice question and its answer sit side by
+   side, the mock test's palette sits beside the question, and the Back
+   button moves to the right-hand corner, under the right thumb and off the
+   reading column, where it sat over the fourth option. On a short touch
+   screen the header steps aside while you swipe down (app.js), and every
+   control a finger presses is at least 44px tall. Nothing is hidden for
+   good at any size: each rule moves a thing, resizes it, or lets it step
+   aside until it is called back.
+   ========================================================================== */
+
+.jcqhint{display:none}
+
+@media (min-width:1000px){
+  .jcqgrid{
+    display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);
+    grid-template-areas:"card count" "card sol";grid-template-rows:auto 1fr;
+    column-gap:var(--s5);align-items:start;margin-top:var(--s4);
+  }
+  .jcqgrid > .mcount{grid-area:count;margin:0 0 var(--s3)}
+  .jcqgrid > .mq{grid-area:card}
+  .jcqgrid > #jqs{grid-area:sol}
+  .jcqgrid #jqs .mqsol{margin-top:0}
+  .jcqgrid #jqs .stack{margin-top:var(--s4)}
+  .jcqhint{
+    display:block;margin:0;padding:var(--s4);border:1px dashed var(--line2);
+    border-radius:var(--r-lg);font-size:var(--t-copy);line-height:1.55;color:var(--dimmer);
+  }
+
+  /* The clock and the palette make one panel on the right, as on the real
+     test's screen, and the question has the whole height to the left. The
+     clock's bar is a fixed 76px so the palette can stick just under it. */
+  .jcmock{
+    display:grid;grid-template-columns:minmax(0,1fr) 300px;grid-template-rows:auto auto 1fr;
+    column-gap:var(--s6);align-items:start;
+  }
+  .jcmock > .crumb{grid-column:1 / -1}
+  .jcmock > #jcmbody{grid-column:1;grid-row:2 / span 2}
+  .jcmock > .jcbarline{
+    grid-column:2;grid-row:2;height:76px;margin:0;
+    display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;gap:2px var(--s3);
+  }
+  .jcmock > .jcbarline .jcclock{grid-column:1;grid-row:1;line-height:1.2}
+  .jcmock > .jcbarline .jcdone{grid-column:1;grid-row:2;line-height:1.3}
+  .jcmock > .jcbarline .jcsubmit{grid-column:2;grid-row:1 / span 2;margin:0}
+  .jcmock > .jcmside{
+    grid-column:2;grid-row:3;margin-top:var(--s4);
+    position:sticky;top:calc(var(--headh) + 92px);
+  }
+  .jcmock #jcmbody > .mcount{margin-top:0}
+  /* five to a row: the Constitution's 15 are the first three rows, the two
+     rule books' 10 each the next two and the last two */
+  .jcmock .jcpal{grid-template-columns:repeat(5,minmax(0,1fr))}
+
+  .backfab{left:auto;right:var(--s5)}
+  .side{max-height:calc(100vh - var(--headh) - 100px)}
+}
+
+@media (orientation:landscape) and (max-height:900px) and (pointer:coarse){
+  header.top{transition:transform .28s var(--ease)}
+  .hdhide header.top{transform:translateY(-100%)}
+  .side,.railnav,.jcbarline,.jcmock > .jcmside{transition:top .28s var(--ease)}
+}
+
+/* A fingertip, not a mouse pointer: the controls it presses are at least
+   44px tall. Links inside a sentence keep their size, as words do; the short
+   links that stand on their own (the trail at the top of a page, the topic
+   above a question) get the extra height as padding pulled back by an equal
+   negative margin, so the line they sit on does not move. */
+@media (pointer:coarse){
+  .pill.big{padding-top:11px;padding-bottom:11px}
+  .jcp{height:44px}
+  .jcjump button{min-height:44px}
+  .sjump button{padding-top:12px;padding-bottom:12px}
+  .slist a{padding-top:11px;padding-bottom:11px}
+  .idxlist a{padding-top:11px;padding-bottom:11px}
+  .railnav a{padding-top:11px;padding-bottom:11px}
+  .railnav a::before{top:12px}
+  .secstrip a{padding-top:12px;padding-bottom:12px}
+  .idxmore{padding:12px 0;margin-top:var(--s2)}
+  .mmap.recall .mmopen{padding:13px 0;margin-top:0}
+  .crumb a,.jcqmeta a{display:inline-block;padding:14px 0;margin:-14px 0}
+  .hubhead a,.idxcard h2 a{display:inline-block;padding:5px 0;margin:-5px 0}
+}
+/* The phone's header was tightened on purpose (above); from 761px there is
+   room for a search box and an install button a finger can hit. */
+@media (pointer:coarse) and (min-width:761px){
+  #q{padding-top:11px;padding-bottom:11px}
+  .installbtn{min-height:44px}
+}
+
+/* A title that runs to two lines, as more do now beside the side column, is
+   set close rather than at the open spacing of the reading text. */
+.jcpage > h1,.jcpage > .mainflow > h1{line-height:1.2}
+
+/* A short screen held sideways gives the title less air above and below,
+   so a question's four options, or a topic's first notes, come up on the
+   first screen. */
+@media (orientation:landscape) and (max-height:900px) and (pointer:coarse){
+  .secwrap + .artpage{padding-top:var(--s4)}
+  .crumb{margin-bottom:var(--s3)}
+  .jcpage h1 + .sub{margin-bottom:var(--s4)}
+  .jcqgrid > .mq{padding:var(--s4) var(--s5)}
+  .jcqgrid .mqo,.jcmock .mqo{margin-top:var(--s4)}
 }
