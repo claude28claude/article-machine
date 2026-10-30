@@ -124,8 +124,18 @@ struck-down NJAC wording). The two rule books exist nowhere else on the site.
 Its data is `data-jca-judiciary.js`, `data-jca-scr.js` and `data-jca-osr.js`,
 with the mind maps in `data-jca-maps.js`.
 
-**Four ways to work.** Every topic page carries JCA notes (the SSC-note box,
-relabelled), fact tables and confused pairs. Practice is one question at a
+**Four ways to work.** Every topic page carries JCA notes, fact tables and
+confused pairs. The notes are in short sections, one for each rule, Order or
+article: an entry `"## Kicker | Title"` in a topic's `notes` starts a
+section, the kicker being the rule it covers ("Rule 13(5) to (8)"), and a
+table whose `after` names that kicker sits straight under it. Section edges
+take the mind maps' four colours in turn. A marked phrase is bold with a fine
+gold underline rather than a yellow band, because a rule-book note marks
+four or five phrases a line. On a phone, where the side column's contents
+list goes to the bottom, a row of chips at the top jumps to each section. A
+part's topics are numbered and grouped under the rule book's own divisions
+(`part` on each topic: the Parts of the 1961 Rules, the groups of Orders),
+with the rules each covers (`span`) above its title. Practice is one question at a
 time with the reason for the answer; the rule a question tests is shown only
 after it is answered, because shown first it would answer the "which Order"
 questions by itself. The mock test is the law block at the paper's pace: 35

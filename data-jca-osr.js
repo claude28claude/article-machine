@@ -27,27 +27,33 @@ window.JCA.osr = {
   topics: [
   {
     id: "osr-basics",
+    span: "Rules 1, 2 and 47 to 49", part: "Parts I and V: the frame",
     t: "The rules and where they come from",
     w: "Article 146(2), the President's approval, the definitions in Rule 2, the five Parts, and Part V: residuary powers, interpretation, repeal and savings.",
     notes: [
+      "## Origin | Made under Article 146(2)",
       "Full name: the ==Supreme Court Officers and Servants (Conditions of Service and Conduct) Rules, 1961==.",
       "Made by the ==Chief Justice of India== under ==Article 146(2)==, by notification ==S.O. 142== dated ==10 January 1961==, published in the ==Gazette of India on 4 August 1961==. They replaced the ==Supreme Court (Conditions of Service of Staff) Rules, 1951== (Rule 49).",
       "The ==President's approval== was needed only for the rules in ==Part II== that relate to ==salaries, allowances, leave or pensions==: the proviso to Article 146(2), recited in the notification.",
       "Article 146(2) is ==subject to any law made by Parliament==, and lets the Chief Justice ==authorise another Judge or officer== of the Court to make the rules.",
+      "## Rules 1 and 2 | Title, and the words defined",
       "Rule 1: they ==apply to all officers and servants of the Court==, and came into force ==at once==.",
       "Rule 2(a): seven words, ==Constitution, Court, Chief Justice, Judge, Registrar, Advocate and Advocate on Record==, where these rules do not define them, take their meaning from the ==Supreme Court Rules, 2013==.",
       "Rule 2(b): a ==Court servant== is any officer or servant appointed to or borne on the cadre of the Court's staff ==shown in the Schedule==. Rule 2(c): a ==post== is one in ==Class I, II, III or IV==, as the Schedule classes it.",
       "Rule 2(d): ==deputation== is the ==temporary loan== of a servant's services, either way. An outside authority that lends its servant to the Court is the ==Lending Authority==; one that borrows a Court servant is the ==Borrowing Authority==.",
       "Rule 2(f): the ==Disciplinary Authority== is the authority competent under the rules to impose ==that penalty== on that Court servant.",
       "Rule 2(g), ==members of the family==: the ==wife, child or step child==, whether or not living with him; for a woman Court servant, her ==husband if he lives with her and depends on her==. Left out: a ==legally separated wife==, and a child ==no longer dependent== or whose ==custody== the servant has lost by law.",
+      "## Layout | Five Parts",
       "Five Parts: I ==General== (Rules 1 and 2); II ==Strength, Appointment and Conditions of Service== (3 to 9); III ==Control and Discipline== (10 to 23); IV ==Conduct== (24 to 46); V ==Miscellaneous== (47 to 49).",
+      "## Rules 47 to 49 | Residuary powers, interpretation, repeal",
       "Rule 47, ==residuary powers==: the Chief Justice may make orders on matters ==incidental or ancillary== to the rules that they do not provide for, or not sufficiently. An order on ==salaries, allowances, leave or pensions== needs the ==President's approval==.",
       "Rule 48, ==interpretation==: every question goes to the ==Chief Justice==, whose decision is ==final==. But a question on a ==Part II== rule about salaries, allowances, leave or pensions is decided ==with the President's approval==.",
       "Rule 49, ==repeal and savings==: the 1951 Rules are repealed; ==orders made under them continue== and are treated as made under these; ==actions and proceedings pending== when these began carry on under these rules, as far as may be.",
+      "## Amendments | From 1967 to 2025",
       "The consolidated text is ==amended up to 6 November 2024==, and its footnotes date the changes from ==1967 to 2007==. ==Rule 4A== was substituted again in ==July 2025==."
     ],
     blocks: [
-      { h: "The rules at a glance",
+      { h: "The rules at a glance", after: "Origin",
         rows: [
           ["Made by", "The Chief Justice of India"],
           ["Under", "Article 146(2) of the Constitution"],
@@ -58,7 +64,7 @@ window.JCA.osr = {
           ["The Schedule", "Every post by category number, with its qualifications and how it is filled"],
           ["Latest text", "Consolidated up to 6 November 2024; Rule 4A substituted in July 2025"]
         ] },
-      { h: "The definitions, Rule 2",
+      { h: "The definitions, Rule 2", after: "Rules 1 and 2",
         rows: [
           ["(a) Borrowed words", "Constitution, Court, Chief Justice, Judge, Registrar, Advocate and Advocate on Record: as in the Supreme Court Rules, 2013"],
           ["(b) Court servant", "An officer or servant appointed to or borne on the cadre of the staff shown in the Schedule"],
@@ -68,7 +74,7 @@ window.JCA.osr = {
           ["(f) Disciplinary Authority", "The authority competent under the rules to impose that penalty on that servant"],
           ["(g) Members of the family", "Wife, child or step child, living with him or not; a woman servant's husband who lives with her and depends on her. Not a legally separated wife, or a child no longer dependent or lost in custody by law"]
         ] },
-      { h: "The five Parts",
+      { h: "The five Parts", after: "Layout",
         rows: [
           ["I, General", "Rules 1 and 2: short title and application; definitions"],
           ["II, Strength, Appointment and Conditions of Service", "Rules 3 to 9: posts, method of recruitment, reservation (4A), qualifications, appointing authority, probation, seniority, conditions of service"],
@@ -76,7 +82,7 @@ window.JCA.osr = {
           ["IV, Conduct", "Rules 24 to 46: integrity, intoxicants, absence, politics, the press, gifts, trade, money, property, Advocates, strikes, associations, arrests"],
           ["V, Miscellaneous", "Rules 47 to 49: residuary powers, interpretation, repeal and savings"]
         ] },
-      { h: "Amendments the 2024 text records",
+      { h: "Amendments the 2024 text records", after: "Amendments",
         note: "From the footnotes to the consolidated text.",
         rows: [
           ["17 August 1967", "Rule 29: the proviso on meeting the Press inserted; Rule 41: the Explanation of strike inserted"],
@@ -87,7 +93,7 @@ window.JCA.osr = {
           ["19 September 1985", "Rule 7: the Explanation on probation substituted; Rule 24A, intoxicants, inserted"],
           ["6 December 2007", "Rules 3, 4(2), 5, 34 and 36(2) substituted; Rule 4A inserted; the Explanation to Rule 9 deleted"]
         ] },
-      { h: "Amendments you may see cited",
+      { h: "Amendments you may see cited", after: "Amendments",
         rows: [
           ["26 October 2019", "G.S.R. 780(E)"],
           ["8 June 2020", "G.S.R. 376(E)"],
@@ -118,28 +124,35 @@ window.JCA.osr = {
 
   {
     id: "osr-recruitment",
+    span: "Rules 3 to 9", part: "Part II: posts and recruitment",
     t: "Recruitment, reservation and probation",
     w: "Part II, Rules 3 to 9: the posts, how each is filled, reservation and its 2025 change, qualifications, the appointing authority, probation, seniority, and the fallback to central rules.",
     notes: [
+      "## Rule 3 | Posts",
       "Rule 3, ==strength and composition of the staff==: the ==Chief Justice== decides the number of ==permanent and temporary posts== in ==Classes I to IV==, and may ==increase or decrease== it from time to time.",
       "His power to create posts has limits: permanent ==Class IV== posts ==in full==; permanent ==Class III== posts only where the pay scale's maximum ==does not exceed Rs. 700==; ==temporary posts== in any class for a specified period ==not exceeding two years==; all subject to ==Rule 10 of the Book of Financial Powers==.",
+      "## Rule 4 | Method of recruitment",
       "Rule 4(1), ==method of recruitment==: ==promotion== of a person already employed in the Court; ==transfer or deputation== of a person serving outside the Court in connection with the affairs of the ==Union or of a State==; or ==direct recruitment==. A ==Junior Court Assistant== post is filled by direct recruitment.",
       "The Schedule's columns, as the rules cite them: ==column 2== the post, ==column 3== its qualifications, ==column 4== its method of recruitment.",
       "Rule 4(2): the ==Chief Justice==, by ==general or special order==, may direct a method ==other than the one in column 4==, fix the ==proportion of vacancies== for each method where there is more than one, and say ==how direct recruitment is made==.",
+      "## Rule 4A | Reservation",
       "Rule 4A, ==reservation in direct recruitment==, was ==inserted in 2007==: for Scheduled Castes, Scheduled Tribes, the ==physically challenged==, ==ex-servicemen== and ==dependants of freedom fighters==, as the ==Government of India's rules and orders== provide for posts on the corresponding pay scale, subject to the Chief Justice's changes.",
       "Rule 4A was ==substituted in July 2025==, adding ==Other Backward Classes (non-creamy layer)== for the first time.",
       "The model roster circulated in June 2025: ==15 per cent== for Scheduled Castes and ==7.5 per cent== for Scheduled Tribes, on a ==200-point, post-based== roster, following ==R. K. Sabharwal (1995)==. The ==August 2025== model roster adds ==27 per cent== for Other Backward Classes.",
       "There is ==no EWS== reservation in the Court's staff policy.",
+      "## Rules 5 and 6 | Qualifications, and who appoints",
       "Rule 5, ==qualifications for appointment==, by promotion or otherwise: those in ==column 3 of the Schedule==, or as the Chief Justice specifies by ==general or special order==.",
       "Rule 6, ==appointing authority==: all appointments of Court servants are made by the ==Chief Justice in his absolute discretion==. Proviso: using his power under ==Article 146(1)==, he may by general or special order direct ==another person named in that Article== to make appointments to any post or class of posts.",
+      "## Rule 7 | Probation",
       "Rule 7, ==probation==: ==two years== for a direct recruit, ==one year== for a promotee; the authority competent under ==Rule 6== may ==extend or reduce== it for a particular person.",
       "Rule 7, Explanation: a Court servant who ==competes with outsiders== after a ==general advertisement== and is appointed counts as a ==direct recruit==, on ==two years'== probation.",
+      "## Rules 8 and 9 | Seniority, and the fallback",
       "Rule 8, ==seniority==: decided by the provisions the ==Chief Justice== makes by general or special order.",
       "Rule 9, ==conditions of service==: where these rules make ==no provision, or insufficient provision==, the ==Government of India's rules and orders for corresponding posts== apply, with any modifications the Chief Justice specifies.",
       "Rule 9's provisos: a modification of the rules on ==salaries, allowances, leave or pensions== needs the ==President's approval==; and powers those central rules give the ==President or an authority under him== are used by the ==Chief Justice==, or a person he directs."
     ],
     blocks: [
-      { h: "Rule 3: the Chief Justice's power over posts",
+      { h: "Rule 3: the Chief Justice's power over posts", after: "Rule 3",
         rows: [
           ["Decide and vary", "The number of permanent and temporary posts in Classes I to IV"],
           ["Permanent, Class IV", "May be created in full"],
@@ -147,7 +160,7 @@ window.JCA.osr = {
           ["Temporary, any class", "For a specified period not exceeding two years"],
           ["Always subject to", "The general conditions in Rule 10 of the Book of Financial Powers"]
         ] },
-      { h: "Rule 4A: before and after 2025",
+      { h: "Rule 4A: before and after 2025", after: "Rule 4A",
         rows: [
           ["2007 text", "Scheduled Castes, Scheduled Tribes, the physically challenged, ex-servicemen and dependants of freedom fighters, as Government of India orders provide, subject to the Chief Justice's changes"],
           ["July 2025", "Rule 4A substituted; Other Backward Classes (non-creamy layer as on 1 July 2025) added; reservation in direct recruitment follows Government of India orders"],
@@ -187,25 +200,59 @@ window.JCA.osr = {
   },
 
   {
+    id: "osr-schedule",
+    span: "The Schedule", part: "Part II: posts and recruitment",
+    t: "The Schedule and the pay",
+    w: "Posts by category, the pay ladder from Junior Court Assistant up, and the 2023 renaming.",
+    notes: [
+      "## The Schedule | Posts and columns",
+      "The ==Schedule== lists every post by ==category number==, with its pay, its qualifications (==column 3==) and its method of recruitment (==column 4==).",
+      "## Pay | The ladder from JCA up",
+      "A ==Junior Court Assistant== is a ==Group B, non-gazetted== post at ==Level 6== of the pay matrix: initial basic pay ==₹35,400== plus allowances.",
+      "Above a JCA: ==Court Assistant==, Level 7 (₹44,900); ==Senior Court Assistant==, Level 8 (₹47,600); ==Court Master== and ==Branch Officer==, ==Level 11== (₹67,700); ==Assistant Registrar==, Level 12 (₹78,800). The ==Secretary General== is at ==Level 17==.",
+      "A ==Court Master (Shorthand)== is a ==gazetted== post; a JCA is not.",
+      "## 2023 | A renaming",
+      "A ==2023 amendment== renamed the Jamadar posts at categories 56 and 57; ==Jamadar (Farash)== became ==Supervisor (Room)==."
+    ],
+    blocks: [
+      { h: "Posts and pay you may be asked about", after: "Pay",
+        rows: [
+          ["Junior Court Assistant", "Group B, non-gazetted; Level 6; ₹35,400; direct recruitment"],
+          ["Court Assistant", "Level 7; ₹44,900"],
+          ["Senior Court Assistant", "Level 8; ₹47,600"],
+          ["Court Master, Branch Officer", "Level 11; ₹67,700"],
+          ["Assistant Registrar", "Level 12; ₹78,800"],
+          ["Secretary General", "Level 17"],
+          ["Supervisor (Room)", "The 2023 name for Jamadar (Farash)"]
+        ] }
+    ]
+  },
+
+  {
     id: "osr-penalties",
+    span: "Rules 10 to 12", part: "Part III: discipline",
     t: "Penalties and who imposes them",
     w: "Rules 10 to 12: the Chief Justice's control, the seven penalties, minor and major, what is not a penalty, the disciplinary authorities, and Article 311.",
     notes: [
+      "## Rules 10 and 11 | Control, and the seven penalties",
       "Part III, ==Control and Discipline==, runs from ==Rule 10 to Rule 23==. Rule 10: every Court servant is under the ==superintendence and control of the Chief Justice==.",
       "Rule 11 lists ==seven penalties==, imposed ==for good and sufficient reasons==: (i) ==censure==; (ii) ==withholding of increments or promotion==; (iii) ==recovery from pay==; (iv) ==reduction in rank==; (v) ==compulsory retirement==; (vi) ==removal from service==; (vii) ==dismissal from service==.",
       "Recovery from pay is of the whole or part of any ==pecuniary loss caused to the Registry== by ==negligence or breach of orders==. Reduction in rank includes reduction to a ==lower post or time scale==, or to a ==lower stage in the time scale==.",
       "The rules call (i) to (iii) the ==minor penalties== (Rule 14) and (iv) to (vii) the ==major penalties== (Rule 13).",
       "==Removal== from service ==shall not be a disqualification== for future employment; ==dismissal== ==shall ordinarily be== one. That is the whole difference the rules draw between them.",
+      "## Rule 11, Explanations | What is not a penalty",
       "Not removal or dismissal (Explanation 1): ending a servant's employment, or reverting him to his old post, ==during or at the end of probation==; ending a ==temporary servant's== employment by the terms of his appointment or agreement; and ==sending a borrowed servant back== to the authority that lent him.",
       "Not withholding: stoppage at the ==efficiency bar== for unfitness to cross it (Explanation 2); ==not being promoted to a selection post== after due consideration (3); increments withheld for ==failing a departmental examination== (6).",
       "Not reduction in rank (4): ==reversion from an officiating post==, after a trial or for administrative reasons such as the ==permanent holder returning== from leave or deputation, or a ==more suitable officer== being available. Not a penalty at all (5): compulsory retirement under the ==superannuation or retirement== provisions.",
+      "## Rule 12 | Who may impose them",
       "Rule 12(1): the ==Chief Justice== may impose any penalty on the ==Registrar== or any other Court servant, subject to ==Article 311(2)== and Rule 17.",
       "Rule 12(2): the ==Registrar== may impose any penalty on any Court servant ==other than one in Class I==, subject to ==Article 311(1) and (2)==, Rule 17 and the Chief Justice's ==special orders==.",
       "Proviso to Rule 12: penalties (v) to (vii), ==compulsory retirement, removal and dismissal==, may not be imposed by any authority ==lower than the Appointing Authority==.",
+      "## Article 311 | The Constitution's floor",
       "Article 311 itself: no dismissal or removal by an authority ==below the appointing authority== (311(1)); an inquiry with the ==charges and a reasonable opportunity of being heard== (311(2)); and no inquiry where there is a ==criminal conviction==, where one is ==not reasonably practicable== (reasons recorded), or for the ==security of the State==."
     ],
     blocks: [
-      { h: "The seven penalties, in the order Rule 11 lists them",
+      { h: "The seven penalties, in the order Rule 11 lists them", after: "Rules 10 and 11",
         rows: [
           ["(i) Censure", "Minor; the mildest"],
           ["(ii) Withholding", "Minor; of increments or of promotion"],
@@ -215,7 +262,7 @@ window.JCA.osr = {
           ["(vi) Removal from service", "Major; not a disqualification for future employment"],
           ["(vii) Dismissal from service", "Major; ordinarily a disqualification for future employment; the gravest"]
         ] },
-      { h: "Not a penalty: the six Explanations to Rule 11",
+      { h: "Not a penalty: the six Explanations to Rule 11", after: "Rule 11, Explanations",
         rows: [
           ["(1) Not removal or dismissal", "Termination or reversion during or at the end of probation; a temporary servant's employment ended by its terms; a borrowed servant sent back to the lender"],
           ["(2) Not withholding", "Stopped at the efficiency bar as unfit to cross it"],
@@ -265,32 +312,39 @@ window.JCA.osr = {
 
   {
     id: "osr-procedure",
+    span: "Rules 13 to 17", part: "Part III: discipline",
     t: "Inquiry, suspension and servants on loan",
     w: "Rules 13 to 17: the inquiry before a major penalty, notice before a minor one, suspension and deemed suspension, and discipline over servants lent out or borrowed.",
     notes: [
+      "## Rule 13(1) to (4) | Charges, defence, and who inquires",
       "Rule 13, ==procedure for imposing major penalties==: no order imposing penalties ==(iv) to (vii)== without an ==inquiry==, held as far as may be in the manner the rule lays down.",
       "Rule 13(2): the Disciplinary Authority frames ==definite charges==, and sends them in writing with a ==statement of the allegations==. The servant gives a ==written statement of his defence== within the time fixed, and says whether he wishes to be ==heard in person==.",
       "Rule 13(3): to prepare his defence he may ==inspect and take extracts== from the official records he names. Access may be refused, ==for reasons recorded in writing==, if they are ==not relevant== or access is ==against the public interest==.",
       "Rule 13(4): the Disciplinary Authority may inquire ==itself== into the charges not admitted, or appoint a ==Board of Inquiry or an Inquiring Officer==.",
+      "## Rule 13(5) to (8) | The hearing and the report",
       "Rule 13(5): the Disciplinary Authority may nominate ==any person to present the case==. The servant may be helped by ==another Court servant approved by the Disciplinary Authority==, but may ==not engage a legal practitioner== unless the presenting person is one, or the Disciplinary Authority permits.",
       "Rule 13(6): the servant may ==cross-examine== the witnesses against him and ==give evidence in person==. If the Inquiring Authority declines to examine a witness as irrelevant, it ==records its reasons in writing==.",
       "Rule 13(7): the report records ==findings on each charge, with reasons==. Findings on a ==charge not originally framed== are allowed only if the servant ==admitted the facts== or had a chance to ==defend himself== against it.",
       "Rule 13(8): the ==record of the inquiry== holds six things: the ==charges and statement of allegations==, the ==written defence==, the ==oral evidence==, the ==documentary evidence==, the ==orders== made about the inquiry, and the ==report== with findings and reasons.",
+      "## Rule 13(9) to (12) | Before the order",
       "Rule 13(9) and (10): a Disciplinary Authority that did not hold the inquiry ==records its own findings== on each charge. Before a major penalty it gives the servant a ==copy of the inquiry report==, its own findings with ==brief reasons for any disagreement==, and a ==notice of the proposed action== calling for a ==representation== within a specified time; then it decides.",
       "Rule 13(11): the Disciplinary Authority may ==waive== the rule where the penalty rests on conduct that led to a ==conviction on a criminal charge==, or where a chance to show cause is ==not reasonably practicable==, for ==reasons recorded in writing==. Rule 13(12): the orders are ==communicated== to the servant with the report, unless he has it already.",
+      "## Rule 14 | Notice before a minor penalty",
       "Rule 14, ==procedure for imposing minor penalties==: the servant is told ==in writing== of the proposal and the allegations, may make a ==representation==, and it is ==considered== before the order is passed.",
       "Rule 14(1-A), inserted in ==1971==: if increments are to be withheld for ==more than three years==, ==with cumulative effect== for any period, or so as to ==adversely affect his pension==, an ==inquiry under Rule 13(2) to (12)== comes first.",
       "Rule 14(2): the record holds a copy of the ==intimation==, the ==statement of allegations==, the ==representation==, and the ==orders with reasons==.",
+      "## Rule 15 | Suspension",
       "Rule 15(1): the Disciplinary Authority may ==suspend== a Court servant when a ==disciplinary proceeding is contemplated or pending==; when in its opinion he has engaged in ==activities prejudicial to the security of the State== (clause (aa), inserted in 1968); or when a ==criminal case== against him is under ==investigation or trial==.",
       "Rule 15(1), provisos: for a servant ==on deputation outside== the Court, the ==Borrowing Authority is requested== to suspend him; for a servant ==on deputation to the Court==, the ==Registrar informs the Lending Authority== without delay.",
       "Rule 15(2): a Court servant ==detained in custody==, on a criminal charge or otherwise, for ==more than 48 hours== is ==deemed suspended== from the ==date of detention==, by an order of the ==Chief Justice==, until further orders.",
       "Rule 15(3) and (4): if a dismissal, removal or compulsory retirement is ==set aside in appeal== and the case remitted, or ==set aside by a court of law== and a further inquiry is ordered, the servant is treated as ==suspended from the date of the original order==.",
       "Rule 15(5): a suspension may be ==revoked== at any time by the authority that made it, or by ==any authority to which it is subordinate==.",
+      "## Rules 16 and 17 | Servants on loan",
       "Rule 16, a Court servant ==lent to an outside authority==: the ==Borrowing Authority== may suspend him and start proceedings, and ==informs the Court forthwith==. For a ==minor penalty== it decides ==in consultation with the Court==; if they differ, he is ==sent back to the Court==. For a ==major penalty== it ==sends him back== with the inquiry record, and the Court's Disciplinary Authority decides, after Rule 13(9) and (10), or holds a further inquiry.",
       "Rule 17, a servant ==lent to the Court==: the ==Lending Authority is informed forthwith== of a suspension or proceeding. For a ==minor penalty== the Disciplinary Authority decides ==after consulting the Lending Authority==; if they differ, he is ==sent back==. For a ==major penalty== he is ==sent back to the Lending Authority== with the record, for it to act."
     ],
     blocks: [
-      { h: "Rule 13, step by step",
+      { h: "Rule 13, step by step", after: "Rule 13(9) to (12)",
         rows: [
           ["Charges", "Definite charges and a statement of allegations, in writing (2)"],
           ["Defence", "A written statement within the time fixed; heard in person if he wishes (2)"],
@@ -303,7 +357,7 @@ window.JCA.osr = {
           ["Order", "Communicated to the servant with the report (12)"],
           ["Waiver", "For a criminal conviction, or where not reasonably practicable, reasons recorded (11)"]
         ] },
-      { h: "Suspension under Rule 15",
+      { h: "Suspension under Rule 15", after: "Rule 15",
         rows: [
           ["(1)(a)", "A disciplinary proceeding contemplated or pending"],
           ["(1)(aa)", "Activities prejudicial to the security of the State (inserted 1968)"],
@@ -334,15 +388,19 @@ window.JCA.osr = {
 
   {
     id: "osr-appeals",
+    span: "Rules 18 to 23", part: "Part III: discipline",
     t: "Appeals",
     w: "Rules 18 to 23: who hears an appeal, the one-month limit, how an appeal is made, and the Chief Justice's power to do justice.",
     notes: [
+      "## Rules 18 and 19 | Who hears an appeal",
       "Rule 18(1), ==appeals against orders imposing penalties==: a penalty imposed by the ==Registrar== is appealed to the ==Chief Justice==.",
       "Rule 18(2): a penalty imposed by the ==Chief Justice== himself, ==otherwise than on appeal== from the Registrar, is appealed to a ==Bench of not less than three Judges==.",
       "Rule 19, ==appeal against other orders==: the Chief Justice also hears appeals against a Registrar's order ==stopping a servant at the efficiency bar== as unfit to cross it, or ==interpreting a service rule to his disadvantage==.",
+      "## Rules 20 to 22 | Time, form and effect",
       "Rule 20, ==period of limitation==: ==one month== from the date of ==receipt of the order==. The Chief Justice or the Bench may ==entertain a late appeal== if satisfied there was ==sufficient cause==.",
       "Rule 21, ==submission of appeals==: every appeal is ==addressed to the Chief Justice== and ==submitted to the Registrar==; it sets out all the ==material statements and grounds==, is ==complete in itself==, and contains no ==disrespectful or improper language==.",
       "Rule 22: the ==Registrar gives effect== to the orders passed in appeals under ==Rule 18==.",
+      "## Rule 23 | The Chief Justice's power",
       "Rule 23, ==powers of Chief Justice==: nothing in Part III limits his power to deal with any case ==as he thinks just and reasonable==; but where a rule applies, the servant is ==not treated less favourably== than that rule provides."
     ],
     pairs: [
@@ -359,21 +417,26 @@ window.JCA.osr = {
 
   {
     id: "osr-conduct",
+    span: "Rules 24 to 33", part: "Part IV: conduct",
     t: "Conduct: duty, politics, the press and gifts",
     w: "Rules 24 to 33: integrity, intoxicants, absence, politics and elections, the press, committees, official information, subscriptions, gifts, honours and private trade; and every conduct rule by number.",
     notes: [
+      "## Rules 24 and 25 | Duty, drink and absence",
       "Part IV, ==Conduct==, runs from ==Rule 24 to Rule 46==; this page takes Rules 24 to 33. Rule 24, ==general==: ==absolute integrity and devotion to duty== at all times, and nothing ==prejudicial to discipline and good order in the Registry==.",
       "Rule 24A, ==consumption of intoxicating drinks and drugs== (inserted in ==1985==): obey the laws on them ==in force wherever he happens to be==; not be ==under their influence on duty==, and take care his work is never affected; ==not consume them in a public place==; not appear in a public place ==intoxicated==; and not use them ==to excess==.",
       "A ==public place== under Rule 24A is any place or premises, ==including a conveyance==, to which the public have or are permitted access, ==whether on payment or otherwise==.",
       "Rule 25, ==absence from duty==: be ==punctual==, and no absence ==without previous permission==, except for ==sudden illness or other unforeseen circumstances beyond his control==, when he ==informs the office without delay==.",
       "Rule 25(3): leave for ==more than three days== on grounds of ill health needs a ==medical certificate from a registered medical practitioner==; he may be asked for one from his ==authorised medical attendant or the Civil Surgeon==.",
+      "## Rule 26 | Politics and elections",
       "Rule 26, ==taking part in politics and elections==: no ==membership of, or association with,== a political party or any organisation that takes part in politics; no taking part in, ==subscribing in aid of==, or assisting any political movement or activity.",
       "Rule 26(2): no ==canvassing==, interference or use of influence in an ==election to any legislature or local authority==. He ==may vote==, but gives ==no indication== of how he will vote or has voted; ==election duty imposed by law== is no breach. ==Displaying an electoral symbol== on his person, vehicle or residence counts as using influence.",
+      "## Rules 27 to 29 | The press, committees and information",
       "Rule 27, ==connection with press or radio==: the ==Registrar's previous permission== to own, conduct, or take part in editing or managing a ==newspaper or periodical==; and, unless in the ==bona fide discharge of his duties==, to ==publish a book==, contribute to one, take part in a ==radio broadcast==, or write an ==article or letter== to a newspaper, in his own name, anonymously or in another's.",
       "No permission is needed under Rule 27(2) for a book published ==through a publisher==, or a contribution, broadcast or writing, of a ==purely literary, artistic or scientific character==.",
       "Rule 28, ==evidence before committees==: before ==any public committee==, only with the ==Chief Justice's previous permission==. Not needed before a committee with power to ==compel attendance or the production of documents==, or before an authority holding a ==judicial or departmental inquiry==.",
       "Rule 29, ==unauthorised communication of information==: no official document or information to another Court servant, a Government servant, a private person or the press, except under a ==general or special order of the Chief Justice or the Registrar==, or in the ==good-faith performance of his duties==.",
       "Rule 29, proviso (1967): only the ==Registrar meets the Press==, unless the Chief Justice authorises ==another officer==, and he sends the Chief Justice the ==gist== of what was discussed. It does not apply to supplying ==judgments== to the Press. Explanation: ==quoting a file or circular== one may not see, in a representation, is unauthorised communication.",
+      "## Rules 30 to 33 | Subscriptions, gifts, honours and trade",
       "Rule 30, ==collecting subscriptions for public causes==: no circulating appeals for subscriptions among Court servants or people connected with the Court's business, and no raising them by ==official position or influence==, ==without the Registrar's permission==. Nor may he help ==an outsider into a Court room or the Registry== for such purposes.",
       "Rule 31, ==gifts==: no gift, gratuity or reward of ==more than a trifling value==, to him or his family, without the ==Registrar's previous permission==. Gifts of reasonable value from or to ==relations and personal friends== at ==weddings, anniversaries, funerals and religious functions== are allowed, in keeping with religious or social custom.",
       "Rule 32, ==public demonstrations in honour of Court servants==: no complimentary or valedictory ==address==, ==testimonial==, or ==meeting or entertainment in his honour== without the ==Registrar's previous permission==. Exempt: a ==private and informal farewell== on ==retirement or transfer==, and ==simple and inexpensive entertainments== arranged by public bodies or institutions.",
@@ -435,47 +498,53 @@ window.JCA.osr = {
 
   {
     id: "osr-conduct-2",
+    span: "Rules 34 to 46", part: "Part IV: conduct",
     t: "Conduct: money, property, grievances and strikes",
     w: "Rules 34 to 46: investments and loans, debt, property returns, vindication, outside influence, Advocates, grievances, strikes, associations, arrests, Court property, convictions, and what a breach brings.",
     notes: [
+      "## Rules 34 and 35 | Investments, loans and debt",
       "Rule 34(1), ==investments, lending and borrowing==: no ==speculation== in any stock, share or other investment. ==Occasional investments== through licensed or registered ==stock brokers== are allowed; ==frequent purchase or sale== of shares, securities or other investments ==is speculation==.",
       "Rule 34(2): no investment, by himself, his family or anyone acting for him, likely to ==embarrass or influence him== in his duties. Buying shares out of the ==quotas reserved for Directors== of companies, or their friends and associates, is deemed embarrassing.",
       "Rule 34(3): whether a deal is speculation or an embarrassing investment is decided by the ==competent authority==, and its decision is ==final==.",
       "Rule 34(4): except in the ordinary course of business with a ==bank or a public limited company==, no ==lending, borrowing or depositing== with a person, firm or private limited company within ==the local limits of his authority== or with whom he is ==likely to have official dealings==, and no ==lending money at interest== to anyone.",
       "Rule 34(4), provisos: allowed are a ==small, purely temporary, interest-free loan== to or from a ==relative or personal friend==, a ==credit account with a bona fide tradesman==, an ==advance of pay to a private employee==, and anything done with the ==previous sanction of the competent authority==. A servant posted where he would break the rule ==reports it forthwith==.",
       "Rule 35, ==insolvency and habitual indebtedness==: manage private affairs to avoid ==habitual indebtedness or insolvency==; a servant facing ==insolvency proceedings== reports the ==full facts to the Registrar forthwith==.",
+      "## Rule 36 | Property",
       "Rule 36(1), ==movable, immovable and valuable property==: no acquiring or disposing of ==immovable property== by lease, mortgage, purchase, sale, gift or otherwise, in his own or a family member's name, without the ==previous knowledge== of the authority the rule names.",
       "Rule 36(2): a deal in ==movable property== worth more than the limit the Government of India sets under ==Rule 18(3) of the CCS (Conduct) Rules== is ==reported within one month==: to the ==Chief Justice== by the ==Registrar and Class I== servants, to the ==Registrar== by all others.",
       "Rule 36(3): every ==Class I== servant, and others the Chief Justice names, files a ==return of immovable property== on ==first appointment== and then ==every twelve months==: property owned, acquired, inherited, leased or mortgaged, in any name.",
       "Rule 36(4): the ==Chief Justice== may at any time require a ==full statement of movable and immovable property==, including the ==means or source== by which it was acquired.",
+      "## Rules 37 to 40 | Your own cause",
       "Rule 37, ==vindication of acts and character==: no going to ==any court or the press== to vindicate ==official acts or character== under attack without the ==Registrar's previous permission==. The Registrar decides whether the ==Court bears the costs==, or the servant sues ==at his own expense==, and whether the Court ==reimburses== him if he wins. His ==private character== and private acts are untouched.",
       "Rule 38, ==canvassing of non-official or other outside influence==: no ==political or outside influence== on a superior authority to further his ==service interests==.",
       "Rule 39, ==relations with Advocates or Advocates on Record==: ==no business dealings== with them, and no ==sharing a residence== with one without the ==Registrar's express permission==, ==even if they are related==. An invitation to a ==marriage party or social gathering== may be accepted.",
       "Rule 40, ==seeking of redress in service matters==: a grievance goes to the ==Registrar==, or to the ==Chief Justice with the Registrar's permission==. Going to a ==court of law== without first ==exhausting the remedies== under the service rules invites disciplinary action under ==Part III==, even where that remedy is legally open.",
+      "## Rules 41 and 42 | Strikes and associations",
       "Rule 41, ==demonstrations and strikes==: no demonstration and no strike over his conditions of service. A ==strike== is a ==refusal to work, or a stoppage or slowing down of work, by a group of employees acting in combination==.",
       "Rule 41, Explanation (1967): it includes ==mass abstention without permission== (wrongly called ==mass casual leave==), ==refusing overtime necessary in the public interest==, ==go-slow, sit-down, pen-down, stay-in, token or sympathetic== strikes, and absence to join a ==bandh==. The list is ==illustrative, not exhaustive==.",
       "Rule 42, ==joining of associations==: no joining or staying in a ==service association== that has not been ==recognised by the Chief Justice== within ==six months== of these rules or of its formation, or whose recognition he has ==refused==.",
+      "## Rules 43 to 46 | Arrests, Court property, convictions, breaches",
       "Rule 43, ==arrests on a criminal charge==: a servant arrested in a case likely to ==embarrass him in his duties== or involving ==moral turpitude== tells the ==Registrar promptly, in writing==, ==even if released on bail==. Not doing so is ==suppression of material information==, punishable ==on that ground alone==.",
       "Rule 44, ==Court property==: no article or property of the Court goes ==outside the Court House or premises== without the ==Registrar's express permission==.",
       "Rule 45, ==contravention of laws and conviction==: breaking a law in a way that involves ==moral turpitude== is a ==serious matter==, noticed departmentally. After a ==conviction in a court of law==, the servant may be punished ==on that conviction alone==, without a departmental inquiry.",
       "Rule 46, ==contravention of the rules==: breaking any rule in ==Part IV== brings ==disciplinary action under Part III==. The ==Chief Justice== may act against the ==Registrar== for a breach, and grants the Registrar ==any permission== Part IV requires of him."
     ],
     blocks: [
-      { h: "Rule 34(4): money dealings",
+      { h: "Rule 34(4): money dealings", after: "Rules 34 and 35",
         rows: [
           ["Barred", "Lending, borrowing or depositing with anyone in his local limits or with official dealings; lending money at interest"],
           ["Always allowed", "Ordinary business with a bank or a public limited company"],
           ["Allowed by proviso", "A small, temporary, interest-free loan with a relative or friend; credit with a bona fide tradesman; an advance of pay to a private employee"],
           ["Anything else", "Only with the competent authority's previous sanction"]
         ] },
-      { h: "Property, Rule 36",
+      { h: "Property, Rule 36", after: "Rule 36",
         rows: [
           ["(1) Immovable property", "Acquired or disposed of only with the previous knowledge of the authority named"],
           ["(2) Movable property", "A deal above the central limit, reported within one month: to the Chief Justice (Registrar and Class I) or the Registrar (all others)"],
           ["(3) Annual return", "Class I and others named: immovable property, on first appointment and every twelve months"],
           ["(4) Full statement", "Whenever the Chief Justice requires it, with the means or source"]
         ] },
-      { h: "What counts as a strike, Rule 41",
+      { h: "What counts as a strike, Rule 41", after: "Rules 41 and 42",
         rows: [
           ["The definition", "Refusal to work, or stoppage or slowing down of work, by a group of employees acting in combination"],
           ["Mass abstention", "From work without permission, wrongly described as mass casual leave"],
@@ -500,31 +569,6 @@ window.JCA.osr = {
           ["Rule 45", "After a conviction, punishment ==on that conviction alone==, without a departmental inquiry"],
           ["Rule 13(11)", "The inquiry rules may be ==waived== for conduct that led to a conviction"],
           ["Article 311(2)", "No inquiry needed where the penalty rests on a ==criminal conviction=="]
-        ] }
-    ]
-  },
-
-  {
-    id: "osr-schedule",
-    t: "The Schedule and the pay",
-    w: "Posts by category, the pay ladder from Junior Court Assistant up, and the 2023 renaming.",
-    notes: [
-      "The ==Schedule== lists every post by ==category number==, with its pay, its qualifications (==column 3==) and its method of recruitment (==column 4==).",
-      "A ==Junior Court Assistant== is a ==Group B, non-gazetted== post at ==Level 6== of the pay matrix: initial basic pay ==₹35,400== plus allowances.",
-      "Above a JCA: ==Court Assistant==, Level 7 (₹44,900); ==Senior Court Assistant==, Level 8 (₹47,600); ==Court Master== and ==Branch Officer==, ==Level 11== (₹67,700); ==Assistant Registrar==, Level 12 (₹78,800). The ==Secretary General== is at ==Level 17==.",
-      "A ==Court Master (Shorthand)== is a ==gazetted== post; a JCA is not.",
-      "A ==2023 amendment== renamed the Jamadar posts at categories 56 and 57; ==Jamadar (Farash)== became ==Supervisor (Room)==."
-    ],
-    blocks: [
-      { h: "Posts and pay you may be asked about",
-        rows: [
-          ["Junior Court Assistant", "Group B, non-gazetted; Level 6; ₹35,400; direct recruitment"],
-          ["Court Assistant", "Level 7; ₹44,900"],
-          ["Senior Court Assistant", "Level 8; ₹47,600"],
-          ["Court Master, Branch Officer", "Level 11; ₹67,700"],
-          ["Assistant Registrar", "Level 12; ₹78,800"],
-          ["Secretary General", "Level 17"],
-          ["Supervisor (Room)", "The 2023 name for Jamadar (Farash)"]
         ] }
     ]
   }
@@ -741,6 +785,47 @@ window.JCA.osr = {
   { t: "osr-recruitment", q: "Which of these orders of the Chief Justice needs the President's approval?",
     o: ["One fixing the seniority of Court servants", "One creating a temporary post for a year", "One changing the leave rules for Court servants", "One appointing a Court servant"], a: 2,
     s: "Rule 9, first proviso, and Rule 47: changes and orders on salaries, allowances, leave or pensions need the President's approval.", r: "Rule 9, proviso" },
+
+  /* ---------------------------------------------------- schedule and pay */
+  { t: "osr-schedule", q: "The Junior Court Assistant post sits at which level of the pay matrix?",
+    o: ["Level 4", "Level 7", "Level 8", "Level 6"], a: 3,
+    s: "Level 6, initial basic pay ₹35,400 plus allowances.", r: "Schedule" },
+  { t: "osr-schedule", q: "The initial basic pay of a Junior Court Assistant is:",
+    o: ["₹29,200", "₹44,900", "₹35,400", "₹25,500"], a: 2,
+    s: "₹35,400 at Level 6.", r: "Schedule" },
+  { t: "osr-schedule", q: "A 2023 amendment to the Schedule renamed “Jamadar (Farash)” as:",
+    o: ["Supervisor (Room)", "Chamber Attendant", "Court Attendant", "Junior Court Attendant"], a: 0,
+    s: "Supervisor (Room).", r: "Schedule, 2023" },
+  { t: "osr-schedule", q: "The Junior Court Assistant post is classed as:",
+    o: ["Group A, gazetted", "Group B, non-gazetted", "Group C", "Group D"], a: 1,
+    s: "Group B, non-gazetted, at Level 6.", r: "Schedule" },
+  { t: "osr-schedule", q: "A Court Master in the Supreme Court is at which level of the pay matrix?",
+    o: ["Level 6", "Level 8", "Level 11", "Level 14"], a: 2,
+    s: "Level 11, initial basic pay ₹67,700. A Junior Court Assistant is Level 6.", r: "Schedule" },
+  { t: "osr-schedule", q: "The Schedule to the 1961 Rules lists every post by:",
+    o: ["category number, with its pay and method of recruitment", "the name of the person now holding it, with his age", "the Judge it is attached to, with his court number", "the State whose candidates it is reserved for"], a: 0,
+    s: "The Schedule is amended as posts change, as in 2023.", r: "Schedule" },
+  { t: "osr-schedule", q: "The initial basic pay of a Court Master is:",
+    o: ["₹35,400", "₹67,700", "₹56,100", "₹78,800"], a: 1,
+    s: "A Junior Court Assistant starts at ₹35,400, at Level 6.", r: "Schedule" },
+  { t: "osr-schedule", q: "A Court Assistant in the Supreme Court is at which level of the pay matrix?",
+    o: ["Level 6", "Level 8", "Level 7", "Level 11"], a: 2,
+    s: "Level 7, ₹44,900. A Junior Court Assistant is at Level 6.", r: "Pay matrix" },
+  { t: "osr-schedule", q: "The initial basic pay of an Assistant Registrar, at Level 12, is:",
+    o: ["₹67,700", "₹78,800", "₹56,100", "₹47,600"], a: 1,
+    s: "Level 12, ₹78,800.", r: "Pay matrix" },
+  { t: "osr-schedule", q: "Which post is at Level 17 of the pay matrix?",
+    o: ["Assistant Registrar", "Court Master", "Branch Officer", "Secretary General"], a: 3,
+    s: "The Secretary General heads the Registry.", r: "Pay matrix" },
+  { t: "osr-schedule", q: "A Senior Court Assistant is at:",
+    o: ["Level 8, ₹47,600", "Level 7, ₹44,900", "Level 6, ₹35,400", "Level 11, ₹67,700"], a: 0,
+    s: "One step above a Court Assistant.", r: "Pay matrix" },
+  { t: "osr-schedule", q: "Which of these is a gazetted post?",
+    o: ["Junior Court Assistant", "Court Master (Shorthand)", "Court Assistant", "Junior Court Attendant"], a: 1,
+    s: "A Junior Court Assistant is Group B, non-gazetted.", r: "Schedule" },
+  { t: "osr-schedule", q: "Branch Officer is at the same level of the pay matrix as the:",
+    o: ["Junior Court Assistant", "Secretary General", "Court Master", "Senior Court Assistant"], a: 2,
+    s: "Both at Level 11, ₹67,700.", r: "Pay matrix" },
 
   /* ---------------------------------------------------- penalties */
   { t: "osr-penalties", q: "How many penalties does Rule 11 list?",
@@ -1197,47 +1282,6 @@ window.JCA.osr = {
     s: "It renders him liable to disciplinary action on that ground alone, apart from any action at the end of the case.", r: "Rule 43" },
   { t: "osr-conduct-2", q: "When the Registrar himself needs a superior authority's previous permission under the conduct rules, it is granted by:",
     o: ["the Secretary General", "the senior-most Judge", "the Chief Justice", "a Bench of three Judges"], a: 2,
-    s: "Rule 46(2). The Chief Justice may also act against the Registrar for any breach of Part IV.", r: "Rule 46(2)" },
-
-  /* ---------------------------------------------------- schedule and pay */
-  { t: "osr-schedule", q: "The Junior Court Assistant post sits at which level of the pay matrix?",
-    o: ["Level 4", "Level 7", "Level 8", "Level 6"], a: 3,
-    s: "Level 6, initial basic pay ₹35,400 plus allowances.", r: "Schedule" },
-  { t: "osr-schedule", q: "The initial basic pay of a Junior Court Assistant is:",
-    o: ["₹29,200", "₹44,900", "₹35,400", "₹25,500"], a: 2,
-    s: "₹35,400 at Level 6.", r: "Schedule" },
-  { t: "osr-schedule", q: "A 2023 amendment to the Schedule renamed “Jamadar (Farash)” as:",
-    o: ["Supervisor (Room)", "Chamber Attendant", "Court Attendant", "Junior Court Attendant"], a: 0,
-    s: "Supervisor (Room).", r: "Schedule, 2023" },
-  { t: "osr-schedule", q: "The Junior Court Assistant post is classed as:",
-    o: ["Group A, gazetted", "Group B, non-gazetted", "Group C", "Group D"], a: 1,
-    s: "Group B, non-gazetted, at Level 6.", r: "Schedule" },
-  { t: "osr-schedule", q: "A Court Master in the Supreme Court is at which level of the pay matrix?",
-    o: ["Level 6", "Level 8", "Level 11", "Level 14"], a: 2,
-    s: "Level 11, initial basic pay ₹67,700. A Junior Court Assistant is Level 6.", r: "Schedule" },
-  { t: "osr-schedule", q: "The Schedule to the 1961 Rules lists every post by:",
-    o: ["category number, with its pay and method of recruitment", "the name of the person now holding it, with his age", "the Judge it is attached to, with his court number", "the State whose candidates it is reserved for"], a: 0,
-    s: "The Schedule is amended as posts change, as in 2023.", r: "Schedule" },
-  { t: "osr-schedule", q: "The initial basic pay of a Court Master is:",
-    o: ["₹35,400", "₹67,700", "₹56,100", "₹78,800"], a: 1,
-    s: "A Junior Court Assistant starts at ₹35,400, at Level 6.", r: "Schedule" },
-  { t: "osr-schedule", q: "A Court Assistant in the Supreme Court is at which level of the pay matrix?",
-    o: ["Level 6", "Level 8", "Level 7", "Level 11"], a: 2,
-    s: "Level 7, ₹44,900. A Junior Court Assistant is at Level 6.", r: "Pay matrix" },
-  { t: "osr-schedule", q: "The initial basic pay of an Assistant Registrar, at Level 12, is:",
-    o: ["₹67,700", "₹78,800", "₹56,100", "₹47,600"], a: 1,
-    s: "Level 12, ₹78,800.", r: "Pay matrix" },
-  { t: "osr-schedule", q: "Which post is at Level 17 of the pay matrix?",
-    o: ["Assistant Registrar", "Court Master", "Branch Officer", "Secretary General"], a: 3,
-    s: "The Secretary General heads the Registry.", r: "Pay matrix" },
-  { t: "osr-schedule", q: "A Senior Court Assistant is at:",
-    o: ["Level 8, ₹47,600", "Level 7, ₹44,900", "Level 6, ₹35,400", "Level 11, ₹67,700"], a: 0,
-    s: "One step above a Court Assistant.", r: "Pay matrix" },
-  { t: "osr-schedule", q: "Which of these is a gazetted post?",
-    o: ["Junior Court Assistant", "Court Master (Shorthand)", "Court Assistant", "Junior Court Attendant"], a: 1,
-    s: "A Junior Court Assistant is Group B, non-gazetted.", r: "Schedule" },
-  { t: "osr-schedule", q: "Branch Officer is at the same level of the pay matrix as the:",
-    o: ["Junior Court Assistant", "Secretary General", "Court Master", "Senior Court Assistant"], a: 2,
-    s: "Both at Level 11, ₹67,700.", r: "Pay matrix" }
+    s: "Rule 46(2). The Chief Justice may also act against the Registrar for any breach of Part IV.", r: "Rule 46(2)" }
   ]
 };
