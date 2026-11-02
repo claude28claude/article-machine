@@ -2581,6 +2581,12 @@ var EARLY_MAPS = window.EARLY_MAPS || {};
 var EARLY_MAP_ROLL = { id: 'emperors', n: 'The Mughal emperors',
                        notes: '#/early/mughals', notesLabel: 'The emperors in full' };
 
+/* The Delhi Sultanate is not an EARLY topic either: it was written for the
+   3 November study set, so its notes are there. */
+var EARLY_MAP_SULTANATE = { id: 'sultanate', n: 'The Delhi Sultanate',
+                            notes: '#/daily/3-november/sultanate',
+                            notesLabel: 'The notes, in the 3 November set' };
+
 function earlyMap(id) {
   if (!EARLY_MAPS.br) return null;
   return id ? ((EARLY_MAPS.topics || {})[id] || null) : EARLY_MAPS;
@@ -2589,7 +2595,9 @@ function earlyMap(id) {
 /* Every map in the order the subject reads: the roll first, then the topics
    that have one. */
 function earlyMapOrder() {
-  var out = earlyMap(EARLY_MAP_ROLL.id) ? [EARLY_MAP_ROLL] : [];
+  var out = [];
+  if (earlyMap(EARLY_MAP_SULTANATE.id)) out.push(EARLY_MAP_SULTANATE);
+  if (earlyMap(EARLY_MAP_ROLL.id)) out.push(EARLY_MAP_ROLL);
   (EARLY.topics || []).forEach(function (t) {
     if (earlyMap(t.id)) out.push({ id: t.id, n: t.n,
       notes: '#/early/topic/' + encodeURIComponent(t.id),
@@ -4826,7 +4834,11 @@ function dailySetPage(id) {
     pageH1(d.d, d.w);
   if (d.intro) h += '<p class="plain stack">' + prose(d.intro) + '</p>';
   h += '<div class="figs">' + fig(d.parts.length, 'parts') + fig(notes, 'highlighted notes') +
-    fig(d.parts.filter(function (p) { return !p.from; }).length, 'current-affairs parts') + '</div>';
+    /* Not "current affairs": the 3 November set is soil, agriculture and the
+       Delhi Sultanate, none of which changes. What the figure counts is
+       parts WRITTEN on this page, as against parts recapped from a subject
+       page, and that is what it now says. */
+    fig(d.parts.filter(function (p) { return !p.from; }).length, 'written here') + '</div>';
 
   /* Contents. Buttons rather than links: the address is the router's, so an
      in-page anchor would be read as a route. */

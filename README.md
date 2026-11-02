@@ -671,7 +671,7 @@ pack page carries a *Revise it* link to the map that covers it.
 |---|---|---|
 | Constitution | 13 maps + 1 overview | 364 |
 | Modern History | 8 maps + 1 overview | 307 |
-| Ancient and Medieval | 7 maps + 1 overview | 252 |
+| Ancient and Medieval | 8 maps + 1 overview | 315 |
 | Geography | 7 topics + 1 overview | 245 |
 | Indian Economy | 10 maps + 1 overview | 277 |
 | Static GK | 12 maps + 1 overview | 440 |
@@ -726,10 +726,30 @@ read. "Panipat, Khanwa, Chanderi, Ghaghra — 26, 27, 28, 29." "Zat is the man,
 sawar is the horse." "Three Panipats, three different losers." They are
 mnemonics for what is already on the branch, never a new fact.
 
+## The 3 November set
+
+`#/daily/3-november`. Seven parts, **77 highlighted notes and 99 table rows**:
+the soils of India and agriculture as revision sheets for what Geography and
+Economy already hold, and then **the Delhi Sultanate in full** — the five
+dynasties, Alauddin Khalji's reforms, Muhammad bin Tughlaq's five experiments
+and Firoz Shah's building, the administration and the taxes, the architecture,
+the chroniclers and the Sufis.
+
+**The Sultanate was the gap.** Ancient and Medieval History ran from the Jain
+councils to the Mughals with the three hundred and twenty years between 1206
+and 1526 left out — the one stretch of medieval history that an SSC paper is
+certain to ask about. It is written here, and it also has a mind map at
+`#/early/maps/sultanate`, whose "full notes" button points back at this set
+rather than at a topic page, because the set is where the notes live.
+
+Where standard books disagree, the set says so rather than picking: the capital
+moved to Daulatabad in 1327 or 1326, and the token currency was issued in
+1329–30 or 1330–32. The failure, and the reason for it, are not in dispute.
+
 ## Practice
 
 `#/practice`. Ten or twenty questions at a time, drawn at random from every
-mind map on the site — **2,109 lines across eight subjects** — mixed, or from
+mind map on the site — **2,167 lines across eight subjects** — mixed, or from
 one subject. Read the prompt, say the answer, press to see it, and mark
 yourself; what you miss is listed at the end with a link to the map it came
 from, so the next thing to read is already chosen.
@@ -844,7 +864,7 @@ of them so a reader can check what a summary lost.
 | `data-jca-judiciary.js`, `data-jca-scr.js`, `data-jca-osr.js` | The JCA law paper: notes, tables, confused pairs and 651 questions |
 | `data-jca-maps.js` | The 28 JCA mind maps, every line taken from those three files |
 | `data-geo-maps.js` | The 8 Geography mind maps, every line taken from `data-geography.js` |
-| `data-early-maps.js` | The 8 Ancient and Medieval mind maps, from `data-early.js` |
+| `data-early-maps.js` | The 9 Ancient and Medieval mind maps, from `data-early.js` and the 3 November set |
 | `data-hist-maps.js` | The 9 Modern History mind maps, from the five history data files |
 | `data-coi-maps.js` | The 14 Constitution mind maps, from the articles, the notes and the exam layer |
 | `data-econ-maps.js` | The 11 Indian Economy mind maps, from `data-economy.js` |

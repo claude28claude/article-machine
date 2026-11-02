@@ -499,7 +499,14 @@ mark.hi .num,mark.hi .kw{color:var(--ink)}
 .chip{
   font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.1em;
   text-transform:uppercase;padding:3px 8px;border-radius:var(--r-pill);
-  border:1px solid var(--line2);color:var(--dim);white-space:nowrap;
+  border:1px solid var(--line2);color:var(--dim);
+  /* A chip wraps rather than overflowing. Most are two or three words and
+     have nothing to wrap, but the Second Schedule's reference chip reads
+     "Articles 59(3), 65(3), 75(6), 97, 125, 148(3)..." and at 644px it was
+     614px wide, which pushed the whole page 31px sideways. nowrap on
+     author-supplied text is an overflow bug waiting for a long enough
+     string - the same lesson the map keys taught. */
+  white-space:normal;
 }
 .chip.gone{color:var(--hot);border-color:rgba(var(--red-rgb),.45)}
 .chip.case{color:var(--indigo);border-color:rgba(var(--purple-rgb),.45)}
@@ -1397,7 +1404,6 @@ details.idx > summary b{font-weight:400;color:var(--dimmer);letter-spacing:.06em
      Bengal - grew past the width of a phone and pushed the whole page
      sideways. Letting them wrap costs nothing: a chip only reaches the wrap
      point if it was going to overflow anyway. */
-  .chip{white-space:normal}
   .arthead{gap:var(--s3)}
   .hero{padding-top:var(--s7);padding-bottom:var(--s6)}
   .artpage{padding-top:var(--s6)}
