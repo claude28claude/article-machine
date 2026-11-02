@@ -204,6 +204,14 @@ the first visit.
 | Confused pairs | **16** side-by-side comparisons |
 | Quick facts | **52** across 6 sets |
 
+**Mind maps** (`#/maps`). Twelve — the frame, the rights, the principles and
+duties, the Union executive, Parliament, the courts, the States and the Lists,
+the emergencies, amendment, the Schedules, the cases and the Constituent
+Assembly — and one of the whole subject, 332 lines in all. An article number
+on a map opens that article. Every Part page, every article page and every
+section page carries a *Revise it* link to the map that covers it. See *The
+mind maps*.
+
 ## The article map
 
 The article pages run in numerical order, which is the right shape for reading
@@ -342,6 +350,10 @@ own end-of-plan reviews and move by a few tenths between sources depending on
 the GDP base year — the first decimal is safe, the last is not. Current figures
 (reserves, tax slabs) each carry the date they are true as of, so a stale
 number reads as stale rather than as wrong.
+
+**Mind maps** (`#/economy/maps`). Seven — the plans, the planning bodies, the
+RBI and the rates, the Budget and GST, 1991, poverty and the schemes, and the
+dates — and one of the whole subject, 199 lines in all. See *The mind maps*.
 
 ## Static General Knowledge
 
@@ -637,17 +649,27 @@ hundred lines of `app.js`.
 
 ## The mind maps
 
-Four subjects carry mind maps now: the JCA law paper (above), **Geography** at
-`#/geography/maps`, **Ancient and Medieval History** at `#/early/maps` and
-**Modern History** at `#/history/maps`. Each subject has one map per topic and
-one map of the whole subject whose branches open the others.
+Six subjects carry mind maps now: the **Constitution** at `#/maps`, **Modern
+History** at `#/history/maps`, the **Indian Economy** at `#/economy/maps`,
+**Ancient and Medieval History** at `#/early/maps`, **Geography** at
+`#/geography/maps`, and the JCA law paper (above). Each has one map per topic
+and one map of the whole subject whose branches open the others.
 
 | | Maps | Lines |
 |---|---|---|
-| JCA | 28 | 624 |
-| Geography | 7 topics + 1 overview | 245 |
-| Ancient and Medieval | 7 maps + 1 overview | 252 |
+| Constitution | 12 maps + 1 overview | 332 |
 | Modern History | 8 maps + 1 overview | 307 |
+| Ancient and Medieval | 7 maps + 1 overview | 252 |
+| Geography | 7 topics + 1 overview | 245 |
+| Indian Economy | 7 maps + 1 overview | 199 |
+| JCA | 28 | 624 |
+
+**On the Constitution's maps an article number is a link.** That is the `arts`
+argument to `mmHtml`, which only the Constitution and the JCA Constitution
+maps pass: on the rule books "Rule 6" must not become a link to Article 6, and
+in Geography neither must a pass or a peak. It also means a key there is
+written as the bare number — "124", not "Article 124" — and that "42nd" or "26
+November" stays plain text, because neither is an article.
 
 **Modern History is the one that does not line up with its own pages.** The
 other subjects are a list of topics with a page each, so a map and a topic are
@@ -777,6 +799,8 @@ of them so a reader can check what a summary lost.
 | `data-geo-maps.js` | The 8 Geography mind maps, every line taken from `data-geography.js` |
 | `data-early-maps.js` | The 8 Ancient and Medieval mind maps, from `data-early.js` |
 | `data-hist-maps.js` | The 9 Modern History mind maps, from the five history data files |
+| `data-coi-maps.js` | The 13 Constitution mind maps, from the articles, the notes and the exam layer |
+| `data-econ-maps.js` | The 8 Indian Economy mind maps, from `data-economy.js` |
 | `data-daily.js` | The dated daily study sets: current affairs, and recaps of what was added |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline. A data file whose new fields app.js now reads carries a `?v=` query in `index.html` and in `ASSETS`; bump it on such a deploy, or the first visit afterwards pairs new code with old cached data |

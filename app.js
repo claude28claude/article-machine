@@ -76,6 +76,7 @@ var SUBJECTS = [{
   isDefault: true,
   tabs: [
     { href: '#/constitution', label: 'Articles',  match: ['', 'constitution', 'part', 'a'] },
+    { href: '#/maps',        label: 'Mind maps',  match: ['maps'] },
     { href: '#/assembly',    label: 'The Assembly', match: ['assembly'] },
     { href: '#/high-yield',  label: 'High-yield', match: ['high-yield'] },
     { href: '#/amendments',  label: 'Amendments', match: ['amendments', 'amendment'] },
@@ -125,6 +126,10 @@ var SUBJECTS = [{
         n: 'the Objectives Resolution and the fights',
         w: 'Language, secular and socialist, federal or unitary, and the criticisms of the Assembly itself.',
         k: 'objectives resolution official language munshi ayyangar formula secular socialist uniform civil code criticism grammar of anarchy' },
+      { t: 'Constitution - the mind maps', href: '#/maps',
+        n: coiMapOrder().length + ' maps',
+        w: 'The frame, the rights, the principles, the Union, Parliament, the courts, the States, the emergencies, amendment, the Schedules, the cases and the Assembly, each reduced to keywords with a cover-and-recall drill.',
+        k: 'mind map revision recall keywords branches preamble writs emergency schedules basic structure' },
       { t: 'The article map', href: '#/high-yield/map',
         n: amapCount('groups') + ' indexed entries',
         w: 'The Constitution indexed by subject instead of by number, with every article number a link.',
@@ -3025,6 +3030,7 @@ function econRoute(seg) {
   switch (seg[0] || '') {
     case '':           return render(econHome());
     case 'plan':       return render(econPlanPage(seg[1]));
+    case 'maps':       return econMaps(seg.slice(1));
     case 'reforms':    return render(econReform());
     case 'topics':     return render(econTopics());
     case 'topic':      return render(econTopicPage(seg[1]));
@@ -3040,6 +3046,7 @@ SUBJECTS.push({
   blurb: 'The Five Year Plans one by one, the 1991 reforms in full, and the standing topics — banking, the Budget, GST, poverty and agriculture.',
   tabs: [
     { href: '#/economy',            label: 'Five Year Plans', match: ['', 'plan'] },
+    { href: '#/economy/maps',       label: 'Mind maps',      match: ['maps'] },
     { href: '#/economy/reforms',    label: '1991 reforms',    match: ['reforms'] },
     { href: '#/economy/topics',     label: 'Topics',          match: ['topics', 'topic'] },
     { href: '#/economy/high-yield', label: 'High-yield',      match: ['high-yield'] }
@@ -3051,6 +3058,10 @@ SUBJECTS.push({
   },
   topics: function () {
     var out = [
+      { t: 'Economy - the mind maps', href: '#/economy/maps',
+        n: econMapOrder().length + ' maps',
+        w: 'The plans, the planning bodies, the RBI and the rates, the Budget and GST, 1991, poverty and the schemes, and the dates — each reduced to keywords with a cover-and-recall drill.',
+        k: 'mind map revision recall keywords branches plans niti aayog repo crr slr gst 1991 mgnrega' },
       { t: 'The Five Year Plans', href: '#/economy',
         n: (ECON.plans || []).length + ' plans and gaps',
         w: 'Every plan from 1951 to 2017 — its model, its target, what it achieved and what happened in it — with SSC notes, a one-line-each table, and which scheme fell in which plan.',
@@ -5623,7 +5634,7 @@ function mmLinks() {
 
 var mmTimer = null;
 window.addEventListener('resize', function () {
-  clearTimeout(jcaMapTimer);
+  clearTimeout(mmTimer);
   mmTimer = setTimeout(mmLinks, 120);
 });
 
@@ -7353,6 +7364,53 @@ function namesIn(hay, person) {
 
 /* ---------------------------------------------------- the Constitution */
 
+/* Which map revises what you are reading. A Part first, then the section:
+   Part III is the rights map, the Schedules page is the schedules map. Written
+   out because nothing in the addresses would say so. */
+var COI_MAP_FOR_PART = {
+  'III': 'rights', 'IV': 'dpsp', 'IVA': 'dpsp', 'V': 'union', 'VI': 'states',
+  'IX': 'states', 'IXA': 'states', 'XI': 'states', 'XII': 'states',
+  'XVIII': 'emergency', 'XX': 'amendments'
+};
+var COI_MAP_FOR_SEC = {
+  'amendments': 'amendments', 'amendment': 'amendments',
+  'schedules': 'schedules', 'schedule': 'schedules',
+  'cases': 'cases', 'case': 'cases',
+  'assembly': 'assembly', 'high-yield': 'frame'
+};
+
+function coiReviseCard(seg) {
+  var k = seg[0] || '', id = COI_MAP_FOR_SEC[k];
+  if (k === 'a' && byArt[seg[1]]) id = COI_MAP_FOR_PART[partOf[byArt[seg[1]].a].num];
+  else if (k === 'part') id = COI_MAP_FOR_PART[seg[1]];
+  if (!id || !coiMap(id)) return '';
+  var nm = null;
+  coiMapOrder().forEach(function (x) { if (x.id === id) nm = x.n; });
+  return sLinks('Revise it', [
+    { href: '#/maps/' + id, t: nm || 'The mind map',
+      d: mmFacts(coiMap(id)) + ' lines, with a cover-and-recall drill' }
+  ], null, 1);
+}
+
+function sideCoiMaps(seg) {
+  var here = seg[0] || '', cur = null;
+  coiMapOrder().forEach(function (x) { if (x.id === here) cur = x; });
+  var every = [{ href: '#/maps/all', t: 'The whole Constitution',
+                 d: 'All twelve on one map', on: here === 'all' }]
+    .concat(coiMapOrder().map(function (x) {
+      return { href: '#/maps/' + encodeURIComponent(x.id), t: x.n,
+               d: mmFacts(coiMap(x.id)) + ' lines', on: x.id === here };
+    }));
+  return [
+    cur ? sFacts('This map', [
+      ['Branches', String(coiMap(cur.id).br.length)],
+      ['Lines', String(mmFacts(coiMap(cur.id)))],
+      ['The notes behind it', cur.label, cur.notes]
+    ], 'An article number on the map opens that article.') : '',
+    sLinks('Every map', every, null, 14)
+  ];
+}
+
 function sideArticle(n) {
   var a = byArt[n];
   if (!a) return [];
@@ -7756,6 +7814,46 @@ function samePlace(a, b) { return bareplace(a).toLowerCase() === bareplace(b).to
 
 function sideEcon(seg) {
   var k = seg[0] || '';
+
+  if (k === 'maps') {
+    var here = seg[1] || '', cur = null;
+    econMapOrder().forEach(function (x) { if (x.id === here) cur = x; });
+    var every = [{ href: '#/economy/maps/all', t: 'The whole subject',
+                   d: 'All seven on one map', on: here === 'all' }]
+      .concat(econMapOrder().map(function (x) {
+        return { href: '#/economy/maps/' + encodeURIComponent(x.id), t: x.n,
+                 d: mmFacts(econMap(x.id)) + ' lines', on: x.id === here };
+      }));
+    return [
+      cur ? sFacts('This map', [
+        ['Branches', String(econMap(cur.id).br.length)],
+        ['Lines', String(mmFacts(econMap(cur.id)))],
+        ['The notes behind it', cur.label, cur.notes]
+      ], 'Every line on the map comes from those notes.') : '',
+      sLinks('Every map', every, null, 12)
+    ];
+  }
+
+  /* And from a plan, a topic or the 1991 page, the way on to its map. */
+  var ECON_MAP_FOR = { '': 'plans', 'plan': 'plans', 'reforms': 'reform',
+                       'high-yield': 'dates' };
+  var ECON_MAP_FOR_TOPIC = { 'institutions': 'institutions', 'banking': 'banking',
+                             'budget': 'budget', 'poverty': 'poverty' };
+  var revId = k === 'topic' ? ECON_MAP_FOR_TOPIC[seg[1]] : ECON_MAP_FOR[k];
+  var revise = '';
+  if (revId && econMap(revId)) {
+    var nm = null;
+    econMapOrder().forEach(function (x) { if (x.id === revId) nm = x.n; });
+    revise = sLinks('Revise it', [
+      { href: '#/economy/maps/' + revId, t: nm || 'The mind map',
+        d: mmFacts(econMap(revId)) + ' lines, with a cover-and-recall drill' }
+    ], null, 1);
+  }
+  return revise ? [revise].concat(sideEconCards(seg)) : sideEconCards(seg);
+}
+
+function sideEconCards(seg) {
+  var k = seg[0] || '';
   if (k === 'plan') {
     var p = econPlanById[seg[1]];
     if (!p) return [];
@@ -8122,7 +8220,8 @@ function sideSkip(seg) {
 
 function sideFor(seg) {
   var k = seg[0] || '', out = [];
-  if (k === 'a') out = sideArticle(seg[1]).concat(jcaArticleCards(seg[1]));
+  if (k === 'maps') out = sideCoiMaps(seg.slice(1));
+  else if (k === 'a') out = sideArticle(seg[1]).concat(jcaArticleCards(seg[1]));
   else if (k === 'part') out = sidePart(seg[1]);
   else if (k === 'amendment') out = sideAmendment(seg[1]);
   else if (k === 'schedule') out = sideSchedule(seg[1]);
@@ -8137,6 +8236,12 @@ function sideFor(seg) {
   else if (k === 'geography') out = sideGeo(seg.slice(1));
   else if (k === 'daily') out = sideDaily(seg.slice(1));
   else if (k === 'jca') out = sideJca(seg.slice(1));
+
+  /* The Constitution's own pages get a way on to the map that revises them. */
+  if (k !== 'maps') {
+    var rev = coiReviseCard(seg);
+    if (rev) out = [rev].concat(out);
+  }
 
   /* An article belongs to its Part, which IS one of the Constitution's
      topics, so say so rather than leaving it to be guessed. */
@@ -8203,6 +8308,240 @@ function layoutSide(seg) {
   if (flow.querySelector('#mmap')) aside.classList.add('below');
 }
 
+/* ----------------------------------- the Constitution's mind maps
+
+   The same machinery as the other subjects' maps, with one difference: here a
+   key that is an article number is a LINK to that article, because these are
+   the Constitution's own maps and "124" on them means article 124. That is
+   what the `arts` argument to mmHtml turns on, and it is why a key in
+   data-coi-maps.js is written as the bare number. */
+
+var COI_MAPS = window.COI_MAPS || {};
+
+var COI_MAP_ORDER = [
+  { id: 'frame',      n: 'The frame',                notes: '#/high-yield/map',
+    label: 'The article map in full' },
+  { id: 'rights',     n: 'Fundamental Rights',       notes: '#/part/III',
+    label: 'Part III, article by article' },
+  { id: 'dpsp',       n: 'Principles and Duties',    notes: '#/part/IV',
+    label: 'Part IV, article by article' },
+  { id: 'union',      n: 'The Union executive',      notes: '#/part/V',
+    label: 'Part V, article by article' },
+  { id: 'parliament', n: 'Parliament',               notes: '#/high-yield/map',
+    label: 'The article map in full' },
+  { id: 'judiciary',  n: 'The courts',               notes: '#/high-yield/courts',
+    label: 'The courts, article by article' },
+  { id: 'states',     n: 'The States and the Lists', notes: '#/part/VI',
+    label: 'Part VI, article by article' },
+  { id: 'emergency',  n: 'The emergencies',          notes: '#/part/XVIII',
+    label: 'Part XVIII, article by article' },
+  { id: 'amendments', n: 'Amendment',                notes: '#/amendments',
+    label: 'All 106 amendments' },
+  { id: 'schedules',  n: 'The twelve Schedules',     notes: '#/schedules',
+    label: 'The Schedules in full' },
+  { id: 'cases',      n: 'The landmark cases',       notes: '#/cases',
+    label: 'Every judgment on this site' },
+  { id: 'assembly',   n: 'The Constituent Assembly', notes: '#/assembly',
+    label: 'The Assembly in full' }
+];
+
+function coiMap(id) {
+  if (!COI_MAPS.br) return null;
+  return id ? ((COI_MAPS.topics || {})[id] || null) : COI_MAPS;
+}
+
+function coiMapOrder() {
+  return COI_MAP_ORDER.filter(function (x) { return coiMap(x.id); });
+}
+
+function coiMapCrumb(here) {
+  return '<div class="crumb"><a href="#/constitution">Constitution</a> → ' +
+    (here ? '<a href="#/maps">Mind maps</a> → ' + esc(here) : 'Mind maps') + '</div>';
+}
+
+function coiMapsHub() {
+  var order = coiMapOrder(), lines = 0;
+  order.forEach(function (x) { lines += mmFacts(coiMap(x.id)); });
+
+  var h = coiMapCrumb('') +
+    pageH1('Mind maps', 'The Constitution reduced to keywords: ' + order.length + ' maps and ' +
+      lines + ' lines between them, plus one map of the whole subject. Nothing here is new — ' +
+      'each line is a fact from the articles, the tables or the notes, cut to the words the ' +
+      'question turns on. An article number on a map opens that article.');
+
+  h += '<div class="block"><h3>How to learn from a map</h3><ol class="mmhow">' +
+    '<li><b>Read it once, out loud,</b> branch by branch. A hook is a line to say, not to read.</li>' +
+    '<li><b>Press Cover the details.</b> The branch names and the article numbers stay; every ' +
+      'answer becomes a blank. Say each one, then tap it to check.</li>' +
+    '<li><b>Come back tomorrow, and again in three days.</b> The map you still cannot fill ' +
+      'is the Part to go back to.</li>' +
+  '</ol></div>';
+
+  h += '<div class="block"><h3>The maps</h3><div class="grid">' +
+    '<a class="pcard" href="#/maps/all"><div class="pn">The whole Constitution</div>' +
+      '<div class="pt">All twelve on one map, with the lines most worth knowing</div>' +
+      '<div class="pr">' + COI_MAPS.br.length + ' branches · ' + mmFacts(COI_MAPS) + ' lines</div></a>' +
+    order.map(function (x) {
+      var m = coiMap(x.id);
+      return '<a class="pcard" href="#/maps/' + encodeURIComponent(x.id) + '">' +
+        '<div class="pn">' + esc(x.n) + '</div>' +
+        '<div class="pt">' + esc(m.br.map(function (b) { return unmark(b.h); }).join(' · ')) + '</div>' +
+        '<div class="pr">' + m.br.length + ' branches · ' + mmFacts(m) + ' lines</div></a>';
+    }).join('') + '</div></div>';
+
+  render(coiShell(h));
+}
+
+function coiShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function coiMapPage(id) {
+  var whole = id === 'all';
+  var m = coiMap(whole ? null : id);
+  if (!m) return notFound('There is no mind map for that part of the Constitution.');
+
+  var order = coiMapOrder(), i = -1;
+  order.forEach(function (x, k) { if (x.id === id) i = k; });
+  var cur = order[i], prev = order[i - 1], next = order[i + 1];
+
+  var h = coiMapCrumb(whole ? 'The whole Constitution' : (cur ? cur.n : '')) +
+    pageH1(whole ? 'The Constitution on one map' : cur.n,
+      (whole ? 'The whole subject as keywords. Each branch opens that map. '
+             : 'Mind map. ') +
+      m.br.length + ' branches · ' + mmFacts(m) + ' lines. An article number opens that article.') +
+    mmHtml(m, '#/maps', true);
+
+  if (whole) {
+    h += '<div class="stack"><a class="pill big" href="#/maps">Every map</a> ' +
+      '<a class="pill big" href="#/constitution">The articles in full</a></div>';
+  } else {
+    h += '<div class="stack"><a class="pill big" href="' + cur.notes + '">' +
+      esc(cur.label) + '</a> ' +
+      '<a class="pill big" href="#/maps/all">The whole Constitution on one map</a></div>' +
+      '<div class="nextprev">' +
+      (prev ? '<a href="#/maps/' + encodeURIComponent(prev.id) + '">' +
+        '<span class="d">Previous map</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+      (next ? '<a class="r" href="#/maps/' + encodeURIComponent(next.id) + '">' +
+        '<span class="d">Next map</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+      '</div>';
+  }
+
+  render(coiShell(h));
+  mmWire();
+}
+
+function coiMaps(seg) {
+  if (!seg[0]) return coiMapsHub();
+  coiMapPage(seg[0]);
+}
+
+/* ------------------------------------------- the Economy's mind maps */
+
+var ECON_MAPS = window.ECON_MAPS || {};
+
+var ECON_MAP_ORDER = [
+  { id: 'plans',        n: 'The Five Year Plans',  notes: '#/economy',
+    label: 'Every plan, in order' },
+  { id: 'institutions', n: 'Planning bodies',      notes: '#/economy/topic/institutions',
+    label: 'The full notes' },
+  { id: 'banking',      n: 'The RBI and the banks', notes: '#/economy/topic/banking',
+    label: 'The full notes' },
+  { id: 'budget',       n: 'The Budget and GST',   notes: '#/economy/topic/budget',
+    label: 'The full notes' },
+  { id: 'reform',       n: '1991',                 notes: '#/economy/reforms',
+    label: 'The reforms in full' },
+  { id: 'poverty',      n: 'Poverty and the schemes', notes: '#/economy/topic/poverty',
+    label: 'The full notes' },
+  { id: 'dates',        n: 'The dates',            notes: '#/economy/high-yield/facts',
+    label: 'The quick-fact tables' }
+];
+
+function econMap(id) {
+  if (!ECON_MAPS.br) return null;
+  return id ? ((ECON_MAPS.topics || {})[id] || null) : ECON_MAPS;
+}
+
+function econMapOrder() {
+  return ECON_MAP_ORDER.filter(function (x) { return econMap(x.id); });
+}
+
+function econMapCrumb(here) {
+  return '<div class="crumb"><a href="#/economy">Economy</a> → ' +
+    (here ? '<a href="#/economy/maps">Mind maps</a> → ' + esc(here) : 'Mind maps') + '</div>';
+}
+
+function econMapsHub() {
+  var order = econMapOrder(), lines = 0;
+  order.forEach(function (x) { lines += mmFacts(econMap(x.id)); });
+
+  var h = econMapCrumb('') +
+    pageH1('Mind maps', 'The subject reduced to keywords: ' + order.length + ' maps and ' +
+      lines + ' lines between them, plus one map of the whole subject. Nothing here is new — ' +
+      'each line is a fact from the plans, the tables or the notes, cut to the words the ' +
+      'question turns on.');
+
+  h += '<div class="block"><h3>How to learn from a map</h3><ol class="mmhow">' +
+    '<li><b>Read it once, out loud,</b> branch by branch. A hook is a line to say, not to read.</li>' +
+    '<li><b>Press Cover the details.</b> The branch names and the prompts stay; every answer ' +
+      'becomes a blank. Say each one, then tap it to check.</li>' +
+    '<li><b>Come back tomorrow, and again in three days.</b> The map you still cannot fill ' +
+      'is the topic to go back to.</li>' +
+  '</ol></div>';
+
+  h += '<div class="block"><h3>The maps</h3><div class="grid">' +
+    '<a class="pcard" href="#/economy/maps/all"><div class="pn">The whole subject</div>' +
+      '<div class="pt">All seven on one map, with the lines most worth knowing</div>' +
+      '<div class="pr">' + ECON_MAPS.br.length + ' branches · ' + mmFacts(ECON_MAPS) + ' lines</div></a>' +
+    order.map(function (x) {
+      var m = econMap(x.id);
+      return '<a class="pcard" href="#/economy/maps/' + encodeURIComponent(x.id) + '">' +
+        '<div class="pn">' + esc(x.n) + '</div>' +
+        '<div class="pt">' + esc(m.br.map(function (b) { return unmark(b.h); }).join(' · ')) + '</div>' +
+        '<div class="pr">' + m.br.length + ' branches · ' + mmFacts(m) + ' lines</div></a>';
+    }).join('') + '</div></div>';
+
+  render(econShell(h));
+}
+
+function econMapPage(id) {
+  var whole = id === 'all';
+  var m = econMap(whole ? null : id);
+  if (!m) return notFound('There is no mind map for that Economy topic.');
+
+  var order = econMapOrder(), i = -1;
+  order.forEach(function (x, k) { if (x.id === id) i = k; });
+  var cur = order[i], prev = order[i - 1], next = order[i + 1];
+
+  var h = econMapCrumb(whole ? 'The whole subject' : (cur ? cur.n : '')) +
+    pageH1(whole ? 'The Economy on one map' : cur.n,
+      (whole ? 'The whole subject as keywords. Each branch opens that topic\'s own map. '
+             : 'Mind map. ') +
+      m.br.length + ' branches · ' + mmFacts(m) + ' lines, every one of them from the notes.') +
+    mmHtml(m, '#/economy/maps', false);
+
+  if (whole) {
+    h += '<div class="stack"><a class="pill big" href="#/economy/maps">Every map</a> ' +
+      '<a class="pill big" href="#/economy">The plans in full</a></div>';
+  } else {
+    h += '<div class="stack"><a class="pill big" href="' + cur.notes + '">' +
+      esc(cur.label) + '</a> ' +
+      '<a class="pill big" href="#/economy/maps/all">The whole subject on one map</a></div>' +
+      '<div class="nextprev">' +
+      (prev ? '<a href="#/economy/maps/' + encodeURIComponent(prev.id) + '">' +
+        '<span class="d">Previous map</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+      (next ? '<a class="r" href="#/economy/maps/' + encodeURIComponent(next.id) + '">' +
+        '<span class="d">Next map</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+      '</div>';
+  }
+
+  render(econShell(h));
+  mmWire();
+}
+
+function econMaps(seg) {
+  if (!seg[0]) return econMapsHub();
+  econMapPage(seg[0]);
+}
+
 /* ------------------------------------------------------------------ router */
 
 /* Every page here is the same document, so the browser's scroll restoration
@@ -8251,6 +8590,7 @@ function route() {
     case 'assembly':   return assemblyPage(seg[1] || '');
     case 'part':       return partPage(seg[1]);
     case 'a':          return articlePage(seg[1]);
+    case 'maps':       return coiMaps(seg.slice(1));
     case 'high-yield': return highYieldPage(seg[1] || '');
     case 'amendments': return amendmentsPage();
     case 'amendment':  return amendmentPage(seg[1]);
