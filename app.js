@@ -4808,7 +4808,8 @@ SUBJECTS.push({
    that already live on the subject pages rather than copied out of them.
 
    Each set is also a section of its own in the strip at the top of the
-   page, so "10 October" is one tap from anywhere in the subject.
+   page, so "3 November" is one tap from anywhere in the subject, and the
+   question sets written from those notes sit beside them.
    ========================================================================= */
 
 var DAILY = window.DAILY || {};
@@ -4842,11 +4843,23 @@ function dailyHome() {
   h += '<div class="block"><h3>The sets, newest first</h3>' +
     DAILY_SETS.map(function (d) {
       var n = d.parts.reduce(function (a, p) { return a + dailyNotes(p).length; }, 0);
+      var qn = (d.quiz || []).length;
       return '<a class="arow hy" href="#/daily/' + encodeURIComponent(d.id) + '">' +
         '<span class="no range">' + esc(d.d) + '</span>' +
         '<span class="tx"><b>' + esc(d.d + ' ' + d.y) + '</b><i>' + esc(d.w) + '</i></span>' +
-        '<span class="tag"><span class="chip live">' + n + ' notes</span></span></a>';
+        '<span class="tag"><span class="chip live">' + n + ' notes</span>' +
+        (qn ? '<span class="chip">' + qn + ' questions</span>' : '') + '</span></a>';
     }).join('') + '</div>';
+
+  var all = dailyQuizCount('all');
+  if (all) {
+    h += '<div class="block"><h3>The questions</h3>' +
+      '<p class="plain">' + all + ' questions across every set, written from the notes ' +
+      'themselves: four options, one right, and the answer the moment you pick. Ten or ' +
+      'twenty at a time, or the whole paper, drawn in a different order each time and ' +
+      'mixed across every topic.</p>' +
+      dailyQuizModes('all', null) + '</div>';
+  }
   return dailyShell(h);
 }
 
@@ -4900,6 +4913,14 @@ function dailySetPage(id) {
 
   h += d.parts.map(dailyPart).join('');
 
+  if ((d.quiz || []).length) {
+    h += '<div class="block"><h3>Test yourself on this set</h3>' +
+      '<p class="plain">' + d.quiz.length + ' questions written from the notes above, ' +
+      'four options each, mixed across every part of the set. The answer comes the moment ' +
+      'you pick, with a link back to the part it came from.</p>' +
+      dailyQuizModes(d.id, null) + '</div>';
+  }
+
   var newer = DAILY_SETS[i - 1], older = DAILY_SETS[i + 1];
   h += '<div class="nextprev">' +
     (older ? '<a href="#/daily/' + encodeURIComponent(older.id) + '">' +
@@ -4910,7 +4931,223 @@ function dailySetPage(id) {
   return dailyShell(h);
 }
 
-/* #/daily/10-october/booker opens the set at that part. render() has just
+/* ------------------------------------------------ the question sets
+
+   Each set carries a `quiz`: questions written FROM that set's own notes,
+   four options each, with the part they came from named in `p` so that a
+   wrong answer links back to the page that explains it.
+
+   This is not the Practice section. There the question is a map leaf, the
+   prompt and the answer were written as a pair, and inventing three wrong
+   options would be inventing content. Here the questions were written as
+   questions and every distractor is a real alternative - the other soil,
+   the other Sultan, the figure from the previous census. */
+
+var dailyQuiz = null;
+
+/* Every question in one set, or in all of them for the mixed paper. Each
+   entry remembers which set it came from, which the mixed paper needs and
+   a single-set paper gets for free. */
+function dailyQuizPool(setId) {
+  var out = [];
+  DAILY_SETS.forEach(function (d) {
+    if (setId && setId !== 'all' && d.id !== setId) return;
+    (d.quiz || []).forEach(function (it, i) { out.push({ d: d, it: it, i: i }); });
+  });
+  return out;
+}
+
+function dailyQuizCount(setId) { return dailyQuizPool(setId).length; }
+
+function dailyShuffle(a) {
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1)), t = a[i];
+    a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+/* The part a question came from, as a link. */
+function dailyQuizWhere(e) {
+  var p = null;
+  (e.d.parts || []).forEach(function (x) { if (x.id === e.it.p) p = x; });
+  if (!p) return '';
+  return '<a class="qfrom" href="#/daily/' + encodeURIComponent(e.d.id) + '/' +
+    encodeURIComponent(p.id) + '">' + esc(e.d.d + ' \u00b7 ' + p.h) + ' \u2192</a>';
+}
+
+function dailyQuizTitle(setId) {
+  if (!setId || setId === 'all') return 'Questions \u2014 every set, mixed';
+  var d = dailyById[setId];
+  return (d ? d.d : '') + ' \u2014 questions';
+}
+
+/* n is 10, 20, or 'all'. */
+function dailyQuizPage(setId, n) {
+  var pool = dailyQuizPool(setId);
+  var mixed = !setId || setId === 'all';
+  var d = mixed ? null : dailyById[setId];
+
+  if (!mixed && !d) return render(dailyShell(
+    '<div class="crumb"><a href="#/daily">Daily sets</a></div>' +
+    '<div class="empty"><b>No set for that date</b>The sets that exist are listed on ' +
+    '<a href="#/daily">the Daily sets page</a>.</div>'));
+
+  if (!pool.length) return render(dailyShell(
+    '<div class="crumb"><a href="#/daily">Daily sets</a></div>' +
+    '<div class="empty"><b>No questions for that set yet</b>' +
+    'The notes are all there; the questions are not written.</div>'));
+
+  var want = (n === 'all') ? pool.length : Math.min(parseInt(n, 10) || 10, pool.length);
+  var order = dailyShuffle(pool.slice()).slice(0, want);
+
+  dailyQuiz = { setId: mixed ? 'all' : setId, n: n, order: order,
+                i: 0, right: 0, wrong: [], answered: false };
+
+  var crumb = '<div class="crumb"><a href="#/daily">Daily sets</a> \u2192 ' +
+    (mixed ? 'Questions' : '<a href="#/daily/' + encodeURIComponent(d.id) + '">' +
+      esc(d.d) + '</a> \u2192 Questions') + '</div>';
+
+  render(dailyShell(crumb +
+    pageH1(dailyQuizTitle(setId),
+      want + ' of ' + pool.length + ' questions, in a different order each time, ' +
+      'and mixed across every topic in the set. Four options, one right, and the answer ' +
+      'the moment you pick \u2014 with a link back to the notes it came from.') +
+    dailyQuizModes(mixed ? 'all' : setId, n) +
+    '<div id="dquiz"></div>'));
+  dailyDrawQuiz();
+}
+
+/* The 10 / 20 / all strip, and the way back to the notes. */
+function dailyQuizModes(setId, now) {
+  var total = dailyQuizCount(setId);
+  var sizes = [10, 20].filter(function (x) { return x < total; });
+  sizes.push('all');
+  return '<div class="stack pracsubs">' + sizes.map(function (x) {
+    var on = String(x) === String(now);
+    return '<a class="pill' + (on ? '' : ' ghost') + '" href="#/daily/' +
+      encodeURIComponent(setId) + '/quiz/' + x + '">' +
+      (x === 'all' ? 'All ' + total : String(x)) + '</a>';
+  }).join(' ') + ' ' +
+  (setId === 'all'
+    ? '<a class="pill ghost" href="#/daily">The sets</a>'
+    : '<a class="pill ghost" href="#/daily/' + encodeURIComponent(setId) + '">The notes</a>') +
+  '</div>';
+}
+
+function dailyDrawQuiz() {
+  var box = document.getElementById('dquiz');
+  if (!box || !dailyQuiz) return;
+  var q = dailyQuiz;
+
+  if (q.i >= q.order.length) {
+    var pct = Math.round(100 * q.right / q.order.length);
+    box.innerHTML = '<div class="mdone"><b>' + q.right + ' right out of ' + q.order.length +
+      '</b><span>' + pct + ' per cent. ' +
+      (q.wrong.length
+        ? 'The ' + q.wrong.length + ' you missed are below, each with a link to the notes.'
+        : 'Nothing missed. Try the other set, or the mixed paper.') + '</span>' +
+      '<div class="stack"><button class="pill big" type="button" data-act="again">Run it again</button> ' +
+      '<a class="pill big" href="#/daily/' + encodeURIComponent(q.setId) + '/quiz/all">' +
+        'Every question</a> ' +
+      '<a class="pill big" href="#/daily">Back to the sets</a></div></div>' +
+      (q.wrong.length ? '<div class="block"><h3>What you missed</h3>' +
+        q.wrong.map(dailyWrongCard).join('') + '</div>' : '');
+    dailyWireQuiz();
+    return;
+  }
+
+  var e = q.order[q.i], it = e.it;
+  var pc = Math.round(100 * q.i / q.order.length);
+
+  box.innerHTML =
+    '<div class="mprog"><span style="width:' + pc + '%"></span></div>' +
+    '<div class="mcount">Question ' + (q.i + 1) + ' of ' + q.order.length +
+      ' \u00b7 ' + q.right + ' right so far</div>' +
+    '<div class="mq"><div class="mqq">' + esc(it.q) + '</div>' +
+    '<div class="mqo" id="dqo">' + it.o.map(function (o, oi) {
+      return '<button type="button" class="mopt" data-pick="' + oi + '">' +
+        '<span class="ml">' + 'ABCD'.charAt(oi) + '</span><span class="mt">' + esc(o) + '</span></button>';
+    }).join('') + '</div>' +
+    '<div id="dqs"></div></div>';
+
+  dailyWireQuiz();
+}
+
+function dailyWrongCard(e) {
+  var it = e.it;
+  /* The answer on its own line, then the explanation - the maths review
+     card's shape. Running the two together made the answer read twice,
+     because a solution usually opens by restating it. */
+  return '<div class="mwrong"><div class="mqq">' + esc(it.q) + '</div>' +
+    '<div class="mans">' + 'ABCD'.charAt(it.a) + ' · ' + esc(it.o[it.a]) + '</div>' +
+    '<div class="mqsol">' + esc(it.s) + '</div>' +
+    dailyQuizWhere(e) + '</div>';
+}
+
+function dailyWireQuiz() {
+  var box = document.getElementById('dquiz');
+  if (!box || box.getAttribute('data-wired')) return;
+  box.setAttribute('data-wired', '1');
+  box.addEventListener('click', function (ev) {
+    var q = dailyQuiz;
+    if (!q) return;
+
+    var act = ev.target.closest('[data-act]');
+    if (act) {
+      if (act.getAttribute('data-act') === 'next') {
+        q.i++; q.answered = false; dailyDrawQuiz(); jcaScrollTo(box); return;
+      }
+      if (act.getAttribute('data-act') === 'again') {
+        dailyQuizPage(q.setId, q.n); return;
+      }
+      return;
+    }
+
+    var opt = ev.target.closest('.mopt');
+    if (!opt || q.answered) return;
+    q.answered = true;
+
+    var e = q.order[q.i], it = e.it;
+    var pick = parseInt(opt.getAttribute('data-pick'), 10);
+    var ok = pick === it.a;
+
+    var bs = box.querySelectorAll('.mopt');
+    for (var j = 0; j < bs.length; j++) {
+      var bi = parseInt(bs[j].getAttribute('data-pick'), 10);
+      bs[j].disabled = true;
+      bs[j].className = (bi === it.a) ? 'mopt right' : (bi === pick ? 'mopt wrong' : 'mopt dim');
+    }
+
+    if (ok) q.right++; else q.wrong.push(e);
+
+    var sol = document.getElementById('dqs');
+    if (sol) sol.innerHTML =
+      '<div class="mqsol' + (ok ? ' ok' : '') + '">' +
+      '<b>' + (ok ? 'Right.' : 'Not that one \u2014 the answer is ' + 'ABCD'.charAt(it.a) +
+        ', ' + esc(it.o[it.a]) + '.') + '</b> ' + esc(it.s) + '</div>' +
+      dailyQuizWhere(e) +
+      '<div class="stack"><button class="pill big" type="button" data-act="next">' +
+      (q.i + 1 >= q.order.length ? 'See the score' : 'Next question') + '</button></div>';
+    var nb = box.querySelector('[data-act="next"]');
+    if (nb) nb.focus({ preventScroll: true });
+  });
+}
+
+/* A to D, or 1 to 4, answer the question on screen - the same keys as the
+   Advanced Maths practice and the JCA paper. */
+document.addEventListener('keydown', function (e) {
+  if (!dailyQuiz || dailyQuiz.answered || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (!document.getElementById('dquiz')) return;
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+  var k = e.key.toLowerCase(), oi = 'abcd'.indexOf(k);
+  if (oi < 0 && /^[1-4]$/.test(k)) oi = parseInt(k, 10) - 1;
+  if (oi < 0) return;
+  var b = document.querySelector('#dqo .mopt[data-pick="' + oi + '"]');
+  if (b) { e.preventDefault(); b.click(); }
+});
+
+/* #/daily/3-november/soil opens the set at that part. render() has just
    put the page at the top, so this scroll happens on the page the reader
    asked for, and it is instant for the same reason jumpToTop is. */
 function scrollToPart(partId) {
@@ -4925,6 +5162,11 @@ function scrollToPart(partId) {
 
 function dailyRoute(seg) {
   if (!seg[0]) return render(dailyHome());
+  /* #/daily/quiz/20 is the mixed paper; #/daily/<set>/quiz/20 is one set's.
+     No set id and no part id is "quiz", so neither reading is ambiguous. */
+  if (seg[0] === 'quiz') return dailyQuizPage('all', seg[1] || 10);
+  if (seg[1] === 'quiz') return dailyQuizPage(seg[0], seg[2] || 10);
+  dailyQuiz = null;
   render(dailySetPage(seg[0]));
   if (seg[1]) scrollToPart(seg[1]);
 }
@@ -4936,7 +5178,8 @@ SUBJECTS.push({
   blurb: 'One page per study day, labelled with its date: the current affairs that go stale, and highlighted SSC notes for everything added that day.',
   tabs: [{ href: '#/daily', label: 'All sets', match: [''] }].concat(DAILY_SETS.map(function (d) {
     return { href: '#/daily/' + d.id, label: d.d, match: [d.id] };
-  })),
+  })).concat(dailyQuizCount('all')
+    ? [{ href: '#/daily/quiz/20', label: 'Questions', match: ['quiz'] }] : []),
   stats: function () {
     return [DAILY_SETS.length + (DAILY_SETS.length === 1 ? ' set' : ' sets'),
             DAILY_SETS.reduce(function (a, d) {
@@ -8649,11 +8892,25 @@ function sideGeo(seg) {
 
 function sideDaily(seg) {
   var cur = dailyById[seg[0] || ''];
+  var onQuiz = seg[0] === 'quiz' || seg[1] === 'quiz';
+  var qs = [];
+  if (cur && (cur.quiz || []).length) {
+    qs.push({ href: '#/daily/' + encodeURIComponent(cur.id) + '/quiz/20',
+              t: cur.d + ' — ' + cur.quiz.length + ' questions',
+              d: 'Four options, the answer as you pick', on: onQuiz && !!cur });
+  }
+  if (dailyQuizCount('all')) {
+    qs.push({ href: '#/daily/quiz/20', t: 'Every set, mixed',
+              d: dailyQuizCount('all') + ' questions in all',
+              on: onQuiz && !cur });
+  }
   return [
     cur ? sFacts('This set', [
       ['Date', cur.d + ' ' + cur.y],
-      ['Parts', String((cur.parts || []).length)]
+      ['Parts', String((cur.parts || []).length)],
+      ['Questions', (cur.quiz || []).length ? String(cur.quiz.length) : '']
     ]) : '',
+    sLinks('Test yourself', qs, null, 4),
     sLinks('The sets', DAILY_SETS.map(function (d) {
       return { href: '#/daily/' + encodeURIComponent(d.id), k: String(d.y),
                t: d.d, on: cur && d.id === cur.id };

@@ -1302,7 +1302,7 @@ packs: [
     ["Saki","Hector Hugh Munro"]
    ]},
   {h:"The literary prizes and their latest winners",
-   note:"The winners change every year. As of 10 October 2026; the Booker Prize is in the 10 October daily set.",
+   note:"The winners change every year. As of 10 October 2026.",
    rows:[
     ["Nobel Prize in Literature","Rabindranath Tagore, 1913, for Gitanjali: the first non-European winner and still the only Indian"],
     ["Nobel Literature 2026","==Anne Carson==, Canadian poet and classicist, announced ==8 October 2026=="],

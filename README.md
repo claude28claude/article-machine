@@ -46,16 +46,16 @@ trigonometry and coordinate geometry, with a recall drill that hides each
 formula until you have produced it, 164 practice questions with worked
 solutions, and 23 diagrams; profit, loss and mixture kept separate.
 
-**Daily study sets** — one page per study day, labelled with its date. The
-current affairs live here, where a date can be put on them (the first set,
-**10 October**, carries the Booker Prize of the last four years and the
-current holder of every cup); the rest of each set is a sheet of highlighted
-SSC notes for what was added to the site that day.
+**Daily study sets** — one page per study day, labelled with its date: a sheet
+of highlighted SSC notes for what was added to the site that day, and a set of
+questions written from those notes. **142 questions** across the two sets, four
+options each, taken ten or twenty at a time or as one paper, from one day or
+from both mixed.
 
 There are two front doors, because a reader arrives with one of two
 questions. `#/` is a **filterable list of every topic** — for when you know
 what you want. `#/index` is **the whole site as an outline**: every subject,
-every section, and every one of the 1,151 individual pages, folded shut so you
+every section, and every one of the 1,254 individual pages, folded shut so you
 can see the shape at a glance and open only the part you are working through.
 
 The front page is a **filterable list of every topic on the site**. A reader
@@ -524,30 +524,56 @@ is flagged as a coaching-book label: the Gadgil formula came in 1969.
 `data-daily.js` — one entry per study day, newest first. A set holds two kinds
 of part:
 
-- a **full** part carries its own `notes` and `blocks`. Current affairs live
-  here and nowhere else: the Booker Prize 2022 to 2025 with the International
-  Booker beside it and the 2026 shortlist, and the latest holder of every cup;
+- a **full** part carries its own `notes` and `blocks`. Anything that has a
+  date on it lives here and nowhere else;
 - a **recap** part carries `from: "gk.cups"`, `"econ.reform"`,
   `"early.jainism"` and so on: the address of notes that already live on a
   subject page. The set shows those notes and links to the page. Nothing is
   copied, so the two cannot drift apart.
 
 Each set is its own section in the strip at the top of the subject, so
-**10 October** is one tap from anywhere in it, and `#/daily/10-october/booker`
+**3 November** is one tap from anywhere in it, and `#/daily/3-november/soil`
 opens the set at that part. To add tomorrow's, put one more entry at the top
 of `sets`; it reaches the strip, the hub, the index and the search on its own.
 
-The 10 October set also recaps three packs added the same day: books and
-authors (with the 2026 Nobel and the 60th Jnanpith), Paris 2024, and
-international organisations.
+Every row that can go stale says what date it is true as of, so that an old
+figure reads as dated rather than as wrong.
 
-Every current-affairs row says what date it is true as of. The Booker 2026
-winner is due on 9 November 2026 and Gaganyaan G1 has not flown as of 10
-October 2026; both are written so that they read as dated, not as wrong.
+## The question sets
+
+A set may also carry a `quiz`: questions written from that set's own notes.
+**142 of them** — 62 on the 3 November set and 80 on the 4 November set — at
+`#/daily/<set>/quiz/<10|20|all>`, with every set mixed together at
+`#/daily/quiz/<10|20|all>`.
+
+Four options, one right, the answer the moment you pick, and a line under it
+linking to the part of the set the question came from, so a wrong answer leads
+straight to the notes that explain it. A to D or 1 to 4 answer from the
+keyboard. The order is shuffled on every run, and the questions are mixed
+across every part of the set rather than grouped by topic.
+
+**This is not the Practice section, and the difference is deliberate.**
+Practice draws from the mind maps, where a leaf was written as a prompt and an
+answer; inventing three wrong options for those would be inventing content, so
+Practice has none and you mark yourself. These were written as questions from
+the start, and every distractor is a real alternative — the other soil, the
+other Sultan, the figure from the previous census, the index published by
+somebody else. Several name the mistake they are there to catch: Puducherry's
+sex ratio is offered against Kerala's because one is a union territory, and
+8–21–60 is offered against 17–169–231 because those are the MDGs.
+
+**The answers are spread across the four positions on purpose.** Written
+straight through, the right answer landed on B in 88 of the 142 — a reader who
+always picked B would have scored 62 per cent knowing nothing. Each question's
+options are rotated by a hash of its own question text until the spread is even
+(29/37/36/40), which is stable: running the rebalance again changes nothing.
+
+The engine is the one the Advanced Maths chapters already use — same markup,
+same keys, same result screen — with one addition, the link back to the notes.
 
 ## Checked, not just written
 
-Everything added for the 10 October set was fact-checked after it was
+Everything added for the site's first daily set was fact-checked after it was
 written: twelve independent checkers took one slice each (Jainism, the Mughal
 pages, the Booker and cup holders, the five GK packs, the Economy additions
 and the code), checked every row against sources, and every error they claimed

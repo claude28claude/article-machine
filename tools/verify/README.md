@@ -52,3 +52,24 @@ neither.
 
 It exits 1 on a mismatch. Changing 943 to 940 in one of the two places makes
 it fail, which is the check working.
+
+# Checking the daily question sets
+
+    node tools/verify/questions.js
+
+The 142 questions in the two November sets. It asserts that every question
+has four distinct non-empty options and a solution, that the answer index
+points inside that range, that the part each question names still exists in
+its set, that no solution refers to an option by position (which would break
+when the options are rotated), that no `==` highlight marks leaked in from
+the notes, and that no question is asked twice in the same set.
+
+It also checks the answer positions are spread. Written straight through, the
+right answer landed on B in 88 of the 142; the options are rotated by a hash
+of the question text until no position holds more than about a quarter, and
+this fails if any holds more than 35 per cent. Guessing one letter every time
+currently scores 28 per cent.
+
+Exits 1 on any of these. Pointing a question at a renamed part, putting the
+answer index out of range, or writing "the first option" into a solution each
+make it fail, which is the check working.

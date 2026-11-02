@@ -16,7 +16,15 @@ function flat(o, out) {
 }
 
 const set4 = W.DAILY.sets.find(s => s.id === '4-november');
-const notes = flat(set4).join(' \n ');
+
+/* The question bank is deliberately full of wrong figures - that is what a
+   distractor is, and "16 goals" is there precisely because somebody will
+   pick it. It is not part of the prose this checks; only the notes, the
+   tables and the comparisons are. tools/verify/questions.js checks the
+   bank itself. */
+const set4notes = Object.assign({}, set4);
+delete set4notes.quiz;
+const notes = flat(set4notes).join(' \n ');
 const census = flat(W.GK_MAPS.topics.census).join(' \n ');
 const sdg = flat(W.ECON_MAPS.topics.sdg).join(' \n ');
 const mstate = flat(W.EARLY_MAPS.topics['mughal-state']).join(' \n ');
