@@ -201,6 +201,7 @@ function barKey(seg) {
       first === 'index' || first === 'contents') return '__index__';
   if (first === 's') return subjectById(seg[1]) ? seg[1] : '__index__';
   if (first === 'about') return 'about';
+  if (first === 'practice') return 'practice';
   var sub = subjectById(first);
   return sub && !sub.isDefault ? sub.id : defaultSubject().id;
 }
@@ -291,10 +292,12 @@ function renderNav(seg) {
   }
   tabBar.innerHTML = tab('#/', '__index__', 'Index') +
     SUBJECTS.map(function (s) { return tab('#/s/' + s.id, s.id, s.short || s.name); }).join('') +
+    tab('#/practice', 'practice', 'Practice') +
     tab('#/about', 'about', 'About');
 
   var sub = subjectById(on);
-  if (brandSub) brandSub.textContent = sub ? sub.name : (on === 'about' ? 'About' : SITE.hub);
+  if (brandSub) brandSub.textContent = sub ? sub.name
+    : on === 'about' ? 'About' : on === 'practice' ? 'Practice' : SITE.hub;
 
   /* On a phone the bar scrolls sideways, and a subject near the end of it —
      Biology — would be underlined somewhere off the edge of the screen. Bring
@@ -3167,9 +3170,236 @@ function gkConfusions() {
   return gkShell(h);
 }
 
+/* ----------------------------- the Static GK and Biology maps
+
+   Static GK is the one subject whose maps do not match its packs one for one:
+   twenty-three packs would make twenty-three maps, and a map of six facts is
+   not a map. They are grouped into twelve instead - the sports cups with the
+   sports terms and Paris, the rivers with the parks and the monuments - and
+   GK_MAP_ORDER names the packs each map covers so that a reader can get from
+   a map back to the full list.                                            */
+
+var GK_MAPS = window.GK_MAPS || {};
+var BIO_MAPS = window.BIO_MAPS || {};
+
+var GK_MAP_ORDER = [
+  { id: 'symbols', n: 'National symbols',        packs: ['symbols'] },
+  { id: 'arts',    n: 'Dance, music, festivals', packs: ['dance', 'festivals'] },
+  { id: 'awards',  n: 'Awards and prizes',       packs: ['awards'] },
+  { id: 'sports',  n: 'Sports',                  packs: ['sports', 'cups', 'paris-2024'] },
+  { id: 'firsts',  n: 'Firsts and superlatives', packs: ['firsts', 'superlatives'] },
+  { id: 'places',  n: 'Rivers, parks, monuments', packs: ['rivers', 'parks', 'heritage', 'monuments'] },
+  { id: 'days',    n: 'Important days',          packs: ['days'] },
+  { id: 'books',   n: 'Books and authors',       packs: ['books'] },
+  { id: 'orgs',    n: 'Organisations',           packs: ['hq', 'orgs'] },
+  { id: 'science', n: 'Instruments and units',   packs: ['science', 'body'] },
+  { id: 'space',   n: 'Space and defence',       packs: ['space', 'isro'] },
+  { id: 'states',  n: 'States and the world',    packs: ['states', 'world'] }
+];
+
+function gkMap(id) {
+  if (!GK_MAPS.br) return null;
+  return id ? ((GK_MAPS.topics || {})[id] || null) : GK_MAPS;
+}
+
+function gkMapOrder() {
+  return GK_MAP_ORDER.filter(function (x) { return gkMap(x.id); });
+}
+
+/* The packs a map covers, as links back to the full lists. */
+function gkMapPacks(x) {
+  return (x.packs || []).map(function (id) {
+    var p = gkPackById[id];
+    return p ? { href: '#/gk/pack/' + encodeURIComponent(p.id), t: p.n,
+                 d: gkRows(p) + ' facts' } : null;
+  }).filter(Boolean);
+}
+
+function gkMapCrumb(here) {
+  return '<div class="crumb"><a href="#/gk">Static GK</a> → ' +
+    (here ? '<a href="#/gk/maps">Mind maps</a> → ' + esc(here) : 'Mind maps') + '</div>';
+}
+
+function gkMapsHub() {
+  var order = gkMapOrder(), lines = 0;
+  order.forEach(function (x) { lines += mmFacts(gkMap(x.id)); });
+
+  var h = gkMapCrumb('') +
+    pageH1('Mind maps', 'Static GK is a long list of facts to recognise; these are the ' +
+      'parts of it that are actually asked. ' + order.length + ' maps over the ' +
+      (GKD.packs || []).length + ' packs, ' + lines + ' lines in all, plus one map of the ' +
+      'whole subject. Every line is a fact from a pack, cut to the words the question ' +
+      'turns on, and each map links back to the packs it covers.');
+
+  h += '<div class="block"><h3>How to learn from a map</h3><ol class="mmhow">' +
+    '<li><b>Read it once, out loud,</b> branch by branch. A hook is a line to say, not to read.</li>' +
+    '<li><b>Press Cover the details.</b> The branch names and the prompts stay; every answer ' +
+      'becomes a blank. Say each one, then tap it to check.</li>' +
+    '<li><b>Come back tomorrow, and again in three days.</b> The map you still cannot fill ' +
+      'is the pack to go back to.</li>' +
+  '</ol></div>';
+
+  h += '<div class="block"><h3>The maps</h3><div class="grid">' +
+    '<a class="pcard" href="#/gk/maps/all"><div class="pn">The whole subject</div>' +
+      '<div class="pt">All twelve on one map, with the lines most worth knowing</div>' +
+      '<div class="pr">' + GK_MAPS.br.length + ' branches · ' + mmFacts(GK_MAPS) + ' lines</div></a>' +
+    order.map(function (x) {
+      var m = gkMap(x.id);
+      return '<a class="pcard" href="#/gk/maps/' + encodeURIComponent(x.id) + '">' +
+        '<div class="pn">' + esc(x.n) + '</div>' +
+        '<div class="pt">' + esc(m.br.map(function (b) { return unmark(b.h); }).join(' · ')) + '</div>' +
+        '<div class="pr">' + m.br.length + ' branches · ' + mmFacts(m) + ' lines · ' +
+        x.packs.length + (x.packs.length > 1 ? ' packs' : ' pack') + '</div></a>';
+    }).join('') + '</div></div>';
+
+  render(gkShell(h));
+}
+
+function gkMapPage(id) {
+  var whole = id === 'all';
+  var m = gkMap(whole ? null : id);
+  if (!m) return notFound('There is no mind map for that part of Static GK.');
+
+  var order = gkMapOrder(), i = -1;
+  order.forEach(function (x, k) { if (x.id === id) i = k; });
+  var cur = order[i], prev = order[i - 1], next = order[i + 1];
+
+  var h = gkMapCrumb(whole ? 'The whole subject' : (cur ? cur.n : '')) +
+    pageH1(whole ? 'Static GK on one map' : cur.n,
+      (whole ? 'The whole subject as keywords. Each branch opens that map. '
+             : 'Mind map. ') +
+      m.br.length + ' branches · ' + mmFacts(m) + ' lines, every one of them from the packs.') +
+    mmHtml(m, '#/gk/maps', false);
+
+  if (whole) {
+    h += '<div class="stack"><a class="pill big" href="#/gk/maps">Every map</a> ' +
+      '<a class="pill big" href="#/gk">All ' + (GKD.packs || []).length + ' packs</a></div>';
+  } else {
+    h += '<div class="block"><h3>The packs behind it</h3><div class="grid">' +
+      gkMapPacks(cur).map(function (p) {
+        return '<a class="pcard" href="' + p.href + '"><div class="pn">' + esc(p.t) + '</div>' +
+          '<div class="pr">' + esc(p.d) + '</div></a>';
+      }).join('') + '</div></div>' +
+      '<div class="stack"><a class="pill big" href="#/gk/maps/all">The whole subject on one map</a></div>' +
+      '<div class="nextprev">' +
+      (prev ? '<a href="#/gk/maps/' + encodeURIComponent(prev.id) + '">' +
+        '<span class="d">Previous map</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+      (next ? '<a class="r" href="#/gk/maps/' + encodeURIComponent(next.id) + '">' +
+        '<span class="d">Next map</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+      '</div>';
+  }
+
+  render(gkShell(h));
+  mmWire();
+}
+
+function gkMaps(seg) {
+  if (!seg[0]) return gkMapsHub();
+  gkMapPage(seg[0]);
+}
+
+/* Which map revises which pack, the other way round. */
+function gkMapForPack(packId) {
+  var hit = null;
+  gkMapOrder().forEach(function (x) {
+    if (!hit && (x.packs || []).indexOf(packId) >= 0) hit = x;
+  });
+  return hit;
+}
+
+/* --------------------------------------------------- Biology */
+
+function bioMap(id) {
+  if (!BIO_MAPS.br) return null;
+  return id ? ((BIO_MAPS.topics || {})[id] || null) : BIO_MAPS;
+}
+
+function bioMapOrder() {
+  return (BIO.topics || []).filter(function (t) { return bioMap(t.id); });
+}
+
+function bioMapCrumb(here) {
+  return '<div class="crumb"><a href="#/biology">Biology</a> → ' +
+    (here ? '<a href="#/biology/maps">Mind maps</a> → ' + esc(here) : 'Mind maps') + '</div>';
+}
+
+function bioMapsHub() {
+  var order = bioMapOrder(), lines = 0;
+  order.forEach(function (t) { lines += mmFacts(bioMap(t.id)); });
+
+  var h = bioMapCrumb('') +
+    pageH1('Mind maps', 'All three topics reduced to keywords: ' + order.length + ' maps and ' +
+      lines + ' lines between them, plus one map of the whole subject. Nothing here is new — ' +
+      'each line is a fact from the tables, cut to the words the question turns on.');
+
+  h += '<div class="block"><h3>How to learn from a map</h3><ol class="mmhow">' +
+    '<li><b>Read it once, out loud,</b> branch by branch. A hook is a line to say, not to read.</li>' +
+    '<li><b>Press Cover the details.</b> The branch names and the prompts stay; every answer ' +
+      'becomes a blank. Say each one, then tap it to check.</li>' +
+    '<li><b>Come back tomorrow, and again in three days.</b> The map you still cannot fill ' +
+      'is the topic to go back to.</li>' +
+  '</ol></div>';
+
+  h += '<div class="block"><h3>The maps</h3><div class="grid">' +
+    '<a class="pcard" href="#/biology/maps/all"><div class="pn">The whole subject</div>' +
+      '<div class="pt">All three topics on one map, with the lines most worth knowing</div>' +
+      '<div class="pr">' + BIO_MAPS.br.length + ' branches · ' + mmFacts(BIO_MAPS) + ' lines</div></a>' +
+    order.map(function (t) {
+      var m = bioMap(t.id);
+      return '<a class="pcard" href="#/biology/maps/' + encodeURIComponent(t.id) + '">' +
+        '<div class="pn">' + esc(t.n) + '</div>' +
+        '<div class="pt">' + esc(m.br.map(function (b) { return unmark(b.h); }).join(' · ')) + '</div>' +
+        '<div class="pr">' + m.br.length + ' branches · ' + mmFacts(m) + ' lines</div></a>';
+    }).join('') + '</div></div>';
+
+  render(bioShell(h));
+}
+
+function bioMapPage(id) {
+  var whole = id === 'all';
+  var t = whole ? null : bioTopicById[id];
+  var m = bioMap(whole ? null : id);
+  if (!m) return notFound('There is no mind map for that Biology topic.');
+
+  var order = bioMapOrder(), i = -1;
+  order.forEach(function (x, k) { if (t && x.id === t.id) i = k; });
+  var prev = order[i - 1], next = order[i + 1];
+
+  var h = bioMapCrumb(whole ? 'The whole subject' : t.n) +
+    pageH1(whole ? 'Biology on one map' : t.n,
+      (whole ? 'The whole subject as keywords. Each branch opens that topic\'s own map. '
+             : 'Mind map. ') +
+      m.br.length + ' branches · ' + mmFacts(m) + ' lines, every one of them from the tables.') +
+    mmHtml(m, '#/biology/maps', false);
+
+  if (whole) {
+    h += '<div class="stack"><a class="pill big" href="#/biology/maps">Every map</a> ' +
+      '<a class="pill big" href="#/biology">The three topics</a></div>';
+  } else {
+    h += '<div class="stack"><a class="pill big" href="#/biology/topic/' +
+      encodeURIComponent(t.id) + '">The full notes · ' + bioRows(t) + ' facts</a> ' +
+      '<a class="pill big" href="#/biology/maps/all">The whole subject on one map</a></div>' +
+      '<div class="nextprev">' +
+      (prev ? '<a href="#/biology/maps/' + encodeURIComponent(prev.id) + '">' +
+        '<span class="d">Previous map</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+      (next ? '<a class="r" href="#/biology/maps/' + encodeURIComponent(next.id) + '">' +
+        '<span class="d">Next map</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+      '</div>';
+  }
+
+  render(bioShell(h));
+  mmWire();
+}
+
+function bioMaps(seg) {
+  if (!seg[0]) return bioMapsHub();
+  bioMapPage(seg[0]);
+}
+
 function gkRoute(seg) {
   switch (seg[0] || '') {
     case '':           return render(gkHome());
+    case 'maps':       return gkMaps(seg.slice(1));
     case 'pack':       return render(gkPackPage(seg[1]));
     case 'confusions': return render(gkConfusions());
     default:           return notFound('That address does not exist in Static GK.');
@@ -3183,6 +3413,7 @@ SUBJECTS.push({
   blurb: 'National symbols, dances, awards, sports and every cup by sport, Paris 2024, rivers and dams, parks, heritage sites, days, books and authors, international organisations, science, ISRO\'s missions and the states.',
   tabs: [
     { href: '#/gk',             label: 'All packs',      match: ['', 'pack'] },
+    { href: '#/gk/maps',        label: 'Mind maps',      match: ['maps'] },
     { href: '#/gk/confusions',  label: 'Confused pairs', match: ['confusions'] }
   ],
   stats: function () {
@@ -3194,7 +3425,11 @@ SUBJECTS.push({
       return { t: p.n, href: '#/gk/pack/' + encodeURIComponent(p.id), w: p.w,
                k: p.blocks.map(function (b) { return b.h; }).join(' '),
                n: gkRows(p) + ' facts' };
-    }).concat([{ t: 'Static GK — confused pairs', href: '#/gk/confusions',
+    }).concat([{ t: 'Static GK — the mind maps', href: '#/gk/maps',
+                 n: gkMapOrder().length + ' maps',
+                 w: 'The twenty-three packs grouped into twelve maps, each reduced to keywords with a cover-and-recall drill.',
+                 k: 'mind map revision recall keywords branches symbols dances awards cups days books organisations' },
+               { t: 'Static GK — confused pairs', href: '#/gk/confusions',
                  n: (GKD.confusions || []).length + ' pairs',
                  w: 'Kathak or Kathakali, which lake is the largest what, and how many lions are visible.' }]);
   },
@@ -3283,6 +3518,7 @@ function bioHigh(slug) {
 function bioRoute(seg) {
   switch (seg[0] || '') {
     case '':           return render(bioHome());
+    case 'maps':       return bioMaps(seg.slice(1));
     case 'topic':      return render(bioTopicPage(seg[1]));
     case 'high-yield': return render(bioHigh(seg[1] || ''));
     default:           return notFound('That address does not exist in Biology.');
@@ -3296,6 +3532,7 @@ SUBJECTS.push({
   blurb: 'Diseases and what causes them, the nutrients and the deficiency diseases, and every gland with its hormones and disorders.',
   tabs: [
     { href: '#/biology',            label: 'The three topics', match: ['', 'topic'] },
+    { href: '#/biology/maps',       label: 'Mind maps',  match: ['maps'] },
     { href: '#/biology/high-yield', label: 'High-yield', match: ['high-yield'] }
   ],
   stats: function () {
@@ -3308,7 +3545,11 @@ SUBJECTS.push({
       return { t: t.n, href: '#/biology/topic/' + encodeURIComponent(t.id), w: t.w,
                k: t.blocks.map(function (b) { return b.h; }).join(' '),
                n: bioRows(t) + ' facts' };
-    }).concat([{ t: 'Biology - confused pairs and quick facts', href: '#/biology/high-yield',
+    }).concat([{ t: 'Biology - the mind maps', href: '#/biology/maps',
+                 n: bioMapOrder().length + ' maps',
+                 w: 'Diseases, nutrients and glands, each reduced to keywords with a cover-and-recall drill.',
+                 k: 'mind map revision recall keywords branches pathogen vector vitamin hormone gland' },
+               { t: 'Biology - confused pairs and quick facts', href: '#/biology/high-yield',
                  n: (BIO.confusions || []).length + ' pairs',
                  w: 'Anopheles against Aedes, kwashiorkor against marasmus, and mellitus against insipidus.' }]);
   },
@@ -7893,6 +8134,36 @@ function sideEconCards(seg) {
 }
 
 function sideGk(seg) {
+  var k = seg[0] || '';
+
+  if (k === 'maps') {
+    var here = seg[1] || '', cur = null;
+    gkMapOrder().forEach(function (x) { if (x.id === here) cur = x; });
+    var every = [{ href: '#/gk/maps/all', t: 'The whole subject',
+                   d: 'All twelve on one map', on: here === 'all' }]
+      .concat(gkMapOrder().map(function (x) {
+        return { href: '#/gk/maps/' + encodeURIComponent(x.id), t: x.n,
+                 d: mmFacts(gkMap(x.id)) + ' lines', on: x.id === here };
+      }));
+    return [
+      cur ? sLinks('The packs behind it', gkMapPacks(cur), null, 6) : '',
+      sLinks('Every map', every, null, 14)
+    ];
+  }
+
+  if (k === 'pack') {
+    var mp = gkMapForPack(seg[1]);
+    if (mp) {
+      return [sLinks('Revise it', [
+        { href: '#/gk/maps/' + mp.id, t: mp.n,
+          d: mmFacts(gkMap(mp.id)) + ' lines, with a cover-and-recall drill' }
+      ], null, 1)].concat(sideGkCards(seg));
+    }
+  }
+  return sideGkCards(seg);
+}
+
+function sideGkCards(seg) {
   if ((seg[0] || '') === '') {
     var packs = GKD.packs || [];
     return [sFacts('Static GK', [
@@ -7917,6 +8188,36 @@ function sideGk(seg) {
 }
 
 function sideBio(seg) {
+  var k = seg[0] || '';
+
+  if (k === 'maps') {
+    var here = seg[1] || '', cur = bioTopicById[here];
+    var every = [{ href: '#/biology/maps/all', t: 'The whole subject',
+                   d: 'All three topics on one map', on: here === 'all' }]
+      .concat(bioMapOrder().map(function (t) {
+        return { href: '#/biology/maps/' + encodeURIComponent(t.id), t: t.n,
+                 d: mmFacts(bioMap(t.id)) + ' lines', on: t.id === here };
+      }));
+    return [
+      cur ? sFacts('This map', [
+        ['Branches', String(bioMap(cur.id).br.length)],
+        ['Lines', String(mmFacts(bioMap(cur.id)))],
+        ['The full notes', bioRows(cur) + ' facts', '#/biology/topic/' + encodeURIComponent(cur.id)]
+      ], 'Every line on the map comes from those facts.') : '',
+      sLinks('Every map', every, null, 8)
+    ];
+  }
+
+  if (k === 'topic' && bioTopicById[seg[1]] && bioMap(seg[1])) {
+    return [sLinks('Revise it', [
+      { href: '#/biology/maps/' + encodeURIComponent(seg[1]), t: 'The mind map',
+        d: mmFacts(bioMap(seg[1])) + ' lines, with a cover-and-recall drill' }
+    ], null, 1)].concat(sideBioCards(seg));
+  }
+  return sideBioCards(seg);
+}
+
+function sideBioCards(seg) {
   if ((seg[0] || '') === '') {
     var tops = BIO.topics || [];
     return [sFacts('Biology', [
@@ -8213,7 +8514,7 @@ function sideElsewhere(seg, anchor) {
 function sideSkip(seg) {
   var k = seg[0] || '';
   return k === '' || k === 'hub' || k === 'topics' || k === 'index' ||
-         k === 'contents' || k === 's' || k === 'about' ||
+         k === 'contents' || k === 's' || k === 'about' || k === 'practice' ||
          /* a mind map needs the whole width for its two wings */
          (k === 'jca' && (seg[1] === 'practice' || seg[1] === 'mock' || seg[1] === 'maps'));
 }
@@ -8542,6 +8843,247 @@ function econMaps(seg) {
   econMapPage(seg[0]);
 }
 
+/* ==========================================================================
+   PRACTICE — ten or twenty, from anywhere
+
+   Every mind map in the site is already a list of question-and-answer pairs:
+   the key is the prompt and stays visible when a map is covered, the text is
+   the answer and is what gets blanked. That is a question bank of a few
+   thousand lines that nobody had to write twice.
+
+   This section draws from it at random, across every subject except JCA —
+   which has its own MCQ practice and its own mock test, built for a different
+   paper — and asks ten or twenty in a row. There are no options to choose
+   from, because the lines were never written as multiple choice and inventing
+   three wrong answers for each would be inventing content. You read the
+   prompt, say the answer, press to see it, and mark yourself. That is the
+   drill a recall map is for, and self-marking is what makes it honest.
+
+   Nothing here is new content. Every question is a line from a map, and every
+   map line is a fact from the notes behind it.
+   ========================================================================== */
+
+var PRAC_SUBJECTS = [
+  { id: 'constitution', n: 'Constitution',        base: '#/maps',           maps: function () { return COI_MAPS; } },
+  { id: 'history',      n: 'Modern History',      base: '#/history/maps',   maps: function () { return HIST_MAPS; } },
+  { id: 'early',        n: 'Ancient & Medieval',  base: '#/early/maps',     maps: function () { return EARLY_MAPS; } },
+  { id: 'economy',      n: 'Economy',             base: '#/economy/maps',   maps: function () { return ECON_MAPS; } },
+  { id: 'gk',           n: 'Static GK',           base: '#/gk/maps',        maps: function () { return GK_MAPS; } },
+  { id: 'geography',    n: 'Geography',           base: '#/geography/maps', maps: function () { return GEO_MAPS; } },
+  { id: 'biology',      n: 'Biology',             base: '#/biology/maps',   maps: function () { return BIO_MAPS; } }
+];
+
+var pracPool = null;
+
+/* One pass over every map in every subject. A leaf only becomes a question
+   if it has a key: a bare line has nothing to ask with. */
+function pracBuild() {
+  if (pracPool) return pracPool;
+  pracPool = [];
+  PRAC_SUBJECTS.forEach(function (s) {
+    var M = s.maps();
+    if (!M || !M.br) return;
+    var all = [{ id: 'all', m: M }];
+    Object.keys(M.topics || {}).forEach(function (k) { all.push({ id: k, m: M.topics[k] }); });
+    all.forEach(function (x) {
+      x.m.br.forEach(function (b) {
+        b.lv.forEach(function (lf) {
+          if (!Array.isArray(lf) || !lf[0] || !lf[1]) return;
+          pracPool.push({
+            sub: s.n, subId: s.id,
+            map: unmark(x.m.hub), href: s.base + '/' + x.id,
+            br: unmark(b.h), q: lf[0], a: lf[1]
+          });
+        });
+      });
+    });
+  });
+  return pracPool;
+}
+
+function pracCount(subId) {
+  return pracBuild().filter(function (x) {
+    return !subId || subId === 'all' || x.subId === subId;
+  }).length;
+}
+
+/* Fisher-Yates over the indices, then take the first n. Drawing with
+   replacement would repeat a question inside one set of ten, which reads as a
+   bug however random it is. */
+function pracDraw(subId, n) {
+  var from = pracBuild().filter(function (x) {
+    return !subId || subId === 'all' || x.subId === subId;
+  });
+  var idx = [];
+  for (var i = 0; i < from.length; i++) idx.push(i);
+  for (var j = idx.length - 1; j > 0; j--) {
+    var k = Math.floor(Math.random() * (j + 1)), t = idx[j];
+    idx[j] = idx[k]; idx[k] = t;
+  }
+  return idx.slice(0, Math.min(n, idx.length)).map(function (i) { return from[i]; });
+}
+
+var pracRun = null;
+
+function pracShell(body) { return '<div class="wrap artpage">' + body + '</div>'; }
+
+function pracCrumb(here) {
+  return '<div class="crumb"><a href="#/practice">Practice</a>' +
+    (here ? ' → ' + esc(here) : '') + '</div>';
+}
+
+function pracHub() {
+  var total = pracCount('all');
+
+  var h = '<div class="crumb">Practice</div>' +
+    pageH1('Practice', 'Ten or twenty questions at a time, drawn at random from every mind ' +
+      'map on the site — ' + total + ' lines across ' + PRAC_SUBJECTS.length + ' subjects. ' +
+      'Read the prompt, say the answer, then press to see it and mark yourself.');
+
+  h += '<div class="block"><h3>Everything, mixed</h3><div class="grid">' +
+    '<a class="pcard" href="#/practice/10"><div class="pn">10 questions</div>' +
+      '<div class="pt">A short set — about three minutes</div>' +
+      '<div class="pr">From all ' + PRAC_SUBJECTS.length + ' subjects</div></a>' +
+    '<a class="pcard" href="#/practice/20"><div class="pn">20 questions</div>' +
+      '<div class="pt">A longer set — about six minutes</div>' +
+      '<div class="pr">From all ' + PRAC_SUBJECTS.length + ' subjects</div></a>' +
+    '</div></div>';
+
+  /* Two buttons a row rather than a sentence: the choice is how many, and a
+     reader should not have to read an address to make it. */
+  h += '<div class="block"><h3>One subject at a time</h3><ul class="pracsubs">' +
+    PRAC_SUBJECTS.map(function (s) {
+      return '<li><span class="pn">' + esc(s.n) + '</span>' +
+        '<span class="pc">' + pracCount(s.id) + ' lines</span>' +
+        '<span class="pb"><a class="pill" href="#/practice/10/' + s.id + '">10</a>' +
+        '<a class="pill" href="#/practice/20/' + s.id + '">20</a></span></li>';
+    }).join('') + '</ul></div>';
+
+  h += '<div class="block"><h3>How this works, and what it is not</h3><ol class="mmhow">' +
+    '<li><b>There are no options to choose from.</b> These lines were written as a prompt ' +
+      'and an answer, not as multiple choice, and making up three wrong answers for each ' +
+      'would be making up content. You say the answer, then check it.</li>' +
+    '<li><b>You mark yourself.</b> Press <i>I knew it</i> or <i>I missed it</i>. Nobody is ' +
+      'watching, and the only person a generous mark cheats is you.</li>' +
+    '<li><b>What you miss is listed at the end,</b> each one with a link to the map it came ' +
+      'from, so the next thing to read is already chosen for you.</li>' +
+    '<li><b>JCA is not in here.</b> That paper has its own practice and its own mock test, ' +
+      'with real options and negative marking, because it is examined differently.</li>' +
+  '</ol></div>';
+
+  render(pracShell(h));
+}
+
+function pracStart(n, subId) {
+  var qs = pracDraw(subId, n);
+  if (!qs.length) return notFound('There are no practice questions for that subject yet.');
+  var who = null;
+  PRAC_SUBJECTS.forEach(function (s) { if (s.id === subId) who = s; });
+
+  pracRun = { qs: qs, i: 0, right: 0, missed: [], shown: false,
+              subId: subId || 'all', n: n, who: who };
+
+  render(pracShell(pracCrumb(who ? who.n : 'Everything') +
+    pageH1(n + ' questions' + (who ? ' — ' + who.n : ''),
+      'Drawn at random from ' + (who ? 'the ' + who.n + ' maps' : 'every map on the site') +
+      '. Say the answer before you press.') +
+    '<div id="pquiz"></div>'));
+  pracDraw2();
+}
+
+/* The box is redrawn in place rather than by changing the address, so that
+   Back leaves the set rather than stepping through the questions in it. */
+function pracDraw2() {
+  var box = document.getElementById('pquiz');
+  if (!box || !pracRun) return;
+  var r = pracRun;
+
+  if (r.i >= r.qs.length) {
+    var pct = Math.round(100 * r.right / r.qs.length);
+    box.innerHTML = '<div class="mdone"><b>' + r.right + ' of ' + r.qs.length + '</b>' +
+      '<span>' + pct + ' per cent. ' +
+      (r.missed.length
+        ? 'The ' + r.missed.length + ' you missed are below, each with the map it came from.'
+        : 'Nothing missed. Try twenty, or a subject you have been avoiding.') + '</span>' +
+      '<div class="stack">' +
+      '<button class="pill big" type="button" data-prac="again">Another ' + r.n + '</button> ' +
+      '<a class="pill big" href="#/practice">Back to practice</a></div></div>' +
+      (r.missed.length ? '<div class="block"><h3>What you missed</h3>' +
+        r.missed.map(function (q) {
+          return '<div class="mwrong"><div class="mqq">' + esc(q.q) + '</div>' +
+            '<div class="mans">' + hiMark(esc(unmark(q.a))) + '</div>' +
+            '<div class="pr"><a href="' + q.href + '">' + esc(q.sub) + ' · ' + esc(q.map) +
+            ' · ' + esc(q.br) + ' →</a></div></div>';
+        }).join('') + '</div>' : '');
+    pracWire();
+    return;
+  }
+
+  var q = r.qs[r.i], pct2 = Math.round(100 * r.i / r.qs.length);
+
+  box.innerHTML =
+    '<div class="mprog"><span style="width:' + pct2 + '%"></span></div>' +
+    '<div class="mcount">Question ' + (r.i + 1) + ' of ' + r.qs.length +
+      ' · ' + r.right + ' right so far</div>' +
+    '<div class="mq">' +
+      '<div class="pwhere">' + esc(q.sub) + ' · ' + esc(q.map) + ' · ' + esc(q.br) + '</div>' +
+      '<div class="mqq">' + esc(q.q) + '</div>' +
+      (r.shown
+        ? '<div class="mqsol ok">' + hiMark(esc(unmark(q.a))) + '</div>' +
+          '<div class="pacts">' +
+            '<button class="pill big" type="button" data-prac="right">I knew it</button> ' +
+            '<button class="pill big ghost" type="button" data-prac="wrong">I missed it</button>' +
+          '</div>'
+        : '<div class="pacts"><button class="pill big" type="button" data-prac="show">' +
+          'Show the answer</button></div>') +
+    '</div>';
+  pracWire();
+}
+
+function pracWire() {
+  var box = document.getElementById('pquiz');
+  if (!box) return;
+  box.onclick = function (e) {
+    var b = e.target.closest('[data-prac]');
+    if (!b || !pracRun) return;
+    var act = b.getAttribute('data-prac');
+    if (act === 'show') { pracRun.shown = true; return pracDraw2(); }
+    if (act === 'right' || act === 'wrong') {
+      if (act === 'right') pracRun.right++;
+      else pracRun.missed.push(pracRun.qs[pracRun.i]);
+      pracRun.i++; pracRun.shown = false;
+      return pracDraw2();
+    }
+    if (act === 'again') return pracStart(pracRun.n, pracRun.subId);
+  };
+}
+
+/* Space shows the answer, then 1 and 2 mark it. A drill is faster with the
+   hands on the keys than with a finger on the screen. */
+document.addEventListener('keydown', function (e) {
+  if (!pracRun || !document.getElementById('pquiz')) return;
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+  var box = document.getElementById('pquiz');
+  function press(v) {
+    var b = box.querySelector('[data-prac="' + v + '"]');
+    if (b) { e.preventDefault(); b.click(); }
+  }
+  if (e.key === ' ' || e.key === 'Enter') press('show');
+  else if (e.key === '1') press('right');
+  else if (e.key === '2') press('wrong');
+});
+
+function pracRoute(seg) {
+  if (!seg[0]) return pracHub();
+  var n = parseInt(seg[0], 10);
+  if (n !== 10 && n !== 20) return notFound('A practice set is ten or twenty questions.');
+  var subId = seg[1] || 'all';
+  if (subId !== 'all' && !PRAC_SUBJECTS.some(function (s) { return s.id === subId; })) {
+    return notFound('There is no practice set for that subject.');
+  }
+  pracStart(n, subId);
+}
+
 /* ------------------------------------------------------------------ router */
 
 /* Every page here is the same document, so the browser's scroll restoration
@@ -8601,6 +9143,7 @@ function route() {
     case 's':          return subjectPage(seg[1]);
     case 'index':      return indexPage();
     case 'contents':   return indexPage();
+    case 'practice':   return pracRoute(seg.slice(1));
     case 'about':      return aboutPage();
     default:           return notFound('That address does not exist on this site.');
   }

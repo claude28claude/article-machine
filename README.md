@@ -649,11 +649,19 @@ hundred lines of `app.js`.
 
 ## The mind maps
 
-Six subjects carry mind maps now: the **Constitution** at `#/maps`, **Modern
+Eight subjects carry mind maps now: the **Constitution** at `#/maps`, **Modern
 History** at `#/history/maps`, the **Indian Economy** at `#/economy/maps`,
 **Ancient and Medieval History** at `#/early/maps`, **Geography** at
-`#/geography/maps`, and the JCA law paper (above). Each has one map per topic
+`#/geography/maps`, **Static GK** at `#/gk/maps`, **Biology** at
+`#/biology/maps`, and the JCA law paper (above). Each has one map per topic
 and one map of the whole subject whose branches open the others.
+
+**Static GK is the one that does not match its own pages.** Twenty-three packs
+would make twenty-three maps, and a map of six facts is not a map; they are
+grouped into twelve instead — the cups with the sports terms and Paris, the
+rivers with the parks and the monuments — and `GK_MAP_ORDER` names the packs
+each map covers, so a map links back to the full lists behind it and every
+pack page carries a *Revise it* link to the map that covers it.
 
 | | Maps | Lines |
 |---|---|---|
@@ -662,6 +670,8 @@ and one map of the whole subject whose branches open the others.
 | Ancient and Medieval | 7 maps + 1 overview | 252 |
 | Geography | 7 topics + 1 overview | 245 |
 | Indian Economy | 7 maps + 1 overview | 199 |
+| Static GK | 12 maps + 1 overview | 418 |
+| Biology | 3 maps + 1 overview | 148 |
 | JCA | 28 | 624 |
 
 **On the Constitution's maps an article number is a link.** That is the `arts`
@@ -710,6 +720,38 @@ lay themselves out below as the row they already become on a narrow screen.
 read. "Panipat, Khanwa, Chanderi, Ghaghra — 26, 27, 28, 29." "Zat is the man,
 sawar is the horse." "Three Panipats, three different losers." They are
 mnemonics for what is already on the branch, never a new fact.
+
+## Practice
+
+`#/practice`. Ten or twenty questions at a time, drawn at random from every
+mind map on the site — **1,807 lines across seven subjects** — mixed, or from
+one subject. Read the prompt, say the answer, press to see it, and mark
+yourself; what you miss is listed at the end with a link to the map it came
+from, so the next thing to read is already chosen.
+
+**The question bank was already there.** A map leaf is written `[key, text]`:
+the key is the prompt and stays visible when the map is covered, the text is
+the answer and is what gets blanked. That is a few thousand question-and-answer
+pairs nobody had to write twice, and `pracBuild` walks every map in every
+subject once to pool them. A leaf with no key never becomes a question,
+because there is nothing to ask with.
+
+**There are no options to choose from, on purpose.** These lines were written
+as a prompt and an answer, not as multiple choice, and inventing three wrong
+answers for each would be inventing content. The marking is the reader's own:
+*I knew it* or *I missed it*. Space shows the answer, 1 and 2 mark it, so a
+set can be done with the hands on the keys.
+
+**JCA is excluded.** That paper has its own MCQ practice and its own mock test,
+with real options, negative marking and a clock, because it is examined
+differently. `PRAC_SUBJECTS` lists the seven that are in, so adding an eighth
+is one line once that subject has maps.
+
+Drawing is a shuffle of the indices and then a slice, not a random pick each
+time: drawing with replacement would repeat a question inside one set of ten,
+which reads as a bug however random it is. The run is held in memory and the
+box is redrawn in place, so Back leaves the set rather than stepping through
+the questions inside it.
 
 ## Adding another subject
 
@@ -801,6 +843,8 @@ of them so a reader can check what a summary lost.
 | `data-hist-maps.js` | The 9 Modern History mind maps, from the five history data files |
 | `data-coi-maps.js` | The 13 Constitution mind maps, from the articles, the notes and the exam layer |
 | `data-econ-maps.js` | The 8 Indian Economy mind maps, from `data-economy.js` |
+| `data-gk-maps.js` | The 13 Static GK mind maps, grouping the 23 packs |
+| `data-bio-maps.js` | The 4 Biology mind maps, from `data-biology.js` |
 | `data-daily.js` | The dated daily study sets: current affairs, and recaps of what was added |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline. A data file whose new fields app.js now reads carries a `?v=` query in `index.html` and in `ASSETS`; bump it on such a deploy, or the first visit afterwards pairs new code with old cached data |

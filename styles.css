@@ -1626,6 +1626,36 @@ button.pill{background:transparent;cursor:pointer;font-family:var(--mono)}
 .mqsol.ok{border-left-color:var(--gold)}
 .mqsol b{color:var(--ink)}
 
+/* ---- the practice section ----
+
+   It borrows the maths quiz's furniture - the progress bar, the counter, the
+   card, the solution box, the finish panel - because it is the same shape of
+   thing and a second set of styles for it would only drift. Three additions:
+   a line saying where the question came from, a row for the two marking
+   buttons, and a quieter second button so that "I missed it" does not look
+   like the thing to press. */
+.pwhere{
+  font-family:var(--mono);font-size:var(--t-micro);letter-spacing:.08em;
+  text-transform:uppercase;color:var(--dimmer);margin:0 0 var(--s3);
+}
+.pacts{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s3);margin-top:var(--s5)}
+/* One row a subject: the name, how many lines it has, and the two sizes. */
+.pracsubs{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.pracsubs li{
+  display:flex;align-items:baseline;gap:var(--s3);flex-wrap:wrap;
+  padding:12px 2px;border-bottom:1px solid var(--line);
+}
+.pracsubs .pn{flex:1 1 auto;font-size:var(--t-body);font-weight:600;color:var(--ink)}
+.pracsubs .pc{font-family:var(--mono);font-size:var(--t-micro);color:var(--dimmer)}
+.pracsubs .pb{display:flex;gap:var(--s2);flex:0 0 auto}
+.pracsubs .pill{min-width:44px;text-align:center}
+.pill.ghost{color:var(--dim);border-color:var(--line)}
+.pill.ghost:hover{color:var(--ink);border-color:var(--line2)}
+@media (max-width:620px){
+  .pacts{flex-direction:column;align-items:stretch}
+  .pacts .pill.big{text-align:center}
+}
+
 /* ---- the review list ---- */
 .mwrong{
   margin-top:var(--s4);padding:var(--s4) var(--s5);background:var(--panel);

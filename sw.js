@@ -14,14 +14,14 @@
      once, fetch a fresh one in the background, and use that next time. Fast on
      every visit, and never more than one visit behind.  */
 
-var CACHE = 'article-machine-v40';
+var CACHE = 'article-machine-v41';
 var ASSETS = [
   './', './index.html', './styles.css', './app.js',
   './data-articles.js', './data-amendments.js', './data-schedules.js',
   './data-cases.js', './data-highyield.js', './data-coi-maps.js', './data-econ-maps.js',
   './data-history.js', './data-history-hy.js', './data-hist-maps.js',
-  './data-economy.js?v=22', './data-gk.js?v=22',
-  './data-assembly.js', './data-biology.js',
+  './data-economy.js?v=22', './data-gk.js?v=22', './data-gk-maps.js',
+  './data-assembly.js', './data-biology.js', './data-bio-maps.js',
   './data-treaties.js', './data-artmap.js',
   './data-raj.js', './data-congress.js',
   './data-maths.js', './data-maths-mcq.js',
