@@ -319,6 +319,12 @@ instead of picking a side quietly.
 Every event is validated to fall inside the era it is filed under; that check
 caught five misfiled events on the first run.
 
+**Mind maps** (`#/history/maps`). Eight — the timeline, the Acts, the
+movements, the people, the Congress sessions, the Governors-General and
+Viceroys, the treaties and the quick-fact tables — and one of the whole
+subject, 307 lines in all. Every section page carries a *Revise it* link to
+its own map. See *The mind maps*.
+
 ## Indian Economy
 
 | | |
@@ -631,16 +637,27 @@ hundred lines of `app.js`.
 
 ## The mind maps
 
-Three subjects carry mind maps now: the JCA law paper (above), **Geography**
-at `#/geography/maps` and **Ancient and Medieval History** at `#/early/maps`.
-Each subject has one map per topic and one map of the whole subject whose
-branches open the others.
+Four subjects carry mind maps now: the JCA law paper (above), **Geography** at
+`#/geography/maps`, **Ancient and Medieval History** at `#/early/maps` and
+**Modern History** at `#/history/maps`. Each subject has one map per topic and
+one map of the whole subject whose branches open the others.
 
 | | Maps | Lines |
 |---|---|---|
 | JCA | 28 | 624 |
 | Geography | 7 topics + 1 overview | 245 |
 | Ancient and Medieval | 7 maps + 1 overview | 252 |
+| Modern History | 8 maps + 1 overview | 307 |
+
+**Modern History is the one that does not line up with its own pages.** The
+other subjects are a list of topics with a page each, so a map and a topic are
+the same thing. Modern History keeps its material in eight different sections
+— the timeline, the Acts, the movements, the people, the Congress sessions,
+the administrators, the treaties and the quick-fact tables — so the order of
+its maps and the way back from each one are written out in `HIST_MAP_ORDER`,
+and `HIST_MAP_FOR` pairs each section with the map that revises it. One
+Viceroy is at `#/history/ruler/curzon` and his map is at `#/history/maps/raj`;
+nothing in the addresses would tell you that.
 
 **Nothing on a map is new.** Every line is taken from the tables and the SSC
 notes on the topic pages, which is where the facts are checked and where the
@@ -759,6 +776,7 @@ of them so a reader can check what a summary lost.
 | `data-jca-maps.js` | The 28 JCA mind maps, every line taken from those three files |
 | `data-geo-maps.js` | The 8 Geography mind maps, every line taken from `data-geography.js` |
 | `data-early-maps.js` | The 8 Ancient and Medieval mind maps, from `data-early.js` |
+| `data-hist-maps.js` | The 9 Modern History mind maps, from the five history data files |
 | `data-daily.js` | The dated daily study sets: current affairs, and recaps of what was added |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline. A data file whose new fields app.js now reads carries a `?v=` query in `index.html` and in `ASSETS`; bump it on such a deploy, or the first visit afterwards pairs new code with old cached data |

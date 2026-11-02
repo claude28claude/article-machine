@@ -1916,6 +1916,11 @@ footer .chip.chk,.why .chip.chk,.plain .chip.chk{margin-left:0}
   background:var(--hue);opacity:.75;
 }
 .mmk{font-family:var(--mono);font-size:var(--t-small);color:var(--gold);margin-right:.55em;text-decoration:none;white-space:nowrap}
+/* A key is kept on one line so that "Article 21(3)" or "1773 Regulating" is
+   not split - but a long one ("Poverty and Un-British Rule") is wider than a
+   phone, and nowrap made the branch, and with it the page, scroll sideways.
+   On a narrow screen the key may wrap; it still reads as the prompt. */
+@media (max-width:620px){.mmk{white-space:normal}}
 a.mmk:hover{text-decoration:underline}
 .mmhook{
   margin:var(--s2) 0 0;padding-top:var(--s2);border-top:1px dashed var(--line2);

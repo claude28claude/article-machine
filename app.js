@@ -2176,9 +2176,125 @@ function histCongress(slug) {
   return render(histShell(histCrumb('Congress sessions') + body));
 }
 
+/* ---------------------------- the Modern History maps
+
+   The same machinery as the Geography, Ancient and Medieval, and JCA maps.
+   None of these nine is a topic page's twin: the subject keeps its material
+   in eight different sections, so the order and the way back to the notes are
+   written out here rather than read off EARLY-style topic ids. */
+
+var HIST_MAPS = window.HIST_MAPS || {};
+
+var HIST_MAP_ORDER = [
+  { id: 'timeline',  n: 'The timeline',        notes: '#/history',
+    label: 'The timeline in full' },
+  { id: 'acts',      n: 'The Acts, 1773–1947', notes: '#/history/acts',
+    label: 'The Acts in full' },
+  { id: 'movements', n: 'The movements',       notes: '#/history/movements',
+    label: 'The movements in full' },
+  { id: 'people',    n: 'The people',          notes: '#/history/people',
+    label: 'The people in full' },
+  { id: 'congress',  n: 'The Congress sessions', notes: '#/history/congress',
+    label: 'Every session, 1885 to 1948' },
+  { id: 'raj',       n: 'Governors-General and Viceroys', notes: '#/history/raj',
+    label: 'All of them, office by office' },
+  { id: 'treaties',  n: 'The treaties',        notes: '#/history/treaties',
+    label: 'The treaties in full' },
+  { id: 'facts',     n: 'The quick facts',     notes: '#/history/high-yield/facts',
+    label: 'The tables in full' }
+];
+
+function histMap(id) {
+  if (!HIST_MAPS.br) return null;
+  return id ? ((HIST_MAPS.topics || {})[id] || null) : HIST_MAPS;
+}
+
+function histMapOrder() {
+  return HIST_MAP_ORDER.filter(function (x) { return histMap(x.id); });
+}
+
+function histMapCrumb(here) {
+  return '<div class="crumb"><a href="#/history">Modern History</a> → ' +
+    (here ? '<a href="#/history/maps">Mind maps</a> → ' + esc(here) : 'Mind maps') + '</div>';
+}
+
+function histMapsHub() {
+  var order = histMapOrder(), lines = 0;
+  order.forEach(function (x) { lines += mmFacts(histMap(x.id)); });
+
+  var h = histMapCrumb('') +
+    pageH1('Mind maps', 'The subject reduced to keywords: ' + order.length + ' maps and ' +
+      lines + ' lines between them, plus one map of the whole subject. Nothing here is new — ' +
+      'each line is a fact from the timeline, the tables or the notes, cut to the words the ' +
+      'question turns on.');
+
+  h += '<div class="block"><h3>How to learn from a map</h3><ol class="mmhow">' +
+    '<li><b>Read it once, out loud,</b> branch by branch. A hook is a line to say, not to read.</li>' +
+    '<li><b>Press Cover the details.</b> The branch names and the prompts stay; every answer ' +
+      'becomes a blank. Say each one, then tap it to check.</li>' +
+    '<li><b>Come back tomorrow, and again in three days.</b> The map you still cannot fill ' +
+      'is the section to go back to.</li>' +
+  '</ol></div>';
+
+  h += '<div class="block"><h3>The maps</h3><div class="grid">' +
+    '<a class="pcard" href="#/history/maps/all"><div class="pn">The whole subject</div>' +
+      '<div class="pt">All eight sections on one map, with the lines most worth knowing</div>' +
+      '<div class="pr">' + HIST_MAPS.br.length + ' branches · ' + mmFacts(HIST_MAPS) + ' lines</div></a>' +
+    order.map(function (x) {
+      var m = histMap(x.id);
+      return '<a class="pcard" href="#/history/maps/' + encodeURIComponent(x.id) + '">' +
+        '<div class="pn">' + esc(x.n) + '</div>' +
+        '<div class="pt">' + esc(m.br.map(function (b) { return unmark(b.h); }).join(' · ')) + '</div>' +
+        '<div class="pr">' + m.br.length + ' branches · ' + mmFacts(m) + ' lines</div></a>';
+    }).join('') + '</div></div>';
+
+  render(histShell(h));
+}
+
+function histMapPage(id) {
+  var whole = id === 'all';
+  var m = histMap(whole ? null : id);
+  if (!m) return notFound('There is no mind map for that part of Modern History.');
+
+  var order = histMapOrder(), i = -1;
+  order.forEach(function (x, k) { if (x.id === id) i = k; });
+  var cur = order[i], prev = order[i - 1], next = order[i + 1];
+
+  var h = histMapCrumb(whole ? 'The whole subject' : (cur ? cur.n : '')) +
+    pageH1(whole ? 'Modern History on one map' : cur.n,
+      (whole ? 'The whole subject as keywords. Each branch opens that section\'s own map. '
+             : 'Mind map. ') +
+      m.br.length + ' branches · ' + mmFacts(m) + ' lines, every one of them from the notes.') +
+    mmHtml(m, '#/history/maps', false);
+
+  if (whole) {
+    h += '<div class="stack"><a class="pill big" href="#/history/maps">Every map</a> ' +
+      '<a class="pill big" href="#/history">The timeline in full</a></div>';
+  } else {
+    h += '<div class="stack"><a class="pill big" href="' + cur.notes + '">' +
+      esc(cur.label) + '</a> ' +
+      '<a class="pill big" href="#/history/maps/all">The whole subject on one map</a></div>' +
+      '<div class="nextprev">' +
+      (prev ? '<a href="#/history/maps/' + encodeURIComponent(prev.id) + '">' +
+        '<span class="d">Previous map</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+      (next ? '<a class="r" href="#/history/maps/' + encodeURIComponent(next.id) + '">' +
+        '<span class="d">Next map</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+      '</div>';
+  }
+
+  render(histShell(h));
+  mmWire();
+}
+
+function histMaps(seg) {
+  if (!seg[0]) return histMapsHub();
+  histMapPage(seg[0]);
+}
+
 function historyRoute(seg) {
   switch (seg[0] || '') {
     case '':           return render(histTimeline());
+    case 'maps':       return histMaps(seg.slice(1));
     case 'high-yield': return render(histHigh(seg[1] || ''));
     case 'acts':       return render(histActs());
     case 'act':        return render(histActPage(seg[1]));
@@ -2203,6 +2319,7 @@ SUBJECTS.push({
   blurb: 'India from the Company\'s charter to the Constitution — the timeline, the Acts, the people, the movements, every Congress session and every Viceroy.',
   tabs: [
     { href: '#/history',            label: 'Timeline',   match: ['', 'event'] },
+    { href: '#/history/maps',       label: 'Mind maps',  match: ['maps'] },
     { href: '#/history/high-yield', label: 'High-yield', match: ['high-yield'] },
     { href: '#/history/acts',       label: 'Acts',       match: ['acts', 'act'] },
     { href: '#/history/people',     label: 'People',     match: ['people', 'person'] },
@@ -2248,6 +2365,10 @@ SUBJECTS.push({
         n: rajAll.length + ' in all',
         w: 'Clive to Rajagopalachari, in order, with the policies each one brought '
            + 'in and what they did to India.' },
+      { t: 'History - the mind maps', href: '#/history/maps',
+        n: histMapOrder().length + ' maps',
+        w: 'The timeline, the Acts, the movements, the people, the sessions, the Viceroys, the treaties and the quick facts, each reduced to keywords with a cover-and-recall drill.',
+        k: 'mind map revision recall keywords branches timeline acts movements viceroys treaties slogans' },
       { t: 'History - confused pairs', href: '#/history/high-yield/confusions',
         n: (HIST_HY.confusions || []).length + ' pairs',
         w: 'Plassey or Buxar, 1858 or 1861, which Act put dyarchy where.' },
@@ -7388,8 +7509,55 @@ function sideCase(id) {
 
 /* ------------------------------------------------------------- history */
 
+/* Which map revises the section you are reading. Modern History keeps its
+   material in eight sections, and each one has a map; the pairing is written
+   here rather than guessed, because the addresses do not match (one Viceroy
+   is #/history/ruler/x and his map is #/history/maps/raj). */
+var HIST_MAP_FOR = {
+  '': 'timeline', 'event': 'timeline',
+  'acts': 'acts', 'act': 'acts',
+  'movements': 'movements', 'movement': 'movements',
+  'people': 'people', 'person': 'people',
+  'congress': 'congress', 'session': 'congress',
+  'raj': 'raj', 'ruler': 'raj',
+  'treaties': 'treaties'
+};
+
 function sideHistory(seg) {
+  var k = seg[0] || '', revise = '';
+  var mapId = k === 'high-yield' && seg[1] === 'facts' ? 'facts' : HIST_MAP_FOR[k];
+  if (k !== 'maps' && mapId && histMap(mapId)) {
+    var nm = null;
+    histMapOrder().forEach(function (x) { if (x.id === mapId) nm = x.n; });
+    revise = sLinks('Revise it', [
+      { href: '#/history/maps/' + mapId, t: nm || 'The mind map',
+        d: mmFacts(histMap(mapId)) + ' lines, with a cover-and-recall drill' }
+    ], null, 1);
+  }
+  return revise ? [revise].concat(sideHistoryCards(seg)) : sideHistoryCards(seg);
+}
+
+function sideHistoryCards(seg) {
   var k = seg[0] || '';
+
+  if (k === 'maps') {
+    var here = seg[1] || '', cur = null;
+    histMapOrder().forEach(function (x) { if (x.id === here) cur = x; });
+    var every = [{ href: '#/history/maps/all', t: 'The whole subject',
+                   d: 'All eight sections on one map', on: here === 'all' }]
+      .concat(histMapOrder().map(function (x) {
+        return { href: '#/history/maps/' + encodeURIComponent(x.id), t: x.n,
+                 d: mmFacts(histMap(x.id)) + ' lines', on: x.id === here };
+      }));
+    return [
+      cur ? sFacts('This map', [
+        ['Branches', String(histMap(cur.id).br.length)],
+        ['Lines', String(mmFacts(histMap(cur.id)))],
+        ['The notes behind it', cur.label, cur.notes]
+      ], 'Every line on the map comes from those notes.') : '',
+      sLinks('Every map', every, null, 12)
+    ];
+  }
 
   if (k === 'event') {
     var ev = histEvent[seg[1]];
