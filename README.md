@@ -665,16 +665,24 @@ would make twenty-three maps, and a map of six facts is not a map; they are
 grouped into twelve instead — the cups with the sports terms and Paris, the
 rivers with the parks and the monuments — and `GK_MAP_ORDER` names the packs
 each map covers, so a map links back to the full lists behind it and every
-pack page carries a *Revise it* link to the map that covers it.
+pack page carries a *Revise it* link to the map that covers it. The thirteenth,
+**Census 2011**, has no pack behind it at all: it was written for the 4
+November set, so its entry names that page in `notes` instead and the block
+beneath the map reads *The notes behind it*.
+
+**The counts in those sentences are counted, not typed.** "All thirteen on one
+map" is `numWord(gkMapOrder().length)`, so adding a map changes the sentence
+too. They were written out as words once, and three of them were already stale
+by the time anyone noticed.
 
 | | Maps | Lines |
 |---|---|---|
 | Constitution | 13 maps + 1 overview | 364 |
 | Modern History | 8 maps + 1 overview | 307 |
-| Ancient and Medieval | 8 maps + 1 overview | 315 |
+| Ancient and Medieval | 10 maps + 1 overview | 396 |
 | Geography | 7 topics + 1 overview | 245 |
-| Indian Economy | 10 maps + 1 overview | 277 |
-| Static GK | 12 maps + 1 overview | 440 |
+| Indian Economy | 11 maps + 1 overview | 320 |
+| Static GK | 13 maps + 1 overview | 486 |
 | Biology | 3 maps + 1 overview | 196 |
 | The new criminal laws | 5 maps + 1 overview | 126 |
 | JCA | 28 | 624 |
@@ -746,10 +754,52 @@ Where standard books disagree, the set says so rather than picking: the capital
 moved to Daulatabad in 1327 or 1326, and the token currency was issued in
 1329–30 or 1330–32. The failure, and the reason for it, are not in dispute.
 
+## The 4 November set
+
+`#/daily/4-november`. Nine parts, **86 highlighted notes and 146 table rows**,
+on three things:
+
+**The Sustainable Development Goals**, which the site did not have at all — it
+knew the phrase only as the name of a NITI Aayog index. Two parts: the 2030
+Agenda with all seventeen goals, the 169 targets and 231 indicators, the line
+back through Rio+20, the MDGs, the Brundtland Report and Stockholm; then India
+and the SDGs — NITI Aayog as the nodal body, MoSPI and the National Indicator
+Framework, the SDG India Index edition by edition, and the distinction a
+question turns on between that index and the SDSN's own.
+
+**Census 2011**, which the site also did not have. Three parts: the headline
+figures, the state and union-territory records in the highest-and-lowest form
+the question is actually asked in, and the census itself from Mayo in 1872 to
+the two-phase count announced for 2026–27.
+
+**The Mughal empire in detail.** Ancient and Medieval History already held the
+battles, the administration, Akbar's religious policy, the architecture and
+the books. The four parts here are what those five topics do not carry: the
+reigns set out one by one with the campaigns and the treaties, the nobility
+and the mansab and jagir systems with the provincial machinery and the
+economy, the Rajput and Deccan policies with Shivaji and the Marathas, and the
+decline — the causes as an answer is expected to list them, and the forty
+years in which it happened.
+
+**Four mind maps came out of it**, because a set that is only prose cannot be
+drilled and cannot feed Practice: `#/economy/maps/sdg`, `#/gk/maps/census`,
+`#/early/maps/mughal-state` and `#/early/maps/mughal-decline`. Each points its
+"notes" button back at this set rather than at a topic page, the way the
+Sultanate map does.
+
+**Every figure in the set is asserted against the map that repeats it.**
+Ninety-five of them — the population, each ratio, each state record, the goal
+and target counts, the Maratha and Mughal dates — are checked to appear in
+both, because a figure copied into a map by hand is a figure that can be
+copied wrong. Where editions move, the set says which edition: the SDG India
+Index score is given as 57 in 2018 through 71 in 2023–24 rather than as one
+number, and India's rank on the SDSN's index is given as a range, because it
+changes every year.
+
 ## Practice
 
 `#/practice`. Ten or twenty questions at a time, drawn at random from every
-mind map on the site — **2,167 lines across eight subjects** — mixed, or from
+mind map on the site — **2,331 lines across eight subjects** — mixed, or from
 one subject. Read the prompt, say the answer, press to see it, and mark
 yourself; what you miss is listed at the end with a link to the map it came
 from, so the next thing to read is already chosen.
@@ -864,7 +914,7 @@ of them so a reader can check what a summary lost.
 | `data-jca-judiciary.js`, `data-jca-scr.js`, `data-jca-osr.js` | The JCA law paper: notes, tables, confused pairs and 651 questions |
 | `data-jca-maps.js` | The 28 JCA mind maps, every line taken from those three files |
 | `data-geo-maps.js` | The 8 Geography mind maps, every line taken from `data-geography.js` |
-| `data-early-maps.js` | The 9 Ancient and Medieval mind maps, from `data-early.js` and the 3 November set |
+| `data-early-maps.js` | The 11 Ancient and Medieval mind maps, from `data-early.js` and the 3 and 4 November sets |
 | `data-hist-maps.js` | The 9 Modern History mind maps, from the five history data files |
 | `data-coi-maps.js` | The 14 Constitution mind maps, from the articles, the notes and the exam layer |
 | `data-econ-maps.js` | The 11 Indian Economy mind maps, from `data-economy.js` |

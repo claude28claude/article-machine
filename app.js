@@ -509,6 +509,17 @@ function esc(s) {
 var ORD = ['', 'First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh',
   'Eighth', 'Ninth', 'Tenth', 'Eleventh', 'Twelfth'];
 
+/* Twelve rather than 12, so that a counted number reads like the prose
+   around it. Past twenty it falls back to the digits, which is far past
+   anything on this site. */
+var NWORD = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven',
+  'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen',
+  'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
+
+function numWord(n) {
+  return NWORD[n] || String(n);
+}
+
 function ordinal(n) {
   var s = ['th', 'st', 'nd', 'rd'], v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
@@ -2246,7 +2257,8 @@ function histMapsHub() {
 
   h += '<div class="block"><h3>The maps</h3><div class="grid">' +
     '<a class="pcard" href="#/history/maps/all"><div class="pn">The whole subject</div>' +
-      '<div class="pt">All eight sections on one map, with the lines most worth knowing</div>' +
+      '<div class="pt">All ' + numWord(order.length) + ' sections on one map, ' +
+        'with the lines most worth knowing</div>' +
       '<div class="pr">' + HIST_MAPS.br.length + ' branches · ' + mmFacts(HIST_MAPS) + ' lines</div></a>' +
     order.map(function (x) {
       var m = histMap(x.id);
@@ -2587,13 +2599,26 @@ var EARLY_MAP_SULTANATE = { id: 'sultanate', n: 'The Delhi Sultanate',
                             notes: '#/daily/3-november/sultanate',
                             notesLabel: 'The notes, in the 3 November set' };
 
+/* The nobility and the provinces, and the Deccan and the decline, were
+   written for the 4 November set as well. The first sits next to the
+   administration topic, which it continues; the second comes last, because
+   that is where it belongs. */
+var EARLY_MAP_AFTER = {
+  'mughal-admin': { id: 'mughal-state', n: 'Nobility and provinces',
+                    notes: '#/daily/4-november/mughal-state',
+                    notesLabel: 'The notes, in the 4 November set' }
+};
+var EARLY_MAP_DECLINE = { id: 'mughal-decline', n: 'The Deccan and the decline',
+                          notes: '#/daily/4-november',
+                          notesLabel: 'The notes, in the 4 November set' };
+
 function earlyMap(id) {
   if (!EARLY_MAPS.br) return null;
   return id ? ((EARLY_MAPS.topics || {})[id] || null) : EARLY_MAPS;
 }
 
 /* Every map in the order the subject reads: the roll first, then the topics
-   that have one. */
+   that have one, each followed by any map written to continue it. */
 function earlyMapOrder() {
   var out = [];
   if (earlyMap(EARLY_MAP_SULTANATE.id)) out.push(EARLY_MAP_SULTANATE);
@@ -2602,7 +2627,10 @@ function earlyMapOrder() {
     if (earlyMap(t.id)) out.push({ id: t.id, n: t.n,
       notes: '#/early/topic/' + encodeURIComponent(t.id),
       notesLabel: 'The full notes · ' + earlyRows(t) + ' facts' });
+    var ex = EARLY_MAP_AFTER[t.id];
+    if (ex && earlyMap(ex.id)) out.push(ex);
   });
+  if (earlyMap(EARLY_MAP_DECLINE.id)) out.push(EARLY_MAP_DECLINE);
   return out;
 }
 
@@ -3202,7 +3230,10 @@ var GK_MAP_ORDER = [
   { id: 'orgs',    n: 'Organisations',           packs: ['hq', 'orgs'] },
   { id: 'science', n: 'Instruments and units',   packs: ['science', 'body'] },
   { id: 'space',   n: 'Space and defence',       packs: ['space', 'isro'] },
-  { id: 'states',  n: 'States and the world',    packs: ['states', 'world'] }
+  { id: 'states',  n: 'States and the world',    packs: ['states', 'world'] },
+  { id: 'census',  n: 'Census 2011',              packs: [],
+    notes: '#/daily/4-november/census',
+    notesLabel: 'The notes, in the 4 November set' }
 ];
 
 function gkMap(id) {
@@ -3214,13 +3245,24 @@ function gkMapOrder() {
   return GK_MAP_ORDER.filter(function (x) { return gkMap(x.id); });
 }
 
-/* The packs a map covers, as links back to the full lists. */
+/* The packs a map covers, as links back to the full lists. A map whose
+   material was written for a daily set rather than a pack names that page
+   in `notes` instead, and gets a single link to it. */
 function gkMapPacks(x) {
-  return (x.packs || []).map(function (id) {
+  var out = (x.packs || []).map(function (id) {
     var p = gkPackById[id];
     return p ? { href: '#/gk/pack/' + encodeURIComponent(p.id), t: p.n,
                  d: gkRows(p) + ' facts' } : null;
   }).filter(Boolean);
+  if (!out.length && x.notes) {
+    out.push({ href: x.notes, t: x.notesLabel || 'The notes behind it', d: '' });
+  }
+  return out;
+}
+
+/* "The packs behind it" is wrong for a map that has none. */
+function gkPacksLabel(x) {
+  return (x && x.packs && x.packs.length) ? 'The packs behind it' : 'The notes behind it';
 }
 
 function gkMapCrumb(here) {
@@ -3249,7 +3291,8 @@ function gkMapsHub() {
 
   h += '<div class="block"><h3>The maps</h3><div class="grid">' +
     '<a class="pcard" href="#/gk/maps/all"><div class="pn">The whole subject</div>' +
-      '<div class="pt">All twelve on one map, with the lines most worth knowing</div>' +
+      '<div class="pt">All ' + numWord(order.length) + ' on one map, ' +
+        'with the lines most worth knowing</div>' +
       '<div class="pr">' + GK_MAPS.br.length + ' branches · ' + mmFacts(GK_MAPS) + ' lines</div></a>' +
     order.map(function (x) {
       var m = gkMap(x.id);
@@ -3283,11 +3326,14 @@ function gkMapPage(id) {
     h += '<div class="stack"><a class="pill big" href="#/gk/maps">Every map</a> ' +
       '<a class="pill big" href="#/gk">All ' + (GKD.packs || []).length + ' packs</a></div>';
   } else {
-    h += '<div class="block"><h3>The packs behind it</h3><div class="grid">' +
-      gkMapPacks(cur).map(function (p) {
-        return '<a class="pcard" href="' + p.href + '"><div class="pn">' + esc(p.t) + '</div>' +
-          '<div class="pr">' + esc(p.d) + '</div></a>';
-      }).join('') + '</div></div>' +
+    var behind = gkMapPacks(cur);
+    h += (behind.length
+      ? '<div class="block"><h3>' + gkPacksLabel(cur) + '</h3><div class="grid">' +
+        behind.map(function (p) {
+          return '<a class="pcard" href="' + p.href + '"><div class="pn">' + esc(p.t) + '</div>' +
+            (p.d ? '<div class="pr">' + esc(p.d) + '</div>' : '') + '</a>';
+        }).join('') + '</div></div>'
+      : '') +
       '<div class="stack"><a class="pill big" href="#/gk/maps/all">The whole subject on one map</a></div>' +
       '<div class="nextprev">' +
       (prev ? '<a href="#/gk/maps/' + encodeURIComponent(prev.id) + '">' +
@@ -3435,7 +3481,9 @@ SUBJECTS.push({
                n: gkRows(p) + ' facts' };
     }).concat([{ t: 'Static GK — the mind maps', href: '#/gk/maps',
                  n: gkMapOrder().length + ' maps',
-                 w: 'The twenty-three packs grouped into twelve maps, each reduced to keywords with a cover-and-recall drill.',
+                 w: 'The ' + numWord((GKD.packs || []).length) + ' packs grouped into ' +
+                  numWord(gkMapOrder().length) + ' maps, each reduced to keywords ' +
+                  'with a cover-and-recall drill.',
                  k: 'mind map revision recall keywords branches symbols dances awards cups days books organisations' },
                { t: 'Static GK — confused pairs', href: '#/gk/confusions',
                  n: (GKD.confusions || []).length + ' pairs',
@@ -7750,7 +7798,8 @@ function sideCoiMaps(seg) {
   var here = seg[0] || '', cur = null;
   coiMapOrder().forEach(function (x) { if (x.id === here) cur = x; });
   var every = [{ href: '#/maps/all', t: 'The whole Constitution',
-                 d: 'All twelve on one map', on: here === 'all' }]
+                 d: 'All ' + numWord(coiMapOrder().length) + ' on one map',
+                 on: here === 'all' }]
     .concat(coiMapOrder().map(function (x) {
       return { href: '#/maps/' + encodeURIComponent(x.id), t: x.n,
                d: mmFacts(coiMap(x.id)) + ' lines', on: x.id === here };
@@ -7956,7 +8005,8 @@ function sideHistoryCards(seg) {
     var here = seg[1] || '', cur = null;
     histMapOrder().forEach(function (x) { if (x.id === here) cur = x; });
     var every = [{ href: '#/history/maps/all', t: 'The whole subject',
-                   d: 'All eight sections on one map', on: here === 'all' }]
+                   d: 'All ' + numWord(histMapOrder().length) + ' sections on one map',
+                   on: here === 'all' }]
       .concat(histMapOrder().map(function (x) {
         return { href: '#/history/maps/' + encodeURIComponent(x.id), t: x.n,
                  d: mmFacts(histMap(x.id)) + ' lines', on: x.id === here };
@@ -8255,13 +8305,14 @@ function sideGk(seg) {
     var here = seg[1] || '', cur = null;
     gkMapOrder().forEach(function (x) { if (x.id === here) cur = x; });
     var every = [{ href: '#/gk/maps/all', t: 'The whole subject',
-                   d: 'All twelve on one map', on: here === 'all' }]
+                   d: 'All ' + numWord(gkMapOrder().length) + ' on one map',
+                   on: here === 'all' }]
       .concat(gkMapOrder().map(function (x) {
         return { href: '#/gk/maps/' + encodeURIComponent(x.id), t: x.n,
                  d: mmFacts(gkMap(x.id)) + ' lines', on: x.id === here };
       }));
     return [
-      cur ? sLinks('The packs behind it', gkMapPacks(cur), null, 6) : '',
+      cur ? sLinks(gkPacksLabel(cur), gkMapPacks(cur), null, 6) : '',
       sLinks('Every map', every, null, 14)
     ];
   }
@@ -8827,7 +8878,8 @@ function coiMapsHub() {
 
   h += '<div class="block"><h3>The maps</h3><div class="grid">' +
     '<a class="pcard" href="#/maps/all"><div class="pn">The whole Constitution</div>' +
-      '<div class="pt">All twelve on one map, with the lines most worth knowing</div>' +
+      '<div class="pt">All ' + numWord(order.length) + ' on one map, ' +
+        'with the lines most worth knowing</div>' +
       '<div class="pr">' + COI_MAPS.br.length + ' branches · ' + mmFacts(COI_MAPS) + ' lines</div></a>' +
     order.map(function (x) {
       var m = coiMap(x.id);
@@ -8905,6 +8957,8 @@ var ECON_MAP_ORDER = [
     label: 'The full notes' },
   { id: 'world',        n: "The world's bodies",   notes: '#/economy/topic/international',
     label: 'The full notes' },
+  { id: 'sdg',          n: 'The SDGs',             notes: '#/daily/4-november/sdg',
+    label: 'The notes, in the 4 November set' },
   { id: 'dates',        n: 'The dates',            notes: '#/economy/high-yield/facts',
     label: 'The quick-fact tables' }
 ];

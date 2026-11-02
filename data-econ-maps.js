@@ -79,6 +79,12 @@ br: [
          ["WTO", "from ==1 January 1995==, replacing ==GATT== — and ==binding== dispute settlement"],
          ["Human Development Report", "the ==UNDP==; the ==World Development Report== the ==World Bank=="]] },
 
+  { h: "The Sustainable Development Goals", to: "sdg",
+    lv: [["How many", "==17 goals==, ==169 targets==, ==231 indicators=="],
+         ["Adopted", "==25 September 2015==, by ==all 193== states, in force ==1 January 2016=="],
+         ["Replaced", "the ==MDGs==, ==2000–15==, which had ==8 goals=="],
+         ["India's nodal body", "==NITI Aayog==, and its ==SDG India Index=="]] },
+
   { h: "The dates to know cold", to: "dates",
     lv: [["6 June 1966", "the rupee ==devalued== about ==36.5%=="],
          ["19 July 1969", "==14 banks== nationalised"],
@@ -449,6 +455,66 @@ br: [
 ]},
 
 /* ================================================== THE DATES */
+sdg: {
+hub: "The SDGs",
+sub: "The 2030 Agenda, and India's index",
+br: [
+  { h: "The numbers",
+    lv: [["How many", "==17 goals==, ==169 targets==, ==231 unique indicators=="],
+         ["Adopted", "==25 September 2015==, at the ==UN Sustainable Development Summit==, ==New York=="],
+         ["By", "==all 193== member states"],
+         ["The document", "==Transforming our world: the 2030 Agenda==, resolution ==70/1=="],
+         ["In force", "==1 January 2016==, to ==2030=="],
+         ["The five Ps", "==People, Planet, Prosperity, Peace, Partnership=="],
+         ["The principle", "==leave no one behind=="],
+         ["Binding?", "==no== — a ==political commitment==, reported ==voluntarily=="]],
+    m: "17, 169, 231 — and 25 September 2015." },
+
+  { h: "The seventeen goals",
+    lv: [["1 to 4", "==No Poverty==, ==Zero Hunger==, ==Good Health==, ==Quality Education=="],
+         ["5 to 8", "==Gender Equality==, ==Clean Water==, ==Clean Energy==, ==Decent Work=="],
+         ["9 to 12", "==Industry==, ==Reduced Inequalities==, ==Sustainable Cities==, ==Responsible Consumption=="],
+         ["13 to 17", "==Climate Action==, ==Life Below Water==, ==Life on Land==, ==Peace and Justice==, ==Partnerships=="],
+         ["Goal 5", "==Gender Equality=="],
+         ["Goal 13", "==Climate Action=="],
+         ["Goal 17", "==Partnerships for the Goals== — the ==last== one"]],
+    m: "13 climate, 14 water, 15 land — then 16 peace and 17 partnership." },
+
+  { h: "Where they came from",
+    lv: [["1972", "==Stockholm== — the ==first== world environment conference; ==UNEP== came of it"],
+         ["1987", "the ==Brundtland Report==, ==Our Common Future== — defines ==sustainable development=="],
+         ["", "the ==World Commission on Environment and Development==, chaired by ==Gro Harlem Brundtland=="],
+         ["1992", "==Earth Summit, Rio== — ==Agenda 21==, the ==UNFCCC==, the ==CBD=="],
+         ["2000", "the ==Millennium Declaration== and the ==MDGs=="],
+         ["2012", "==Rio+20== — ==The Future We Want==, and an ==Open Working Group of thirty=="],
+         ["2015", "==25 September== — the ==2030 Agenda=="]] },
+
+  { h: "MDGs against SDGs",
+    lv: [["MDGs", "==2000–15== — ==8 goals==, ==21 targets==, ==60 indicators=="],
+         ["SDGs", "==2016–30== — ==17 goals==, ==169 targets==, ==231 indicators=="],
+         ["Who", "the MDGs for ==developing== countries; the SDGs for ==every== country"],
+         ["How written", "the MDGs ==by experts==; the SDGs by ==three years of negotiation=="],
+         ["What was added", "==inequality (10)==, ==climate (13)==, ==peace (16)==, ==finance (17)=="]],
+    m: "Eight became seventeen, and the four that were added are the four the MDGs were criticised for missing." },
+
+  { h: "India and the SDGs",
+    lv: [["Nodal body", "==NITI Aayog== — ==not== the Environment Ministry"],
+         ["The indicators", "==MoSPI==, through the ==National Indicator Framework=="],
+         ["SDG India Index", "NITI Aayog's, from ==December 2018== — scores ==every State and UT=="],
+         ["The score", "==57 (2018)==, ==60 (2019)==, ==66 (2020–21)==, ==71 (2023–24)=="],
+         ["Top", "==Kerala== in every edition; ==Kerala and Uttarakhand== level in ==2023–24=="],
+         ["Reviews", "==Voluntary National Reviews== in ==2017== and ==2020=="],
+         ["Localisation", "==Panchayati Raj Ministry==, in ==nine themes=="]] },
+
+  { h: "Who publishes which ranking",
+    lv: [["SDG India Index", "==NITI Aayog== — ==Indian States== against each other"],
+         ["Sustainable Development Report", "==SDSN== with ==Bertelsmann Stiftung== — ==countries=="],
+         ["Is the second official?", "==no== — it is ==independent of the UN=="],
+         ["Where the UN reviews", "the ==High-Level Political Forum==, ==yearly== under ==ECOSOC=="],
+         ["", "and ==every four years== at ==head-of-government== level"]],
+    m: "The world rank is the SDSN's; the State scores are NITI Aayog's." }
+]},
+
 dates: {
 hub: "The dates",
 sub: "The ones asked as they stand",

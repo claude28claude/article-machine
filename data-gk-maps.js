@@ -91,6 +91,12 @@ br: [
          ["Chandrayaan-3", "landed ==23 August 2023==, near the ==lunar south pole=="],
          ["Mangalyaan", "Mars orbit at the ==first attempt==, ==24 September 2014=="]] },
 
+  { h: "Census 2011", to: "census",
+    lv: [["Population", "==121.09 crore==; ==growth 17.70==, ==density 382=="],
+         ["Sex ratio", "==943== — but the ==child sex ratio fell to 919=="],
+         ["Literacy", "==74.04== — ==Kerala highest==, ==Bihar lowest=="],
+         ["First census", "==1872 Mayo==; ==first synchronous 1881 Ripon=="]] },
+
   { h: "States and the world", to: "states",
     lv: [["Longest border", "with ==Bangladesh==, about ==4,096 km==; the shortest with ==Afghanistan=="],
          ["First linguistic state", "==Andhra, 1953==, after ==Potti Sriramulu's== fast"],
@@ -644,6 +650,68 @@ br: [
 ]},
 
 /* ================================= STATES AND THE WORLD */
+census: {
+hub: "Census 2011",
+sub: "The figures, and the records",
+br: [
+  { h: "The headline figures",
+    lv: [["Population", "==1,210,854,977== — about ==121.09 crore=="],
+         ["Males, females", "==62.37== crore and ==58.65== crore"],
+         ["Decadal growth", "==17.70== per cent, from ==21.54== — the ==sharpest fall== since independence"],
+         ["Density", "==382== a square kilometre, from ==325=="],
+         ["Sex ratio", "==943==, up from ==933=="],
+         ["Child sex ratio", "==919==, ==down== from 927 — the ==lowest since independence=="],
+         ["Literacy", "==74.04== — male ==82.14==, female ==65.46=="],
+         ["Urban share", "==31.16== per cent"]],
+    m: "The sex ratio improved and the child sex ratio worsened, in the same census." },
+
+  { h: "The records — states",
+    lv: [["Most populous", "==Uttar Pradesh==, ==19.98== crore; ==least Sikkim==, ==6.11== lakh"],
+         ["Densest", "==Bihar 1,106==; ==least dense Arunachal Pradesh 17=="],
+         ["Sex ratio", "==Kerala 1,084==, the ==only state above 1,000==; ==lowest Haryana 879=="],
+         ["Literacy", "==Kerala 93.91==; ==lowest Bihar 63.82=="],
+         ["Female literacy", "==lowest Rajasthan 52.66=="],
+         ["Growth", "==highest Meghalaya 27.95==; ==Nagaland −0.58==, the ==only fall=="],
+         ["Child sex ratio", "==lowest Haryana 834=="],
+         ["Urbanised", "==most Goa==, about 62; ==least Himachal Pradesh==, about 10"]] },
+
+  { h: "The records — union territories",
+    lv: [["Most populous", "==Delhi==; ==least Lakshadweep==, ==64,473== — the ==smallest of any unit=="],
+         ["Densest", "==Delhi 11,320==; ==least Andaman and Nicobar 46=="],
+         ["Sex ratio", "==Puducherry 1,037== highest; ==Daman and Diu 618==, the ==lowest of any unit=="],
+         ["Literacy", "==Lakshadweep== is the ==highest union territory=="],
+         ["Urbanised", "==Delhi==, about ==97.5== per cent"],
+         ["Area", "==largest Ladakh==; ==smallest Lakshadweep=="]],
+    m: "Kerala and Haryana hold the state records; Puducherry and Daman and Diu the UT ones." },
+
+  { h: "Caste, tribe and religion",
+    lv: [["Scheduled Castes", "==16.6== per cent — ==20.14== crore"],
+         ["Scheduled Tribes", "==8.6== per cent — ==10.43== crore"],
+         ["Highest SC share", "==Punjab 31.9== per cent"],
+         ["Highest ST share", "==Mizoram 94.4== per cent among states; ==Lakshadweep== among UTs"],
+         ["Religion, released 2015", "==Hindu 79.8==, ==Muslim 14.2==, ==Christian 2.3=="],
+         ["", "==Sikh 1.7==, ==Buddhist 0.7==, ==Jain 0.4== per cent"]] },
+
+  { h: "The census itself",
+    lv: [["First census", "==1872==, under ==Lord Mayo== — ==not synchronous=="],
+         ["First synchronous", "==1881==, under ==Lord Ripon==, by ==W. C. Plowden=="],
+         ["2011 was", "the ==15th since 1872== and the ==7th after independence=="],
+         ["Commissioner", "==C. Chandramouli==; the motto ==Our Census, Our Future=="],
+         ["The law", "the ==Census Act, 1948== — answers are ==confidential== and ==not evidence=="],
+         ["Whose subject", "==Union== — ==entry 69== of the ==Union List=="],
+         ["Who runs it", "the ==Registrar General and Census Commissioner==, under ==Home Affairs=="],
+         ["Reference date", "==1 March==; ==1 October== of the year before for ==snow-bound== areas"]] },
+
+  { h: "The divides, and the next one",
+    lv: [["1911–21", "the ==only decade of decline== — the ==influenza of 1918==, famine, the war"],
+         ["1921", "the ==Year of the Great Divide=="],
+         ["1951", "the ==Year of the Small Divide== — growth begins to ==accelerate=="],
+         ["1931", "the ==last census to enumerate caste in full=="],
+         ["2021", "==did not happen== on time"],
+         ["Next", "announced ==June 2025==: ==1 October 2026== and ==1 March 2027==, with ==caste counted=="]],
+    m: "Great Divide 1921, Small Divide 1951 — and the only fall was the decade before the first of them." }
+]},
+
 states: {
 hub: "States and the world",
 sub: "Capitals, borders, currencies, parliaments",

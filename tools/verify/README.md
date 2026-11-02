@@ -36,3 +36,19 @@ presidency had no row of its own, Canning's Governor-Generalship was given as
 other seven were spelling variants of the same person — Dar and Dhar, Bose
 and Basu — and the site now prints both, because an answer key may use
 either.
+
+# Checking the figures in the 4 November set
+
+    node tools/verify/figures.js
+
+The Sustainable Development Goals, Census 2011 and the Mughal empire were
+written twice over: once as notes in `data-daily.js`, and again, cut to
+keywords, in the mind maps that drill them. Copying a number by hand into a
+second place is how a number goes wrong, so this asserts that each of 95
+figures — the population and every ratio, each state record, the goal and
+target counts, the Maratha and Mughal dates — appears in **both**, and that a
+handful of plausible slips (sex ratio 940, 16 goals, 196 targets) appear in
+neither.
+
+It exits 1 on a mismatch. Changing 943 to 940 in one of the two places makes
+it fail, which is the check working.

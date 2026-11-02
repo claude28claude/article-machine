@@ -29,6 +29,410 @@ window.DAILY = {
 
 sets: [
 
+  /* ------------------------------------------- 4 NOVEMBER */
+  {id:"4-november", d:"4 November", y:2026,
+ w:"The Sustainable Development Goals in full — the 2030 Agenda, all seventeen goals, and India's own index — Census 2011 with every record and ranking it is asked for, and the Mughal empire in detail: reign by reign, the nobility and the provinces, the Rajput and Deccan policies, the Marathas, and why it came apart.",
+ intro:"Two of these three were missing from the site altogether. The Sustainable Development Goals appeared only as the name of a NITI Aayog index, and the census of 2011 not at all — both are asked every sitting. The Mughal empire is on the site in five topics; what is here is the part those topics do not carry: the nobility, the provinces, the economy, the Rajput and Deccan policies, and the decline.",
+ parts:[
+
+  /* ================================================== SDGs */
+  {id:"sdg", tag:"Economy and environment · new on the site", h:"The Sustainable Development Goals",
+   w:"Where they came from, what the 2030 Agenda is, and the numbers behind the goals.",
+   notes:[
+    "The ==17 Sustainable Development Goals== were ==adopted on 25 September 2015== at the ==UN Sustainable Development Summit== in ==New York==, by ==all 193== member states.",
+    "The document is ==Transforming our world: the 2030 Agenda for Sustainable Development==, General Assembly ==resolution 70/1==. It ==came into force on 1 January 2016== and runs to ==2030==.",
+    "==17 goals==, ==169 targets==, ==231 unique indicators==. ==Goal 17== is ==partnerships==, the one that is about ==how the other sixteen get done==.",
+    "The ==five Ps==: ==People, Planet, Prosperity, Peace and Partnership==. The governing principle is ==leave no one behind==.",
+    "They ==replaced the Millennium Development Goals==, which ran ==2000 to 2015== and had ==8 goals, 21 targets and 60 indicators==, out of the ==Millennium Declaration== of ==September 2000==.",
+    "The phrase ==sustainable development== was defined by the ==Brundtland Report==, ==Our Common Future==, ==1987==: development that ==meets the needs of the present without compromising the ability of future generations to meet their own==. The commission was the ==World Commission on Environment and Development==, chaired by ==Gro Harlem Brundtland== of Norway.",
+    "==Earth Summit, Rio de Janeiro, 1992== produced ==Agenda 21==, the ==UNFCCC== and the ==Convention on Biological Diversity==. ==Rio+20== in ==2012== produced ==The Future We Want==, which ==started the process== that wrote the SDGs, through an ==Open Working Group of thirty== countries.",
+    "Progress is reviewed at the ==High-Level Political Forum==, which meets ==every year== under ECOSOC and ==every four years== at head-of-government level. Countries report through ==Voluntary National Reviews==.",
+    "The ==Sustainable Development Report==, with its ==SDG Index== ranking countries, is published by the ==Sustainable Development Solutions Network== with ==Bertelsmann Stiftung== — it is ==independent, not an official UN ranking==, which is the distinction a question turns on.",
+    "The goals are ==not legally binding==. They are a ==political commitment==, which is why the reporting is ==voluntary== and the indicators matter more than the pledges."
+   ],
+   blocks:[
+    {h:"The seventeen goals, in order",
+     note:"The numbers are asked directly: which goal is 5, which is 13, which is the last one.",
+     rows:[
+      ["1","No Poverty"],
+      ["2","Zero Hunger"],
+      ["3","Good Health and Well-being"],
+      ["4","Quality Education"],
+      ["5","Gender Equality"],
+      ["6","Clean Water and Sanitation"],
+      ["7","Affordable and Clean Energy"],
+      ["8","Decent Work and Economic Growth"],
+      ["9","Industry, Innovation and Infrastructure"],
+      ["10","Reduced Inequalities"],
+      ["11","Sustainable Cities and Communities"],
+      ["12","Responsible Consumption and Production"],
+      ["13","Climate Action"],
+      ["14","Life Below Water"],
+      ["15","Life on Land"],
+      ["16","Peace, Justice and Strong Institutions"],
+      ["17","Partnerships for the Goals"]
+     ]},
+    {h:"The road to 2015",
+     rows:[
+      ["1972","Stockholm Conference on the Human Environment — the first world conference on the environment, and UNEP came out of it"],
+      ["1987","The Brundtland Report, Our Common Future, defines sustainable development"],
+      ["1992","Earth Summit at Rio: Agenda 21, the UNFCCC and the Convention on Biological Diversity"],
+      ["2000","The Millennium Declaration, and the eight Millennium Development Goals for 2000–15"],
+      ["2002","World Summit on Sustainable Development, Johannesburg"],
+      ["2012","Rio+20: The Future We Want, and an Open Working Group of thirty to draft the goals"],
+      ["25 September 2015","The 2030 Agenda adopted by all 193 member states"],
+      ["1 January 2016","The goals come into force"]
+     ]},
+    {h:"MDGs against SDGs",
+     rows:[
+      ["How many","8 goals, 21 targets, 60 indicators — against 17 goals, 169 targets, 231 indicators"],
+      ["Who they applied to","The MDGs were aimed at developing countries; the SDGs apply to EVERY country, rich and poor alike"],
+      ["How they were written","The MDGs were drafted by experts in New York; the SDGs came out of three years of open negotiation among states"],
+      ["What they left out","The MDGs had little on inequality, climate, peace, or the means of financing. Goals 10, 13, 16 and 17 are the answer to that"],
+      ["The period","2000 to 2015, against 2016 to 2030"]
+     ]}
+   ],
+   links:[["#/economy/maps/sdg","The mind map, with a cover-and-recall drill"],
+          ["#/economy/topic/international","The world's economic bodies"],
+          ["#/economy/topic/reports","The indices and the reports"]]},
+
+  {id:"sdg-india", tag:"Economy · new on the site", h:"India and the SDGs",
+   w:"The nodal body, the index, the reviews, and the schemes each goal is mapped to.",
+   notes:[
+    "==NITI Aayog== is the ==nodal institution== for the SDGs in India — it coordinates, and it is ==not== the Ministry of Environment, which is the common wrong answer.",
+    "==MoSPI== — the Ministry of Statistics and Programme Implementation — maintains the ==National Indicator Framework==, the Indian list of indicators against which progress is measured.",
+    "The ==SDG India Index== is NITI Aayog's, first published in ==December 2018==, with editions since. It scores ==every State and Union territory== on each goal and gives a ==composite score out of 100==.",
+    "The index's composite score for India has risen with each edition — ==57 in 2018==, ==60 in 2019==, ==66 in 2020–21== and ==71 in 2023–24==. ==Kerala== has led in every edition; in ==2023–24== ==Kerala and Uttarakhand== were level at the top.",
+    "India has presented ==Voluntary National Reviews== at the High-Level Political Forum in ==2017== and ==2020==.",
+    "The ==global SDG Index== published by the SDSN is a ==separate, independent== ranking: India has sat in the ==110s out of 166== in recent editions, and the number ==moves every year==, so the rank is worth knowing as a range rather than a figure.",
+    "==Localising== the goals is the Indian emphasis: the ==Panchayati Raj Ministry== has a ==nine-theme Localisation of SDGs== framework for village panchayats to plan against.",
+    "The schemes most often mapped to a goal: ==Poshan Abhiyaan== to ==Goal 2==, ==Ayushman Bharat== to ==Goal 3==, ==Samagra Shiksha== to ==Goal 4==, ==Beti Bachao Beti Padhao== to ==Goal 5==, ==Jal Jeevan Mission== and ==Swachh Bharat== to ==Goal 6==, and the ==National Solar Mission== to ==Goal 7==.",
+    "==MGNREGA== is usually mapped to ==Goal 8== (decent work) and ==Goal 1==; ==PM Awas Yojana== to ==Goal 11==; the ==National Action Plan on Climate Change== and its eight missions to ==Goal 13==."
+   ],
+   blocks:[
+    {h:"Who does what in India",
+     rows:[
+      ["NITI Aayog","The nodal body: coordination, the SDG India Index, and the mapping of schemes to goals"],
+      ["MoSPI","The National Indicator Framework, and the progress reports built on it"],
+      ["Ministry of Panchayati Raj","Localisation of the SDGs, in nine themes, for village-level planning"],
+      ["State governments","Their own SDG cells and vision documents; the index scores them against each other"],
+      ["Parliament","A Parliamentary forum on the SDGs; the goals are not justiciable and carry no statutory duty"]
+     ]},
+    {h:"The confusion worth clearing",
+     rows:[
+      ["SDG India Index against the global SDG Index","NITI Aayog's index scores Indian States against each other. The SDSN's index ranks countries. Different authors, different method, and only the second one gives India a world rank"],
+      ["Goals against targets against indicators","17 goals, 169 targets under them, and 231 unique indicators that measure the targets. A question asking ‘how many’ has to say which"],
+      ["Legally binding or not","Not binding. The 2030 Agenda is a political commitment, reported on voluntarily"]
+     ]}
+   ],
+   links:[["#/economy/maps/sdg","The mind map"],
+          ["#/economy/topic/institutions","NITI Aayog and the planning bodies"],
+          ["#/economy/topic/poverty","Poverty and the schemes"]]},
+
+  /* =============================================== CENSUS 2011 */
+  {id:"census", tag:"Static GK · new on the site", h:"Census 2011 — the headline numbers",
+   w:"Population, growth, density, sex ratio, literacy and urbanisation — the figures every paper draws on.",
+   notes:[
+    "Census ==2011== was the ==15th census since 1872== and the ==7th after independence==. The Census Commissioner was ==C. Chandramouli==, and the motto was ==Our Census, Our Future==.",
+    "==Population: 1,210,854,977== — about ==121.09 crore==. ==Males 62.37 crore==, ==females 58.65 crore==.",
+    "==Decadal growth 2001–11: 17.70 per cent==, against ==21.54== in the decade before — the ==sharpest fall in growth== since independence, and the ==first decade in which the absolute number added was smaller== than the decade before.",
+    "==Density: 382== persons a square kilometre, up from ==325== in 2001.",
+    "==Sex ratio: 943== women to 1,000 men, up from ==933==. The ==child sex ratio (0–6) fell to 919==, from 927 — the ==lowest since independence==, and the figure that gets asked because it moved the ==wrong way==.",
+    "==Literacy: 74.04 per cent== — ==male 82.14==, ==female 65.46==. The ==gap narrowed== because female literacy rose faster, and the ==number of illiterates still fell== for the first time in absolute terms.",
+    "==Urban population: 31.16 per cent==. For the ==first time since independence== the ==absolute increase in urban population exceeded the increase in rural population==.",
+    "==Scheduled Castes: 16.6 per cent== (==20.14 crore==). ==Scheduled Tribes: 8.6 per cent== (==10.43 crore==).",
+    "Religion, released in ==2015==: ==Hindu 79.8==, ==Muslim 14.2==, ==Christian 2.3==, ==Sikh 1.7==, ==Buddhist 0.7==, ==Jain 0.4== per cent.",
+    "The census is a ==Union subject== — ==entry 69 of the Union List== — conducted under the ==Census Act, 1948==, by the ==Registrar General and Census Commissioner== under the ==Ministry of Home Affairs==.",
+    "The ==2021 census was postponed==. In ==June 2025== the Government announced it for ==two phases==, with reference dates of ==1 October 2026== for the snow-bound areas and ==1 March 2027== for the rest, and that ==caste will be enumerated==."
+   ],
+   blocks:[
+    {h:"The headline figures in one table",
+     rows:[
+      ["Population","1,210,854,977 — 121.09 crore"],
+      ["Males and females","62.37 crore and 58.65 crore"],
+      ["Decadal growth","17.70 per cent, against 21.54 in 1991–2001"],
+      ["Density","382 per sq km, from 325"],
+      ["Sex ratio","943, from 933"],
+      ["Child sex ratio, 0–6","919, from 927 — the lowest since independence"],
+      ["Literacy","74.04 per cent — male 82.14, female 65.46"],
+      ["Urban share","31.16 per cent"],
+      ["Scheduled Castes","16.6 per cent; Scheduled Tribes 8.6 per cent"]
+     ]},
+    {h:"India's share of the world",
+     rows:[
+      ["Of world population","About 17.5 per cent in 2011, on about 2.4 per cent of the world's land"],
+      ["Rank then","Second, behind China — India has since passed it on UN estimates"],
+      ["The three most populous states together","Uttar Pradesh, Maharashtra and Bihar hold roughly a third of the country"]
+     ]}
+   ],
+   links:[["#/gk/maps/census","The mind map, with a cover-and-recall drill"],
+          ["#/gk/pack/states","The states and their capitals"]]},
+
+  {id:"census-records", tag:"Static GK · new on the site", h:"Census 2011 — the state records",
+   w:"Highest and lowest, state by state and union territory by union territory — the form the question almost always takes.",
+   notes:[
+    "==Most populous state: Uttar Pradesh==, ==19.98 crore==. ==Least populous: Sikkim==, ==6.11 lakh==. Among union territories, ==Delhi== the most and ==Lakshadweep== the least, at ==64,473== — the ==smallest population of any unit==.",
+    "==Highest density: Bihar, 1,106==; ==lowest: Arunachal Pradesh, 17==. Among union territories, ==Delhi 11,320== the highest and ==Andaman and Nicobar 46== the lowest.",
+    "==Highest sex ratio: Kerala, 1,084== — the ==only state above 1,000==. ==Lowest: Haryana, 879==. Among union territories, ==Puducherry 1,037== the highest and ==Daman and Diu 618== the lowest of any unit.",
+    "==Highest literacy: Kerala, 93.91==; ==lowest: Bihar, 63.82==. ==Lowest female literacy: Rajasthan, 52.66==.",
+    "==Highest decadal growth: Meghalaya, 27.95 per cent==. ==Nagaland was the only state to record a fall==, at ==−0.58 per cent==.",
+    "==Lowest child sex ratio: Haryana, 834==. The highest is given variously as ==Mizoram== or ==Arunachal Pradesh==, both about ==970==, and standard lists differ — the ==lowest== is the safer half of the pair to carry.",
+    "==Highest share of Scheduled Castes: Punjab, 31.9 per cent==. ==Highest share of Scheduled Tribes: Mizoram, 94.4 per cent== among states, and ==Lakshadweep== among union territories.",
+    "==Most urbanised state: Goa==, about ==62 per cent==; among union territories ==Delhi==, about ==97.5==. ==Least urbanised: Himachal Pradesh==, about ==10 per cent==.",
+    "==Largest city: Mumbai==; the ==largest urban agglomeration== is also Mumbai, with Delhi and Kolkata behind it.",
+    "==Uttar Pradesh== is the largest on ==population==, ==Rajasthan== on ==area== — and the two are offered against each other constantly."
+   ],
+   blocks:[
+    {h:"Highest and lowest, at a glance",
+     note:"Where a union territory holds the record, it is given separately: a question usually says ‘state’ or ‘state and union territory’ and means it.",
+     rows:[
+      ["Population","Highest Uttar Pradesh; lowest Sikkim. UTs: Delhi highest, Lakshadweep lowest"],
+      ["Area","Highest Rajasthan; lowest Goa. UTs: Ladakh highest, Lakshadweep lowest"],
+      ["Density","Highest Bihar; lowest Arunachal Pradesh. UTs: Delhi highest, Andaman and Nicobar lowest"],
+      ["Sex ratio","Highest Kerala 1,084; lowest Haryana 879. UTs: Puducherry 1,037 highest, Daman and Diu 618 lowest"],
+      ["Child sex ratio","Lowest Haryana 834; national 919"],
+      ["Literacy","Highest Kerala 93.91; lowest Bihar 63.82"],
+      ["Decadal growth","Highest Meghalaya 27.95; lowest, and the only negative, Nagaland −0.58"],
+      ["Urbanisation","Highest Goa among states, Delhi among UTs; lowest Himachal Pradesh"],
+      ["Scheduled Castes","Highest share Punjab 31.9 per cent"],
+      ["Scheduled Tribes","Highest share Mizoram 94.4 per cent among states"]
+     ]}
+   ],
+   cmp:[
+    {k:"Sex ratio or child sex ratio",
+     rows:[
+      ["Sex ratio, all ages","943 in 2011, up from 933. It has been IMPROVING"],
+      ["Child sex ratio, 0 to 6","919 in 2011, down from 927. It has been WORSENING, and 2011's is the lowest since independence"]
+     ],
+     note:"The two moved in opposite directions in the same census, which is exactly why both are asked."},
+    {k:"Growth rate or population added",
+     rows:[
+      ["The rate","17.70 per cent, down from 21.54 — the sharpest decline in the growth rate since independence"],
+      ["The number","About 18.1 crore people added in the decade — still an enormous absolute increase, and the first decade in which that number was smaller than the decade before"]
+     ]},
+    {k:"Kerala or Lakshadweep, Bihar or Jharkhand",
+     rows:[
+      ["Literacy","Kerala is highest among states; Lakshadweep is the highest union territory. Bihar is lowest among states"],
+      ["Density","Bihar is the densest state; Delhi the densest union territory. Arunachal Pradesh the least dense"]
+     ]}
+   ],
+   links:[["#/gk/maps/census","The mind map"],
+          ["#/gk/pack/superlatives","Largest, longest, highest"],
+          ["#/gk/pack/firsts","Firsts and records"]]},
+
+  {id:"census-history", tag:"Static GK · new on the site", h:"The census itself, 1872 to now",
+   w:"Who began it, what makes a census synchronous, and the law it runs under.",
+   notes:[
+    "The ==first census in India== was taken in ==1872==, under ==Lord Mayo== — but ==not everywhere at once==, which is why it is called ==non-synchronous==.",
+    "The ==first synchronous census== was ==1881==, under ==Lord Ripon==, conducted by ==W. C. Plowden==. ==Every census since has been decennial==, unbroken through two world wars and partition — until ==2021==.",
+    "==1911–21 is the Great Divide==: the ==only decade since 1872 in which India's population fell==, because of the ==influenza pandemic of 1918==, famine and the war.",
+    "==1921 is the Year of the Great Divide== and ==1951 the Year of the Small Divide== — the two phrases are asked as a pair. After 1921 the population grew in every decade; after 1951 the growth itself accelerated.",
+    "The census is conducted by the ==Registrar General and Census Commissioner of India==, an office under the ==Ministry of Home Affairs==, created in ==1949==.",
+    "It runs under the ==Census Act, 1948==, and the subject is ==entry 69 of the Union List== — so it is ==Parliament's== alone. ==Answers are confidential by law== and ==cannot be used as evidence==.",
+    "==Houselisting== comes first and the ==population enumeration== second, with a ==revisional round== after it. The ==reference date== is what the count is fixed to — ==1 March== for most of India, and ==1 October== of the previous year for ==snow-bound== areas.",
+    "==2011 counted== for the first time on a large scale the ==number of households with a mobile phone, a computer and a bank account==, which is why it is quoted in financial-inclusion questions.",
+    "The ==2021 census did not happen== on time. In ==June 2025== the Government announced the next one in ==two phases==, with reference dates ==1 October 2026== and ==1 March 2027==, and said that ==caste would be enumerated== — the first time since ==1931==."
+   ],
+   blocks:[
+    {h:"The dates to hold",
+     rows:[
+      ["1872","First census, under Lord Mayo — non-synchronous"],
+      ["1881","First synchronous census, under Lord Ripon, by W. C. Plowden"],
+      ["1911–21","The only decade of decline — the Great Divide"],
+      ["1931","The last census in which caste was enumerated in full"],
+      ["1948","The Census Act"],
+      ["1949","The office of the Registrar General created"],
+      ["1951","The Year of the Small Divide — growth begins to accelerate"],
+      ["2011","The 15th census, and the 7th after independence"],
+      ["2026–27","The next one, announced in June 2025 for two phases, with caste enumerated"]
+     ]}
+   ],
+   links:[["#/gk/maps/census","The mind map"]]},
+
+  /* ============================================= THE MUGHALS */
+  {id:"mughal-reigns", tag:"Medieval history · in detail", h:"The Mughal empire, reign by reign",
+   w:"What each emperor actually did with the years he had — the campaigns, the treaties and the turns of policy.",
+   notes:[
+    "==Babur==, ==1526–30==: won at ==Panipat (1526)==, ==Khanwa (1527)==, ==Chanderi (1528)== and ==Ghaghra (1529)==, and ==died at Agra== with the empire only four years old. He wrote the ==Baburnama== in ==Chagatai Turkish==.",
+    "==Humayun==, ==1530–40== and ==1555–56==: ==divided the empire with his brothers==, which is the root of his trouble; lost it to ==Sher Shah== at ==Chausa (1539)== and ==Kannauj (1540)==; recovered it at ==Sirhind (1555)== and ==died within a year==, falling down the stairs of his library.",
+    "==Akbar==, ==1556–1605==: crowned at ==thirteen==, with ==Bairam Khan== as regent until ==1560==, then the ==petticoat government== of the harem to ==1564==. From ==1564== he ruled himself.",
+    "Akbar's conquests, roughly in order: ==Malwa 1561==, ==Gondwana 1564== (==Rani Durgavati==), ==Chittor 1568==, ==Ranthambore 1569==, ==Gujarat 1572–73== (which the ==Buland Darwaza== marks), ==Bengal 1576==, ==Kabul 1585==, ==Kashmir 1586==, ==Sindh 1591==, ==Kandahar 1595==, and the ==Deccan== from ==1595== — ==Ahmadnagar==, where ==Chand Bibi== resisted, and ==Asirgarh 1601==, his last conquest.",
+    "==Jahangir==, ==1605–27==: hung the ==Chain of Justice== (==zanjir-i-adl==) at Agra; put down the revolt of his son ==Khusrau==, whose patron ==Guru Arjan Dev== was executed in ==1606==; made ==peace with Mewar in 1615== on terms ==Akbar never got==; ==lost Kandahar to Persia in 1622==; and from about ==1611== his reign was steered by ==Nur Jahan== and the group around her.",
+    "==Shah Jahan==, ==1628–58==: the ==Deccan== brought to terms — ==Ahmadnagar annexed 1636==, with ==Bijapur and Golconda== made tributary; the ==Uzbek campaign== in ==Balkh and Badakhshan== failed expensively; ==Kandahar was lost for good== after ==three failed sieges==; and the ==Portuguese were driven from Hugli== in ==1632==.",
+    "==Aurangzeb==, ==1658–1707==: took the throne after ==Dharmat== and ==Samugarh== in ==1658==, imprisoned ==Shah Jahan in Agra Fort== until his death in ==1666==, and had ==Dara Shikoh executed== in ==1659==. He was crowned ==twice==, in 1658 and 1659, with the title ==Alamgir==.",
+    "Aurangzeb's reign splits in two: ==the north to about 1681==, then ==twenty-five years in the Deccan== until his death at ==Ahmadnagar== in ==1707==. He ==annexed Bijapur in 1686== and ==Golconda in 1687==, which ended the ==Deccan Sultanates== — and ==removed the buffer== between the Mughals and the Marathas.",
+    "He ==reimposed the jizya in 1679==, ==banned music at court==, ended ==jharokha darshan== and the ==Persian new year==, and appointed ==muhtasibs== to enforce morals. The ==Rajput alliance broke== over ==Marwar== in ==1679==, and he faced the ==Jats==, the ==Satnamis==, the ==Sikhs== under ==Guru Tegh Bahadur== (executed ==1675==) and ==Guru Gobind Singh==, and the ==Marathas==."
+   ],
+   blocks:[
+    {h:"The six great Mughals, with the years",
+     rows:[
+      ["Babur, 1526–30","Founded it, and had four years"],
+      ["Humayun, 1530–40 and 1555–56","Lost it and won it back, with fifteen years of exile between"],
+      ["Akbar, 1556–1605","Forty-nine years: the conquests, the Rajput alliance, and the system"],
+      ["Jahangir, 1605–27","Mewar settled, Kandahar lost, and Nur Jahan ascendant"],
+      ["Shah Jahan, 1628–58","The Deccan brought to terms, and the buildings"],
+      ["Aurangzeb, 1658–1707","Forty-nine years, the largest extent, and the Deccan that consumed it"]
+     ]},
+    {h:"Akbar's conquests, in order",
+     rows:[
+      ["1561","Malwa"],
+      ["1564","Gondwana — Rani Durgavati"],
+      ["1568","Chittor; 1569 Ranthambore and Kalinjar"],
+      ["1572–73","Gujarat — the Buland Darwaza at Fatehpur Sikri marks it"],
+      ["1576","Bengal; and Haldighati against Mewar the same year"],
+      ["1585–91","Kabul, Kashmir, Sindh"],
+      ["1595","Kandahar, and the Deccan campaigns begin"],
+      ["1601","Asirgarh — his last conquest"]
+     ]},
+    {h:"The war of succession, 1657–59",
+     rows:[
+      ["The four sons","Dara Shikoh, Shuja, Aurangzeb and Murad — Shah Jahan's illness in 1657 set it off"],
+      ["Dharmat, April 1658","Aurangzeb and Murad defeat Dara's army under Jaswant Singh"],
+      ["Samugarh, May 1658","Near Agra: Aurangzeb and Murad defeat Dara himself. The decisive battle"],
+      ["Khajwa, January 1659","Aurangzeb defeats Shuja, who flees to Arakan"],
+      ["Deorai, April 1659","The last stand of Dara, near Ajmer. He was executed in August 1659"],
+      ["Murad","Imprisoned at Gwalior and executed in 1661"]
+     ]}
+   ],
+   links:[["#/early/maps/emperors","The roll of emperors, as a map"],
+          ["#/early/mughals","The emperors, page by page"],
+          ["#/early/topic/mughal-battles","The battles in full"]]},
+
+  {id:"mughal-state", tag:"Medieval history · in detail", h:"The nobility, the provinces and the economy",
+   w:"Who the mansabdars were, how the empire was divided, and what it lived on.",
+   notes:[
+    "The ==nobility was deliberately mixed==: ==Turani== (Central Asian), ==Irani== (Persian), ==Afghan==, ==Indian Muslim== and ==Rajput==. No one group could dominate, which is the ==point of the policy==, and under Akbar the ==Rajputs were about a fifth== of the higher mansabdars.",
+    "A ==mansab== was a ==rank, not an office==: it fixed pay and precedence, and the holder might be given ==any job at all==. It was ==not hereditary==, and on a noble's death the state ==took his property== to settle his accounts — the practice called ==escheat==.",
+    "==Jagirs were transferred every three or four years==, so that no noble struck root. By Aurangzeb's reign there was a ==jagirdari crisis==: ==more mansabdars than there was assignable land==, and the land that was assigned yielded ==less than it was rated at== (==jama== against ==hasil==).",
+    "The empire was divided into ==subas== — ==12 under Akbar==, ==15== by the end of his reign, and ==21 or 22 under Aurangzeb== as the Deccan was added.",
+    "Under the ==suba== came the ==sarkar==, then the ==pargana==, then the village. The ==Subedar== governed, the ==Diwan== held the purse ==independently of him== and reported to the centre — a ==deliberate split== so that a governor could not also control the money.",
+    "Land revenue was the ==state's main income==: the ==zabti== system of ==Todar Mal==, the ==Ain-i-Dahsala== of ==1580==, and a demand of ==one-third== of the average produce, collected ==in cash== where possible.",
+    "Other systems ran beside it where measurement was impractical: ==ghallabakshi== or ==batai== (crop-sharing), ==kankut== (estimate from the standing crop) and ==nasaq== (assessment from past records).",
+    "The ==peasant== paid; the ==zamindar== collected and kept a share; and the ==madad-i-maash== or ==suyurghal== grants gave revenue-free land to scholars and religious men.",
+    "==Trade== was large and the ==balance favoured India==: ==cotton textiles== above all, plus indigo, saltpetre, spices and opium, paid for in ==silver==. ==Surat== was the chief western port, ==Hugli== the eastern, and ==Masulipatnam== served the Coromandel.",
+    "==Karkhanas== — imperial workshops — made for the court and the army, under the ==Mir Saman==. The currency was the silver ==rupaya==, the gold ==mohur== and the copper ==dam==, with ==forty dams to the rupee==."
+   ],
+   blocks:[
+    {h:"The provincial machinery",
+     rows:[
+      ["Subedar (Sipahsalar)","Governor of a suba — the executive and military head"],
+      ["Diwan","Revenue, appointed by and reporting to the centre, NOT to the Subedar"],
+      ["Bakhshi","Pay and the muster of troops in the province"],
+      ["Sadr and Qazi","Religious endowments, and justice"],
+      ["Faujdar","Order in a sarkar; the Kotwal in a town"],
+      ["Amil or Amalguzar","Revenue in a pargana, with the qanungo keeping the records"]
+     ]},
+    {h:"Land, revenue and the words for them",
+     rows:[
+      ["Zabti or bandobast","Todar Mal's: land measured, rates fixed in cash for each crop"],
+      ["Ain-i-Dahsala, 1580","Rates on the average produce and prices of the previous ten years"],
+      ["Ghallabakshi (batai)","Crop-sharing — the harvest divided in the field"],
+      ["Kankut and nasaq","Estimate from the standing crop; assessment from past records"],
+      ["Polaj, parauti, chachar, banjar","Land classed by how often it was cultivated — every year, rested one or two, three or four, five or more"],
+      ["Jagir, khalisa, madad-i-maash","Assigned to a mansabdar; kept for the emperor; granted revenue-free"],
+      ["Jama and hasil","The assessed revenue, and what was actually collected — the gap between them is the jagirdari crisis"]
+     ]},
+    {h:"Trade and money",
+     rows:[
+      ["The exports","Cotton textiles above all; also indigo, saltpetre, spices, opium and sugar"],
+      ["Paid for in","Silver — the bullion flowed in, which is what European writers complain about"],
+      ["The ports","Surat in the west, Hugli in the east, Masulipatnam on the Coromandel"],
+      ["The coins","Silver rupaya, gold mohur, copper dam — forty dams to the rupee"],
+      ["Karkhanas","Imperial workshops under the Mir Saman, making for court and army"],
+      ["The European companies","Portuguese first, then the English (Surat factory 1613), the Dutch and the French"]
+     ]}
+   ],
+   links:[["#/early/maps/mughal-state","The mind map, with a cover-and-recall drill"],
+          ["#/early/topic/mughal-admin","Mughal administration and revenue"]]},
+
+  {id:"mughal-rajput-deccan", tag:"Medieval history · in detail", h:"The Rajputs, the Deccan and the Marathas",
+   w:"The alliance that held the empire together, the war in the south that pulled it apart, and the power that replaced it.",
+   notes:[
+    "Akbar's ==Rajput policy== was ==alliance, not conquest where alliance would serve==: ==marriage== into the ruling houses from ==1562==, ==high mansabs== and real commands, ==abolition of the pilgrimage tax (1563) and the jizya (1564)==, and ==no interference== in a chief's own territory.",
+    "==Mewar held out==. ==Rana Udai Singh== and then ==Maharana Pratap== refused; ==Haldighati (1576)== was fought by ==Man Singh== for Akbar, and ==Mewar was never fully subdued==. ==Jahangir settled with Rana Amar Singh in 1615== on terms that ==left Mewar's honour intact==.",
+    "==Aurangzeb broke the alliance==. On ==Jaswant Singh's death (1678)== he tried to take ==Marwar==; ==Durgadas Rathore== carried the infant heir ==Ajit Singh== to safety, and ==Marwar and Mewar fought the empire together== from ==1679==. His own son ==Akbar== joined the Rajputs and then fled to the Marathas.",
+    "==Deccan policy== runs through every reign: ==Akbar== took ==Khandesh and part of Ahmadnagar==; ==Jahangir== fought ==Malik Ambar==, the Abyssinian minister of Ahmadnagar who held him off with ==guerrilla war==; ==Shah Jahan== ==annexed Ahmadnagar (1636)== and made ==Bijapur and Golconda tributary==.",
+    "==Aurangzeb annexed Bijapur (1686) and Golconda (1687)==. It looked like completion and was the ==opposite==: the Sultanates had been a ==buffer==, and removing them left the Mughals facing the ==Marathas== directly, across country the Mughal army could not hold.",
+    "==Shivaji==, ==1630–1680==: took ==Torna== in ==1646==; killed ==Afzal Khan== of Bijapur in ==1659==; raided ==Surat== in ==1664== and again in ==1670==; signed the ==Treaty of Purandar== with ==Jai Singh== in ==1665==, surrendering ==23 forts==; ==escaped from Agra in 1666==; and was ==crowned at Raigad in 1674== with the title ==Chhatrapati==.",
+    "Shivaji's government: the ==Ashta Pradhan==, eight ministers, headed by the ==Peshwa==; land revenue on the ==Malik Ambar== model; and the two levies on neighbours, ==chauth== (==one-fourth==) and ==sardeshmukhi== (==one-tenth==).",
+    "After Shivaji: ==Sambhaji== was ==captured and executed by Aurangzeb in 1689==, which ==did not end the war== but turned it into a ==national resistance== under ==Rajaram== and then ==Tarabai==.",
+    "Aurangzeb died in ==1707== at ==Ahmadnagar==, after ==twenty-five years== in the Deccan. The ==Deccan ulcer== is the phrase used for it, and the war ==cost the empire its treasury, its army and its nobility's confidence== all at once."
+   ],
+   blocks:[
+    {h:"Rajput policy, emperor by emperor",
+     rows:[
+      ["Akbar","Marriage alliance from 1562, high mansabs, pilgrimage tax and jizya abolished, no interference in a chief's lands. Mewar excepted"],
+      ["Jahangir","Settled with Mewar in 1615 — Rana Amar Singh accepted Mughal suzerainty without personal attendance at court"],
+      ["Shah Jahan","Kept the alliance; Rajputs commanded in the Deccan and Central Asia"],
+      ["Aurangzeb","Broke it over Marwar in 1679. Durgadas Rathore, Ajit Singh, and thirty years of war with Marwar and Mewar"]
+     ]},
+    {h:"Shivaji, in dates",
+     rows:[
+      ["1646","Takes Torna — the beginning"],
+      ["1659","Kills Afzal Khan of Bijapur at Pratapgad"],
+      ["1664 and 1670","Sacks Surat, twice"],
+      ["1665","Treaty of Purandar with Jai Singh: 23 of 35 forts surrendered"],
+      ["1666","Taken to Agra, placed under guard, and escapes"],
+      ["1674","Crowned at Raigad as Chhatrapati"],
+      ["1680","Dies. Sambhaji succeeds and is executed by Aurangzeb in 1689"]
+     ]},
+    {h:"The Maratha system",
+     rows:[
+      ["Ashta Pradhan","Eight ministers: Peshwa (chief), Amatya (finance), Sachiv, Mantri, Senapati, Sumant (foreign), Nyayadhish (justice), Panditrao (religion)"],
+      ["Chauth","One-fourth of the revenue, levied on territory outside Shivaji's own"],
+      ["Sardeshmukhi","A further one-tenth, claimed as the hereditary right of the chief headman"],
+      ["The forts","The basis of the state — Raigad the capital, and Torna, Pratapgad, Purandar, Sinhagad among the rest"]
+     ]}
+   ],
+   links:[["#/early/maps/mughal-decline","The mind map"],
+          ["#/early/topic/mughal-battles","The battles in full"],
+          ["#/early/confusions","Confused pairs"]]},
+
+  {id:"mughal-decline", tag:"Medieval history · in detail", h:"Why the empire came apart",
+   w:"The causes an answer is expected to list, and the forty years in which it happened.",
+   notes:[
+    "==Aurangzeb's Deccan wars== are the cause most often given first: ==twenty-five years==, the ==treasury emptied==, the ==army worn out==, and the ==emperor absent from the north== for a generation.",
+    "The ==jagirdari crisis==: too many mansabdars for the land available, and ==jagirs yielding less than their paper rating==. A noble who could not be paid ==squeezed the peasant== or ==looked for a province of his own==.",
+    "==Weak successors and wars of succession==: there was ==no law of succession==, so every death produced a war, and after 1707 the throne changed hands repeatedly while nobles made and unmade emperors.",
+    "The ==rise of the nobles== into ==factions== — ==Turani against Irani== — and then the ==Sayyid brothers==, the ==king-makers== who raised and killed ==Farrukhsiyar== in ==1719==.",
+    "The ==provinces went independent== in all but name: ==Hyderabad== under ==Nizam-ul-Mulk== in ==1724==, ==Bengal== under ==Murshid Quli Khan==, ==Awadh== under ==Saadat Khan==. They still named the emperor in the ==khutba== and on the ==coins==, and sent him ==nothing==.",
+    "==Invasions finished it==: ==Nadir Shah== at ==Karnal== in ==1739== took the ==Peacock Throne== and the ==Koh-i-Noor==; ==Ahmad Shah Abdali== came repeatedly and broke the ==Marathas at Panipat in 1761==.",
+    "==The Marathas== filled the space and then lost it themselves at Panipat, which left ==no Indian power able to hold the north== — and the ==Company== took the ==Diwani of Bengal in 1765== after ==Buxar==.",
+    "==Shah Alam II== lived as a ==British pensioner== from ==1803==; ==Akbar II== sent ==Ram Mohan Roy== to England; and ==Bahadur Shah Zafar== was ==tried and exiled to Rangoon== after ==1857==, where he died in ==1862==.",
+    "The ==economic reading== — that the revenue demand was simply too high for the agrarian base to carry — and the ==political reading== — that the structure depended on the emperor's personal competence — are both standard, and an answer that names ==both== is the safe one."
+   ],
+   blocks:[
+    {h:"The causes, as they are usually listed",
+     rows:[
+      ["Aurangzeb's Deccan wars","Twenty-five years, the treasury emptied, the north left to itself"],
+      ["Religious policy","Jizya reimposed in 1679, the Rajput alliance broken, Sikh and Jat and Satnami risings"],
+      ["The jagirdari crisis","More claimants than land, and land worth less than its rating"],
+      ["No law of succession","A war at every death, and nobles choosing the winner"],
+      ["Factions in the nobility","Turani against Irani; then the Sayyid brothers as king-makers"],
+      ["Provinces breaking away","Hyderabad 1724, Bengal, Awadh — independent in all but the coinage"],
+      ["Invasions","Nadir Shah 1739; Ahmad Shah Abdali, and Panipat 1761"],
+      ["The Company","Plassey 1757, Buxar 1764, and the Diwani in 1765"]
+     ]},
+    {h:"After 1707, in order",
+     rows:[
+      ["1707","Aurangzeb dies at Ahmadnagar; Bahadur Shah I wins the succession at Jajau"],
+      ["1719","The Sayyid brothers depose, blind and kill Farrukhsiyar"],
+      ["1724","Nizam-ul-Mulk founds Hyderabad in practice"],
+      ["1739","Nadir Shah sacks Delhi after Karnal"],
+      ["1757 and 1764","Plassey and Buxar"],
+      ["1761","Third Panipat — Abdali breaks the Marathas"],
+      ["1765","The Company takes the Diwani of Bengal, Bihar and Orissa"],
+      ["1803","The British occupy Delhi; Shah Alam II becomes a pensioner"],
+      ["1857–62","Bahadur Shah Zafar exiled to Rangoon, and dies there"]
+     ]}
+   ],
+   links:[["#/early/mughals","The emperors, page by page"],
+          ["#/early/maps/emperors","The mind map"],
+          ["#/early/topic/mughal-admin","Mughal administration and revenue"]]}
+
+ ]},
+
+
 {id:"3-november", d:"3 November", y:2026,
  w:"Soil and agriculture in full, and the Delhi Sultanate from Qutb-ud-din Aibak to the First Battle of Panipat — the five dynasties, Alauddin's market control, Muhammad bin Tughlaq's experiments, Firoz Shah's building, the administration, the architecture and the writers.",
  intro:"The Delhi Sultanate was the one gap in Ancient and Medieval History on this site: the subject ran from the Jain councils to the Mughals with the three hundred and twenty years in between left out. It is written here in full. Soil and agriculture are on the site already, in Geography and in Economy; the first two parts are the revision sheets for them, with links to the pages the facts come from.",
