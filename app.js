@@ -4361,9 +4361,104 @@ function lawConfusions() {
     (LAW.confusions || []).map(cmpBlock).join(''));
 }
 
+/* ------------------------------- the criminal laws' mind maps
+
+   Five topics, five maps, and an overview. A key here is NOT linked: a
+   section number on these maps is a section of the BNS, and "Section 103"
+   must not become a link to article 103 of the Constitution. */
+
+var LAW_MAPS = window.LAW_MAPS || {};
+
+function lawMap(id) {
+  if (!LAW_MAPS.br) return null;
+  return id ? ((LAW_MAPS.topics || {})[id] || null) : LAW_MAPS;
+}
+
+function lawMapOrder() {
+  return (LAW.topics || []).filter(function (t) { return lawMap(t.id); });
+}
+
+function lawMapCrumb(here) {
+  return '<div class="crumb"><a href="#/laws">The criminal laws</a> → ' +
+    (here ? '<a href="#/laws/maps">Mind maps</a> → ' + esc(here) : 'Mind maps') + '</div>';
+}
+
+function lawMapsHub() {
+  var order = lawMapOrder(), lines = 0;
+  order.forEach(function (t) { lines += mmFacts(lawMap(t.id)); });
+
+  var h = lawMapCrumb('') +
+    pageH1('Mind maps', 'The three Acts reduced to keywords: ' + order.length + ' maps and ' +
+      lines + ' lines between them, plus one map of the whole subject. Nothing here is new — ' +
+      'each line is a section from the notes, cut to the words the question turns on.');
+
+  h += '<div class="block"><h3>How to learn from a map</h3><ol class="mmhow">' +
+    '<li><b>Read it once, out loud,</b> branch by branch. A hook is a line to say, not to read.</li>' +
+    '<li><b>Press Cover the details.</b> The branch names and the section numbers stay; every ' +
+      'answer becomes a blank. Say each one, then tap it to check.</li>' +
+    '<li><b>Come back tomorrow, and again in three days.</b></li>' +
+  '</ol></div>';
+
+  h += '<div class="block"><h3>The maps</h3><div class="grid">' +
+    '<a class="pcard" href="#/laws/maps/all"><div class="pn">All three Acts</div>' +
+      '<div class="pt">The whole subject on one map</div>' +
+      '<div class="pr">' + LAW_MAPS.br.length + ' branches · ' + mmFacts(LAW_MAPS) + ' lines</div></a>' +
+    order.map(function (t) {
+      var m = lawMap(t.id);
+      return '<a class="pcard" href="#/laws/maps/' + encodeURIComponent(t.id) + '">' +
+        '<div class="pn">' + esc(t.n) + '</div>' +
+        '<div class="pt">' + esc(m.br.map(function (b) { return unmark(b.h); }).join(' · ')) + '</div>' +
+        '<div class="pr">' + m.br.length + ' branches · ' + mmFacts(m) + ' lines</div></a>';
+    }).join('') + '</div></div>';
+
+  render(lawShell(h));
+}
+
+function lawMapPage(id) {
+  var whole = id === 'all';
+  var t = whole ? null : lawTopicById[id];
+  var m = lawMap(whole ? null : id);
+  if (!m) return notFound('There is no mind map for that topic.');
+
+  var order = lawMapOrder(), i = -1;
+  order.forEach(function (x, k) { if (t && x.id === t.id) i = k; });
+  var prev = order[i - 1], next = order[i + 1];
+
+  var h = lawMapCrumb(whole ? 'All three Acts' : t.n) +
+    pageH1(whole ? 'The criminal laws on one map' : t.n,
+      (whole ? 'The whole subject as keywords. Each branch opens that topic\'s own map. '
+             : 'Mind map. ') +
+      m.br.length + ' branches · ' + mmFacts(m) + ' lines, every one of them from the notes.') +
+    mmHtml(m, '#/laws/maps', false);
+
+  if (whole) {
+    h += '<div class="stack"><a class="pill big" href="#/laws/maps">Every map</a> ' +
+      '<a class="pill big" href="#/laws">The topics in full</a></div>';
+  } else {
+    h += '<div class="stack"><a class="pill big" href="#/laws/topic/' +
+      encodeURIComponent(t.id) + '">The full notes · ' + lawRows(t) + ' rows</a> ' +
+      '<a class="pill big" href="#/laws/maps/all">All three Acts on one map</a></div>' +
+      '<div class="nextprev">' +
+      (prev ? '<a href="#/laws/maps/' + encodeURIComponent(prev.id) + '">' +
+        '<span class="d">Previous map</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+      (next ? '<a class="r" href="#/laws/maps/' + encodeURIComponent(next.id) + '">' +
+        '<span class="d">Next map</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+      '</div>';
+  }
+
+  render(lawShell(h));
+  mmWire();
+}
+
+function lawMaps(seg) {
+  if (!seg[0]) return lawMapsHub();
+  lawMapPage(seg[0]);
+}
+
 function lawRoute(seg) {
   switch (seg[0] || '') {
     case '':           return render(lawHome());
+    case 'maps':       return lawMaps(seg.slice(1));
     case 'topic':      return render(lawTopicPage(seg[1]));
     case 'confusions': return render(lawConfusions());
     default:           return notFound('That address does not exist in the criminal laws.');
@@ -4377,6 +4472,7 @@ SUBJECTS.push({
   blurb: 'The Bharatiya Nyaya Sanhita, Nagarik Suraksha Sanhita and Sakshya Adhiniyam that replaced the IPC, the CrPC and the Evidence Act on 1 July 2024 — the dates, the counts, the new offences, and the section numbers an exam asks for.',
   tabs: [
     { href: '#/laws',            label: 'The topics',     match: ['', 'topic'] },
+    { href: '#/laws/maps',       label: 'Mind maps',      match: ['maps'] },
     { href: '#/laws/topic/mapping', label: 'IPC → BNS', match: [] },
     { href: '#/laws/confusions', label: 'Confused pairs', match: ['confusions'] },
     { href: '#/constitution',    label: '↔ Constitution', match: [] }
@@ -4391,7 +4487,11 @@ SUBJECTS.push({
                k: t.blocks.map(function (b) { return b.h; }).join(' ') +
                   ' bns bnss bsa ipc crpc evidence act criminal law 2023 2024',
                n: lawRows(t) + ' rows' };
-    }).concat([{ t: 'The criminal laws - confused pairs', href: '#/laws/confusions',
+    }).concat([{ t: 'The criminal laws - the mind maps', href: '#/laws/maps',
+                 n: lawMapOrder().length + ' maps',
+                 w: 'The three Acts, the BNS sections, the BNSS procedure, the BSA and the IPC-to-BNS conversion, each reduced to keywords with a cover-and-recall drill.',
+                 k: 'mind map revision recall keywords branches bns bnss bsa 302 103 420 318 sedition 152' },
+               { t: 'The criminal laws - confused pairs', href: '#/laws/confusions',
                  n: (LAW.confusions || []).length + ' pairs',
                  w: 'Which Sanhita replaced which Code, why 302 is the wrong answer now, and whether sedition was renumbered or repealed.',
                  k: 'sedition 124a 152 murder 302 103 section counts community service 479' }]);
@@ -8376,6 +8476,36 @@ function sideMath(seg) {
 
 function sideLaw(seg) {
   var topics = LAW.topics || [];
+
+  if ((seg[0] || '') === 'maps') {
+    var here = seg[1] || '', cur = lawTopicById[here];
+    var every = [{ href: '#/laws/maps/all', t: 'All three Acts',
+                   d: 'The whole subject on one map', on: here === 'all' }]
+      .concat(lawMapOrder().map(function (t) {
+        return { href: '#/laws/maps/' + encodeURIComponent(t.id), t: t.n,
+                 d: mmFacts(lawMap(t.id)) + ' lines', on: t.id === here };
+      }));
+    return [
+      cur ? sFacts('This map', [
+        ['Branches', String(lawMap(cur.id).br.length)],
+        ['Lines', String(mmFacts(lawMap(cur.id)))],
+        ['The full notes', lawRows(cur) + ' rows', '#/laws/topic/' + encodeURIComponent(cur.id)]
+      ], 'A section number on a map is a section of these Acts, not an article.') : '',
+      sLinks('Every map', every, null, 8)
+    ];
+  }
+
+  if ((seg[0] || '') === 'topic' && lawTopicById[seg[1]] && lawMap(seg[1])) {
+    return [sLinks('Revise it', [
+      { href: '#/laws/maps/' + encodeURIComponent(seg[1]), t: 'The mind map',
+        d: mmFacts(lawMap(seg[1])) + ' lines, with a cover-and-recall drill' }
+    ], null, 1)].concat(sideLawCards(seg));
+  }
+  return sideLawCards(seg);
+}
+
+function sideLawCards(seg) {
+  var topics = LAW.topics || [];
   if ((seg[0] || '') === 'topic') {
     var t = lawTopicById[seg[1]];
     return [
@@ -8870,7 +9000,8 @@ var PRAC_SUBJECTS = [
   { id: 'economy',      n: 'Economy',             base: '#/economy/maps',   maps: function () { return ECON_MAPS; } },
   { id: 'gk',           n: 'Static GK',           base: '#/gk/maps',        maps: function () { return GK_MAPS; } },
   { id: 'geography',    n: 'Geography',           base: '#/geography/maps', maps: function () { return GEO_MAPS; } },
-  { id: 'biology',      n: 'Biology',             base: '#/biology/maps',   maps: function () { return BIO_MAPS; } }
+  { id: 'biology',      n: 'Biology',             base: '#/biology/maps',   maps: function () { return BIO_MAPS; } },
+  { id: 'laws',         n: 'Criminal laws',       base: '#/laws/maps',      maps: function () { return LAW_MAPS; } }
 ];
 
 var pracPool = null;

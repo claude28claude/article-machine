@@ -649,11 +649,12 @@ hundred lines of `app.js`.
 
 ## The mind maps
 
-Eight subjects carry mind maps now: the **Constitution** at `#/maps`, **Modern
+Nine subjects carry mind maps now: the **Constitution** at `#/maps`, **Modern
 History** at `#/history/maps`, the **Indian Economy** at `#/economy/maps`,
 **Ancient and Medieval History** at `#/early/maps`, **Geography** at
 `#/geography/maps`, **Static GK** at `#/gk/maps`, **Biology** at
-`#/biology/maps`, and the JCA law paper (above). Each has one map per topic
+`#/biology/maps`, **the new criminal laws** at `#/laws/maps`, and the JCA law
+paper (above). Each has one map per topic
 and one map of the whole subject whose branches open the others.
 
 **Static GK is the one that does not match its own pages.** Twenty-three packs
@@ -672,6 +673,7 @@ pack page carries a *Revise it* link to the map that covers it.
 | Indian Economy | 7 maps + 1 overview | 199 |
 | Static GK | 12 maps + 1 overview | 418 |
 | Biology | 3 maps + 1 overview | 148 |
+| The new criminal laws | 5 maps + 1 overview | 126 |
 | JCA | 28 | 624 |
 
 **On the Constitution's maps an article number is a link.** That is the `arts`
@@ -724,7 +726,7 @@ mnemonics for what is already on the branch, never a new fact.
 ## Practice
 
 `#/practice`. Ten or twenty questions at a time, drawn at random from every
-mind map on the site — **1,807 lines across seven subjects** — mixed, or from
+mind map on the site — **1,933 lines across eight subjects** — mixed, or from
 one subject. Read the prompt, say the answer, press to see it, and mark
 yourself; what you miss is listed at the end with a link to the map it came
 from, so the next thing to read is already chosen.
@@ -845,6 +847,7 @@ of them so a reader can check what a summary lost.
 | `data-econ-maps.js` | The 8 Indian Economy mind maps, from `data-economy.js` |
 | `data-gk-maps.js` | The 13 Static GK mind maps, grouping the 23 packs |
 | `data-bio-maps.js` | The 4 Biology mind maps, from `data-biology.js` |
+| `data-law-maps.js` | The 6 criminal-law mind maps, from `data-laws.js` |
 | `data-daily.js` | The dated daily study sets: current affairs, and recaps of what was added |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline. A data file whose new fields app.js now reads carries a `?v=` query in `index.html` and in `ASSETS`; bump it on such a deploy, or the first visit afterwards pairs new code with old cached data |
