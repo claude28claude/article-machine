@@ -204,10 +204,11 @@ the first visit.
 | Confused pairs | **16** side-by-side comparisons |
 | Quick facts | **52** across 6 sets |
 
-**Mind maps** (`#/maps`). Twelve — the frame, the rights, the principles and
+**Mind maps** (`#/maps`). Thirteen — the frame, the rights, the principles and
 duties, the Union executive, Parliament, the courts, the States and the Lists,
-the emergencies, amendment, the Schedules, the cases and the Constituent
-Assembly — and one of the whole subject, 332 lines in all. An article number
+the emergencies, amendment, the Schedules, citizenship with language and the
+special provisions, the cases and the Constituent Assembly — and one of the
+whole subject, 364 lines in all. An article number
 on a map opens that article. Every Part page, every article page and every
 section page carries a *Revise it* link to the map that covers it. See *The
 mind maps*.
@@ -351,9 +352,11 @@ the GDP base year — the first decimal is safe, the last is not. Current figure
 (reserves, tax slabs) each carry the date they are true as of, so a stale
 number reads as stale rather than as wrong.
 
-**Mind maps** (`#/economy/maps`). Seven — the plans, the planning bodies, the
-RBI and the rates, the Budget and GST, 1991, poverty and the schemes, and the
-dates — and one of the whole subject, 199 lines in all. See *The mind maps*.
+**Mind maps** (`#/economy/maps`). Ten — the plans, the planning bodies, the
+RBI and the rates, the Budget and GST, 1991, poverty and the schemes,
+agriculture and the revolutions, national income and the data, the world's
+economic bodies, and the dates — and one of the whole subject, 277 lines in
+all. Every one of the eight standing topics now has a map. See *The mind maps*.
 
 ## Static General Knowledge
 
@@ -666,13 +669,13 @@ pack page carries a *Revise it* link to the map that covers it.
 
 | | Maps | Lines |
 |---|---|---|
-| Constitution | 12 maps + 1 overview | 332 |
+| Constitution | 13 maps + 1 overview | 364 |
 | Modern History | 8 maps + 1 overview | 307 |
 | Ancient and Medieval | 7 maps + 1 overview | 252 |
 | Geography | 7 topics + 1 overview | 245 |
-| Indian Economy | 7 maps + 1 overview | 199 |
-| Static GK | 12 maps + 1 overview | 418 |
-| Biology | 3 maps + 1 overview | 148 |
+| Indian Economy | 10 maps + 1 overview | 277 |
+| Static GK | 12 maps + 1 overview | 440 |
+| Biology | 3 maps + 1 overview | 196 |
 | The new criminal laws | 5 maps + 1 overview | 126 |
 | JCA | 28 | 624 |
 
@@ -726,7 +729,7 @@ mnemonics for what is already on the branch, never a new fact.
 ## Practice
 
 `#/practice`. Ten or twenty questions at a time, drawn at random from every
-mind map on the site — **1,933 lines across eight subjects** — mixed, or from
+mind map on the site — **2,109 lines across eight subjects** — mixed, or from
 one subject. Read the prompt, say the answer, press to see it, and mark
 yourself; what you miss is listed at the end with a link to the map it came
 from, so the next thing to read is already chosen.
@@ -843,8 +846,8 @@ of them so a reader can check what a summary lost.
 | `data-geo-maps.js` | The 8 Geography mind maps, every line taken from `data-geography.js` |
 | `data-early-maps.js` | The 8 Ancient and Medieval mind maps, from `data-early.js` |
 | `data-hist-maps.js` | The 9 Modern History mind maps, from the five history data files |
-| `data-coi-maps.js` | The 13 Constitution mind maps, from the articles, the notes and the exam layer |
-| `data-econ-maps.js` | The 8 Indian Economy mind maps, from `data-economy.js` |
+| `data-coi-maps.js` | The 14 Constitution mind maps, from the articles, the notes and the exam layer |
+| `data-econ-maps.js` | The 11 Indian Economy mind maps, from `data-economy.js` |
 | `data-gk-maps.js` | The 13 Static GK mind maps, grouping the 23 packs |
 | `data-bio-maps.js` | The 4 Biology mind maps, from `data-biology.js` |
 | `data-law-maps.js` | The 6 criminal-law mind maps, from `data-laws.js` |

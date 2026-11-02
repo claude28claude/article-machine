@@ -84,6 +84,13 @@ br: [
          ["Tenth", "==anti-defection==, added by the ==52nd=="],
          ["Ninth", "==284== entries now, ==13== to begin with"]] },
 
+  { h: "Citizenship, language, the rest", to: "rest",
+    lv: [["1", "to ==4== — the ==Union and its territory==; ==5 to 11== ==citizenship=="],
+         ["343", "the ==official language of the Union=="],
+         ["300A", "the ==right to property== — a ==constitutional==, not a ==fundamental==, right"],
+         ["324", "the ==Election Commission=="],
+         ["371A", "to ==371J== — the ==special provisions== for particular States"]] },
+
   { h: "The landmark cases", to: "cases",
     lv: [["Kesavananda, 1973", "the ==basic structure== doctrine"],
          ["Maneka, 1978", "turned 21 into something close to ==due process=="],
@@ -525,6 +532,52 @@ br: [
          ["NJAC, 2015", "the ==99th Amendment struck down==; the ==collegium survives=="],
          ["Vishaka, 1997", "==guidelines from an international convention==, to fill a ==gap in the law=="],
          ["Shreya Singhal, 2015", "==section 66A struck down== — the clearest modern statement on ==free speech=="]] }
+]},
+
+/* =============== CITIZENSHIP, LANGUAGE AND WHAT IS LEFT */
+rest: {
+hub: "Citizenship and the rest",
+sub: "Territory, language, services, elections",
+br: [
+  { h: "Territory and citizenship",
+    lv: [["1", "==India, that is Bharat, shall be a Union of States=="],
+         ["2", "==admission or establishment== of ==new== States — territory ==not India before=="],
+         ["3", "==formation== of new States, and ==alteration== of areas, boundaries or names"],
+         ["4", "laws made under ==2 and 3==, and what they may provide for"],
+         ["5", "to ==11== — ==citizenship== at commencement, and ==Parliament's power since=="],
+         ["How 3 is passed", "by a ==simple majority== — and only on the ==President's recommendation=="]],
+    m: "2 brings in what was never India; 3 rearranges what already is." },
+
+  { h: "Language — 343 to 351",
+    lv: [["343", "the ==official language of the Union== — ==Hindi in Devanagari==, with ==English=="],
+         ["344", "the ==Commission== and the ==Committee of Parliament== on official language"],
+         ["345", "the official language ==of a State=="],
+         ["348", "the Supreme Court, the High Courts, and all Acts and Bills are in ==English==, until Parliament says otherwise"],
+         ["350A", "==instruction in the mother tongue== at the ==primary== stage"],
+         ["350B", "the ==Special Officer for Linguistic Minorities=="],
+         ["351", "the ==directive for the development of Hindi=="]],
+    m: "343 makes Hindi official, 351 tells the Union to develop it, 350B protects the minorities." },
+
+  { h: "Property, services and tribunals",
+    lv: [["300A", "the ==right to property== — ==constitutional==, not fundamental, since the ==44th=="],
+         ["312", "the ==All-India Services== — created on a ==Rajya Sabha resolution=="],
+         ["315", "the ==Public Service Commissions==; ==320== their ==functions=="],
+         ["323A", "==administrative tribunals==; ==323B== tribunals for ==other matters=="]] },
+
+  { h: "Elections",
+    lv: [["324", "==superintendence, direction and control==, vested in the ==Election Commission=="],
+         ["325", "==one general electoral roll== — no exclusion on religion, race, caste or sex"],
+         ["326", "==adult suffrage== for the Lok Sabha and the Assemblies — ==18== since the ==61st=="],
+         ["327", "==Parliament's== power over elections; ==328== a ==State legislature's=="],
+         ["329", "==no court may interfere== in an electoral matter"]] },
+
+  { h: "The special provisions",
+    lv: [["371A", "==Nagaland==; ==371B== ==Assam==; ==371C== ==Manipur=="],
+         ["371D", "==Andhra Pradesh and Telangana==; ==371F== ==Sikkim=="],
+         ["371G", "==Mizoram==; ==371H== ==Arunachal==; ==371-I== ==Goa==; ==371J== ==Karnataka=="],
+         ["Which two have a veto", "==371A Nagaland== and ==371G Mizoram== — a ==State legislature's== consent is needed"],
+         ["370", "==Jammu and Kashmir== — the only article the Constitution ==still calls temporary=="]],
+    m: "A Nagaland, B Assam, C Manipur, D Andhra, F Sikkim, G Mizoram, H Arunachal, I Goa, J Karnataka." }
 ]},
 
 /* ========================================= THE CONSTITUENT ASSEMBLY */

@@ -7711,7 +7711,8 @@ function namesIn(hay, person) {
 var COI_MAP_FOR_PART = {
   'III': 'rights', 'IV': 'dpsp', 'IVA': 'dpsp', 'V': 'union', 'VI': 'states',
   'IX': 'states', 'IXA': 'states', 'XI': 'states', 'XII': 'states',
-  'XVIII': 'emergency', 'XX': 'amendments'
+  'XVIII': 'emergency', 'XX': 'amendments',
+  'I': 'rest', 'II': 'rest', 'XIV': 'rest', 'XV': 'rest', 'XVII': 'rest'
 };
 var COI_MAP_FOR_SEC = {
   'amendments': 'amendments', 'amendment': 'amendments',
@@ -8179,7 +8180,9 @@ function sideEcon(seg) {
   var ECON_MAP_FOR = { '': 'plans', 'plan': 'plans', 'reforms': 'reform',
                        'high-yield': 'dates' };
   var ECON_MAP_FOR_TOPIC = { 'institutions': 'institutions', 'banking': 'banking',
-                             'budget': 'budget', 'poverty': 'poverty' };
+                             'budget': 'budget', 'poverty': 'poverty',
+                             'agriculture': 'agriculture', 'national-income': 'income',
+                             'international': 'world', 'reports': 'income' };
   var revId = k === 'topic' ? ECON_MAP_FOR_TOPIC[seg[1]] : ECON_MAP_FOR[k];
   var revise = '';
   if (revId && econMap(revId)) {
@@ -8770,6 +8773,8 @@ var COI_MAP_ORDER = [
     label: 'All 106 amendments' },
   { id: 'schedules',  n: 'The twelve Schedules',     notes: '#/schedules',
     label: 'The Schedules in full' },
+  { id: 'rest',       n: 'Citizenship and the rest', notes: '#/high-yield/map',
+    label: 'The article map in full' },
   { id: 'cases',      n: 'The landmark cases',       notes: '#/cases',
     label: 'Every judgment on this site' },
   { id: 'assembly',   n: 'The Constituent Assembly', notes: '#/assembly',
@@ -8881,6 +8886,12 @@ var ECON_MAP_ORDER = [
   { id: 'reform',       n: '1991',                 notes: '#/economy/reforms',
     label: 'The reforms in full' },
   { id: 'poverty',      n: 'Poverty and the schemes', notes: '#/economy/topic/poverty',
+    label: 'The full notes' },
+  { id: 'agriculture',  n: 'Agriculture',          notes: '#/economy/topic/agriculture',
+    label: 'The full notes' },
+  { id: 'income',       n: 'National income',      notes: '#/economy/topic/national-income',
+    label: 'The full notes' },
+  { id: 'world',        n: "The world's bodies",   notes: '#/economy/topic/international',
     label: 'The full notes' },
   { id: 'dates',        n: 'The dates',            notes: '#/economy/high-yield/facts',
     label: 'The quick-fact tables' }

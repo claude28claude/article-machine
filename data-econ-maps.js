@@ -61,6 +61,24 @@ br: [
          ["MGNREGA", "passed ==23 August 2005==, launched ==2 February 2006=="],
          ["The guarantee", "==100 days== of unskilled manual work a year, per ==household=="]] },
 
+  { h: "Agriculture and the revolutions", to: "agriculture",
+    lv: [["The Green Revolution", "from ==1966–67==, after the ==1965–66 drought=="],
+         ["Who", "==Borlaug== bred the ==dwarf wheat==; ==Swaminathan== spread it in India"],
+         ["Which crop", "==wheat first and most== — pulses and oilseeds ==hardly at all=="],
+         ["MSP", "recommended by the ==CACP==, announced by the ==Cabinet Committee=="]] },
+
+  { h: "National income and the data", to: "income",
+    lv: [["GDP against GNP", "GNP is GDP ==plus net factor income from abroad=="],
+         ["National income proper", "==NNP at factor cost=="],
+         ["First estimate", "==Dadabhai Naoroji==; the first ==scientific== one ==V. K. R. V. Rao=="],
+         ["Economic Survey", "the ==Ministry of Finance==, a ==day before the Budget=="]] },
+
+  { h: "The world's economic bodies", to: "world",
+    lv: [["Bretton Woods", "==New Hampshire==, ==July 1944=="],
+         ["IMF", "==short-term== balance of payments; the ==World Bank== ==long-term== projects"],
+         ["WTO", "from ==1 January 1995==, replacing ==GATT== — and ==binding== dispute settlement"],
+         ["Human Development Report", "the ==UNDP==; the ==World Development Report== the ==World Bank=="]] },
+
   { h: "The dates to know cold", to: "dates",
     lv: [["6 June 1966", "the rupee ==devalued== about ==36.5%=="],
          ["19 July 1969", "==14 banks== nationalised"],
@@ -317,6 +335,117 @@ br: [
          ["Original prices", "==₹3== rice, ==₹2== wheat, ==₹1== coarse grains"],
          ["Maternity benefit", "==₹6,000==, as a ==statutory entitlement=="],
          ["Head of the household", "the ==eldest woman==, aged ==18 or above==, for the ration card"]] }
+]},
+
+/* ======================================= AGRICULTURE */
+agriculture: {
+hub: "Agriculture",
+sub: "The Green Revolution, the colours, the prices",
+br: [
+  { h: "The Green Revolution",
+    lv: [["When", "from ==1966–67==, under the ==New Agricultural Strategy== after the ==1965–66 drought=="],
+         ["Who", "==Norman Borlaug== bred the ==dwarf wheat==; ==M. S. Swaminathan== adapted and spread it"],
+         ["The package", "==high-yielding seed==, ==assured irrigation==, ==fertiliser==, and a ==guaranteed price=="],
+         ["Where", "==Punjab, Haryana and western Uttar Pradesh== — ==irrigated wheat== country"],
+         ["Which crop", "==wheat first and most==; rice ==later and less evenly==; pulses and oilseeds ==hardly at all=="],
+         ["The cost", "==groundwater depletion==, soil degradation, ==regional inequality=="]],
+    m: "It raised wheat in the irrigated north. That is both the achievement and the complaint." },
+
+  { h: "The revolutions by colour",
+    lv: [["Green", "==foodgrains==, especially ==wheat=="],
+         ["White", "==milk== — ==Operation Flood, 1970==, under ==Kurien=="],
+         ["Blue", "==fish==; ==Yellow== ==oilseeds== (the ==1986== Technology Mission, ==Sam Pitroda==)"],
+         ["Golden", "==horticulture, fruit and honey==; ==Golden Fibre== ==jute=="],
+         ["Silver", "==eggs and poultry==; ==Silver Fibre== ==cotton=="],
+         ["Pink", "==prawn==, and also ==onion==; ==Red== ==tomato and meat=="],
+         ["Grey", "==fertiliser==; ==Round== ==potato==; ==Black== ==petroleum==; ==Brown== ==leather=="]] },
+
+  { h: "Prices and institutions",
+    lv: [["MSP is recommended by", "the ==CACP== — the ==1965== Agricultural Prices Commission, ==renamed 1985=="],
+         ["MSP is announced by", "the ==Cabinet Committee on Economic Affairs== — the ==CACP only advises=="],
+         ["Crops covered", "==22==, plus a ==Fair and Remunerative Price== for ==sugarcane== fixed separately"],
+         ["The Swaminathan formula", "MSP at ==50% above C2==; the government's benchmark is ==50% above A2+FL=="],
+         ["ICAR", "==1929==, on the ==Royal Commission on Agriculture=="],
+         ["NABARD", "==12 July 1982==, on the ==Sivaraman== Committee — the ==apex body for rural credit=="]] }
+]},
+
+/* ================================ NATIONAL INCOME AND THE DATA */
+income: {
+hub: "National income",
+sub: "The concepts, the counters, the reports",
+br: [
+  { h: "The concepts",
+    lv: [["GDP", "all final goods and services produced ==within the borders==, ==whoever owns== the factors"],
+         ["GNP", "GDP ==plus net factor income from abroad== — by ==residents, wherever they are=="],
+         ["NDP", "GDP ==minus depreciation==; ==NNP== is GNP minus depreciation"],
+         ["National income proper", "==NNP at factor cost=="],
+         ["Factor cost", "market price ==− indirect taxes + subsidies=="],
+         ["GVA", "output ==minus intermediate consumption== — GDP = GVA ==+ product taxes − subsidies=="],
+         ["Real against nominal", "==nominal== at ==current== prices, ==real== at ==constant== prices of a ==base year=="]],
+    m: "Domestic is where it was made; National is who made it." },
+
+  { h: "Who counted it",
+    lv: [["Dadabhai Naoroji", "the ==first== estimate — about ==₹20 a head== for ==1867–68=="],
+         ["V. K. R. V. Rao", "the ==first scientific== estimate, for ==1931–32=="],
+         ["National Income Committee", "==1949==, under ==P. C. Mahalanobis== — first report ==1951=="],
+         ["Who publishes now", "the ==National Statistical Office==, under ==MoSPI=="],
+         ["Base year", "==2011–12== for the current series"]] },
+
+  { h: "The three sectors",
+    lv: [["Primary", "agriculture, forestry, fishing, mining — about ==a sixth of output==, ==45% of the workforce=="],
+         ["Secondary", "manufacturing, construction, electricity — its share has ==barely moved in three decades=="],
+         ["Tertiary", "services — ==more than half== of output"],
+         ["What is unusual", "India moved output ==into services without moving labour out of agriculture=="]] },
+
+  { h: "The Indian reports",
+    lv: [["Economic Survey", "the ==Ministry of Finance==, by the ==Chief Economic Adviser==, a ==day before the Budget=="],
+         ["Financial Stability Report", "the ==Reserve Bank=="],
+         ["Periodic Labour Force Survey", "the ==NSO==, MoSPI — and so are the ==CPI== and the ==IIP=="],
+         ["Wholesale Price Index", "the ==Office of the Economic Adviser==, ==Commerce and Industry== — ==not== the NSO"],
+         ["SDG India Index", "==NITI Aayog=="],
+         ["State of Forest Report", "the ==Forest Survey of India==, Dehradun — ==every two years=="],
+         ["National Family Health Survey", "==Health and Family Welfare==, through ==IIPS Mumbai=="]],
+    m: "CPI and IIP are the NSO's; the WPI is the Commerce Ministry's. That swap is the question." }
+]},
+
+/* ================================ THE WORLD'S ECONOMIC BODIES */
+world: {
+hub: "The world's bodies",
+sub: "Bretton Woods, trade, and who publishes what",
+br: [
+  { h: "Bretton Woods",
+    lv: [["Agreed at", "==Bretton Woods, New Hampshire==, ==July 1944=="],
+         ["IMF", "operations from ==1 March 1947==, ==Washington DC== — ==short-term== balance of payments"],
+         ["World Bank", "the ==IBRD==, ==1945==, Washington DC — ==long-term== project lending"],
+         ["SDR", "the IMF's reserve asset, ==1969== — a basket of ==five== currencies"],
+         ["The Bank Group", "==IBRD==, ==IDA== (soft loans, 1960), ==IFC== (1956), ==MIGA== (1988), ==ICSID== (1966)"],
+         ["India", "a ==founder member==, and ==has not borrowed since 1991=="]],
+    m: "The Fund fixes this year's balance of payments; the Bank builds next decade's road." },
+
+  { h: "Trade",
+    lv: [["GATT", "==1948== — India a ==founder signatory=="],
+         ["WTO", "from ==1 January 1995==, out of the ==Uruguay Round's Marrakesh Agreement==. ==Geneva=="],
+         ["How it decides", "by ==consensus==, ==one vote== a member — and ==binding dispute settlement==, which GATT ==lacked=="],
+         ["Doha Round", "launched ==2001==, ==still unconcluded== — ==agriculture subsidies and food stockholding=="]] },
+
+  { h: "The groups",
+    lv: [["BRICS", "the term ==BRIC== was ==Jim O'Neill's==, ==2001==; ==South Africa== made it BRICS"],
+         ["Asian Development Bank", "==1966==, ==Manila=="],
+         ["AIIB", "==2016==, ==Beijing== — India the ==second largest shareholder=="],
+         ["SAARC", "==1985==, ==Kathmandu==; ==BIMSTEC== ==1997==, ==Dhaka=="],
+         ["ASEAN", "==1967==, ==Jakarta== — India a ==dialogue partner==, ==not a member=="],
+         ["G20", "India's presidency ==2023==, and the ==African Union== was admitted at that summit"]] },
+
+  { h: "Who publishes which report",
+    lv: [["Human Development Report", "the ==UNDP=="],
+         ["World Development Report", "the ==World Bank==; the ==World Economic Outlook== the ==IMF=="],
+         ["Global Competitiveness, Gender Gap, Risks", "the ==World Economic Forum=="],
+         ["Global Hunger Index", "==Concern Worldwide== and ==Welthungerhilfe== — ==not a UN body=="],
+         ["Global Innovation Index", "==WIPO==; ==Corruption Perceptions== ==Transparency International=="],
+         ["World Happiness Report", "the ==UN Sustainable Development Solutions Network=="],
+         ["World Press Freedom Index", "==Reporters Without Borders=="],
+         ["World Investment Report", "==UNCTAD=="]],
+    m: "The Hunger Index is the trap: two NGOs, not the UN." }
 ]},
 
 /* ================================================== THE DATES */
