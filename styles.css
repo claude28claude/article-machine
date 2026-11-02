@@ -1141,6 +1141,21 @@ a.sesshead:hover{background:var(--panel2)}
 @media (min-width:1000px) and (max-width:1180px){
   .artpage.withside{grid-template-columns:minmax(0,1fr) 260px;gap:var(--s6)}
 }
+
+/* A page whose content needs the whole width - a mind map is drawn as two
+   columns of branches either side of its centre - keeps its cards, but
+   underneath, in the same row-that-wraps they take on a narrow screen. With
+   the column beside it the branches were down to 130px and the words were
+   breaking mid-word. */
+.artpage.sidebelow{display:block}
+.side.below{
+  position:static;max-height:none;overflow:visible;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  align-items:start;gap:var(--s4);
+  margin-top:var(--s7);padding-top:var(--s6);
+  border-top:1px solid var(--line);
+}
+.side.below .onpage{display:none}
 @media (max-width:999px){
   .artpage.withside{grid-template-columns:minmax(0,1fr)}
   .side{

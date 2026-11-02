@@ -619,11 +619,58 @@ the 2020 joint Nepal–China survey and older keys still carry 8,848 m.
 Leading-producer rankings shift year to year, so a row says where the top two
 are genuinely close instead of asserting one.
 
+**Mind maps** (`#/geography/maps`). One for each of the seven topics and one
+of the whole subject, 245 lines in all, every one of them from the tables
+above. See *The mind maps*.
+
 **Two diagrams**, both inline SVG on the palette variables: the ranges in
 cross-section south to north, and the four longitudinal divisions with the
 boundary river at each cut. They reuse the figure renderer and the stylesheet
 the Maths subject brought in, which is why the whole subject costs about a
 hundred lines of `app.js`.
+
+## The mind maps
+
+Three subjects carry mind maps now: the JCA law paper (above), **Geography**
+at `#/geography/maps` and **Ancient and Medieval History** at `#/early/maps`.
+Each subject has one map per topic and one map of the whole subject whose
+branches open the others.
+
+| | Maps | Lines |
+|---|---|---|
+| JCA | 28 | 624 |
+| Geography | 7 topics + 1 overview | 245 |
+| Ancient and Medieval | 7 maps + 1 overview | 252 |
+
+**Nothing on a map is new.** Every line is taken from the tables and the SSC
+notes on the topic pages, which is where the facts are checked and where the
+fuller statement of each one lives. A map is that material cut to the words
+the question turns on, so that a topic can be revised in two minutes instead
+of twenty. When a note changes, its line here changes with it.
+
+**A leaf is a prompt and an answer**, written `[key, text]`. The key is the
+thing being asked about — a pass, a soil, a battle, a rank — and it stays
+visible when the map is covered; the text is the answer and is what gets
+covered. That is what makes **Cover the details** a drill rather than a trick:
+the map still reads as a list of questions with the answers blanked out.
+`==text==` marks the words inside an answer that the question turns on.
+
+**The drawing is shared, the navigating is not.** `mmLeaf`, `mmBranch`,
+`mmHtml`, `mmLinks` and `mmWire` know nothing about any subject except the
+address a branch should link to, which is an argument; each subject keeps its
+own hub, its own order and its own way back to the notes. Adding maps to a
+fourth subject is a data file and about sixty lines.
+
+**A map page keeps its side column, but underneath.** The branches stand
+either side of the centre and want every pixel of the page; a 300px column
+beside them took exactly the room they needed and the words started breaking
+mid-word at 1000px. So a page with a map on it gets `sidebelow`, and the cards
+lay themselves out below as the row they already become on a narrow screen.
+
+**Hooks.** A branch may end with a hook — a line made to be said aloud, not
+read. "Panipat, Khanwa, Chanderi, Ghaghra — 26, 27, 28, 29." "Zat is the man,
+sawar is the horse." "Three Panipats, three different losers." They are
+mnemonics for what is already on the branch, never a new fact.
 
 ## Adding another subject
 
@@ -710,6 +757,8 @@ of them so a reader can check what a summary lost.
 | `data-laws.js` | The BNS, BNSS and BSA: dates, counts, the new offences, and the IPC mapping |
 | `data-jca-judiciary.js`, `data-jca-scr.js`, `data-jca-osr.js` | The JCA law paper: notes, tables, confused pairs and 651 questions |
 | `data-jca-maps.js` | The 28 JCA mind maps, every line taken from those three files |
+| `data-geo-maps.js` | The 8 Geography mind maps, every line taken from `data-geography.js` |
+| `data-early-maps.js` | The 8 Ancient and Medieval mind maps, from `data-early.js` |
 | `data-daily.js` | The dated daily study sets: current affairs, and recaps of what was added |
 | `data-plain-1..5.js` | The plain-English notes, one file per group of Parts |
 | `sw.js` | Service worker: precache everything, then serve offline. A data file whose new fields app.js now reads carries a `?v=` query in `index.html` and in `ASSETS`; bump it on such a deploy, or the first visit afterwards pairs new code with old cached data |

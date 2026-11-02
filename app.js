@@ -2440,10 +2440,117 @@ function earlyConfusions() {
   return earlyShell(h);
 }
 
+/* ------------------------- the Ancient and Medieval maps
+
+   The same machinery as the Geography and JCA maps. One map is not a topic:
+   `emperors` is the roll of rulers, which lives on the emperors page rather
+   than in EARLY.topics, so it carries its own title and its own way back to
+   the full notes. */
+
+var EARLY_MAPS = window.EARLY_MAPS || {};
+
+var EARLY_MAP_ROLL = { id: 'emperors', n: 'The Mughal emperors',
+                       notes: '#/early/mughals', notesLabel: 'The emperors in full' };
+
+function earlyMap(id) {
+  if (!EARLY_MAPS.br) return null;
+  return id ? ((EARLY_MAPS.topics || {})[id] || null) : EARLY_MAPS;
+}
+
+/* Every map in the order the subject reads: the roll first, then the topics
+   that have one. */
+function earlyMapOrder() {
+  var out = earlyMap(EARLY_MAP_ROLL.id) ? [EARLY_MAP_ROLL] : [];
+  (EARLY.topics || []).forEach(function (t) {
+    if (earlyMap(t.id)) out.push({ id: t.id, n: t.n,
+      notes: '#/early/topic/' + encodeURIComponent(t.id),
+      notesLabel: 'The full notes · ' + earlyRows(t) + ' facts' });
+  });
+  return out;
+}
+
+function earlyMapCrumb(here) {
+  return '<div class="crumb"><a href="#/early">Ancient and Medieval</a> → ' +
+    (here ? '<a href="#/early/maps">Mind maps</a> → ' + esc(here) : 'Mind maps') + '</div>';
+}
+
+function earlyMapsHub() {
+  var order = earlyMapOrder(), lines = 0;
+  order.forEach(function (x) { lines += mmFacts(earlyMap(x.id)); });
+
+  var h = earlyMapCrumb('') +
+    pageH1('Mind maps', 'The subject reduced to keywords: ' + order.length + ' maps and ' +
+      lines + ' lines between them, plus one map of the whole subject. Nothing here is new — ' +
+      'each line is a fact from the notes, cut to the words the question turns on.');
+
+  h += '<div class="block"><h3>How to learn from a map</h3><ol class="mmhow">' +
+    '<li><b>Read it once, out loud,</b> branch by branch. A hook is a line to say, not to read.</li>' +
+    '<li><b>Press Cover the details.</b> The branch names and the prompts stay; every answer ' +
+      'becomes a blank. Say each one, then tap it to check.</li>' +
+    '<li><b>Come back tomorrow, and again in three days.</b> The map you still cannot fill ' +
+      'is the topic to go back to.</li>' +
+  '</ol></div>';
+
+  h += '<div class="block"><h3>The maps</h3><div class="grid">' +
+    '<a class="pcard" href="#/early/maps/all"><div class="pn">The whole subject</div>' +
+      '<div class="pt">Every topic on one map, with the lines most worth knowing</div>' +
+      '<div class="pr">' + EARLY_MAPS.br.length + ' branches · ' + mmFacts(EARLY_MAPS) + ' lines</div></a>' +
+    order.map(function (x) {
+      var m = earlyMap(x.id);
+      return '<a class="pcard" href="#/early/maps/' + encodeURIComponent(x.id) + '">' +
+        '<div class="pn">' + esc(x.n) + '</div>' +
+        '<div class="pt">' + esc(m.br.map(function (b) { return unmark(b.h); }).join(' · ')) + '</div>' +
+        '<div class="pr">' + m.br.length + ' branches · ' + mmFacts(m) + ' lines</div></a>';
+    }).join('') + '</div></div>';
+
+  render(earlyShell(h));
+}
+
+function earlyMapPage(id) {
+  var whole = id === 'all';
+  var m = earlyMap(whole ? null : id);
+  if (!m) return notFound('There is no mind map for that topic.');
+
+  var order = earlyMapOrder(), i = -1;
+  order.forEach(function (x, k) { if (x.id === id) i = k; });
+  var cur = order[i], prev = order[i - 1], next = order[i + 1];
+
+  var h = earlyMapCrumb(whole ? 'The whole subject' : (cur ? cur.n : '')) +
+    pageH1(whole ? 'Ancient and Medieval on one map' : cur.n,
+      (whole ? 'The whole subject as keywords. Each branch opens that topic\'s own map. '
+             : 'Mind map. ') +
+      m.br.length + ' branches · ' + mmFacts(m) + ' lines, every one of them from the notes.') +
+    mmHtml(m, '#/early/maps', false);
+
+  if (whole) {
+    h += '<div class="stack"><a class="pill big" href="#/early/maps">Every map</a> ' +
+      '<a class="pill big" href="#/early">The topics in full</a></div>';
+  } else {
+    h += '<div class="stack"><a class="pill big" href="' + cur.notes + '">' +
+      esc(cur.notesLabel) + '</a> ' +
+      '<a class="pill big" href="#/early/maps/all">The whole subject on one map</a></div>' +
+      '<div class="nextprev">' +
+      (prev ? '<a href="#/early/maps/' + encodeURIComponent(prev.id) + '">' +
+        '<span class="d">Previous map</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+      (next ? '<a class="r" href="#/early/maps/' + encodeURIComponent(next.id) + '">' +
+        '<span class="d">Next map</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+      '</div>';
+  }
+
+  render(earlyShell(h));
+  mmWire();
+}
+
+function earlyMaps(seg) {
+  if (!seg[0]) return earlyMapsHub();
+  earlyMapPage(seg[0]);
+}
+
 function earlyRoute(seg) {
   switch (seg[0] || '') {
     case '':           return render(earlyHome());
     case 'topic':      return render(earlyTopicPage(seg[1]));
+    case 'maps':       return earlyMaps(seg.slice(1));
     case 'mughals':    return render(emperorsPage());
     case 'emperor':    return render(emperorPage(seg[1]));
     case 'confusions': return render(earlyConfusions());
@@ -2459,6 +2566,7 @@ SUBJECTS.push({
   tabs: [
     { href: '#/early',            label: 'Topics',          match: ['', 'topic'] },
     { href: '#/early/mughals',    label: 'Mughal emperors', match: ['mughals', 'emperor'] },
+    { href: '#/early/maps',       label: 'Mind maps',       match: ['maps'] },
     { href: '#/early/confusions', label: 'Confused pairs',  match: ['confusions'] }
   ],
   stats: function () {
@@ -2477,6 +2585,10 @@ SUBJECTS.push({
       n: greatEmperors().length + ' in detail',
       w: 'Babur, Humayun, Sher Shah, Akbar, Jahangir, Shah Jahan and Aurangzeb, each on a page, and the later Mughals in a line each.',
       k: 'mughal mughals babur humayun akbar jahangir shah jahan aurangzeb sher shah suri bahadur shah zafar medieval' });
+    out.push({ t: 'Ancient and Medieval - the mind maps', href: '#/early/maps',
+               n: earlyMapOrder().length + ' maps',
+               w: 'The emperors, the battles, the administration, the buildings, the books and the Jain world, each reduced to keywords with a cover-and-recall drill.',
+               k: 'mind map revision recall keywords branches mughal panipat mansabdari jainism' });
     out.push({ t: 'Ancient and Medieval - confused pairs', href: '#/early/confusions',
                n: (EARLY.confusions || []).length + ' pairs',
                w: 'The two councils at Pataliputra, the three Panipats, and four tombs with four builders.' });
@@ -4016,10 +4128,111 @@ function geoConfusions() {
     (GEO.confusions || []).map(cmpBlock).join(''));
 }
 
+/* ------------------------------------------------- the Geography maps
+
+   The same machinery the JCA maps use: an overview whose branches open the
+   seven topic maps, and a Cover the details button that turns any of them
+   into a recall drill. The lines come from data-geo-maps.js, which takes
+   them from the tables on the topic pages - a map is the topic reduced to
+   keywords, not a second account of it. */
+
+var GEO_MAPS = window.GEO_MAPS || {};
+
+function geoMap(id) {
+  if (!GEO_MAPS.br) return null;
+  return id ? ((GEO_MAPS.topics || {})[id] || null) : GEO_MAPS;
+}
+
+/* The topics that have a map, in the order the subject lists them. */
+function geoMapOrder() {
+  return (GEO.topics || []).filter(function (t) { return geoMap(t.id); });
+}
+
+function geoMapCrumb(here) {
+  return '<div class="crumb"><a href="#/geography">Geography</a> → ' +
+    (here ? '<a href="#/geography/maps">Mind maps</a> → ' + esc(here) : 'Mind maps') + '</div>';
+}
+
+function geoMapsHub() {
+  var order = geoMapOrder(), lines = 0;
+  order.forEach(function (t) { lines += mmFacts(geoMap(t.id)); });
+
+  var h = geoMapCrumb('') +
+    pageH1('Mind maps', 'Every Geography topic reduced to keywords: ' + order.length +
+      ' maps and ' + lines + ' lines between them, plus one map of the whole subject. ' +
+      'Nothing here is new — each line is a fact from the topic page, cut to the words ' +
+      'the question turns on.');
+
+  h += '<div class="block"><h3>How to learn from a map</h3><ol class="mmhow">' +
+    '<li><b>Read it once, out loud,</b> branch by branch. A hook is a line to say, not to read.</li>' +
+    '<li><b>Press Cover the details.</b> The branch names and the prompts stay; every answer ' +
+      'becomes a blank. Say each one, then tap it to check.</li>' +
+    '<li><b>Come back tomorrow, and again in three days.</b> The map you still cannot fill ' +
+      'is the topic to go back to.</li>' +
+  '</ol></div>';
+
+  h += '<div class="block"><h3>The maps</h3><div class="grid">' +
+    '<a class="pcard" href="#/geography/maps/all"><div class="pn">The whole subject</div>' +
+      '<div class="pt">All seven topics on one map, with the lines most worth knowing</div>' +
+      '<div class="pr">' + GEO_MAPS.br.length + ' branches · ' + mmFacts(GEO_MAPS) + ' lines</div></a>' +
+    order.map(function (t) {
+      var m = geoMap(t.id);
+      return '<a class="pcard" href="#/geography/maps/' + encodeURIComponent(t.id) + '">' +
+        '<div class="pn">' + esc(t.n) + '</div>' +
+        '<div class="pt">' + esc(m.br.map(function (b) { return unmark(b.h); }).join(' · ')) + '</div>' +
+        '<div class="pr">' + m.br.length + ' branches · ' + mmFacts(m) + ' lines</div></a>';
+    }).join('') + '</div></div>';
+
+  render(geoShell(h));
+}
+
+function geoMapPage(id) {
+  var whole = id === 'all';
+  var t = whole ? null : geoTopicById[id];
+  var m = geoMap(whole ? null : id);
+  if (!m) return notFound('There is no mind map for that Geography topic.');
+
+  var order = geoMapOrder(), i = -1;
+  order.forEach(function (x, k) { if (t && x.id === t.id) i = k; });
+  var prev = order[i - 1], next = order[i + 1];
+
+  var h = geoMapCrumb(whole ? 'The whole subject' : t.n) +
+    pageH1(whole ? 'Geography on one map' : t.n,
+      (whole ? 'The whole subject as keywords. Each branch opens that topic\'s own map. '
+             : 'Mind map. ') +
+      m.br.length + ' branches · ' + mmFacts(m) + ' lines, every one of them from the ' +
+      (whole ? 'topic pages' : 'tables on the topic page') + '.') +
+    mmHtml(m, '#/geography/maps', false);
+
+  if (whole) {
+    h += '<div class="stack"><a class="pill big" href="#/geography/maps">Every map</a> ' +
+      '<a class="pill big" href="#/geography">The topics in full</a></div>';
+  } else {
+    h += '<div class="stack"><a class="pill big" href="#/geography/topic/' +
+      encodeURIComponent(t.id) + '">The full notes · ' + geoRows(t) + ' facts</a> ' +
+      '<a class="pill big" href="#/geography/maps/all">The whole subject on one map</a></div>' +
+      '<div class="nextprev">' +
+      (prev ? '<a href="#/geography/maps/' + encodeURIComponent(prev.id) + '">' +
+        '<span class="d">Previous map</span><span class="t">' + esc(prev.n) + '</span></a>' : '<span></span>') +
+      (next ? '<a class="r" href="#/geography/maps/' + encodeURIComponent(next.id) + '">' +
+        '<span class="d">Next map</span><span class="t">' + esc(next.n) + '</span></a>' : '<span></span>') +
+      '</div>';
+  }
+
+  render(geoShell(h));
+  mmWire();
+}
+
+function geoMaps(seg) {
+  if (!seg[0]) return geoMapsHub();
+  geoMapPage(seg[0]);
+}
+
 function geoRoute(seg) {
   switch (seg[0] || '') {
     case '':           return render(geoHome());
     case 'topic':      return render(geoTopicPage(seg[1]));
+    case 'maps':       return geoMaps(seg.slice(1));
     case 'confusions': return render(geoConfusions());
     default:           return notFound('That address does not exist in Geography.');
   }
@@ -4032,6 +4245,7 @@ SUBJECTS.push({
   blurb: 'The Himalayas in full — ranges, divisions, peaks, passes, glaciers and lakes — then the physical divisions, the drainage, the monsoon, the soils, agriculture and minerals, and the world geography that gets asked.',
   tabs: [
     { href: '#/geography',            label: 'The topics',     match: ['', 'topic'] },
+    { href: '#/geography/maps',       label: 'Mind maps',      match: ['maps'] },
     { href: '#/geography/confusions', label: 'Confused pairs', match: ['confusions'] },
     { href: '#/gk',                   label: '↔ Static GK', match: [] }
   ],
@@ -4044,7 +4258,11 @@ SUBJECTS.push({
       return { t: t.n, href: '#/geography/topic/' + encodeURIComponent(t.id), w: t.w,
                k: t.blocks.map(function (b) { return b.h; }).join(' '),
                n: geoRows(t) + ' facts' };
-    }).concat([{ t: 'Geography - confused pairs', href: '#/geography/confusions',
+    }).concat([{ t: 'Geography - the mind maps', href: '#/geography/maps',
+                 n: geoMapOrder().length + ' maps',
+                 w: 'Every topic reduced to keywords, with a cover-and-recall drill on each map.',
+                 k: 'mind map revision recall keywords branches himalayas monsoon soils drainage' },
+               { t: 'Geography - confused pairs', href: '#/geography/confusions',
                  n: (GEO.confusions || []).length + ' pairs',
                  w: 'Which peak answers which wording, bhabar against bhangar, and why Narmada makes an estuary.',
                  k: 'k2 kanchenjunga nanda devi bhabar terai khadar bhangar estuary delta el nino' }]);
@@ -5212,14 +5430,19 @@ function jcaMapOrder() {
   return out;
 }
 
-function jcaMapFacts(m) {
+function mmFacts(m) {
   return m.br.reduce(function (n, b) { return n + b.lv.length; }, 0);
 }
 
-/* A leaf is "text" or [key, text]. On the Constitution maps a key that is an
-   article opens the article; on the rule books a key is a rule or an Order
-   number, and "Rule 6" must not become a link to Article 6. */
-function jcaMapLeaf(lf, arts) {
+/* A leaf is "text" or [key, text]. The key is the PROMPT - an article, a
+   pass, a soil, a battle - and it stays visible when the map is covered for
+   recall; the text is the answer and is what gets covered.
+
+   `arts` says whether a key that looks like an article number should open
+   that article. Only the Constitution maps pass it: on the rule books "Rule
+   6" must not become a link to Article 6, and in Geography neither must a
+   pass or a peak. */
+function mmLeaf(lf, arts) {
   var key = Array.isArray(lf) ? lf[0] : '', txt = Array.isArray(lf) ? lf[1] : lf;
   var num = key.replace(/\(.*$/, '');
   var k = !key ? '' : arts && byArt[num]
@@ -5228,20 +5451,20 @@ function jcaMapLeaf(lf, arts) {
   return '<li>' + k + '<span class="mmt">' + hiMark(linkArts(txt)) + '</span></li>';
 }
 
-function jcaMapBranch(b, i, secId, arts) {
+function mmBranch(b, i, base, arts) {
   var title = hiMark(esc(b.h));
-  if (b.to) title = '<a href="#/jca/maps/' + secId + '/' + encodeURIComponent(b.to) + '">' + title + '</a>';
+  if (b.to) title = '<a href="' + base + '/' + encodeURIComponent(b.to) + '">' + title + '</a>';
   return '<section class="mmbr h-' + JCA_HUES[i % JCA_HUES.length] + '">' +
     '<h3 class="mmbt">' + title + '</h3>' +
-    '<ul class="mmlv">' + b.lv.map(function (lf) { return jcaMapLeaf(lf, arts); }).join('') + '</ul>' +
+    '<ul class="mmlv">' + b.lv.map(function (lf) { return mmLeaf(lf, arts); }).join('') + '</ul>' +
     (b.m ? '<p class="mmhook"><b>Hook</b> <span class="mmt">' + hiMark(esc(b.m)) + '</span></p>' : '') +
     '<button type="button" class="mmopen" data-mm="branch">Uncover this branch</button></section>';
 }
 
-function jcaMapHtml(m, secId) {
-  var arts = secId === 'c', half = Math.ceil(m.br.length / 2);
+function mmHtml(m, base, arts) {
+  var half = Math.ceil(m.br.length / 2);
   function col(list, from) {
-    return list.map(function (b, i) { return jcaMapBranch(b, from + i, secId, arts); }).join('');
+    return list.map(function (b, i) { return mmBranch(b, from + i, base, arts); }).join('');
   }
   return '<div class="mmtools" id="mmtools">' +
       '<button type="button" class="pill big" data-mm="cover">Cover the details</button>' +
@@ -5257,7 +5480,7 @@ function jcaMapHtml(m, secId) {
 
 /* The curves: from the side of the centre to the title of each branch. Not
    drawn at all when the map is a tree, where CSS draws the joins. */
-function jcaMapLinks() {
+function mmLinks() {
   var map = document.getElementById('mmap');
   if (!map) return;
   var svg = map.querySelector('.mmlinks'), hub = map.querySelector('.mmhub');
@@ -5277,17 +5500,17 @@ function jcaMapLinks() {
   }).join('');
 }
 
-var jcaMapTimer = null;
+var mmTimer = null;
 window.addEventListener('resize', function () {
   clearTimeout(jcaMapTimer);
-  jcaMapTimer = setTimeout(jcaMapLinks, 120);
+  mmTimer = setTimeout(mmLinks, 120);
 });
 
-function jcaMapWire() {
+function mmWire() {
   var map = document.getElementById('mmap'), tools = document.getElementById('mmtools');
   if (!map || !tools) return;
-  requestAnimationFrame(jcaMapLinks);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(jcaMapLinks);
+  requestAnimationFrame(mmLinks);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(mmLinks);
 
   function lines(root) { return (root || map).querySelectorAll('.mmlv li, .mmhook'); }
   function uncover(x) {
@@ -5313,7 +5536,7 @@ function jcaMapWire() {
     tools.querySelector('[data-mm="show"]').hidden = !on;
     count();
     /* covering shows each branch's Uncover button, which moves the titles */
-    jcaMapLinks();
+    mmLinks();
   }
   function act(e) {
     if (!map.classList.contains('recall')) return;
@@ -5342,7 +5565,7 @@ function jcaMapWire() {
 
 function jcaMapsHub() {
   var all = jcaMapOrder(), facts = 0;
-  all.forEach(function (x) { facts += jcaMapFacts(jcaMap(x[0].id, x[1].id)); });
+  all.forEach(function (x) { facts += mmFacts(jcaMap(x[0].id, x[1].id)); });
   var h = jcaCrumb([['Mind maps']]) +
     pageH1('Mind maps', 'The whole law paper as keywords: a map for each of the ' + all.length + ' topics, ' +
       facts + ' lines between them, and an overview of each part. Every line is taken from the notes.') +
@@ -5365,7 +5588,7 @@ function jcaMapsHub() {
         if (!tm) return '';
         return '<a class="topic" href="#/jca/maps/' + s.id + '/' + encodeURIComponent(t.id) + '"><b>' + esc(t.t) + '</b>' +
           '<i>' + esc(tm.br.map(function (b) { return unmark(b.h); }).join(' · ')) + '</i>' +
-          '<em>' + jcaPlural(tm.br.length, 'branch', 'branches') + ' · ' + jcaPlural(jcaMapFacts(tm), 'line') + '</em></a>';
+          '<em>' + jcaPlural(tm.br.length, 'branch', 'branches') + ' · ' + jcaPlural(mmFacts(tm), 'line') + '</em></a>';
       }).join('') + '</div></div>';
   });
   render(jcaShell(h));
@@ -5379,9 +5602,9 @@ function jcaMapPage(s, t) {
   crumb.push([t ? t.t : s.short]);
   var h = jcaCrumb(crumb) +
     pageH1(t ? t.t : s.name, (t ? 'Mind map' : 'Mind map of the whole part') + ' · ' +
-      jcaPlural(m.br.length, 'branch', 'branches') + ' · ' + jcaPlural(jcaMapFacts(m), 'line') +
+      jcaPlural(m.br.length, 'branch', 'branches') + ' · ' + jcaPlural(mmFacts(m), 'line') +
       (t ? '' : '. Each branch opens its topic\'s own map.')) +
-    jcaMapHtml(m, s.id);
+    mmHtml(m, '#/jca/maps/' + s.id, s.id === 'c');
 
   if (t) {
     var order = jcaMapOrder(), i = -1;
@@ -5399,7 +5622,7 @@ function jcaMapPage(s, t) {
       '<a class="pill big" href="#/jca/maps">Every map</a></div>';
   }
   render(jcaShell(h));
-  jcaMapWire();
+  mmWire();
 }
 
 function jcaMaps(seg) {
@@ -7460,9 +7683,32 @@ function sideEarly(seg) {
   var k = seg[0] || '';
   var topics = EARLY.topics || [], emps = EARLY.emperors || [];
 
+  if (k === 'maps') {
+    var here = seg[1] || '', cur = null;
+    earlyMapOrder().forEach(function (x) { if (x.id === here) cur = x; });
+    var every = [{ href: '#/early/maps/all', t: 'The whole subject',
+                   d: 'Every topic on one map', on: here === 'all' }]
+      .concat(earlyMapOrder().map(function (x) {
+        return { href: '#/early/maps/' + encodeURIComponent(x.id), t: x.n,
+                 d: mmFacts(earlyMap(x.id)) + ' lines', on: x.id === here };
+      }));
+    return [
+      cur ? sFacts('This map', [
+        ['Branches', String(earlyMap(cur.id).br.length)],
+        ['Lines', String(mmFacts(earlyMap(cur.id)))],
+        ['The notes behind it', cur.notesLabel.replace(/^The (full )?notes · /, ''), cur.notes]
+      ], 'Every line on the map comes from those notes.') : '',
+      sLinks('Every map', every, null, 12)
+    ];
+  }
+
   if (k === 'topic') {
     var t = earlyTopicById[seg[1]];
     return [
+      t && earlyMap(t.id) ? sLinks('Revise it', [
+        { href: '#/early/maps/' + encodeURIComponent(t.id), t: 'The mind map',
+          d: mmFacts(earlyMap(t.id)) + ' lines, with a cover-and-recall drill' }
+      ], null, 1) : '',
       t ? sFacts('This topic', [
         ['Tables', String((t.blocks || []).length)],
         ['Facts', String(earlyRows(t))],
@@ -7489,6 +7735,10 @@ function sideEarly(seg) {
       /* Only the great Mughals and Sher Shah have pages. The later ones are
          a line each on the emperors page, so linking them here would have
          offered fifteen doors with nothing behind them. */
+      earlyMap('emperors') ? sLinks('Revise them', [
+        { href: '#/early/maps/emperors', t: 'The mind map',
+          d: mmFacts(earlyMap('emperors')) + ' lines, with a cover-and-recall drill' }
+      ], null, 1) : '',
       sLinks('The emperors, in order', emps.filter(function (x) {
         return x.kind !== 'later';
       }).map(function (x) {
@@ -7587,9 +7837,32 @@ function sideLaw(seg) {
 
 function sideGeo(seg) {
   var topics = GEO.topics || [];
+
+  if ((seg[0] || '') === 'maps') {
+    var here = seg[1] || '', cur = geoTopicById[here];
+    var every = [{ href: '#/geography/maps/all', t: 'The whole subject',
+                   d: 'All seven topics on one map', on: here === 'all' }]
+      .concat(geoMapOrder().map(function (x) {
+        return { href: '#/geography/maps/' + encodeURIComponent(x.id), t: x.n,
+                 d: mmFacts(geoMap(x.id)) + ' lines', on: x.id === here };
+      }));
+    return [
+      cur ? sFacts('This map', [
+        ['Branches', String(geoMap(cur.id).br.length)],
+        ['Lines', String(mmFacts(geoMap(cur.id)))],
+        ['The full notes', geoRows(cur) + ' facts', '#/geography/topic/' + encodeURIComponent(cur.id)]
+      ], 'Every line on the map comes from those facts.') : '',
+      sLinks('Every map', every, null, 12)
+    ];
+  }
+
   if ((seg[0] || '') === 'topic') {
     var t = geoTopicById[seg[1]];
     return [
+      t && geoMap(t.id) ? sLinks('Revise it', [
+        { href: '#/geography/maps/' + encodeURIComponent(t.id), t: 'The mind map',
+          d: mmFacts(geoMap(t.id)) + ' lines, with a cover-and-recall drill' }
+      ], null, 1) : '',
       t ? sFacts('This topic', [
         ['Tables', String((t.blocks || []).length)],
         ['Facts', String(geoRows(t))],
@@ -7752,7 +8025,14 @@ function layoutSide(seg) {
   aside.setAttribute('aria-label', 'Alongside this page');
   aside.innerHTML = cards.join('');
   page.appendChild(aside);
-  page.classList.add('withside');
+
+  /* A mind map is drawn as two columns of branches either side of its
+     centre, and it wants every pixel of the page to do it. A 300px column
+     beside it takes exactly the room the branches need, and the words start
+     breaking mid-word. So on a map page the cards go UNDERNEATH, laid out as
+     the row they already become on a narrow screen. */
+  page.classList.add(flow.querySelector('#mmap') ? 'sidebelow' : 'withside');
+  if (flow.querySelector('#mmap')) aside.classList.add('below');
 }
 
 /* ------------------------------------------------------------------ router */
