@@ -61,9 +61,26 @@
       <kbd>/</kbd>
     </div>
 
-    <button id="install" class="installbtn" hidden aria-haspopup="dialog">
-      <span aria-hidden="true">↓</span> Install<span class="lbl"> app</span>
-    </button>
+    <!-- The JCA tab sits twelfth in the strip below. That strip scrolls
+         sideways, and twelfth is 1,255px off the right edge of a phone and
+         still off the edge of a 1440px desktop, so reaching the law paper
+         meant dragging the strip past eleven other subjects first. This is
+         the one-click way in, and it lives up here rather than in the strip
+         precisely so that it can never scroll out of reach. -->
+    <!-- The two pills travel as one block. Separately they each need their
+         own push to the right, and on a phone, where one of them wraps to
+         the next row, two pushes put a gap between them and leave the JCA
+         pill stranded in the middle of a row. As a block they stay side by
+         side and stay at the right-hand end, with or without the install
+         button, which is hidden once the app is installed. -->
+    <div class="headbtns">
+      <a id="jcabtn" class="jcabtn" href="#/jca"
+         aria-label="Go to the Supreme Court JCA law paper">JCA<span class="lbl"> law paper</span></a>
+
+      <button id="install" class="installbtn" hidden aria-haspopup="dialog">
+        <span aria-hidden="true">↓</span> Install<span class="lbl"> app</span>
+      </button>
+    </div>
   </div>
 
   <nav class="tabs" id="tabs" aria-label="Sections"></nav>

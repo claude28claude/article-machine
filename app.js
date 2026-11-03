@@ -17,6 +17,7 @@ var qBox = document.getElementById('q');
 var resBox = document.getElementById('results');
 var tabBar = document.getElementById('tabs');
 var brandSub = document.getElementById('brandsub');
+var jcaBtn = document.getElementById('jcabtn');
 
 /* ------------------------------------------------------------------ site
 
@@ -294,6 +295,15 @@ function renderNav(seg) {
     SUBJECTS.map(function (s) { return tab('#/s/' + s.id, s.id, s.short || s.name); }).join('') +
     tab('#/practice', 'practice', 'Practice') +
     tab('#/about', 'about', 'About');
+
+  /* The JCA pill is in the header above this bar, not in it, so it survives
+     every render and only its state has to be set. barKey returns 'jca' for
+     #/jca, for #/s/jca and for every page under them, so one test covers the
+     whole subject. */
+  if (jcaBtn) {
+    if (on === 'jca') jcaBtn.setAttribute('aria-current', 'page');
+    else jcaBtn.removeAttribute('aria-current');
+  }
 
   var sub = subjectById(on);
   if (brandSub) brandSub.textContent = sub ? sub.name

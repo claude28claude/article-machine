@@ -67,8 +67,44 @@ it.
 
 One page, no framework, no build step, no network calls, no tracking.
 
-**The Supreme Court JCA law paper is a subject here too**, under the
-**JCA** tab at `#/jca`; see [The JCA section](#the-jca-section) below.
+**The Supreme Court JCA law paper is a subject here too**. The gold **JCA**
+pill in the header opens it from any page of the site; the **JCA** tab in the
+strip below opens its list of topics. See [The JCA section](#the-jca-section)
+below.
+
+### The JCA pill in the header
+
+The subject tabs live in a strip that scrolls sideways, and JCA is twelfth of
+the fourteen entries in it. Measured in the browser: on a 375px phone the
+strip is 1,497px wide and the JCA tab starts at 1,255px, and even a 1440px
+desktop shows only the first 1,280px of it. Reaching the law paper meant
+dragging the strip past eleven other subjects first — on the site where that
+paper is the next exam on the calendar.
+
+So the header carries a pill of its own, in `.topin`, which is the one part
+of the chrome no JavaScript rewrites: `nav.tabs` is rebuilt from
+`tabBar.innerHTML` on every route, and a static link placed in it would be
+wiped before it was ever painted. The pill is an ordinary `<a href="#/jca">`
+— the hash router needs nothing else — and it points at the overview rather
+than at `#/s/jca`, because the overview is the page that answers *what now*:
+the countdown, the mock test, twenty mixed questions, the mind maps and your
+wrong answers, each one tap away.
+
+`renderNav` sets `aria-current="page"` on it whenever `barKey` returns `jca`,
+which covers `#/jca`, `#/s/jca` and every page under either, and the pill
+fills solid — the same thing the underline says about the current tab.
+
+Two pills in one header row risked the third row on a narrow phone that the
+install button had already caused once, so they are wrapped in a single
+`.headbtns` block that takes one push to the right and wraps as a unit, and
+the word "law paper" is hidden below 760px for the same reason "app" is
+hidden next to the download arrow. Measured after the change: the header is
+194px on a phone at 320, 360 and 375px — exactly what it was before — with no
+sideways scroll on any of 24 routes.
+
+The installed app gets the same shortcut from outside: `manifest.webmanifest`
+now declares one, so a long press on the home-screen icon offers **JCA**
+straight into `./index.html#/jca`.
 
 ---
 
