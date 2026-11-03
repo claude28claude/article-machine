@@ -48,9 +48,9 @@ solutions, and 23 diagrams; profit, loss and mixture kept separate.
 
 **Daily study sets** — one page per study day, labelled with its date: a sheet
 of highlighted SSC notes for what was added to the site that day, and a set of
-questions written from those notes. **142 questions** across the two sets, four
-options each, taken ten or twenty at a time or as one paper, from one day or
-from both mixed.
+questions written from those notes. **266 questions** across the three sets,
+four options each, taken ten or twenty at a time or as one paper, from one day
+or from all of them mixed.
 
 There are two front doors, because a reader arrives with one of two
 questions. `#/` is a **filterable list of every topic** — for when you know
@@ -532,7 +532,7 @@ of part:
   copied, so the two cannot drift apart.
 
 Each set is its own section in the strip at the top of the subject, so
-**3 November** is one tap from anywhere in it, and `#/daily/3-november/soil`
+**5 November** is one tap from anywhere in it, and `#/daily/5-november/buddha`
 opens the set at that part. To add tomorrow's, put one more entry at the top
 of `sets`; it reaches the strip, the hub, the index and the search on its own.
 
@@ -542,9 +542,9 @@ figure reads as dated rather than as wrong.
 ## The question sets
 
 A set may also carry a `quiz`: questions written from that set's own notes.
-**142 of them** — 62 on the 3 November set and 80 on the 4 November set — at
-`#/daily/<set>/quiz/<10|20|all>`, with every set mixed together at
-`#/daily/quiz/<10|20|all>`.
+**266 of them** — 62 on the 3 November set, 80 on the 4 November set and 124
+on the 5 November set — at `#/daily/<set>/quiz/<10|20|all>`, with every set
+mixed together at `#/daily/quiz/<10|20|all>`.
 
 Four options, one right, the answer the moment you pick, and a line under it
 linking to the part of the set the question came from, so a wrong answer leads
@@ -563,13 +563,26 @@ sex ratio is offered against Kerala's because one is a union territory, and
 8–21–60 is offered against 17–169–231 because those are the MDGs.
 
 **The answers are spread across the four positions on purpose.** Written
-straight through, the right answer landed on B in 88 of the 142 — a reader who
-always picked B would have scored 62 per cent knowing nothing. Each question's
-options are rotated by a hash of its own question text until the spread is even
-(29/37/36/40), which is stable: running the rebalance again changes nothing.
+straight through, the right answer lands on B far more often than anywhere
+else — at one point B in 88 of 142, so a reader who always picked B would have
+scored 62 per cent knowing nothing. Each question's options are rotated by a
+hash of its own question text until the spread is even (64/63/61/78 across all
+266, so the commonest letter is worth 29 per cent), and the rotation is stable:
+running the rebalance again changes nothing.
+
+Because the options rotate, **no solution may refer to an option by its
+position.** `tools/verify/questions.js` fails the build if one does.
 
 The engine is the one the Advanced Maths chapters already use — same markup,
 same keys, same result screen — with one addition, the link back to the notes.
+
+**The feedback line does not say the answer twice.** It opens "Not that one —
+the answer is C, Rajagriha." and then prints the solution, and a solution
+usually opens by naming the answer, which read as *"the answer is C, Rajagriha.
+Rajagriha, in the Saptaparni cave..."*. That was true of 179 of the 266. The
+fix is one helper, `quizLead`, shared by the daily sets, Advanced Maths and the
+JCA paper: when the answer already appears in the solution's opening clause,
+the lead gives the letter alone.
 
 ## Checked, not just written
 
@@ -705,8 +718,8 @@ by the time anyone noticed.
 |---|---|---|
 | Constitution | 13 maps + 1 overview | 364 |
 | Modern History | 8 maps + 1 overview | 307 |
-| Ancient and Medieval | 10 maps + 1 overview | 396 |
-| Geography | 7 topics + 1 overview | 245 |
+| Ancient and Medieval | 11 maps + 1 overview | 445 |
+| Geography | 8 maps + 1 overview | 285 |
 | Indian Economy | 11 maps + 1 overview | 320 |
 | Static GK | 13 maps + 1 overview | 486 |
 | Biology | 3 maps + 1 overview | 196 |
@@ -779,6 +792,39 @@ rather than at a topic page, because the set is where the notes live.
 Where standard books disagree, the set says so rather than picking: the capital
 moved to Daulatabad in 1327 or 1326, and the token currency was issued in
 1329–30 or 1330–32. The failure, and the reason for it, are not in dispute.
+
+## The 5 November set
+
+Three subjects, ten parts, 100 notes written here and 172 table rows.
+
+**Buddhism was the largest hole left on the site.** It existed as four rows in
+a table of councils, written to sit beside the Jain ones — and nothing else.
+No Buddha, no Four Noble Truths, no Tripitaka, no Sanchi. Five parts fill it:
+the life (`#/daily/5-november/buddha`), the teaching, the councils and the
+three vehicles, the texts, and the stupas, caves and monasteries. The mind map
+at `#/early/maps/buddhism` carries 71 lines of it.
+
+**Jainism is the opposite case, and the set says so.** The councils, Mahavira,
+the two sects, the texts, the patrons and the temples are already on the site
+at `#/early/topic/jainism`, with their own map. Repeating them would have been
+padding. So the full part is the material that was missing — anekantavada,
+syadvada, the tattvas, the vows and who added which, sallekhana, kevala jnana
+— and a **recap** part pulls in the existing notes by reference rather than
+copying them. A comparison table sets Buddhism against Jainism on the eight
+points that actually differ, the soul first.
+
+**Minerals had eleven rows** inside the Geography agriculture page. They have
+three parts here: the classes and the rocks and the three belts; mineral by
+mineral with the leading state and the named mines; and coal, petroleum and
+power. Geography's maps were tied one-to-one to its seven topics, so this one
+needed `GEO_MAP_AFTER` — the same device Ancient and Medieval already uses —
+which lets a map continue a topic instead of being one. `#/geography/maps/minerals`
+is the result, 65 lines.
+
+Where the sources move, the set says which question is being asked:
+**Jharkhand** holds the largest coal reserves while **Chhattisgarh and Odisha**
+have led production in recent years, and the two change places, so "largest
+coal producing state" and "largest coal reserves" do not have the same answer.
 
 ## The 4 November set
 
@@ -940,7 +986,7 @@ of them so a reader can check what a summary lost.
 | `data-jca-judiciary.js`, `data-jca-scr.js`, `data-jca-osr.js` | The JCA law paper: notes, tables, confused pairs and 651 questions |
 | `data-jca-maps.js` | The 28 JCA mind maps, every line taken from those three files |
 | `data-geo-maps.js` | The 8 Geography mind maps, every line taken from `data-geography.js` |
-| `data-early-maps.js` | The 11 Ancient and Medieval mind maps, from `data-early.js` and the 3 and 4 November sets |
+| `data-early-maps.js` | The 11 Ancient and Medieval mind maps, from `data-early.js` and the 3, 4 and 5 November sets |
 | `data-hist-maps.js` | The 9 Modern History mind maps, from the five history data files |
 | `data-coi-maps.js` | The 14 Constitution mind maps, from the articles, the notes and the exam layer |
 | `data-econ-maps.js` | The 11 Indian Economy mind maps, from `data-economy.js` |

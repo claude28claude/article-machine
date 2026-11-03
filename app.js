@@ -2604,6 +2604,9 @@ var EARLY_MAP_SULTANATE = { id: 'sultanate', n: 'The Delhi Sultanate',
    administration topic, which it continues; the second comes last, because
    that is where it belongs. */
 var EARLY_MAP_AFTER = {
+  'jainism':      { id: 'buddhism', n: 'Buddhism',
+                    notes: '#/daily/5-november/buddha',
+                    notesLabel: 'The notes, in the 5 November set' },
   'mughal-admin': { id: 'mughal-state', n: 'Nobility and provinces',
                     notes: '#/daily/4-november/mughal-state',
                     notesLabel: 'The notes, in the 4 November set' }
@@ -4113,6 +4116,26 @@ function mathDrawQuiz() {
   mathWireQuiz();
 }
 
+/* The bold lead above a solution. When the solution already opens by
+   naming the answer - which most do, because it reads properly that way -
+   naming it here too makes it read twice, so only the letter is given. */
+function quizLead(it, ok) {
+  if (ok) return 'Right.';
+  var letter = 'ABCD'.charAt(it.a), ans = String(it.o[it.a]).trim();
+  /* "The Niranjana, also called the Falgu" opens with the answer just as
+     much as "Niranjana, also called..." does, so an article on either side
+     must not hide the repetition - and neither should a word in front of
+     it ("Resolution 70/1...", "At 29, in the event..."). If the answer is
+     in the solution's opening clause the reader sees it either way, so the
+     lead gives the letter alone. */
+  function bare(x) { return x.toLowerCase().replace(/^(the|a|an)\s+/, ''); }
+  var sol = String(it.s || '').trim();
+  var head = bare(sol.split(/\s+/).slice(0, 8).join(' '));
+  var twice = ans && head.indexOf(bare(ans)) >= 0;
+  return 'Not that one \u2014 the answer is ' + letter +
+         (twice ? '.' : ', ' + esc(ans) + '.');
+}
+
 function mathWrongCard(chId, qi) {
   var it = (MATHQ[chId] || [])[qi];
   if (!it) return '';
@@ -4171,8 +4194,7 @@ function mathWireQuiz() {
     var sol = document.getElementById('mqs');
     if (sol) sol.innerHTML =
       '<div class="mqsol' + (ok ? ' ok' : '') + '">' +
-      '<b>' + (ok ? 'Right.' : 'Not that one — the answer is ' + esc('ABCD'.charAt(it.a)) +
-        ', ' + esc(it.o[it.a]) + '.') + '</b> ' + esc(it.s) + '</div>' +
+      '<b>' + quizLead(it, ok) + '</b> ' + esc(it.s) + '</div>' +
       '<div class="stack"><button class="pill big" type="button" data-act="next">' +
       (q.i + 1 >= q.order.length ? 'See the score' : 'Next question') + '</button></div>';
     /* Focused, so Enter moves on: the same keys as JCA practice. */
@@ -4672,9 +4694,27 @@ function geoMap(id) {
   return id ? ((GEO_MAPS.topics || {})[id] || null) : GEO_MAPS;
 }
 
-/* The topics that have a map, in the order the subject lists them. */
+/* A map that continues a topic rather than being one. Geography's seven
+   topics each have a map; minerals needed more room than the agriculture
+   page could give it, so it has its own, written for the 5 November set. */
+var GEO_MAP_AFTER = {
+  'agriculture': { id: 'minerals', n: 'Minerals and power',
+                   notes: '#/daily/5-november/minerals',
+                   notesLabel: 'The notes, in the 5 November set' }
+};
+
+/* Every map in the order the subject reads: each topic that has one,
+   followed by any map written to continue it. */
 function geoMapOrder() {
-  return (GEO.topics || []).filter(function (t) { return geoMap(t.id); });
+  var out = [];
+  (GEO.topics || []).forEach(function (t) {
+    if (geoMap(t.id)) out.push({ id: t.id, n: t.n,
+      notes: '#/geography/topic/' + encodeURIComponent(t.id),
+      notesLabel: 'The full notes · ' + geoRows(t) + ' facts' });
+    var ex = GEO_MAP_AFTER[t.id];
+    if (ex && geoMap(ex.id)) out.push(ex);
+  });
+  return out;
 }
 
 function geoMapCrumb(here) {
@@ -4687,10 +4727,10 @@ function geoMapsHub() {
   order.forEach(function (t) { lines += mmFacts(geoMap(t.id)); });
 
   var h = geoMapCrumb('') +
-    pageH1('Mind maps', 'Every Geography topic reduced to keywords: ' + order.length +
+    pageH1('Mind maps', 'Geography reduced to keywords: ' + order.length +
       ' maps and ' + lines + ' lines between them, plus one map of the whole subject. ' +
-      'Nothing here is new — each line is a fact from the topic page, cut to the words ' +
-      'the question turns on.');
+      'Nothing here is new — each line is a fact from the notes behind it, cut to the ' +
+      'words the question turns on.');
 
   h += '<div class="block"><h3>How to learn from a map</h3><ol class="mmhow">' +
     '<li><b>Read it once, out loud,</b> branch by branch. A hook is a line to say, not to read.</li>' +
@@ -4702,12 +4742,13 @@ function geoMapsHub() {
 
   h += '<div class="block"><h3>The maps</h3><div class="grid">' +
     '<a class="pcard" href="#/geography/maps/all"><div class="pn">The whole subject</div>' +
-      '<div class="pt">All seven topics on one map, with the lines most worth knowing</div>' +
+      '<div class="pt">All ' + numWord(GEO_MAPS.br.length) + ' topics on one map, ' +
+        'with the lines most worth knowing</div>' +
       '<div class="pr">' + GEO_MAPS.br.length + ' branches · ' + mmFacts(GEO_MAPS) + ' lines</div></a>' +
-    order.map(function (t) {
-      var m = geoMap(t.id);
-      return '<a class="pcard" href="#/geography/maps/' + encodeURIComponent(t.id) + '">' +
-        '<div class="pn">' + esc(t.n) + '</div>' +
+    order.map(function (x) {
+      var m = geoMap(x.id);
+      return '<a class="pcard" href="#/geography/maps/' + encodeURIComponent(x.id) + '">' +
+        '<div class="pn">' + esc(x.n) + '</div>' +
         '<div class="pt">' + esc(m.br.map(function (b) { return unmark(b.h); }).join(' · ')) + '</div>' +
         '<div class="pr">' + m.br.length + ' branches · ' + mmFacts(m) + ' lines</div></a>';
     }).join('') + '</div></div>';
@@ -4717,16 +4758,15 @@ function geoMapsHub() {
 
 function geoMapPage(id) {
   var whole = id === 'all';
-  var t = whole ? null : geoTopicById[id];
   var m = geoMap(whole ? null : id);
   if (!m) return notFound('There is no mind map for that Geography topic.');
 
   var order = geoMapOrder(), i = -1;
-  order.forEach(function (x, k) { if (t && x.id === t.id) i = k; });
-  var prev = order[i - 1], next = order[i + 1];
+  order.forEach(function (x, k) { if (x.id === id) i = k; });
+  var cur = order[i], prev = order[i - 1], next = order[i + 1];
 
-  var h = geoMapCrumb(whole ? 'The whole subject' : t.n) +
-    pageH1(whole ? 'Geography on one map' : t.n,
+  var h = geoMapCrumb(whole ? 'The whole subject' : (cur ? cur.n : '')) +
+    pageH1(whole ? 'Geography on one map' : cur.n,
       (whole ? 'The whole subject as keywords. Each branch opens that topic\'s own map. '
              : 'Mind map. ') +
       m.br.length + ' branches · ' + mmFacts(m) + ' lines, every one of them from the ' +
@@ -4737,8 +4777,8 @@ function geoMapPage(id) {
     h += '<div class="stack"><a class="pill big" href="#/geography/maps">Every map</a> ' +
       '<a class="pill big" href="#/geography">The topics in full</a></div>';
   } else {
-    h += '<div class="stack"><a class="pill big" href="#/geography/topic/' +
-      encodeURIComponent(t.id) + '">The full notes · ' + geoRows(t) + ' facts</a> ' +
+    h += '<div class="stack"><a class="pill big" href="' + cur.notes + '">' +
+      esc(cur.notesLabel) + '</a> ' +
       '<a class="pill big" href="#/geography/maps/all">The whole subject on one map</a></div>' +
       '<div class="nextprev">' +
       (prev ? '<a href="#/geography/maps/' + encodeURIComponent(prev.id) + '">' +
@@ -4790,7 +4830,8 @@ SUBJECTS.push({
     }).concat([{ t: 'Geography - the mind maps', href: '#/geography/maps',
                  n: geoMapOrder().length + ' maps',
                  w: 'Every topic reduced to keywords, with a cover-and-recall drill on each map.',
-                 k: 'mind map revision recall keywords branches himalayas monsoon soils drainage' },
+                 k: 'mind map revision recall keywords branches himalayas monsoon soils drainage ' +
+                    'minerals iron coal bauxite petroleum' },
                { t: 'Geography - confused pairs', href: '#/geography/confusions',
                  n: (GEO.confusions || []).length + ' pairs',
                  w: 'Which peak answers which wording, bhabar against bhangar, and why Narmada makes an estuary.',
@@ -5124,8 +5165,7 @@ function dailyWireQuiz() {
     var sol = document.getElementById('dqs');
     if (sol) sol.innerHTML =
       '<div class="mqsol' + (ok ? ' ok' : '') + '">' +
-      '<b>' + (ok ? 'Right.' : 'Not that one \u2014 the answer is ' + 'ABCD'.charAt(it.a) +
-        ', ' + esc(it.o[it.a]) + '.') + '</b> ' + esc(it.s) + '</div>' +
+      '<b>' + quizLead(it, ok) + '</b> ' + esc(it.s) + '</div>' +
       dailyQuizWhere(e) +
       '<div class="stack"><button class="pill big" type="button" data-act="next">' +
       (q.i + 1 >= q.order.length ? 'See the score' : 'Next question') + '</button></div>';
@@ -5806,7 +5846,7 @@ function jcaPick(pick) {
   jcaMark(id, ok);
   var sol = document.getElementById('jqs');
   if (sol) sol.innerHTML = '<div class="mqsol' + (ok ? ' ok' : '') + '"><b>' +
-    (ok ? 'Right.' : 'Not that one: the answer is ' + 'ABCD'.charAt(q.a) + ', ' + esc(q.o[q.a]) + '.') +
+    quizLead({ a: q.a, o: q.o, s: unmark(String(q.s || '')) }, ok).replace(' \u2014 the', ': the') +
     '</b> ' + hiMark(prose(q.s, 1)) + ' <span class="jctests">Tests ' + esc(q.r) + '</span></div>' +
     '<div class="stack"><button class="pill big" type="button" data-act="next">' +
     (z.i + 1 >= z.ids.length ? 'See the score' : 'Next question') + '</button></div>';
@@ -8845,9 +8885,10 @@ function sideGeo(seg) {
   var topics = GEO.topics || [];
 
   if ((seg[0] || '') === 'maps') {
-    var here = seg[1] || '', cur = geoTopicById[here];
+    var here = seg[1] || '', cur = null;
+    geoMapOrder().forEach(function (x) { if (x.id === here) cur = x; });
     var every = [{ href: '#/geography/maps/all', t: 'The whole subject',
-                   d: 'All seven topics on one map', on: here === 'all' }]
+                   d: 'Every topic on one map', on: here === 'all' }]
       .concat(geoMapOrder().map(function (x) {
         return { href: '#/geography/maps/' + encodeURIComponent(x.id), t: x.n,
                  d: mmFacts(geoMap(x.id)) + ' lines', on: x.id === here };
@@ -8856,8 +8897,8 @@ function sideGeo(seg) {
       cur ? sFacts('This map', [
         ['Branches', String(geoMap(cur.id).br.length)],
         ['Lines', String(mmFacts(geoMap(cur.id)))],
-        ['The full notes', geoRows(cur) + ' facts', '#/geography/topic/' + encodeURIComponent(cur.id)]
-      ], 'Every line on the map comes from those facts.') : '',
+        ['The notes behind it', cur.notesLabel.replace(/^The (full )?notes · /, ''), cur.notes]
+      ], 'Every line on the map comes from those notes.') : '',
       sLinks('Every map', every, null, 12)
     ];
   }

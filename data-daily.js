@@ -29,6 +29,758 @@ window.DAILY = {
 
 sets: [
 
+  /* ------------------------------------------- 5 NOVEMBER */
+  {id:"5-november", d:"5 November", y:2026,
+ w:"Buddhism in full — the life, the teaching, the councils and the schools, the texts, the stupas and the monasteries — Jain philosophy and the words an answer needs for it, and the minerals of India mineral by mineral, with the rocks they sit in and the states that lead.",
+ intro:"Buddhism was the largest hole left on this site. It existed only as four rows in a table of councils beside the Jain ones — no Buddha, no Four Noble Truths, no Tripitaka, no Sanchi. It is written out here. Jainism is the opposite case: the councils, Mahavira, the sects, the texts and the temples are all on the site already, so what is added is the part that is not — the philosophy, and the terms a question uses. Minerals had eleven rows inside the Geography agriculture page; they have three parts here.",
+ parts:[
+
+  /* ============================================== THE BUDDHA */
+  {id:"buddha", tag:"Ancient history · new on the site", h:"The Buddha",
+   w:"The life, in the order the events are asked in, with the names around them.",
+   notes:[
+    "==Siddhartha Gautama==, ==563 to 483 BCE== by the tradition SSC uses. Born at ==Lumbini== (Rummindei, in Nepal) in the ==Shakya== clan, whose capital was ==Kapilavastu==.",
+    "Father ==Suddhodana==, chief of the Shakyas; mother ==Mahamaya==, who ==died seven days== after the birth; brought up by her sister ==Mahaprajapati Gautami==. Wife ==Yashodhara==, son ==Rahula==.",
+    "The ==four sights== — an ==old man==, a ==sick man==, a ==corpse== and an ==ascetic== — are what turned him. He left home at ==29==: the ==Mahabhinishkramana==, the Great Renunciation, on the horse ==Kanthaka== with the charioteer ==Channa==.",
+    "His first teachers were ==Alara Kalama== and ==Uddaka Ramaputta==, and he left both. Six years of extreme austerity followed, which he also abandoned — ==Sujata's== bowl of ==kheer== is the meal that ends it.",
+    "==Enlightenment at 35==, at ==Bodh Gaya== (then ==Uruvela==) under a ==pipal tree== on the bank of the ==Niranjana== (Falgu) river. The event is ==Nirvana== or ==Sambodhi==; the tree is the ==Bodhi tree==.",
+    "The ==first sermon== was at ==Sarnath==, in the ==Deer Park== at ==Isipatana==, to the ==five== companions who had left him — the ==panchavargiya==. It is called the ==Dharmachakrapravartana==, the turning of the wheel of law.",
+    "He died at ==Kushinagar==, in the ==Malla== republic, at ==80==, in ==483 BCE==: the ==Mahaparinirvana==. His last words are given as an instruction to ==work out your own salvation with diligence==.",
+    "The ==royal patrons==: ==Bimbisara== and then ==Ajatashatru== of Magadha, ==Prasenjit== of Kosala and ==Udayana== of Kaushambi. ==Anathapindika==, a merchant, gave the ==Jetavana== monastery at ==Shravasti==.",
+    "The people around him: ==Ananda==, his attendant and the reciter of the ==Sutta Pitaka==; ==Sariputta== and ==Moggallana==, the chief disciples; ==Upali==, who recited the ==Vinaya==; and ==Devadatta==, his cousin, who tried to split the sangha.",
+    "==He is not shown as a person in the earliest art.== His presence is marked by ==symbols==: the ==lotus and bull== for the birth, the ==horse== for the renunciation, the ==Bodhi tree== for the enlightenment, the ==wheel== for the first sermon and the ==stupa== for the death.",
+    "==Mahaprajapati Gautami== was the ==first woman== admitted to the sangha, at ==Ananda's== request — the Buddha agreed reluctantly, which the texts record."
+   ],
+   blocks:[
+    {h:"The life, in order",
+     rows:[
+      ["563 BCE","Born at Lumbini, in the Shakya clan; Kapilavastu is the capital"],
+      ["At 29","The Great Renunciation — Mahabhinishkramana"],
+      ["Six years","Austerity, then abandoned for the Middle Path"],
+      ["At 35","Enlightenment at Bodh Gaya, under the pipal, by the Niranjana"],
+      ["Soon after","The first sermon at Sarnath — Dharmachakrapravartana"],
+      ["Forty-five years","Teaching, mostly in Magadha and Kosala"],
+      ["483 BCE, at 80","Mahaparinirvana at Kushinagar"]
+     ]},
+    {h:"The eight great places",
+     note:"Four are asked far more than the other four. Learn those four first, and the event beside each.",
+     rows:[
+      ["Lumbini","Birth — and Ashoka's Rummindei pillar marks it"],
+      ["Bodh Gaya","Enlightenment"],
+      ["Sarnath","The first sermon"],
+      ["Kushinagar","Death — the Mahaparinirvana"],
+      ["Shravasti","The great miracle; Jetavana, given by Anathapindika"],
+      ["Sankasya","The descent from heaven"],
+      ["Rajgir","The taming of the elephant Nalagiri; the first council met here"],
+      ["Vaishali","The monkey's offering of honey; the second council met here"]
+     ]},
+    {h:"The names, and what each one means",
+     rows:[
+      ["Siddhartha","His given name"],
+      ["Gautama","The clan name (gotra)"],
+      ["Shakyamuni","The sage of the Shakyas"],
+      ["Tathagata","One who has thus gone — the term he uses of himself"],
+      ["Buddha","The awakened — a title, not a name"],
+      ["Bodhisattva","One on the way to becoming a Buddha; central to Mahayana"]
+     ]}
+   ],
+   links:[["#/early/maps/buddhism","The mind map, with a cover-and-recall drill"],
+          ["#/early/topic/jainism","Jainism and the Jain councils"]]},
+
+  /* ======================================== WHAT IT TEACHES */
+  {id:"buddhism-teaching", tag:"Ancient history · new on the site", h:"What Buddhism teaches",
+   w:"The Four Noble Truths, the Eightfold Path and the doctrines — with the Pali terms, because the question often gives those.",
+   notes:[
+    "The ==Four Noble Truths== (==Arya Satya==): there is ==suffering== (==dukkha==); it has a ==cause== (==samudaya==, which is ==craving==, ==trishna== or ==tanha==); it ==can be ended== (==nirodha==); and there is a ==path== to ending it (==magga==).",
+    "The ==Eightfold Path== (==Ashtangika Marga==): right ==view==, right ==intention==, right ==speech==, right ==action==, right ==livelihood==, right ==effort==, right ==mindfulness==, right ==concentration==.",
+    "The eight fall into ==three groups==: ==Prajna== or wisdom (view, intention), ==Sila== or conduct (speech, action, livelihood) and ==Samadhi== or meditation (effort, mindfulness, concentration).",
+    "The ==Triratna== — three jewels — are ==Buddha==, ==Dhamma== and ==Sangha==. ==Do not confuse this with the Jain Triratna==, which is right faith, right knowledge and right conduct.",
+    "The ==Middle Path== (==Majjhima Patipada==) is the whole method: ==neither indulgence nor mortification==, which is what he had tried and left.",
+    "The ==three marks of existence==: ==anicca==, nothing lasts; ==dukkha==, existence is unsatisfactory; and ==anatta==, ==there is no permanent self==. The last is the ==sharpest break with the Upanishads== and with Jainism.",
+    "==Pratityasamutpada== — ==dependent origination== — is the doctrine that everything arises from conditions, set out as a chain of ==twelve links==. ==Nothing exists on its own.==",
+    "==Nirvana== is the ==blowing out== of craving, and the ==end of rebirth==. Buddhism keeps ==karma and rebirth== but ==rejects the soul== — which is the problem it is always asked to explain.",
+    "On God the Buddha is ==silent==: the question is set aside as ==not leading to liberation==. He ==rejected the Vedas==, ==rejected sacrifice== and ==rejected caste as a basis for worth==, and taught in ==Pali==, the language people spoke.",
+    "The ==five precepts== (==panchsila==) for everyone: ==no killing==, ==no stealing==, ==no lying==, ==no sexual misconduct==, ==no intoxicants==. Monks take ==more==, and the sangha's rules are in the ==Vinaya==.",
+    "The ==sangha== took ==monks (bhikkhus) and nuns (bhikkhunis)== and was open to ==all castes==; it is organised on ==republican lines==, which is often said to be modelled on the ==ganasanghas==."
+   ],
+   blocks:[
+    {h:"The Eightfold Path, grouped",
+     rows:[
+      ["Prajna — wisdom","Right view (samyak drishti), right intention (samyak sankalpa)"],
+      ["Sila — conduct","Right speech (vak), right action (karmanta), right livelihood (ajiva)"],
+      ["Samadhi — meditation","Right effort (vyayama), right mindfulness (smriti), right concentration (samadhi)"]
+     ]},
+    {h:"The words a question gives you",
+     rows:[
+      ["Dukkha","Suffering — the first noble truth"],
+      ["Trishna or tanha","Craving — the cause"],
+      ["Anicca","Impermanence"],
+      ["Anatta (anatman)","No permanent self — the doctrine that separates Buddhism from Jainism"],
+      ["Pratityasamutpada","Dependent origination, in twelve links"],
+      ["Nirvana","The extinction of craving, and of rebirth"],
+      ["Majjhima Patipada","The Middle Path"],
+      ["Arhat","One who has attained nirvana — the Hinayana ideal"],
+      ["Bodhisattva","One who delays it to help others — the Mahayana ideal"]
+     ]}
+    ],
+   cmp:[
+    {k:"The two Triratnas",
+     rows:[
+      ["Buddhist","Buddha, Dhamma, Sangha — three things to take refuge in"],
+      ["Jain","Right faith, right knowledge, right conduct — three things to practise"]
+     ],
+     note:"Same word, different list. A question that just says “Triratna” is relying on the confusion."},
+    {k:"Soul: the one real doctrinal split",
+     rows:[
+      ["Buddhism","ANATTA — there is no permanent self. Rebirth happens, but nothing unchanging passes over"],
+      ["Jainism","JIVA — the soul is real and eternal, and is in everything, including plants and particles of earth"],
+      ["Both","Reject the Vedas, reject sacrifice, reject the creator God, accept karma and rebirth, and teach ahimsa"]
+     ]}
+   ],
+   links:[["#/early/maps/buddhism","The mind map"]]},
+
+  /* ============================== COUNCILS, SCHOOLS, SPREAD */
+  {id:"buddhism-schools", tag:"Ancient history · new on the site", h:"The councils, the schools and the spread",
+   w:"Four councils, the split into Hinayana and Mahayana, the philosophical schools, and how it left India.",
+   notes:[
+    "==First council==, ==483 BCE==, at ==Rajagriha== in the ==Saptaparni cave==, under ==Ajatashatru==, presided by ==Mahakassapa==. ==Ananda== recited the ==Sutta== and ==Upali== the ==Vinaya==.",
+    "==Second council==, ==383 BCE==, at ==Vaishali==, under ==Kalashoka==, presided by ==Sabakami==. It split the order into ==Sthaviravadins== and ==Mahasanghikas== over ==ten points of monastic discipline==.",
+    "==Third council==, about ==250 BCE==, at ==Pataliputra==, under ==Ashoka==, presided by ==Moggaliputta Tissa==. The ==Abhidhamma Pitaka== was added and ==missionaries were sent abroad==.",
+    "==Fourth council==, ==first century CE==, at ==Kundalvana== in ==Kashmir==, under ==Kanishka==, presided by ==Vasumitra== with ==Ashvaghosha== as deputy. ==Hinayana and Mahayana== part here, and the commentaries were written in ==Sanskrit==.",
+    "==Hinayana== — the ==lesser vehicle==, the name its opponents gave it — keeps to ==Pali==, treats the Buddha as a ==teacher==, aims at ==individual== salvation and the ==arhat==. Its surviving form is ==Theravada==, the school of ==Sri Lanka, Myanmar and Thailand==.",
+    "==Mahayana== — the ==greater vehicle== — uses ==Sanskrit==, treats the Buddha as ==divine==, admits ==image worship== and ==bodhisattvas==, and aims at the salvation of ==all==. It went to ==China, Korea, Japan and Tibet==.",
+    "==Vajrayana== — the ==thunderbolt vehicle== — is the ==tantric== form, from about the ==eighth century==, strongest in ==Bengal and Bihar== and then ==Tibet==, with female deities called ==Taras==.",
+    "The philosophical schools: ==Madhyamika== (==Nagarjuna==), whose doctrine is ==shunyavada==, emptiness; ==Yogachara== or ==Vijnanavada== (==Asanga== and ==Vasubandhu==), mind-only; and the older ==Sautrantika== and ==Vaibhashika==.",
+    "==Ashoka sent Mahendra and Sanghamitra to Sri Lanka==, which is how Theravada reached it. Missionaries also went to ==Suvarnabhumi== and the Hellenistic kingdoms, as the ==Rock Edicts== record.",
+    "Buddhism ==declined in India== from about the ==twelfth century==: the loss of royal patronage, the ==revival of Hinduism== and of ==Bhakti==, the absorption of the Buddha as an ==avatara of Vishnu==, the ==corruption of the monasteries== and the ==destruction of Nalanda and Vikramshila==.",
+    "==Menander (Milinda)==, the Indo-Greek king, was converted by ==Nagasena==; ==Kanishka== is the great Mahayana patron, and ==Harsha== held an assembly at ==Kannauj== for ==Hiuen Tsang==."
+   ],
+   blocks:[
+    {h:"The four councils",
+     note:"Pataliputra is the only place that appears in both the Buddhist and the Jain council lists.",
+     rows:[
+      ["First, 483 BCE","Rajagriha · Ajatashatru · Mahakassapa · Sutta and Vinaya settled"],
+      ["Second, 383 BCE","Vaishali · Kalashoka · Sabakami · the first schism"],
+      ["Third, c. 250 BCE","Pataliputra · Ashoka · Moggaliputta Tissa · Abhidhamma added"],
+      ["Fourth, 1st century CE","Kundalvana, Kashmir · Kanishka · Vasumitra · Hinayana and Mahayana part"]
+     ]},
+    {h:"The three vehicles",
+     rows:[
+      ["Hinayana / Theravada","Pali. Buddha a teacher. Arhat. No image worship at first. Sri Lanka, Myanmar, Thailand"],
+      ["Mahayana","Sanskrit. Buddha divine. Bodhisattva. Image worship. China, Korea, Japan, Tibet"],
+      ["Vajrayana","Tantric, from about the 8th century. Bengal and Bihar, then Tibet. Taras"]
+     ]},
+    {h:"The philosophers",
+     rows:[
+      ["Nagarjuna","Madhyamika, and shunyavada — emptiness. Often placed under the Satavahanas"],
+      ["Asanga and Vasubandhu","Yogachara, or Vijnanavada — only consciousness is real"],
+      ["Ashvaghosha","Kanishka's court; wrote the Buddhacharita"],
+      ["Buddhaghosa","The great Theravada commentator; the Visuddhimagga"],
+      ["Dinnaga and Dharmakirti","Buddhist logic"]
+     ]}
+   ],
+   links:[["#/early/maps/buddhism","The mind map"],
+          ["#/early/topic/jainism","The Jain councils, with these beside them"]]},
+
+  /* ================================================ THE TEXTS */
+  {id:"buddhism-texts", tag:"Ancient history · new on the site", h:"The Buddhist texts",
+   w:"The three baskets, what is inside each, and the books outside the canon that get asked.",
+   notes:[
+    "The canon is the ==Tripitaka== — ==three baskets== — in ==Pali==: the ==Vinaya Pitaka==, the ==Sutta Pitaka== and the ==Abhidhamma Pitaka==.",
+    "==Vinaya Pitaka==: the ==rules of the order== — what a monk may and may not do, and the procedure when he does.",
+    "==Sutta Pitaka==: the ==discourses==, in ==five Nikayas== — ==Digha==, ==Majjhima==, ==Samyutta==, ==Anguttara== and ==Khuddaka==. It is the ==largest== of the three.",
+    "==Abhidhamma Pitaka==: the ==philosophy and psychology==, and the ==latest== of the three — added at the ==third council==.",
+    "The ==Khuddaka Nikaya== holds the two most quoted books: the ==Dhammapada==, the verses, and the ==Jatakas==, the ==547== stories of the Buddha's ==previous births==.",
+    "==Milindapanho== — the ==Questions of Milinda== — is the dialogue between the Indo-Greek king ==Menander== and the monk ==Nagasena==.",
+    "==Buddhacharita==, the life of the Buddha in ==Sanskrit== verse, is ==Ashvaghosha's==, at ==Kanishka's== court. He also wrote the ==Saundarananda==.",
+    "The Mahayana Sanskrit texts: ==Mahavastu==, ==Lalitavistara== and ==Divyavadana== on the Buddha's life, and the ==Prajnaparamita== and ==Saddharmapundarika== (the Lotus Sutra) on the doctrine.",
+    "The ==Sri Lankan chronicles==, in ==Pali==: the ==Dipavamsa== and the ==Mahavamsa==. They are the source for ==Ashoka's== dates and for the mission to the island.",
+    "==Buddhaghosa's Visuddhimagga== is the Theravada summary; ==Vasubandhu's Abhidharmakosha== the Sarvastivada one.",
+    "==Pali== is the language of the canon and ==Sanskrit== of Mahayana — so a question naming the language is really asking which school."
+   ],
+   blocks:[
+    {h:"The three baskets",
+     rows:[
+      ["Vinaya Pitaka","The monastic rules. Recited by Upali at the first council"],
+      ["Sutta Pitaka","The discourses, in five Nikayas. Recited by Ananda"],
+      ["Abhidhamma Pitaka","Philosophy. Added at the third council — the latest of the three"]
+     ]},
+    {h:"The books, and who wrote them",
+     rows:[
+      ["Dhammapada","In the Khuddaka Nikaya — the verses, the most quoted Buddhist book"],
+      ["Jatakas","547 stories of the Buddha's previous births; also in the Khuddaka Nikaya"],
+      ["Milindapanho","Menander and Nagasena, in dialogue"],
+      ["Buddhacharita, Saundarananda","Ashvaghosha, in Sanskrit, at Kanishka's court"],
+      ["Mahavastu, Lalitavistara, Divyavadana","The Buddha's life, in Sanskrit, Mahayana"],
+      ["Saddharmapundarika","The Lotus Sutra — a central Mahayana text"],
+      ["Dipavamsa, Mahavamsa","The Sri Lankan chronicles, in Pali"],
+      ["Visuddhimagga","Buddhaghosa"],
+      ["Abhidharmakosha","Vasubandhu"]
+     ]}
+   ],
+   links:[["#/early/maps/buddhism","The mind map"]]},
+
+  /* ======================================= STUPAS AND CAVES */
+  {id:"buddhism-sites", tag:"Ancient history · art and architecture", h:"Stupas, caves and the great monasteries",
+   w:"The three Buddhist building types, the stupas and cave sites that are asked, and the universities.",
+   notes:[
+    "Three building types, and the question usually turns on telling them apart: the ==stupa== is a ==solid relic mound==; the ==chaitya== is the ==prayer hall==, with an ==apse== and a stupa at the end; the ==vihara== is the ==monastery==, where the monks lived.",
+    "A stupa's parts: the ==anda== (the dome), the ==harmika== (the railing on top), the ==chhatra== (the umbrella), the ==medhi== (the drum), the ==vedika== (the railing round it), the ==torana== (the gateway) and the ==pradakshina patha== (the path for circumambulation).",
+    "==Sanchi== in ==Madhya Pradesh== — the ==Great Stupa== was begun by ==Ashoka== and enlarged by the ==Satavahanas==, whose ==four toranas== carry the famous carving. It is the ==best preserved== stupa in India and a ==UNESCO== site.",
+    "==Bharhut== (Madhya Pradesh) is known for its ==railing and Jataka reliefs==; ==Amaravati== and ==Nagarjunakonda== (Andhra Pradesh) are the ==Satavahana== and ==Ikshvaku== sites of the south, in ==white limestone==.",
+    "==Sarnath== has the ==Dhamek stupa== and the ==Ashokan lion capital==, which is ==India's State Emblem==; the ==wheel== on it is on the ==flag==.",
+    "==Ajanta== (Maharashtra): about ==thirty== caves, ==Buddhist only==, cut in a ==horseshoe== gorge of the ==Waghora==, famous for ==paintings== in ==tempera== — the Bodhisattvas ==Padmapani== and ==Vajrapani==. Work runs from the ==Satavahanas== to the ==Vakatakas==.",
+    "==Ellora== (Maharashtra): ==34 caves== and ==three religions== — ==Buddhist (1–12)==, ==Hindu (13–29)== and ==Jain (30–34)==. The ==Kailasa temple==, cave ==16==, is ==cut from a single rock== and is ==Rashtrakuta==, under ==Krishna I==.",
+    "==Karle== has the ==largest chaitya hall== in India; ==Bhaja==, ==Bedsa== and ==Kanheri== are the other Maharashtra cave groups. The ==Barabar== caves in Bihar are the ==oldest rock-cut caves==, given by ==Ashoka== to the ==Ajivikas==, not to the Buddhists.",
+    "==Nalanda== (Bihar), the great monastic university, is credited to ==Kumaragupta I==; ==Hiuen Tsang== studied there and ==Bakhtiyar Khalji== destroyed it about ==1193==. ==Vikramshila== was ==Dharmapala's==, and ==Odantapuri== also Pala.",
+    "The ==Mahabodhi temple== at ==Bodh Gaya== marks the enlightenment; the present temple is ==Gupta== in origin and a ==UNESCO== site.",
+    "Two schools of Buddhist sculpture: ==Gandhara==, in the north-west, ==Greco-Roman== in style, in ==grey schist==, with the ==first images of the Buddha==; and ==Mathura==, ==indigenous==, in ==red sandstone==. ==Amaravati== is the third, in the south."
+   ],
+   blocks:[
+    {h:"Stupa, chaitya, vihara",
+     rows:[
+      ["Stupa","A solid mound over a relic. Not entered — walked around"],
+      ["Chaitya","The prayer hall, apsidal, with a stupa at the far end and pillars down the sides"],
+      ["Vihara","The monastery: cells round a courtyard, where the monks lived"]
+     ]},
+    {h:"The sites, and who built them",
+     rows:[
+      ["Sanchi","Ashoka, enlarged by the Satavahanas. The best preserved stupa; four carved toranas"],
+      ["Bharhut","Railings and Jataka reliefs, Madhya Pradesh"],
+      ["Amaravati, Nagarjunakonda","Andhra Pradesh — Satavahana and Ikshvaku, white limestone"],
+      ["Sarnath","Dhamek stupa, and the lion capital that became the State Emblem"],
+      ["Ajanta","About 30 caves, Buddhist only, paintings; Satavahana to Vakataka"],
+      ["Ellora","34 caves, three religions; Kailasa temple cave 16, Rashtrakuta"],
+      ["Karle","The largest chaitya hall in India"],
+      ["Barabar","The oldest rock-cut caves — Ashoka, for the Ajivikas"],
+      ["Nalanda","Kumaragupta I; destroyed by Bakhtiyar Khalji about 1193"],
+      ["Vikramshila, Odantapuri","Pala — Vikramshila is Dharmapala's"]
+     ]},
+    {h:"The three schools of sculpture",
+     rows:[
+      ["Gandhara","North-west. Greco-Roman, grey schist. The first images of the Buddha; Kushana patronage"],
+      ["Mathura","Indigenous, red sandstone with white spots. Also made Jain and Hindu images"],
+      ["Amaravati","Andhra, white limestone, under the Satavahanas"]
+     ]}
+   ],
+   links:[["#/early/maps/buddhism","The mind map"],
+          ["#/gk/pack/heritage","The UNESCO sites in India"]]},
+
+  /* ======================================== JAIN PHILOSOPHY */
+  {id:"jain-philosophy", tag:"Ancient history · beyond the existing notes", h:"Jainism — the philosophy, and the words for it",
+   w:"Anekantavada, syadvada, the tattvas and the vows: the part of Jainism the site did not already carry.",
+   notes:[
+    "==Anekantavada== — ==many-sidedness== — is the central Jain idea: ==reality has many aspects== and no single statement catches all of them. The ==blind men and the elephant== is the standard illustration.",
+    "==Syadvada== is how that is put into words: ==every statement is only conditionally true==, and is prefixed ==syat==, “in some respect”. Set out as ==seven== forms of predication, the ==saptabhangi==.",
+    "==Nayavada== is the third of the set: a ==naya== is a ==partial standpoint==, true as far as it goes.",
+    "The universe is made of ==jiva== (==soul==, which is ==conscious==) and ==ajiva== (==non-soul==). ==Jainism holds the soul to be real and eternal==, and finds it in ==plants, earth, water, fire and air== as well as animals — which is why its ==ahimsa== goes so far.",
+    "==Karma in Jainism is physical==: a ==subtle matter== that sticks to the soul and weighs it down. This is ==not== the Buddhist or Vedic sense of the word, and the difference is often the question.",
+    "The ==seven tattvas==: ==jiva==, ==ajiva==, ==asrava== (karma flowing in), ==bandha== (bondage), ==samvara== (stopping the inflow), ==nirjara== (shedding what is there) and ==moksha==. Adding ==punya== and ==papa== makes the ==nine==.",
+    "The ==Triratna==: ==samyak darshana== (right faith), ==samyak jnana== (right knowledge), ==samyak charitra== (right conduct). ==All three together== are the path — no one of them alone.",
+    "The ==five vows==: ==ahimsa==, ==satya==, ==asteya== (not stealing), ==aparigraha== (non-possession) and ==brahmacharya==. ==Parshvanath taught the first four; Mahavira added brahmacharya.==",
+    "A monk takes them as ==mahavratas==, great vows; a layman as ==anuvratas==, lesser ones. The daily discipline adds ==five samitis== (care in walking, speaking, eating and so on) and ==three guptis== (control of mind, speech and body).",
+    "==Kevala jnana== is ==omniscience==, the knowledge a ==Kevalin== has; one who attains it and teaches is a ==Tirthankara==, a ==ford-maker==. ==Siddha== is the liberated soul.",
+    "==Sallekhana== or ==santhara== is the ==voluntary fast to death==, taken when the body can no longer serve the vows. It is ==not== counted as suicide in Jain doctrine, and ==Chandragupta Maurya== is said to have died this way at ==Shravanabelagola==.",
+    "Jainism ==has no creator God==: the universe is ==eternal and uncreated==, running through cycles of ==utsarpini== and ==avasarpini==. The Tirthankaras are ==teachers, not gods==, though they are worshipped."
+   ],
+   blocks:[
+    {h:"The seven tattvas, in the order they work",
+     rows:[
+      ["Jiva","The soul — conscious, and in far more things than one expects"],
+      ["Ajiva","Everything without a soul: matter, space, time, motion, rest"],
+      ["Asrava","The inflow of karma into the soul"],
+      ["Bandha","Bondage — the karma sticking"],
+      ["Samvara","Stopping the inflow"],
+      ["Nirjara","Shedding the karma already there, by austerity"],
+      ["Moksha","Release — the soul rises to the top of the universe"]
+     ]},
+    {h:"The vows, and who added which",
+     rows:[
+      ["Ahimsa","Non-injury — Parshvanath"],
+      ["Satya","Truth — Parshvanath"],
+      ["Asteya","Not taking what is not given — Parshvanath"],
+      ["Aparigraha","Non-possession — Parshvanath"],
+      ["Brahmacharya","Chastity — ADDED BY MAHAVIRA. This is the one that is asked"]
+     ]},
+    {h:"The words",
+     rows:[
+      ["Anekantavada","Reality is many-sided"],
+      ["Syadvada","Every statement holds only in some respect — seven forms"],
+      ["Nayavada","A partial standpoint, true as far as it goes"],
+      ["Kevala jnana","Omniscience; a Kevalin has it"],
+      ["Tirthankara","Ford-maker — one who makes the crossing for others"],
+      ["Siddha","A liberated soul"],
+      ["Sallekhana / santhara","The voluntary fast to death"],
+      ["Mahavrata / anuvrata","The vows as a monk takes them / as a layman does"]
+     ]}
+   ],
+   cmp:[
+    {k:"Buddhism and Jainism — what actually differs",
+     rows:[
+      ["The soul","Buddhism DENIES a permanent self (anatta). Jainism makes the soul eternal and universal (jiva)"],
+      ["Ahimsa","Both teach it. Jainism takes it much further, because it finds souls in plants and the elements"],
+      ["Austerity","The Buddha REJECTED extreme austerity for the Middle Path. Mahavira kept it, up to sallekhana"],
+      ["Language","Buddhist canon in Pali; Jain canon in Ardhamagadhi Prakrit"],
+      ["Karma","Buddhism: moral causation. Jainism: a SUBSTANCE that clings to the soul"],
+      ["God","Neither has a creator God. Jainism's universe is eternal; the Buddha simply set the question aside"],
+      ["Spread","Buddhism left India and largely vanished from it. Jainism never left, and survives in India"],
+      ["Founder's status","The Buddha is the founder. Mahavira is the 24th Tirthankara, not a founder"]
+     ]}
+   ],
+   links:[["#/early/topic/jainism","The councils, Mahavira, the sects and the temples"],
+          ["#/early/maps/jainism","The Jainism mind map"],
+          ["#/early/maps/buddhism","The Buddhism mind map"]]},
+
+  /* ====================================== JAINISM, RECAPPED */
+  {id:"jain-recap", tag:"Ancient history · revision", h:"Jainism — the councils, Mahavira and the sects",
+   w:"The notes the site already carries, brought here so the day reads in one place.",
+   from:"early.jainism",
+   links:[["#/early/topic/jainism","The full page, with every table"]]},
+
+  /* =============================================== MINERALS */
+  {id:"minerals", tag:"Geography · expanded", h:"Minerals — the classes, the rocks and the belts",
+   w:"How minerals are grouped, which rocks hold which, and the three belts almost every Indian mineral sits in.",
+   notes:[
+    "A mineral is ==metallic== or ==non-metallic==. Metallic splits again into ==ferrous== — containing iron: ==iron ore, manganese, chromite, nickel, cobalt== — and ==non-ferrous==: ==copper, bauxite, lead, zinc, gold, silver==.",
+    "==Non-metallic==: ==mica, limestone, dolomite, gypsum, phosphate==. ==Fuel or energy minerals== are counted separately: ==coal, petroleum, natural gas, uranium, thorium==.",
+    "The rock matters. ==Metallic minerals sit in igneous and metamorphic rock==, in ==veins and lodes==; ==non-metallic minerals sit in sedimentary rock==, in ==beds and layers==. ==Coal and petroleum are sedimentary.==",
+    "Most of India's metallic wealth is in the ==Dharwar system==, the ==oldest metamorphic rocks== in the country — which is why the ==peninsular plateau== has almost everything and the ==northern plain has almost nothing==.",
+    "==Belt one, the north-eastern plateau== — ==Chotanagpur (Jharkhand), Odisha, Chhattisgarh, West Bengal==. The ==richest by far==: iron ore, coal, manganese, bauxite, mica. ==Everything the steel industry needs, close together.==",
+    "==Belt two, the south-western plateau== — ==Karnataka, Goa, Tamil Nadu, Kerala==. ==Iron ore, manganese, limestone== and the ==gold== of Kolar and Hutti. ==No coal==, apart from ==lignite at Neyveli==.",
+    "==Belt three, the north-western== — ==Rajasthan and Gujarat==, along the ==Aravalli==. ==Copper, zinc, lead==, and the ==building stones==: sandstone, granite, marble. ==Gujarat and Rajasthan hold the petroleum==, not the other two belts.",
+    "==The Himalayan and north-eastern region== has ==tertiary coal== (Assam, Meghalaya) and ==petroleum in Assam==, and is counted outside the three plateau belts.",
+    "==Minerals are exhaustible and unevenly spread==, and the rich deposits are under ==forest and tribal land==, which is the whole of the mining-and-displacement question.",
+    "==Conservation== means ==recycling==, ==using low-grade ore==, ==substituting== where possible, and ==cutting waste in extraction== — the standard four-point answer.",
+    "The institutions: the ==Geological Survey of India==, ==1851==, at ==Kolkata==; the ==Indian Bureau of Mines==, ==1948==, at ==Nagpur==; and the ==National Mineral Development Corporation==, ==1958==, at ==Hyderabad==. The law is the ==Mines and Minerals (Development and Regulation) Act, 1957==."
+   ],
+   blocks:[
+    {h:"How a mineral is classified",
+     rows:[
+      ["Metallic — ferrous","Iron ore, manganese, chromite, nickel, cobalt"],
+      ["Metallic — non-ferrous","Copper, bauxite, lead, zinc, gold, silver"],
+      ["Non-metallic","Mica, limestone, dolomite, gypsum, phosphate, salt"],
+      ["Fuel / energy","Coal, petroleum, natural gas, uranium, thorium"],
+      ["Where each sits","Metallic in igneous and metamorphic rock, as veins and lodes; non-metallic in sedimentary rock, as beds"]
+     ]},
+    {h:"The three mineral belts",
+     rows:[
+      ["North-eastern plateau","Jharkhand, Odisha, Chhattisgarh, West Bengal — iron, coal, manganese, bauxite, mica. The richest"],
+      ["South-western plateau","Karnataka, Goa, Tamil Nadu, Kerala — iron, manganese, limestone, gold. No coal but Neyveli lignite"],
+      ["North-western","Rajasthan and Gujarat, along the Aravalli — copper, zinc, lead, building stone, and the petroleum"]
+     ]}
+   ],
+   links:[["#/geography/maps/minerals","The mind map, with a cover-and-recall drill"],
+          ["#/geography/topic/agriculture","Agriculture, minerals and industry"]]},
+
+  /* ================================ MINERAL BY MINERAL */
+  {id:"minerals-where", tag:"Geography · expanded", h:"Mineral by mineral, and which state leads",
+   w:"Iron ore and its four grades, and then each mineral with its leading state and its named mines.",
+   notes:[
+    "==Iron ore== comes in four grades, and the order is asked: ==magnetite== (about ==70 per cent== iron, ==black==, ==magnetic== — the ==best==), ==hematite== (==60 to 70==, ==red==, ==the one India mostly has and uses==), ==limonite== (==40 to 60==, yellow) and ==siderite== (==under 40==, brown).",
+    "==Odisha leads iron ore== by a wide margin — roughly ==half== the country's output — then ==Chhattisgarh==, ==Karnataka== and ==Jharkhand==.",
+    "The named iron mines: ==Bailadila== in ==Chhattisgarh== (==NMDC==, the ore ==exported to Japan== through ==Visakhapatnam==), ==Kudremukh== in ==Karnataka== (sent as ==slurry through a pipeline== to ==Mangaluru==), ==Noamundi== in ==Jharkhand== and ==Joda== and ==Barbil== in ==Odisha==.",
+    "==Manganese==: ==Odisha leads==, then ==Madhya Pradesh==, ==Maharashtra== and ==Karnataka==. It is used to ==harden steel== — about ==ten kilograms a tonne== — and in dry cells and bleaching.",
+    "==Bauxite==, the ==ore of aluminium==: ==Odisha leads== decisively, from the ==Panchpatmali== deposits in ==Koraput==, with ==Gujarat==, ==Jharkhand== and ==Chhattisgarh== behind.",
+    "==Chromite==: ==Odisha== again, and overwhelmingly — the ==Sukinda valley== in Jajpur holds most of India's reserves.",
+    "==Mica==: India is ==among the world's largest producers==. ==Andhra Pradesh== leads on output, around ==Nellore==; ==Rajasthan== follows; and the ==Koderma belt== in ==Jharkhand== is the historically famous one. Mica is used because it is an ==excellent insulator== and ==splits into thin sheets==.",
+    "==Copper==: ==Malanjkhand== in ==Madhya Pradesh== is the ==largest single deposit==; ==Khetri== in ==Rajasthan== and ==Singhbhum== in ==Jharkhand== are the other two. India's copper reserves are ==small==, and it ==imports==.",
+    "==Gold==: ==Karnataka== — the ==Kolar== field, ==closed in 2001==, and ==Hutti==, which still works; ==Ramagiri== in Andhra Pradesh. India ==produces very little== and is among the ==largest importers==.",
+    "==Lead and zinc== are ==Rajasthan's==: the ==Zawar== mines near Udaipur, and ==Rampura Agucha==, the largest zinc deposit. ==Silver== comes with them.",
+    "==Limestone== — the raw material of ==cement== — is widest spread of all, with ==Rajasthan, Madhya Pradesh, Andhra Pradesh and Telangana== among the leaders. ==Gypsum== is ==Rajasthan's==; ==diamond== is ==Panna== in ==Madhya Pradesh==; ==tungsten== is ==Degana==, Rajasthan."
+   ],
+   blocks:[
+    {h:"The four grades of iron ore",
+     rows:[
+      ["Magnetite","About 70 per cent iron. Black, magnetic. The finest quality"],
+      ["Hematite","60 to 70 per cent. Red. The most important industrially, and most of India's reserve"],
+      ["Limonite","40 to 60 per cent. Yellow"],
+      ["Siderite","Under 40 per cent. Brown, with much impurity"]
+     ]},
+    {h:"Which state leads",
+     note:"Production figures move between years; the leader is given where it is settled, and the chasing pack named where it is not.",
+     rows:[
+      ["Iron ore","Odisha, about half the country; then Chhattisgarh, Karnataka, Jharkhand"],
+      ["Manganese","Odisha; then Madhya Pradesh, Maharashtra, Karnataka"],
+      ["Bauxite","Odisha, decisively — Panchpatmali in Koraput"],
+      ["Chromite","Odisha — the Sukinda valley, almost all of it"],
+      ["Mica","Andhra Pradesh on output; Koderma in Jharkhand the famous belt"],
+      ["Copper","Madhya Pradesh — Malanjkhand, the largest single deposit; then Rajasthan and Jharkhand"],
+      ["Gold","Karnataka — Hutti; Kolar closed in 2001"],
+      ["Lead and zinc","Rajasthan — Zawar, and Rampura Agucha for zinc"],
+      ["Limestone","Rajasthan, Madhya Pradesh, Andhra Pradesh, Telangana"],
+      ["Diamond","Madhya Pradesh — Panna"],
+      ["Gypsum, tungsten","Rajasthan — and Degana for tungsten"]
+     ]},
+    {h:"The named mines",
+     rows:[
+      ["Bailadila","Chhattisgarh — iron ore, NMDC, exported to Japan through Visakhapatnam"],
+      ["Kudremukh","Karnataka — iron ore, sent as slurry by pipeline to Mangaluru"],
+      ["Noamundi, Joda, Barbil","Jharkhand and Odisha — iron ore"],
+      ["Sukinda","Odisha — chromite"],
+      ["Panchpatmali","Odisha, Koraput — bauxite"],
+      ["Malanjkhand","Madhya Pradesh — copper, the largest single deposit"],
+      ["Khetri, Singhbhum","Rajasthan and Jharkhand — copper"],
+      ["Kolar, Hutti","Karnataka — gold. Kolar closed in 2001"],
+      ["Zawar, Rampura Agucha","Rajasthan — lead, zinc and silver"],
+      ["Jaduguda","Jharkhand — uranium, India's first uranium mine"],
+      ["Panna","Madhya Pradesh — diamond"]
+     ]}
+   ],
+   cmp:[
+    {k:"Odisha or Jharkhand — which leads what",
+     rows:[
+      ["Odisha","Iron ore, manganese, bauxite and chromite — it leads all four"],
+      ["Jharkhand","Coal RESERVES, uranium (Jaduguda), and the Koderma mica belt. Copper at Singhbhum"],
+      ["Chhattisgarh","Iron ore at Bailadila, and coal at Korba; tin ore, which is rare in India"]
+     ],
+     note:"Odisha is the answer more often than any other state. When the question names a metallic mineral and gives Odisha as an option, it is usually right."}
+   ],
+   links:[["#/geography/maps/minerals","The mind map"]]},
+
+  /* ======================================== POWER AND FUEL */
+  {id:"energy", tag:"Geography · expanded", h:"Coal, petroleum and power",
+   w:"The grades of coal, the two coal systems, the oilfields and refineries, and the power stations.",
+   notes:[
+    "==Coal== by ==carbon content==, best first: ==anthracite== (==80 to 95 per cent==, hard, found in India ==only in Jammu and Kashmir==), ==bituminous== (==60 to 80==, ==the most used==, and the ==coking== coal the steel industry needs), ==lignite== (==40 to 55==, ==brown coal==, ==Neyveli== in Tamil Nadu) and ==peat== (==under 40==, barely coal at all).",
+    "Two coal systems. ==Gondwana coal== is about ==250 million years== old and is ==96 to 98 per cent== of India's reserves — the ==Damodar==, ==Son==, ==Mahanadi== and ==Godavari== valleys. ==Tertiary coal== is about ==55 million years== old, in ==Assam, Meghalaya, Arunachal Pradesh and Nagaland==, and has ==more sulphur==.",
+    "The coalfields: ==Jharia== (==Jharkhand==, the ==largest==, and the best ==coking== coal), ==Raniganj== (==West Bengal==, the ==oldest worked==), ==Bokaro==, ==Korba== (Chhattisgarh), ==Singrauli== (Madhya Pradesh), ==Talcher== (Odisha) and ==Neyveli== (Tamil Nadu, ==lignite==).",
+    "==Jharkhand holds the largest coal reserves==; on ==production==, ==Chhattisgarh and Odisha== have led in recent years and the order ==changes between years==, so a question about ==reserves== and one about ==output== do not have the same answer.",
+    "==Petroleum==: ==Mumbai High== is the ==largest field==, ==offshore==, found in ==1974== and in production from ==1976==, drilled from the rig ==Sagar Samrat==.",
+    "The other oil regions: ==Assam== — ==Digboi==, ==Naharkatiya==, ==Moran== — and ==Gujarat== — ==Ankleshwar==, ==Kalol==, ==Mehsana==. Newer: the ==Krishna-Godavari basin==, the ==Cauvery basin==, and ==Barmer== in ==Rajasthan==.",
+    "==Digboi==, ==1901==, is the ==oldest refinery in India== and Asia; ==Jamnagar== in Gujarat is the ==largest refinery in the world==; ==Koyali== was the first large public-sector refinery in the west.",
+    "==Natural gas== comes chiefly from ==Mumbai High== and the ==Krishna-Godavari== basin, and moves on the ==Hazira–Vijaipur–Jagdishpur== pipeline, the ==HVJ==.",
+    "==Atomic minerals==: ==uranium== from ==Jaduguda== in ==Jharkhand==, India's ==first== uranium mine, with the ==largest reserves== at ==Tummalapalle== in ==Andhra Pradesh==; ==thorium== from the ==monazite sands== of ==Kerala==, and India has ==one of the world's largest thorium reserves==.",
+    "==Nuclear power stations==: ==Tarapur== (Maharashtra) was the ==first==, from ==1969==; then ==Rawatbhata== (Rajasthan), ==Kalpakkam== (Tamil Nadu), ==Narora== (Uttar Pradesh), ==Kakrapar== (Gujarat), ==Kaiga== (Karnataka) and ==Kudankulam== (Tamil Nadu), the ==largest==.",
+    "==Non-conventional== power: ==solar== is strongest in ==Rajasthan and Gujarat==; ==wind== in ==Tamil Nadu, Gujarat and Karnataka==; ==geothermal== at ==Manikaran== (Himachal) and ==Puga== (Ladakh); and ==tidal== potential in the ==Gulf of Khambhat== and the ==Gulf of Kachchh==."
+   ],
+   blocks:[
+    {h:"Coal, best to worst",
+     rows:[
+      ["Anthracite","80 to 95 per cent carbon. Hardest, cleanest. In India only in Jammu and Kashmir"],
+      ["Bituminous","60 to 80. The most used, and the coking coal metallurgy needs"],
+      ["Lignite","40 to 55. Brown coal, high moisture. Neyveli, Tamil Nadu"],
+      ["Peat","Under 40. The first stage, and barely a fuel"]
+     ]},
+    {h:"The coalfields",
+     rows:[
+      ["Jharia","Jharkhand — the largest, and the best coking coal"],
+      ["Raniganj","West Bengal — the oldest worked field in India"],
+      ["Bokaro, Giridih, Karanpura","Jharkhand"],
+      ["Korba","Chhattisgarh"],
+      ["Singrauli","Madhya Pradesh"],
+      ["Talcher","Odisha"],
+      ["Neyveli","Tamil Nadu — lignite"]
+     ]},
+    {h:"Oil, gas and the refineries",
+     rows:[
+      ["Mumbai High","The largest field. Offshore, found 1974, producing from 1976, rig Sagar Samrat"],
+      ["Assam","Digboi, Naharkatiya, Moran — the oldest oil region in India"],
+      ["Gujarat","Ankleshwar, Kalol, Mehsana"],
+      ["Newer basins","Krishna-Godavari, Cauvery, and Barmer in Rajasthan"],
+      ["Digboi refinery","1901 — the oldest in India and in Asia"],
+      ["Jamnagar","The largest refinery in the world"],
+      ["HVJ pipeline","Hazira to Vijaipur to Jagdishpur — the gas trunk line"]
+     ]},
+    {h:"The steel plants, and who helped",
+     note:"Every one of them sits on or beside the Chotanagpur belt, except the one that sits on a port.",
+     rows:[
+      ["Jamshedpur (TISCO)","1907 — the first, and private. Jharkhand"],
+      ["Bhilai","Chhattisgarh — Soviet help"],
+      ["Bokaro","Jharkhand — Soviet help"],
+      ["Rourkela","Odisha — West German help"],
+      ["Durgapur","West Bengal — British help"],
+      ["Visakhapatnam","Andhra Pradesh — the only port-based steel plant"],
+      ["Bhadravati, Salem","Karnataka and Tamil Nadu"]
+     ]}
+   ],
+   cmp:[
+    {k:"Gondwana coal or tertiary coal",
+     rows:[
+      ["Gondwana","About 250 million years old. 96 to 98 per cent of India's reserves. Damodar, Son, Mahanadi, Godavari valleys. Better quality"],
+      ["Tertiary","About 55 million years old. Assam, Meghalaya, Arunachal, Nagaland, and some in J&K. More sulphur, lower grade"]
+     ]},
+    {k:"Reserves or production — they are different questions",
+     rows:[
+      ["Coal reserves","Jharkhand first, then Odisha and Chhattisgarh"],
+      ["Coal production","Chhattisgarh and Odisha have led in recent years, and the two change places. Always check which the question asks"]
+     ]}
+   ],
+   links:[["#/geography/maps/minerals","The mind map"],
+          ["#/geography/topic/agriculture","Agriculture, minerals and industry"],
+          ["#/economy/topic/agriculture","The Economy's agriculture page"]]}
+
+ ],
+
+ quiz:[
+
+  /* ---------------------------------------------- THE BUDDHA */
+  {q:"In which clan was the Buddha born?", o:["Jnatrika", "Lichchhavi", "Malla", "Shakya"], a:3, p:"buddha",
+   s:"The Shakya clan, whose capital was Kapilavastu. Jnatrika was Mahavira's clan, Lichchhavi his mother's, and the Mallas ruled Kushinagar, where the Buddha died."},
+  {q:"Who brought the Buddha up after his mother's death?", o:["Mahaprajapati Gautami", "Yashodhara", "Trishala", "Sujata"], a:0, p:"buddha",
+   s:"Mahaprajapati Gautami, Mahamaya's sister. She later became the first woman admitted to the sangha. Yashodhara was his wife, Trishala was Mahavira's mother, and Sujata gave him the bowl of kheer."},
+  {q:"How many days after the Buddha's birth did his mother Mahamaya die?", o:["Forty", "Seven", "Three", "Twelve"], a:1, p:"buddha",
+   s:"Seven days after the birth, which is why her sister brought him up."},
+  {q:"At what age did the Buddha leave home?", o:["29", "35", "42", "80"], a:0, p:"buddha",
+   s:"At 29, in the event called the Mahabhinishkramana. He was enlightened at 35 and died at 80; 42 is the age at which Mahavira attained kaivalya."},
+  {q:"What was the name of the horse on which the Buddha left home?", o:["Sagar", "Kanthaka", "Nalagiri", "Chetak"], a:1, p:"buddha",
+   s:"Kanthaka, with Channa as charioteer. Nalagiri is the elephant tamed at Rajgir."},
+  {q:"Under which tree did the Buddha attain enlightenment?", o:["Pipal", "Sal", "Banyan", "Ashoka"], a:0, p:"buddha",
+   s:"A pipal, which is why it is called the Bodhi tree. Mahavira's kaivalya came under a sal tree, which is the distinction being tested."},
+  {q:"On the bank of which river did the Buddha attain enlightenment?", o:["Gandak", "Niranjana", "Rijupalika", "Hiranyavati"], a:1, p:"buddha",
+   s:"The Niranjana, also called the Falgu, at Bodh Gaya. The Rijupalika is the river at Mahavira's kaivalya."},
+  {q:"Where did the Buddha deliver his first sermon?", o:["Rajgir", "Vaishali", "Sarnath", "Bodh Gaya"], a:2, p:"buddha",
+   s:"Sarnath, in the Deer Park at Isipatana, to five disciples. The event is called the Dharmachakrapravartana, the turning of the wheel of law."},
+  {q:"To how many disciples was the Buddha's first sermon delivered?", o:["Seven", "Twelve", "Five", "Three"], a:2, p:"buddha",
+   s:"Five, the panchavargiya, the companions who had earlier left him when he gave up extreme austerity."},
+  {q:"Who were the Buddha's two first teachers, both of whom he left?", o:["Alara Kalama and Uddaka Ramaputta", "Mahakassapa and Sabakami", "Sariputta and Moggallana", "Nagasena and Vasumitra"], a:0, p:"buddha",
+   s:"Alara Kalama and Uddaka Ramaputta. Mahakassapa and Sabakami presided over councils, Sariputta and Moggallana were chief disciples, and Nagasena and Vasumitra belong to later centuries."},
+  {q:"Where did the Buddha die?", o:["Pavapuri", "Kapilavastu", "Shravasti", "Kushinagar"], a:3, p:"buddha",
+   s:"Kushinagar, in the Malla republic, at the age of 80. Pavapuri is where Mahavira died, which is the pairing the question is built on."},
+  {q:"Who gave the Buddha the Jetavana monastery at Shravasti?", o:["Prasenjit", "Anathapindika", "Bimbisara", "Ajatashatru"], a:1, p:"buddha",
+   s:"Anathapindika, a merchant. The three kings named were patrons but did not give Jetavana."},
+  {q:"Which of the Buddha's relatives tried to split the sangha?", o:["Devadatta", "Rahula", "Ananda", "Upali"], a:0, p:"buddha",
+   s:"Devadatta, his cousin. Rahula was his son; Ananda and Upali were disciples who recited two of the Pitakas at the first council."},
+  {q:"In the earliest Buddhist art, which symbol stands for the Buddha's first sermon?", o:["The horse", "The wheel", "The stupa", "The Bodhi tree"], a:1, p:"buddha",
+   s:"The wheel, from the Dharmachakrapravartana. The stupa marks the death, the Bodhi tree the enlightenment and the horse the renunciation."},
+  {q:"Which of these is NOT one of the four sights that are said to have turned the Buddha towards renunciation?", o:["An old man", "A corpse", "An ascetic", "A king"], a:3, p:"buddha",
+   s:"The four sights are an old man, a sick man, a corpse and an ascetic. A king is not among them."},
+  {q:"Which event is associated with Sankasya among the eight great Buddhist places?", o:["The descent from heaven", "The first sermon", "The taming of Nalagiri", "The monkey's offering of honey"], a:0, p:"buddha",
+   s:"Sankasya is the descent from heaven. The first sermon belongs to Sarnath, the taming of Nalagiri to Rajgir and the monkey's honey to Vaishali."},
+  {q:"What does the title Tathagata mean?", o:["The sage of the Shakyas", "The conqueror", "One who has thus gone", "The awakened"], a:2, p:"buddha",
+   s:"One who has thus gone, and it is the term the Buddha uses of himself. The awakened is Buddha, the sage of the Shakyas is Shakyamuni, and the conqueror, Jina, is a Jain title."},
+
+  /* --------------------------------------- WHAT IT TEACHES */
+  {q:"According to the Four Noble Truths, what is the cause of suffering?", o:["Craving", "Ignorance", "Karma", "Rebirth"], a:0, p:"buddhism-teaching",
+   s:"Craving, called trishna in Sanskrit and tanha in Pali. The second noble truth is dukkha-samudaya, the arising of suffering."},
+  {q:"How many steps are there in the Buddhist Eightfold Path?", o:["Three", "Twelve", "Eight", "Four"], a:2, p:"buddhism-teaching",
+   s:"Eight, which is what Ashtangika Marga means. Four is the number of Noble Truths, three the number of groups the eight fall into, and twelve the links of dependent origination."},
+  {q:"Right speech, right action and right livelihood belong to which group of the Eightfold Path?", o:["Prajna", "Samadhi", "Nirjara", "Sila"], a:3, p:"buddhism-teaching",
+   s:"Sila, conduct. Prajna or wisdom covers right view and right intention; Samadhi covers effort, mindfulness and concentration. Nirjara is a Jain term, not a Buddhist one."},
+  {q:"What are the three jewels, the Triratna, of Buddhism?", o:["Buddha, Dhamma and Sangha", "Right faith, right knowledge and right conduct", "Anicca, dukkha and anatta", "Prajna, Sila and Samadhi"], a:0, p:"buddhism-teaching",
+   s:"Buddha, Dhamma and Sangha. Right faith, right knowledge and right conduct are the JAIN Triratna, and that confusion is exactly what the question relies on."},
+  {q:"Which Buddhist doctrine holds that there is no permanent self?", o:["Dukkha", "Nirvana", "Anatta", "Anicca"], a:2, p:"buddhism-teaching",
+   s:"Anatta, or anatman. Anicca is impermanence, dukkha is unsatisfactoriness, and nirvana is the goal. Anatta is the sharpest break with both the Upanishads and Jainism."},
+  {q:"How many links make up the Buddhist chain of dependent origination?", o:["Seven", "Twelve", "Eight", "Four"], a:1, p:"buddhism-teaching",
+   s:"Twelve. Pratityasamutpada sets out the chain by which everything arises from conditions."},
+  {q:"What is the Buddhist Middle Path, the Majjhima Patipada, a path between?", o:["Monkhood and lay life", "Hinayana and Mahayana", "Indulgence and mortification", "Faith and reason"], a:2, p:"buddhism-teaching",
+   s:"Indulgence and mortification. The Buddha had tried extreme austerity for six years and abandoned it, which is why the method is stated this way."},
+  {q:"On the question of God, what position did the Buddha take?", o:["He denied God's existence outright", "He accepted a creator God", "He identified the self with God", "He set the question aside as not leading to liberation"], a:3, p:"buddhism-teaching",
+   s:"He set it aside. The texts record silence rather than denial, on the ground that the question does not help towards liberation."},
+  {q:"Which of these is NOT one of the five Buddhist precepts, the panchsila?", o:["No killing", "No lying", "No intoxicants", "No eating after noon"], a:3, p:"buddhism-teaching",
+   s:"The five precepts are no killing, no stealing, no lying, no sexual misconduct and no intoxicants. Rules about eating times apply to monks under the Vinaya, not to everyone."},
+  {q:"In which language did the Buddha teach?", o:["Prakrit of Vallabhi", "Pali", "Sanskrit", "Ardhamagadhi"], a:1, p:"buddhism-teaching",
+   s:"Pali, the speech of ordinary people in Magadha. Sanskrit is the language of Mahayana texts, and Ardhamagadhi is the language of the Jain canon."},
+  {q:"Which of these is a Buddhist position that Jainism rejects?", o:["That rebirth occurs", "That there is no creator God", "That there is no permanent soul", "That karma binds"], a:2, p:"buddhism-teaching",
+   s:"That there is no permanent soul. Jainism makes the soul, the jiva, eternal and finds it in plants and the elements. Karma, rebirth and the absence of a creator God are common to both."},
+
+  /* ----------------------- COUNCILS, SCHOOLS AND THE SPREAD */
+  {q:"Where was the first Buddhist council held?", o:["Pataliputra", "Kundalvana", "Rajagriha", "Vaishali"], a:2, p:"buddhism-schools",
+   s:"Rajagriha, in the Saptaparni cave, in 483 BCE under Ajatashatru. Vaishali hosted the second, Pataliputra the third and Kundalvana in Kashmir the fourth."},
+  {q:"Which king convened the second Buddhist council at Vaishali?", o:["Kanishka", "Kalashoka", "Ajatashatru", "Ashoka"], a:1, p:"buddhism-schools",
+   s:"Kalashoka, in 383 BCE. Ajatashatru convened the first, Ashoka the third and Kanishka the fourth."},
+  {q:"At which Buddhist council was the Abhidhamma Pitaka added to the canon?", o:["The first", "The second", "The fourth", "The third"], a:3, p:"buddhism-schools",
+   s:"The third, at Pataliputra under Ashoka, presided over by Moggaliputta Tissa. It is the latest of the three Pitakas for that reason."},
+  {q:"Who presided over the fourth Buddhist council?", o:["Moggaliputta Tissa", "Mahakassapa", "Sabakami", "Vasumitra"], a:3, p:"buddhism-schools",
+   s:"Vasumitra, with Ashvaghosha as his deputy, at Kundalvana in Kashmir under Kanishka. Moggaliputta Tissa presided over the third, Mahakassapa the first and Sabakami the second."},
+  {q:"At which Buddhist council did Hinayana and Mahayana part?", o:["The fourth", "The third", "The second", "The first"], a:0, p:"buddhism-schools",
+   s:"The fourth, in the first century CE. The second council produced the earlier schism, into Sthaviravadins and Mahasanghikas."},
+  {q:"Which city appears in both the Buddhist and the Jain lists of councils?", o:["Pataliputra", "Vaishali", "Vallabhi", "Rajagriha"], a:0, p:"buddhism-schools",
+   s:"Pataliputra, which hosted the third Buddhist council and the first Jain one. Nothing else appears in both lists."},
+  {q:"What is the ideal figure of the Hinayana school?", o:["The bodhisattva", "The Tirthankara", "The Kevalin", "The arhat"], a:3, p:"buddhism-schools",
+   s:"The arhat, one who attains nirvana. The bodhisattva, who delays it to help others, is the Mahayana ideal; Tirthankara and Kevalin are Jain terms."},
+  {q:"Which surviving school is the form in which Hinayana continues today?", o:["Mahayana", "Vajrayana", "Madhyamika", "Theravada"], a:3, p:"buddhism-schools",
+   s:"Theravada, the school of Sri Lanka, Myanmar and Thailand. Madhyamika is a philosophical school within the Mahayana tradition."},
+  {q:"Which form of Buddhism is the tantric one, strongest in Bengal and Bihar and then Tibet?", o:["Hinayana", "Sautrantika", "Vajrayana", "Theravada"], a:2, p:"buddhism-schools",
+   s:"Vajrayana, the thunderbolt vehicle, from about the eighth century, with female deities called Taras."},
+  {q:"Who founded the Madhyamika school and its doctrine of shunyavada?", o:["Vasubandhu", "Ashvaghosha", "Nagarjuna", "Asanga"], a:2, p:"buddhism-schools",
+   s:"Nagarjuna. Asanga and Vasubandhu founded Yogachara or Vijnanavada, and Ashvaghosha was a poet at Kanishka's court."},
+  {q:"Whom did Ashoka send to Sri Lanka to spread Buddhism?", o:["Nagasena and Menander", "Asanga and Vasubandhu", "Upali and Ananda", "Mahendra and Sanghamitra"], a:3, p:"buddhism-schools",
+   s:"Mahendra and Sanghamitra, which is how Theravada reached the island."},
+  {q:"Which Buddhist monk converted the Indo-Greek king Menander?", o:["Buddhaghosa", "Vasumitra", "Nagasena", "Nagarjuna"], a:2, p:"buddhism-schools",
+   s:"Nagasena, and their dialogue is recorded in the Milindapanho."},
+  {q:"From about which century is Buddhism effectively gone from India?", o:["The twelfth", "The eighth", "The fifteenth", "The fifth"], a:0, p:"buddhism-schools",
+   s:"About the twelfth century, after the loss of patronage, the Bhakti revival, the absorption of the Buddha as an avatara of Vishnu, and the destruction of Nalanda and Vikramshila."},
+
+  /* --------------------------------------------- THE TEXTS */
+  {q:"What does Tripitaka mean?", o:["Three jewels", "Three vehicles", "Three marks", "Three baskets"], a:3, p:"buddhism-texts",
+   s:"Three baskets, which is what the Buddhist canon in Pali is called. The three jewels are the Triratna and the three vehicles are Hinayana, Mahayana and Vajrayana."},
+  {q:"Which of the three Pitakas contains the rules of the monastic order?", o:["Sutta", "Abhidhamma", "Khuddaka", "Vinaya"], a:3, p:"buddhism-texts",
+   s:"The Vinaya Pitaka, recited by Upali at the first council. The Khuddaka is a Nikaya inside the Sutta Pitaka, not a Pitaka of its own."},
+  {q:"How many Nikayas make up the Sutta Pitaka?", o:["Twelve", "Seven", "Five", "Three"], a:2, p:"buddhism-texts",
+   s:"Five: Digha, Majjhima, Samyutta, Anguttara and Khuddaka. The Sutta Pitaka is the largest of the three baskets."},
+  {q:"Roughly how many Jataka stories of the Buddha's previous births are there?", o:["1,008", "108", "250", "547"], a:3, p:"buddhism-texts",
+   s:"547, some counts giving 550. They sit in the Khuddaka Nikaya, alongside the Dhammapada."},
+  {q:"The Milindapanho records a dialogue between Nagasena and which king?", o:["Kanishka", "Ajatashatru", "Kalashoka", "Menander"], a:3, p:"buddhism-texts",
+   s:"Menander, the Indo-Greek king, called Milinda in the text, which is where its title comes from."},
+  {q:"Who wrote the Buddhacharita?", o:["Ashvaghosha", "Buddhaghosa", "Vasubandhu", "Nagarjuna"], a:0, p:"buddhism-texts",
+   s:"Ashvaghosha, in Sanskrit, at Kanishka's court. He also wrote the Saundarananda. Buddhaghosa wrote the Visuddhimagga and Vasubandhu the Abhidharmakosha."},
+  {q:"Which pair of Pali chronicles from Sri Lanka is a main source for Ashoka's dates?", o:["Divyavadana and Prajnaparamita", "Dipavamsa and Mahavamsa", "Mahavastu and Lalitavistara", "Vinaya and Abhidhamma"], a:1, p:"buddhism-texts",
+   s:"The Dipavamsa and the Mahavamsa. The others named are Mahayana texts in Sanskrit, or parts of the canon."},
+  {q:"The Saddharmapundarika, a central Mahayana text, is better known in English as what?", o:["The Lotus Sutra", "The Diamond Sutra", "The Dhammapada", "The Heart Sutra"], a:0, p:"buddhism-texts",
+   s:"The Lotus Sutra."},
+  {q:"In which language was the Mahayana literature chiefly written?", o:["Ardhamagadhi", "Tamil", "Sanskrit", "Pali"], a:2, p:"buddhism-texts",
+   s:"Sanskrit, which is why a question that names the language of a Buddhist text is really asking which school it belongs to. The Pali canon belongs to Hinayana and Theravada."},
+  {q:"Which is the latest of the three Pitakas?", o:["Abhidhamma", "Vinaya", "Sutta", "All three were settled together"], a:0, p:"buddhism-texts",
+   s:"The Abhidhamma Pitaka, added at the third council under Ashoka. The Vinaya and Sutta were settled at the first."},
+
+  /* -------------------------------- STUPAS, CAVES, MONASTERIES */
+  {q:"What is a chaitya?", o:["A prayer hall", "A relic mound", "A monastery", "A gateway"], a:0, p:"buddhism-sites",
+   s:"A prayer hall, apsidal, with a stupa at the far end. The relic mound is the stupa, the monastery is the vihara, and the gateway is the torana."},
+  {q:"In a stupa, what is the anda?", o:["The dome", "The railing on top", "The umbrella", "The drum"], a:0, p:"buddhism-sites",
+   s:"The dome. The railing on top is the harmika, the umbrella the chhatra and the drum the medhi."},
+  {q:"Which ruler began the Great Stupa at Sanchi?", o:["Ashoka", "Kanishka", "Krishna I", "Kumaragupta I"], a:0, p:"buddhism-sites",
+   s:"Ashoka, and the Satavahanas enlarged it and added the four carved toranas. Krishna I built the Kailasa temple at Ellora and Kumaragupta I is credited with Nalanda."},
+  {q:"The Ashokan lion capital that became India's State Emblem comes from which site?", o:["Amaravati", "Sarnath", "Sanchi", "Bharhut"], a:1, p:"buddhism-sites",
+   s:"Sarnath, which also has the Dhamek stupa. The wheel from the same capital is on the national flag."},
+  {q:"Which of these cave sites is Buddhist only?", o:["Ellora", "Elephanta", "Badami", "Ajanta"], a:3, p:"buddhism-sites",
+   s:"Ajanta, about thirty caves, famous for its paintings. Ellora has Buddhist, Hindu and Jain caves, and that contrast is the usual question."},
+  {q:"How many caves are there at Ellora?", o:["17", "34", "29", "12"], a:1, p:"buddhism-sites",
+   s:"34, divided as Buddhist caves 1 to 12, Hindu 13 to 29 and Jain 30 to 34."},
+  {q:"The Kailasa temple at Ellora, cut from a single rock, was built under which dynasty?", o:["Vakataka", "Chalukya", "Rashtrakuta", "Satavahana"], a:2, p:"buddhism-sites",
+   s:"The Rashtrakutas, under Krishna I. It is cave 16."},
+  {q:"Which site has the largest chaitya hall in India?", o:["Bhaja", "Kanheri", "Bedsa", "Karle"], a:3, p:"buddhism-sites",
+   s:"Karle, in Maharashtra. The others are the neighbouring cave groups."},
+  {q:"The Barabar caves, the oldest rock-cut caves in India, were given by Ashoka to which sect?", o:["The Buddhists", "The Jains", "The Shaivites", "The Ajivikas"], a:3, p:"buddhism-sites",
+   s:"The Ajivikas, not the Buddhists, which is what the question is testing."},
+  {q:"Who is credited with founding the monastic university at Nalanda?", o:["Kanishka", "Kumaragupta I", "Dharmapala", "Ashoka"], a:1, p:"buddhism-sites",
+   s:"Kumaragupta I, also called Shakraditya. Dharmapala founded Vikramshila."},
+  {q:"Who destroyed Nalanda, about 1193?", o:["Mahmud of Ghazni", "Muhammad Ghori", "Alauddin Khalji", "Bakhtiyar Khalji"], a:3, p:"buddhism-sites",
+   s:"Bakhtiyar Khalji."},
+  {q:"Which school of sculpture produced the first images of the Buddha, in a Greco-Roman style?", o:["Mathura", "Amaravati", "Nagarjunakonda", "Gandhara"], a:3, p:"buddhism-sites",
+   s:"Gandhara, in the north-west, working in grey schist under Kushana patronage. Mathura worked in red sandstone and Amaravati in white limestone."},
+  {q:"The Amaravati and Nagarjunakonda sites, in white limestone, are in which modern state?", o:["Maharashtra", "Odisha", "Andhra Pradesh", "Madhya Pradesh"], a:2, p:"buddhism-sites",
+   s:"Andhra Pradesh, under Satavahana and Ikshvaku patronage."},
+
+  /* ----------------------------------------- JAIN PHILOSOPHY */
+  {q:"Which Jain doctrine holds that reality has many sides and no single statement catches all of them?", o:["Pratityasamutpada", "Anekantavada", "Syadvada", "Nayavada"], a:1, p:"jain-philosophy",
+   s:"Anekantavada, many-sidedness, illustrated by the blind men and the elephant. Syadvada is how it is put into words and nayavada concerns partial standpoints. Pratityasamutpada is Buddhist."},
+  {q:"How many forms of predication make up the Jain saptabhangi of syadvada?", o:["Nine", "Seven", "Four", "Three"], a:1, p:"jain-philosophy",
+   s:"Seven, which is what saptabhangi means. Each statement is prefixed syat, in some respect."},
+  {q:"In Jain philosophy, what is a jiva?", o:["Release", "A soul", "Matter", "The inflow of karma"], a:1, p:"jain-philosophy",
+   s:"A soul, which Jainism holds to be real, eternal and present in plants, earth, water, fire and air as well as animals. Matter is ajiva, the inflow of karma is asrava and release is moksha."},
+  {q:"How does Jainism understand karma?", o:["As a subtle matter that sticks to the soul", "As moral causation only", "As the will of a creator God", "As an illusion"], a:0, p:"jain-philosophy",
+   s:"As a subtle matter that clings to the soul and weighs it down. This physical sense is not the Buddhist or Vedic one, and the difference is often the question."},
+  {q:"In the Jain tattvas, what does nirjara mean?", o:["The bondage of the soul", "The inflow of karma", "Shedding karma already accumulated", "Stopping the inflow of karma"], a:2, p:"jain-philosophy",
+   s:"Shedding karma already there, by austerity. Stopping the inflow is samvara, bondage is bandha and the inflow itself is asrava."},
+  {q:"Which of the five Jain vows did Mahavira add to the four taught by Parshvanath?", o:["Ahimsa", "Satya", "Aparigraha", "Brahmacharya"], a:3, p:"jain-philosophy",
+   s:"Brahmacharya, chastity. Parshvanath taught ahimsa, satya, asteya and aparigraha, the chaturyama, and Mahavira made it five."},
+  {q:"What is the Jain Triratna?", o:["Jiva, ajiva and moksha", "Anekantavada, syadvada and nayavada", "Right faith, right knowledge and right conduct", "Buddha, Dhamma and Sangha"], a:2, p:"jain-philosophy",
+   s:"Right faith, right knowledge and right conduct, and all three together are the path. Buddha, Dhamma and Sangha are the Buddhist Triratna."},
+  {q:"What is sallekhana, also called santhara, in Jainism?", o:["A voluntary fast to death", "A twelve-year vow of silence", "The renunciation of clothing", "A pilgrimage on foot"], a:0, p:"jain-philosophy",
+   s:"A voluntary fast to death, taken when the body can no longer serve the vows. Jain doctrine does not count it as suicide, and Chandragupta Maurya is said to have died this way at Shravanabelagola."},
+  {q:"What is kevala jnana?", o:["Omniscience", "Right conduct", "Non-possession", "The shedding of karma"], a:0, p:"jain-philosophy",
+   s:"Omniscience, the knowledge a Kevalin has. One who attains it and teaches is a Tirthankara."},
+  {q:"What does the word Tirthankara mean?", o:["Liberated soul", "Great teacher", "Ford-maker", "Conqueror"], a:2, p:"jain-philosophy",
+   s:"Ford-maker, one who makes the crossing for others. Conqueror is Jina, and a liberated soul is a Siddha."},
+  {q:"A vow taken by a Jain monk rather than a layman is called what?", o:["Mahavrata", "Anuvrata", "Samiti", "Gupti"], a:0, p:"jain-philosophy",
+   s:"A mahavrata, a great vow; the layman's form is the anuvrata. The samitis and guptis are the daily disciplines of care and control."},
+  {q:"On the question of a creator God, what is the Jain position?", o:["The question cannot be answered", "The Tirthankaras created the universe", "The universe is eternal and uncreated", "A single creator God made the universe"], a:2, p:"jain-philosophy",
+   s:"The universe is eternal and uncreated, running through cycles of utsarpini and avasarpini. The Tirthankaras are teachers, not gods, though they are worshipped."},
+  {q:"In which language was the Jain canon composed?", o:["Pali", "Sanskrit", "Apabhramsha", "Ardhamagadhi Prakrit"], a:3, p:"jain-philosophy",
+   s:"Ardhamagadhi Prakrit. The Buddhist canon is in Pali, and that pairing is what a question on the language of either canon is usually after."},
+  {q:"Which position on extreme austerity separates the Buddha from Mahavira?", o:["Both insisted on it", "The Buddha rejected it for the Middle Path", "Mahavira rejected it and the Buddha kept it", "Both rejected it"], a:1, p:"jain-philosophy",
+   s:"The Buddha tried extreme austerity for six years, abandoned it, and taught the Middle Path. Mahavira kept it, up to sallekhana."},
+
+  /* ----------------------------------- MINERALS: CLASS AND BELT */
+  {q:"Which of these is a ferrous metallic mineral?", o:["Mica", "Manganese", "Bauxite", "Copper"], a:1, p:"minerals",
+   s:"Manganese, along with iron ore, chromite, nickel and cobalt. Bauxite and copper are non-ferrous metallic, and mica is non-metallic."},
+  {q:"In which kind of rock do metallic minerals usually occur?", o:["Igneous and metamorphic", "Sedimentary only", "Alluvial", "Volcanic ash beds"], a:0, p:"minerals",
+   s:"Igneous and metamorphic rock, as veins and lodes. Non-metallic minerals occur in sedimentary rock as beds and layers, and coal and petroleum are sedimentary."},
+  {q:"Which rock system holds most of India's metallic mineral wealth?", o:["Dharwar", "Gondwana", "Vindhyan", "Siwalik"], a:0, p:"minerals",
+   s:"The Dharwar system, the oldest metamorphic rocks in the country. Gondwana holds the coal, and the Vindhyan and Siwalik systems are younger."},
+  {q:"Which is the richest of India's three mineral belts?", o:["The north-western belt", "The Himalayan belt", "The north-eastern plateau", "The south-western plateau"], a:2, p:"minerals",
+   s:"The north-eastern plateau, covering Jharkhand, Odisha, Chhattisgarh and West Bengal, which holds iron, coal, manganese, bauxite and mica together."},
+  {q:"Which mineral belt holds almost no coal apart from lignite at Neyveli?", o:["The north-eastern plateau", "The north-western belt", "The Assam belt", "The south-western plateau"], a:3, p:"minerals",
+   s:"The south-western plateau, covering Karnataka, Goa, Tamil Nadu and Kerala. It has iron, manganese, limestone and the gold of Kolar and Hutti."},
+  {q:"India's petroleum is found chiefly in which mineral belt?", o:["All three equally", "The north-western belt", "The north-eastern plateau", "The south-western plateau"], a:1, p:"minerals",
+   s:"The north-western belt, Rajasthan and Gujarat, with Assam counted outside the three plateau belts."},
+  {q:"Where is the Geological Survey of India headquartered, and in which year was it set up?", o:["Kolkata, 1851", "Nagpur, 1948", "Hyderabad, 1958", "Delhi, 1947"], a:0, p:"minerals",
+   s:"Kolkata, 1851. Nagpur and 1948 belong to the Indian Bureau of Mines, and Hyderabad and 1958 to the National Mineral Development Corporation."},
+  {q:"Which Act governs mineral development and regulation in India?", o:["The Minerals Conservation Act, 1960", "The Mines and Minerals (Development and Regulation) Act, 1957", "The Mines Act, 1952", "The Indian Bureau of Mines Act, 1948"], a:1, p:"minerals",
+   s:"The Mines and Minerals (Development and Regulation) Act, 1957, usually shortened to the MMDR Act."},
+
+  /* ------------------------------ MINERAL BY MINERAL */
+  {q:"Which grade of iron ore has the highest iron content?", o:["Hematite", "Limonite", "Siderite", "Magnetite"], a:3, p:"minerals-where",
+   s:"Magnetite, at about 70 per cent, and it is magnetic and black. Hematite at 60 to 70 per cent is the one India mostly has and uses."},
+  {q:"Which grade of iron ore makes up most of India's reserves?", o:["Magnetite", "Limonite", "Siderite", "Hematite"], a:3, p:"minerals-where",
+   s:"Hematite, the red ore at 60 to 70 per cent iron. Magnetite is the better ore but the smaller share, and that split is the point of the question."},
+  {q:"Which state leads India in iron ore production?", o:["Odisha", "Chhattisgarh", "Karnataka", "Jharkhand"], a:0, p:"minerals-where",
+   s:"Odisha, with roughly half the country's output. The other three follow it."},
+  {q:"The iron ore of Bailadila is exported to Japan through which port?", o:["Visakhapatnam", "Mangaluru", "Paradip", "Chennai"], a:0, p:"minerals-where",
+   s:"Visakhapatnam. Mangaluru is the port for Kudremukh ore, which reaches it as slurry through a pipeline."},
+  {q:"In which state is the Kudremukh iron ore mine?", o:["Jharkhand", "Karnataka", "Chhattisgarh", "Odisha"], a:1, p:"minerals-where",
+   s:"Karnataka. Its ore is sent as slurry by pipeline to Mangaluru."},
+  {q:"Which mineral is the chief ore of aluminium?", o:["Chromite", "Manganese", "Mica", "Bauxite"], a:3, p:"minerals-where",
+   s:"Bauxite, led decisively by Odisha, from the Panchpatmali deposits in Koraput."},
+  {q:"Almost all of India's chromite reserves lie in which valley?", o:["Panchpatmali", "Zawar", "Sukinda", "Damodar"], a:2, p:"minerals-where",
+   s:"The Sukinda valley in Jajpur, Odisha. Panchpatmali is bauxite, Zawar is lead and zinc, and the Damodar valley is coal."},
+  {q:"Which belt is India's historically famous mica belt?", o:["Koderma", "Sukinda", "Malanjkhand", "Degana"], a:0, p:"minerals-where",
+   s:"Koderma, in Jharkhand, although Andhra Pradesh leads on output today. Sukinda is chromite, Malanjkhand copper and Degana tungsten."},
+  {q:"Which is India's largest single copper deposit?", o:["Zawar", "Malanjkhand", "Khetri", "Singhbhum"], a:1, p:"minerals-where",
+   s:"Malanjkhand in Madhya Pradesh. Khetri in Rajasthan and Singhbhum in Jharkhand are the other two copper areas; Zawar is lead and zinc."},
+  {q:"Which gold field in Karnataka closed in 2001?", o:["Ramagiri", "Panna", "Kolar", "Hutti"], a:2, p:"minerals-where",
+   s:"Kolar. Hutti still works, Ramagiri is in Andhra Pradesh and Panna in Madhya Pradesh is a diamond field."},
+  {q:"Rampura Agucha in Rajasthan is India's largest deposit of which mineral?", o:["Copper", "Gold", "Manganese", "Zinc"], a:3, p:"minerals-where",
+   s:"Zinc. It and the Zawar mines make Rajasthan the state for lead, zinc and the silver that comes with them."},
+  {q:"India's diamond mining is centred on which place?", o:["Degana", "Khetri", "Jaduguda", "Panna"], a:3, p:"minerals-where",
+   s:"Panna, in Madhya Pradesh. Degana is tungsten, Khetri copper and Jaduguda uranium."},
+  {q:"Which mineral is the raw material of cement?", o:["Gypsum", "Bauxite", "Limestone", "Mica"], a:2, p:"minerals-where",
+   s:"Limestone, the most widely distributed of India's minerals, with Rajasthan, Madhya Pradesh, Andhra Pradesh and Telangana among the leaders."},
+  {q:"Why is mica valued industrially?", o:["It is the hardest natural substance", "It resists acid better than any metal", "It conducts electricity better than copper", "It is an excellent insulator and splits into thin sheets"], a:3, p:"minerals-where",
+   s:"Because it insulates extremely well and splits into thin sheets, which is what makes it useful in electrical equipment."},
+  {q:"Odisha leads India in which group of minerals?", o:["Copper, zinc, lead and silver", "Coal, petroleum and natural gas", "Gold, diamond and tungsten", "Iron ore, manganese, bauxite and chromite"], a:3, p:"minerals-where",
+   s:"Iron ore, manganese, bauxite and chromite. Copper, zinc, lead and silver are Rajasthan's and Madhya Pradesh's; gold is Karnataka's and diamond and tungsten belong elsewhere."},
+
+  /* ------------------------------------- COAL, OIL AND POWER */
+  {q:"Which grade of coal has the highest carbon content?", o:["Bituminous", "Lignite", "Peat", "Anthracite"], a:3, p:"energy",
+   s:"Anthracite, at 80 to 95 per cent, and in India it is found only in Jammu and Kashmir. Bituminous at 60 to 80 per cent is the one actually used in bulk."},
+  {q:"Which grade of coal is the coking coal the steel industry needs?", o:["Bituminous", "Anthracite", "Lignite", "Peat"], a:0, p:"energy",
+   s:"Bituminous, at 60 to 80 per cent carbon. Anthracite is the better grade but is barely available in India."},
+  {q:"Neyveli in Tamil Nadu is known for which grade of coal?", o:["Lignite", "Anthracite", "Bituminous", "Peat"], a:0, p:"energy",
+   s:"Lignite, brown coal at 40 to 55 per cent carbon. It is the exception to the rule that the south-western belt has no coal."},
+  {q:"What share of India's coal reserves belongs to the Gondwana system?", o:["Under a fifth", "96 to 98 per cent", "About half", "About three-quarters"], a:1, p:"energy",
+   s:"96 to 98 per cent. Gondwana coal is about 250 million years old and lies in the Damodar, Son, Mahanadi and Godavari valleys; tertiary coal, about 55 million years old, is the small remainder."},
+  {q:"Which is India's largest coalfield, and the source of its best coking coal?", o:["Raniganj", "Korba", "Talcher", "Jharia"], a:3, p:"energy",
+   s:"Jharia, in Jharkhand. Raniganj in West Bengal is the oldest worked field, and Korba and Talcher are in Chhattisgarh and Odisha."},
+  {q:"Which is the oldest worked coalfield in India?", o:["Raniganj", "Jharia", "Bokaro", "Singrauli"], a:0, p:"energy",
+   s:"Raniganj, in West Bengal. Jharia is the largest, not the oldest."},
+  {q:"Which state holds India's largest coal reserves?", o:["West Bengal", "Jharkhand", "Chhattisgarh", "Odisha"], a:1, p:"energy",
+   s:"Jharkhand. On production rather than reserves, Chhattisgarh and Odisha have led in recent years and the order changes between years, so the two questions have different answers."},
+  {q:"Tertiary coal in India is found chiefly in which region?", o:["The Damodar valley", "The Godavari valley", "Central Madhya Pradesh", "The north-east"], a:3, p:"energy",
+   s:"The north-east, in Assam, Meghalaya, Arunachal Pradesh and Nagaland. It is about 55 million years old and higher in sulphur. The Damodar and Godavari valleys hold Gondwana coal."},
+  {q:"Which is India's largest oilfield?", o:["Digboi", "Naharkatiya", "Mumbai High", "Ankleshwar"], a:2, p:"energy",
+   s:"Mumbai High, offshore, found in 1974 and producing from 1976, drilled from the rig Sagar Samrat. Ankleshwar is in Gujarat and Digboi and Naharkatiya in Assam."},
+  {q:"From which rig was Mumbai High first drilled?", o:["Sagar Kanya", "Sagar Samrat", "Sagar Vijay", "Sagar Nidhi"], a:1, p:"energy",
+   s:"Sagar Samrat, operated by ONGC."},
+  {q:"Which is the oldest oil refinery in India and in Asia?", o:["Jamnagar", "Koyali", "Barauni", "Digboi"], a:3, p:"energy",
+   s:"Digboi, in Assam, from 1901. Jamnagar is the largest refinery in the world and Koyali was the first large public-sector refinery in the west."},
+  {q:"Which refinery is the largest in the world?", o:["Jamnagar", "Digboi", "Koyali", "Mathura"], a:0, p:"energy",
+   s:"Jamnagar, in Gujarat."},
+  {q:"The Mangala field, in the Barmer basin, is in which state?", o:["Gujarat", "Andhra Pradesh", "Assam", "Rajasthan"], a:3, p:"energy",
+   s:"Rajasthan. It is one of the newer oil regions, along with the Krishna-Godavari and Cauvery basins."},
+  {q:"What does the HVJ gas pipeline connect?", o:["Haldia, Varanasi and Jaipur", "Hyderabad, Vijayawada and Jabalpur", "Hazira, Visakhapatnam and Jamshedpur", "Hazira, Vijaipur and Jagdishpur"], a:3, p:"energy",
+   s:"Hazira, Vijaipur and Jagdishpur. It is the main gas trunk line."},
+  {q:"Where is India's first uranium mine?", o:["Rawatbhata", "Kalpakkam", "Jaduguda", "Tummalapalle"], a:2, p:"energy",
+   s:"Jaduguda, in Jharkhand. Tummalapalle in Andhra Pradesh holds the largest reserves, and Rawatbhata and Kalpakkam are power stations."},
+  {q:"India's thorium comes chiefly from the monazite sands of which state?", o:["Kerala", "Jharkhand", "Rajasthan", "Gujarat"], a:0, p:"energy",
+   s:"Kerala, and India has among the world's largest thorium reserves."},
+  {q:"Which was India's first nuclear power station, and in which year did it start?", o:["Tarapur, 1969", "Rawatbhata, 1973", "Kalpakkam, 1984", "Narora, 1991"], a:0, p:"energy",
+   s:"Tarapur in Maharashtra, from 1969. Rawatbhata, Kalpakkam and Narora followed it."},
+  {q:"Which is India's largest nuclear power station?", o:["Kakrapar", "Kudankulam", "Tarapur", "Kaiga"], a:1, p:"energy",
+   s:"Kudankulam, in Tamil Nadu. Tarapur was the first but is not the largest."},
+  {q:"Which was India's first steel plant, and in which year was it founded?", o:["Jamshedpur, 1907", "Bhilai, 1955", "Durgapur, 1956", "Rourkela, 1955"], a:0, p:"energy",
+   s:"Jamshedpur, 1907, by the Tatas, and it was private. The other three are public-sector plants of the 1950s."},
+  {q:"Which steel plant was built with West German help?", o:["Rourkela", "Bhilai", "Durgapur", "Bokaro"], a:0, p:"energy",
+   s:"Rourkela, in Odisha. Bhilai and Bokaro had Soviet help and Durgapur British help."},
+  {q:"Which is India's only port-based steel plant?", o:["Bhilai", "Bokaro", "Salem", "Visakhapatnam"], a:3, p:"energy",
+   s:"Visakhapatnam, in Andhra Pradesh. Every other major plant sits on or beside the Chotanagpur mineral belt."},
+  {q:"Geothermal energy in India is associated with Manikaran and which other site?", o:["Neyveli", "Degana", "Zawar", "Puga"], a:3, p:"energy",
+   s:"Puga, in Ladakh; Manikaran is in Himachal Pradesh. Neyveli is a lignite field, Degana a tungsten mine and Zawar a zinc mine."},
+  {q:"India's tidal power potential is concentrated in which two gulfs?", o:["Khambhat and Oman", "Khambhat and Kachchh", "Mannar and Aden", "Kachchh and Mannar"], a:1, p:"energy",
+   s:"The Gulf of Khambhat and the Gulf of Kachchh, both on the Gujarat coast."}
+
+ ]},
+
   /* ------------------------------------------- 4 NOVEMBER */
   {id:"4-november", d:"4 November", y:2026,
  w:"The Sustainable Development Goals in full — the 2030 Agenda, all seventeen goals, and India's own index — Census 2011 with every record and ranking it is asked for, and the Mughal empire in detail: reign by reign, the nobility and the provinces, the Rajput and Deccan policies, the Marathas, and why it came apart.",
