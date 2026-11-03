@@ -70,7 +70,14 @@
   --line2:#393945;
   --ink:#f1efe9;
   --dim:#9a97a3;
-  --dimmer:#66636f;
+  /* The quiet grey carries fifty of the site's labels — the eyebrows, the
+     counts beside a topic, the column headings, the search placeholder, the
+     keyboard hints. At #66636f it measured 3.35:1 against the page and
+     2.85:1 against a panel, under the 4.5:1 that small text needs to be
+     read comfortably, and small mono text is exactly what it is used for.
+     Same hue, lifted until it clears: 5.33:1 on the page, 4.54:1 on the
+     darkest panel it sits on. It is still plainly quieter than --dim. */
+  --dimmer:#878393;
 
   /* PALETTE. Three text colours over the same near-black ground: yellow,
      purple and red. The background is deliberately unchanged - only the
@@ -145,7 +152,11 @@
   --ease:cubic-bezier(.22,1,.36,1);
   --fast:.18s; --mid:.5s;
 
-  --headh:122px;
+  /* The real header height, written here only as the value used for the
+     first paint; syncHead and a ResizeObserver replace it with the measured
+     one as soon as the script runs. Measured 103px at 768, 1024 and 1280.
+     It said 122px, which left a visible gap under the bar for a moment. */
+  --headh:103px;
 }
 
 *{box-sizing:border-box}
@@ -1359,7 +1370,13 @@ details.idx > summary b{font-weight:400;color:var(--dimmer);letter-spacing:.06em
 .idxgrid a i{font-style:normal;color:var(--dimmer);font-family:var(--mono);font-size:var(--t-micro)}
 
 @media (max-width:760px){
-  :root{--headh:162px}
+  /* Measured 194px at 320, 375 and 430, where the search box is forced on
+     to a row of its own. It said 162px, and too small is the harmful
+     direction: the top of the page sat under the fixed bar until the
+     script caught up. Between about 440 and 760 the true figure is lower,
+     so this reserves a little extra there for that one frame, which is
+     the side to err on. */
+  :root{--headh:194px}
   /* Three steps of larger type pushed the sticky header on a phone from
      155px to 206px - a quarter of the screen, permanently, in exchange for
      nothing a reader wanted. The reading text keeps every pixel it gained;
@@ -1855,7 +1872,11 @@ footer .chip.chk,.why .chip.chk,.plain .chip.chk{margin-left:0}
   font:inherit;font-size:var(--t-small);line-height:1.3;color:var(--dim);cursor:pointer;
   background:var(--panel);border:1px solid var(--line2);border-radius:999px;padding:5px 11px;
 }
-.jcjump button:hover,.jcjump button:focus-visible{color:var(--gold);border-color:var(--gold);outline:none}
+/* The colour change belongs to both; the ring belongs to the keyboard. The
+   two were written as one rule with outline:none on the end, which took the
+   site-wide focus ring off these buttons and left a keyboard user unable to
+   tell focus from hover. */
+.jcjump button:hover,.jcjump button:focus-visible{color:var(--gold);border-color:var(--gold)}
 @media (min-width:1000px){.jcjump{display:none}}
 .jceyebrow{margin-top:var(--s4)}
 
@@ -2160,4 +2181,125 @@ a.mmk:hover{text-decoration:underline}
   .jcpage h1 + .sub{margin-bottom:var(--s4)}
   .jcqgrid > .mq{padding:var(--s4) var(--s5)}
   .jcqgrid .mqo,.jcmock .mqo{margin-top:var(--s4)}
+}
+
+/* ==========================================================================
+   PRINT
+
+   The site had no print rules at all, and the default is worse than it
+   sounds. A browser drops background colours when it prints — that is what
+   print-color-adjust:economy means, and it is the default — but it keeps
+   the text colour. So every page of this site printed as #f1efe9 text, very
+   nearly white, on white paper: a student who pressed Ctrl+P on a revision
+   sheet got a stack of blank-looking sheets and no clue why.
+
+   So the paper gets its own treatment rather than a filtered screen. Black
+   on white, the chrome gone, the reading column across the full page, and
+   the things that carry meaning by colour on screen — the highlighted
+   phrases, the key terms, the figures — carrying it by weight and rule
+   instead, because colour is the one thing a page cannot be relied on to
+   print. Nothing here changes a word: it changes what the paper does with
+   the words that are already there.
+   ========================================================================== */
+@media print{
+  /* The page itself. A colour scheme of dark is a screen instruction; left
+     set, some browsers keep painting form controls and rules dark. */
+  :root{
+    color-scheme:light;
+
+    /* Every colour on the site comes from these tokens, so paper is one
+       redefinition rather than a hundred selectors. The hierarchy is kept -
+       the quiet grey is still quieter than the body, the three accents are
+       still three distinguishable accents - but each one is darkened until
+       it is ink rather than a glow meant for a near-black screen. The
+       -rgb companions feed the translucent tints: a dark triplet at .14
+       lands as a pale wash on white, which is what a tint should be on
+       paper. The panels and the ground all go to white; only the rules
+       stay grey, because a box has to show its edge. */
+    --bg:#fff;
+    --panel:#fff;
+    --panel2:#fff;
+    --line:#9a9a9a;
+    --line2:#7a7a7a;
+    --ink:#000;
+    --dim:#2e2e36;
+    --dimmer:#55525d;
+
+    --gold:#6a4e05;       --gold-rgb:106,78,5;
+    --purple:#4a2d82;     --purple-rgb:74,45,130;
+    --red:#9d2019;        --red-rgb:157,32,25;
+    --violet:#5a3a96;
+    --good:#4f3d06;
+  }
+  html,body{background:#fff!important;color:#000!important}
+  body{font-size:11pt;line-height:1.5}
+  @page{margin:16mm}
+
+  /* The chrome. None of it means anything on paper: the header cannot be
+     tapped, the search cannot be typed into, the back button cannot go
+     back, and the side column is a set of links to pages this sheet is not. */
+  header.top,nav.tabs,.secwrap,.secstrip,#results,#sheet,.backfab,.skip,
+  footer,.side,.railnav,.sjump,.nextprev,.listtabs,.pracsubs,.hubfilter,
+  .idxmore,.installbtn,.jcabtn,.headbtns,.jcjump,.filters,.jcbarline{
+    display:none!important;
+  }
+
+  /* The reading column takes the whole sheet. On screen it shares the row
+     with the side column that has just been hidden. */
+  .wrap,.artpage,.artpage.withside,.mainflow,.jcpage{
+    display:block!important;max-width:none!important;width:auto!important;
+    margin:0!important;padding:0!important;grid-template-columns:none!important;
+  }
+
+  /* Colour carries meaning on screen and cannot on paper, so weight and a
+     rule carry it instead. A highlighted phrase keeps its emphasis as an
+     underline; a key term keeps its face; a figure keeps the mono face that
+     tells a reader it is a number. */
+  a{color:#000!important;text-decoration:none;border:0!important}
+  mark.hi{
+    background:none!important;color:#000!important;font-weight:700;
+    padding:0;border-bottom:1.5px solid #000;
+  }
+  mark.hi .num,mark.hi .kw,.kw,.num,.sscl,.eyebrow,.crumb,.lbl,
+  .d,.pr,.n,.c,.sub,.foot,.plain,.note,.snote{color:#000!important}
+  .kw{font-weight:700}
+
+  /* The boxes keep their shape as an outline rather than a tint, since the
+     tint is exactly what will not be printed. */
+  .ssc,.cmp,.fig,.block,.card,.scard,.sfacts,.pill,.chip,.datebadge{
+    background:none!important;
+    border-color:#999!important;
+  }
+  .ssc{border-left:3px solid #000!important}
+
+  /* The date badge painted its own text in the page colour and relied on a
+     solid gold fill behind it. The fill has just become an outline, so the
+     text has to come back to ink or it prints as nothing at all. */
+  .datebadge{color:#000!important;border:1px solid #999!important}
+
+  /* The bare text of an article is the one thing on the page a reader may
+     actually need on paper, and its colour is written in rather than taken
+     from a token, so redefining the tokens did not reach it. The same is
+     true of the list rows on the law-paper pages. */
+  .official,.jcnl li{color:#000!important}
+
+  /* Nothing a reader has to hold together should be split across two
+     sheets, and no heading should sit alone at the foot of one. */
+  h1,h2,h3,h4{break-after:avoid;page-break-after:avoid;color:#000!important}
+  .ssc,.cmp,.fig,.scard,.card,li,tr,dl.facts > div,.block > .rows > *{
+    break-inside:avoid;page-break-inside:avoid;
+  }
+  table{border-collapse:collapse;width:100%}
+  th,td{border:1px solid #999;padding:4px 6px}
+
+  /* A mind map is two columns of branches around a centre on screen. On
+     paper there is no centre to arrange them around, so they run down. */
+  .mmap,.mmlv,.mmcol{display:block!important;columns:auto!important}
+  .mmap mark.hi{border-bottom:0}
+
+  /* Everything the reader opened stays open; everything they did not is
+     still printed, because a closed section on paper is simply missing. */
+  details{display:block!important}
+  details > summary{display:block!important;font-weight:700}
+  details:not([open]) > *{display:revert!important}
 }

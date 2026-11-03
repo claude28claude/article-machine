@@ -1435,6 +1435,64 @@ source, and they are worth knowing about if it is ever rebuilt:
    Article 330A the heading belonging to Article 330. The body text is
    authoritative and is used in preference.
 
+## The refinement pass
+
+A sweep for defects that changed no content — no fact, no sentence, no question.
+Five things were found by measurement and fixed.
+
+**Printing produced a blank sheet.** There was no print stylesheet at all, so a
+printed page carried the screen's near-black background instruction (which most
+browsers drop) together with the screen's near-white text (which they keep).
+Black-on-black became white-on-white. The fix redefines the colour tokens inside
+`@media print` rather than patching selectors: every colour on the site is drawn
+from about a dozen custom properties, so one redefinition reaches all of them,
+and the hierarchy survives — the quiet grey is still quieter than the body text,
+the three accents are still three distinguishable accents, each just darkened
+until it is ink. The chrome that means nothing on paper is hidden (header, tabs,
+search, the side column, the back button), the reading column takes the full
+sheet, headings do not sit alone at the foot of a page, and boxes keep their
+shape as an outline since the tint is exactly what will not print.
+
+Three colours were written in by hand rather than taken from a token and so were
+missed by that redefinition: the date badge, the bare text of an article, and
+the list rows on the law-paper pages. They were found by walking all 356 routes
+with the print rules applied and measuring the contrast of every visible text
+element against white. The first pass flagged 13 cases on a single page; the
+last pass flagged none on any of the 356.
+
+**Fifty labels failed the contrast floor.** `--dimmer`, the grey that carries
+the eyebrows, the counts beside a topic, the column headings, the search
+placeholder and the keyboard hints, measured 3.35:1 against the page and 2.85:1
+against a panel. Small letter-spaced mono type is exactly what it is used for,
+and 4.5:1 is the floor for small text. Same hue, lifted to `#878393`: 5.33:1 on
+the page, 4.54:1 on the darkest panel it sits on, still plainly quieter than
+`--dim`.
+
+**Corrupt storage blanked the law-paper pages.** `jcaLoad` and `mathGet` parsed
+whatever was in `localStorage` and handed it straight to the caller. Valid JSON
+of the wrong shape — a string, a number, `null`, an array where a record was
+expected — reached code that called `.reduce`, `.map` and `Object.keys` on it.
+Poisoning the six storage keys six ways across five routes produced eight hard
+crashes and blank pages. Both readers now check the parsed value against the
+shape of the default before returning it, and fall back when it does not match.
+The same test now produces no errors and no blank pages in thirty combinations.
+
+**A focus ring was suppressed.** The jump buttons on the law-paper pages set
+`outline:none` on focus without putting anything back, so a keyboard user could
+not see where they were. They now take the same gold the hover state uses.
+
+**The header height fallback was wrong at both ends.** `--headh` is written for
+real by the script, but the CSS value is what the first paint uses. It claimed
+122px on desktop where the header measures 103px, leaving a visible gap, and
+162px on a phone where it measures 194px — and too small is the harmful
+direction, because the top of the page then sits underneath the fixed bar until
+the script catches up. Both now carry the measured figures.
+
+Verified across the whole site afterwards: 356 routes walked at 375px with no
+horizontal overflow and no console errors, and the same 356 walked again with
+the print rules applied with no unreadable text. No file under `data-` was
+touched.
+
 ## Not legal advice
 
 This is a study aid. For anything that matters, read the article itself, and

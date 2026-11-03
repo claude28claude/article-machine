@@ -3705,7 +3705,10 @@ var MK_WRONG  = 'am.maths.wrong.v1';    /* { "<chapter>|<index>": 1 } */
 function mathGet(key) {
   try {
     var raw = localStorage.getItem(key);
-    return raw ? (JSON.parse(raw) || {}) : {};
+    var val = raw ? JSON.parse(raw) : null;
+    /* Valid JSON of the wrong shape is not the same as no marks. A list or a
+       bare string parses cleanly and then reads back as nonsense marks. */
+    return val && typeof val === 'object' && !Array.isArray(val) ? val : {};
   } catch (e) { return {}; }
 }
 function mathPut(key, obj) {
@@ -5385,10 +5388,31 @@ var JK_LAST  = 'am.jca.last.v1';    /* the last finished test, in full */
 })();
 
 var JCA_MEM = {};
+
+/* A stored value has to be the shape the reader of it expects. JSON.parse
+   is perfectly happy to hand back a string, a number or null from a key
+   that should hold a list, and the page that reads it then throws: the
+   practice, the review and the mock test render half a screen and stop,
+   mid-revision, with no way back that a reader would ever find. The default
+   passed in already says what the shape should be, so it is the test. A
+   value that does not match is treated as absent, which is what a device
+   that has never run the test looks like, and the next save replaces it. */
+function jcaShaped(val, dflt) {
+  if (Array.isArray(dflt)) return Array.isArray(val);
+  /* null is the default for the live test and the last result: a record. */
+  if (dflt === null || (dflt && typeof dflt === 'object')) {
+    return !!val && typeof val === 'object' && !Array.isArray(val);
+  }
+  return typeof val === typeof dflt;
+}
+
 function jcaLoad(key, dflt) {
   try {
     var raw = localStorage.getItem(key);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      var val = JSON.parse(raw);
+      if (jcaShaped(val, dflt)) return val;
+    }
   } catch (e) { /* fall through to memory */ }
   /* A key saved as null (a finished test, a cleared list) is absent, not null. */
   return JCA_MEM[key] != null ? JCA_MEM[key] : dflt;
