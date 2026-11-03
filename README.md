@@ -102,6 +102,19 @@ hidden next to the download arrow. Measured after the change: the header is
 194px on a phone at 320, 360 and 375px — exactly what it was before — with no
 sideways scroll on any of 24 routes.
 
+**The tablet caught it, and neither the phone nor the desktop did.** Above
+the phone breakpoint the header is a single row, and one row at 768px has
+720px for a 286px brand, a 260px search basis and the pills. One pill fitted;
+two did not, so from 761px to 918px the pair wrapped and the header went from
+103px to 156px — 53px of sticky chrome on every page, invisible if you only
+test a phone and a 1440px window. The fix is the same trade twice over: in
+that band the words go, as they do on a phone, and the search box asks for
+200px rather than 260px before it will break the row. Flex-basis is only what
+an item asks for, and the search box is the only one that grows, so above
+about 808px it fills the row to the same width either way — the smaller
+number moves where the row breaks and nothing else. The header is 103px at
+761, 768, 900, 999, 1000, 1180 and 1440px, one row at every one of them.
+
 The installed app gets the same shortcut from outside: `manifest.webmanifest`
 now declares one, so a long press on the home-screen icon offers **JCA**
 straight into `./index.html#/jca`.

@@ -1395,6 +1395,24 @@ details.idx > summary b{font-weight:400;color:var(--dimmer);letter-spacing:.06em
   .figs{gap:var(--s5)}
 }
 
+/* Above the phone breakpoint the header is meant to be a single row, and it
+   now has to hold the brand, the search box at its 260px basis and two pills
+   rather than one. With both sets of words showing that wants 919px, so from
+   761px to 918px the pills wrapped to a row of their own and the header grew
+   from 103px to 156px — a regression a phone and a desktop both hide, and a
+   tablet gets in the face. Measured at 768px: the pill costs 71px, and one
+   row has 720px for a 286px brand, a 260px search basis and 182px of bare
+   pills. So the words go, exactly as they do on a phone, and the search box
+   asks for 200px rather than 260px before it will wrap the row. The basis is
+   only what it asks for: it is the sole growing item, so above about 808px
+   it fills the row to the same width either way, and the smaller number
+   changes nothing but where the row breaks. The trade at 768px is a search
+   box 56px narrower against 53px of sticky header, on every page. */
+@media (min-width:761px) and (max-width:999px){
+  .installbtn .lbl,.jcabtn .lbl{display:none}
+  .searchwrap{flex-basis:200px}
+}
+
 @media (max-width:700px){
   /* A 27% key column leaves about 80px on a phone, which is not enough for
      "Article 352 — National". Stack the pair instead. */
