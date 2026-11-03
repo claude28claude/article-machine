@@ -14,18 +14,18 @@
      once, fetch a fresh one in the background, and use that next time. Fast on
      every visit, and never more than one visit behind.  */
 
-var CACHE = 'article-machine-v47';
+var CACHE = 'article-machine-v48';
 var ASSETS = [
   './', './index.html', './styles.css', './app.js',
   './data-articles.js', './data-amendments.js', './data-schedules.js',
   './data-cases.js', './data-highyield.js', './data-coi-maps.js', './data-econ-maps.js',
-  './data-history.js', './data-history-hy.js', './data-hist-maps.js',
+  './data-history.js', './data-history-hy.js', './data-hist-maps.js?v=23',
   './data-economy.js?v=22', './data-gk.js?v=22', './data-gk-maps.js',
   './data-assembly.js', './data-biology.js', './data-bio-maps.js',
   './data-treaties.js', './data-artmap.js',
   './data-raj.js', './data-congress.js',
   './data-maths.js', './data-maths-mcq.js',
-  './data-early.js?v=22', './data-early-maps.js', './data-daily.js?v=22',
+  './data-early.js?v=22', './data-early-maps.js', './data-daily.js?v=23',
   './data-geography.js', './data-geo-maps.js', './data-laws.js', './data-law-maps.js',
   './data-jca-judiciary.js', './data-jca-scr.js', './data-jca-osr.js', './data-jca-maps.js',
   './data-plain-1.js', './data-plain-2.js', './data-plain-3.js',

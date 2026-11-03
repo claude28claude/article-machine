@@ -37,14 +37,16 @@ other seven were spelling variants of the same person — Dar and Dhar, Bose
 and Basu — and the site now prints both, because an answer key may use
 either.
 
-# Checking the figures in the 4 November set
+# Checking the figures in the daily sets
 
     node tools/verify/figures.js
 
-Two sets are covered: 4 November (the Sustainable Development Goals,
+Three sets are covered: 4 November (the Sustainable Development Goals,
 Census 2011 and the Mughal empire, against the census, SDG, Mughal-state and
-Mughal-decline maps) and 5 November (Buddhism and minerals, against the
-Buddhism and minerals maps). 269 figures in all.
+Mughal-decline maps), 5 November (Buddhism and minerals, against the
+Buddhism and minerals maps) and 6 November (the press and the organisations,
+against the press and bodies maps). **573 figures in all**, of which 87 are
+dates checked a second way, described below.
 
 Before comparing, both sides are flattened the same way: the `==highlight==`
 marks are dropped, because they sit INSIDE a figure - a map writes
@@ -64,6 +66,52 @@ neither.
 
 It exits 1 on a mismatch. Changing 943 to 940 in one of the two places makes
 it fail, which is the check working.
+
+## A bare year is a weak probe
+
+The first version of the 6 November coverage asked only whether a figure
+appeared on both sides, and a mutation test showed how little that catches
+for dates. 1878 is The Hindu, the Vernacular Press Act **and** the year
+*Amrita Bazar Patrika* went English overnight, so moving any one of them
+leaves 1878 in the prose and the mismatch hides. Six of eight deliberate
+errors went through.
+
+So every date in that set is bound to the thing it dates. `NOV6_DATES` holds
+87 pairs, and `yr(name, year)` builds a pattern asking for the name and the
+year **on the same line**, in whichever order that side writes them. That is
+why `flat()` now joins a leaf or a table row as `key = value` on one line
+instead of two: a leaf and its text are one fact, and splitting them made the
+binding impossible.
+
+## And the same dates checked from the other side
+
+A figure written twice — once in a sentence, once in a table row — can still
+be changed in one place only, with the first check passing because the other
+copy answers for it. So the dates are checked again: on every line that
+**defines** one of them, it must be the same date.
+
+Defines, not mentions. Prose cross-refers constantly — the 1823 Act line says
+*Mirat-ul-Akhbar* closed, the *Amrita Bazar* line says it went English in 1878
+— and reading those as dates for those papers gave 28 false alarms and nothing
+true. A definition is narrower: a table row or a map leaf with the thing on
+the key side, or a note that *opens* by naming it. Three refinements were
+needed after that, each from a real false alarm:
+
+- **Longer names first.** "Darpan" sits inside "Samachar Darpan", and "Indian
+  Association" inside "British Indian Association" — different papers and
+  different bodies, each with its own date. The longer names are removed from
+  the line before the shorter one is looked for.
+- **A later event is not the founding.** "1882 · Vernacular Press Act
+  repealed = Ripon" is the repeal, and giving it 1878 would be the error, so a
+  key naming a later event — repealed, merged, renamed, turned — is skipped.
+- **A row may be keyed by several things.** "Mooknayak, Bahishkrit Bharat,
+  Janata = Ambedkar, from 1920" is Mooknayak's date, honestly given; if another
+  dated thing on the line owns the year, it is not a disagreement.
+
+A fourth check covers the four papers printed abroad. Every one of those
+cities is in the prose whatever happens, so asking whether San Francisco
+appears cannot see the Ghadar press moved to Vancouver. Each paper is checked
+against the *other three* cities instead.
 
 # Checking the daily question sets
 
@@ -108,3 +156,24 @@ breaking the data on purpose and confirming they exit 1:
 The first run of the mark-stripping change was found this way: the Ellora
 mutation went through, because the `==` marks sat between the number and the
 word and the pattern could not match across them.
+
+The 6 November coverage was built the same way. The first version caught two
+of eight; the bound dates and the second check took it to eight of eight:
+
+| Broken on purpose, 6 November | First version | Now |
+|---|---|---|
+| Hicky's 1780 moved to 1870 in the notes | no | yes |
+| The Vernacular Press Act dated 1876 in the map | no | yes |
+| The Ghadar press moved to Vancouver | no | yes |
+| The Muslim League dated 1905 in the notes | no | yes |
+| The Ghadar president swapped for its secretary | yes | yes |
+| The Indian Association dated 1867 | no | yes |
+| Belur Math dated 1889 | no | yes |
+| Azad Hind dated 1942 | yes | yes |
+
+**One known limit.** Renaming *one* of three mentions of a name still passes,
+because the string survives in the other two: changing `==Digboi==` in the
+minerals map's Assam leaf leaves "Digboi refinery" standing one leaf below.
+A substring check cannot see that, and four of five older-set mutations are
+caught for the same reason — the fifth is this one. It is recorded rather
+than papered over.

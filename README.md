@@ -48,7 +48,7 @@ solutions, and 23 diagrams; profit, loss and mixture kept separate.
 
 **Daily study sets** — one page per study day, labelled with its date: a sheet
 of highlighted SSC notes for what was added to the site that day, and a set of
-questions written from those notes. **266 questions** across the three sets,
+questions written from those notes. **632 questions** across the four sets,
 four options each, taken ten or twenty at a time or as one paper, from one day
 or from all of them mixed.
 
@@ -542,9 +542,9 @@ figure reads as dated rather than as wrong.
 ## The question sets
 
 A set may also carry a `quiz`: questions written from that set's own notes.
-**266 of them** — 62 on the 3 November set, 80 on the 4 November set and 124
-on the 5 November set — at `#/daily/<set>/quiz/<10|20|all>`, with every set
-mixed together at `#/daily/quiz/<10|20|all>`.
+**632 of them** — 169 on the 3 November set, 134 on the 4 November, 158 on the
+5 November and 171 on the 6 November — at `#/daily/<set>/quiz/<10|20|all>`,
+with every set mixed together at `#/daily/quiz/<10|20|all>`.
 
 Four options, one right, the answer the moment you pick, and a line under it
 linking to the part of the set the question came from, so a wrong answer leads
@@ -566,9 +566,9 @@ sex ratio is offered against Kerala's because one is a union territory, and
 straight through, the right answer lands on B far more often than anywhere
 else — at one point B in 88 of 142, so a reader who always picked B would have
 scored 62 per cent knowing nothing. Each question's options are rotated by a
-hash of its own question text until the spread is even (64/63/61/78 across all
-266, so the commonest letter is worth 29 per cent), and the rotation is stable:
-running the rebalance again changes nothing.
+hash of its own question text until the spread is even (162/153/160/157 across
+all 632, so the commonest letter is worth 26 per cent), and the rotation is
+stable: running the rebalance again changes nothing.
 
 Because the options rotate, **no solution may refer to an option by its
 position.** `tools/verify/questions.js` fails the build if one does.
@@ -583,6 +583,13 @@ Rajagriha, in the Saptaparni cave..."*. That was true of 179 of the 266. The
 fix is one helper, `quizLead`, shared by the daily sets, Advanced Maths and the
 JCA paper: when the answer already appears in the solution's opening clause,
 the lead gives the letter alone.
+
+That helper had a second bug, found by playing all 632 questions deliberately
+wrong and reading every line. The opening clause was the solution's first
+eight words, so an answer *longer* than eight words could never be found
+inside it: "The Mines and Minerals (Development and Regulation) Act, 1957" is
+ten, and that question read the title out twice. The window is now eight words
+or the answer's own length plus two, whichever is longer.
 
 ## Checked, not just written
 
@@ -714,17 +721,24 @@ map" is `numWord(gkMapOrder().length)`, so adding a map changes the sentence
 too. They were written out as words once, and three of them were already stale
 by the time anyone noticed.
 
-| | Maps | Lines |
+| | Maps | Lines in its data file |
 |---|---|---|
-| Constitution | 13 maps + 1 overview | 364 |
-| Modern History | 8 maps + 1 overview | 307 |
-| Ancient and Medieval | 11 maps + 1 overview | 445 |
-| Geography | 8 maps + 1 overview | 285 |
-| Indian Economy | 11 maps + 1 overview | 320 |
-| Static GK | 13 maps + 1 overview | 486 |
-| Biology | 3 maps + 1 overview | 196 |
-| The new criminal laws | 5 maps + 1 overview | 126 |
-| JCA | 28 | 624 |
+| Constitution | 13 maps + 1 overview | 628 |
+| Modern History | 10 maps + 1 overview | 657 |
+| Ancient and Medieval | 11 maps + 1 overview | 745 |
+| Geography | 8 maps + 1 overview | 498 |
+| Indian Economy | 11 maps + 1 overview | 554 |
+| Static GK | 13 maps + 1 overview | 762 |
+| Biology | 3 maps + 1 overview | 311 |
+| The new criminal laws | 5 maps + 1 overview | 238 |
+| JCA | 28 | 656 |
+
+The line counts in that last column were stale in every row when the 6
+November set was written — they described the files as they had been several
+passes earlier, and nothing recomputes them, which is the same failure the
+paragraph above describes for the sentences. They are `wc -l` of each
+`data-*-maps.js` as it stands. Treat them as a rough sense of size, not as a
+number to rely on.
 
 **On the Constitution's maps an article number is a link.** That is the `arts`
 argument to `mmHtml`, which only the Constitution and the JCA Constitution
@@ -775,7 +789,8 @@ mnemonics for what is already on the branch, never a new fact.
 
 ## The 3 November set
 
-`#/daily/3-november`. Seven parts, **77 highlighted notes and 99 table rows**:
+`#/daily/3-november`. Ten parts, **118 highlighted notes and 230 table rows**
+(seven when it was written, three added in the gap-filling pass below):
 the soils of India and agriculture as revision sheets for what Geography and
 Economy already hold, and then **the Delhi Sultanate in full** — the five
 dynasties, Alauddin Khalji's reforms, Muhammad bin Tughlaq's five experiments
@@ -795,7 +810,8 @@ moved to Daulatabad in 1327 or 1326, and the token currency was issued in
 
 ## The 5 November set
 
-Three subjects, ten parts, 100 notes written here and 172 table rows.
+Three subjects, eleven parts, 117 notes written here and 192 table rows
+(ten parts when it was written; one added in the gap-filling pass below).
 
 **Buddhism was the largest hole left on the site.** It existed as four rows in
 a table of councils, written to sit beside the Jain ones — and nothing else.
@@ -828,7 +844,8 @@ coal producing state" and "largest coal reserves" do not have the same answer.
 
 ## The 4 November set
 
-`#/daily/4-november`. Nine parts, **86 highlighted notes and 146 table rows**,
+`#/daily/4-november`. Eleven parts, **114 highlighted notes and 193 table
+rows** (nine when it was written, two added in the gap-filling pass below),
 on three things:
 
 **The Sustainable Development Goals**, which the site did not have at all — it
@@ -867,6 +884,95 @@ copied wrong. Where editions move, the set says which edition: the SDG India
 Index score is given as 57 in 2018 through 71 in 2023–24 rather than as one
 number, and India's rank on the SDSN's index is given as a range, because it
 changes every year.
+
+## The 6 November set
+
+`#/daily/6-november`. Ten parts, **111 highlighted notes and 239 table rows**,
+on the national movement's institutions: the press, the organisations, the
+Congress sessions, and the men in charge.
+
+**The newspapers were the gap.** The site knew *Kesari* and *Amrita Bazar
+Patrika* as names in a timeline and nothing more. Three parts fill it: the
+firsts, where the question turns on whether it asks for the first newspaper in
+India (Hicky's *Bengal Gazette*, 1780) or the oldest still published (*Bombay
+Samachar*, 1822); the nationalist papers from *Amrita Bazar Patrika* to
+*National Herald*, each with its founder, its language and its year; and the
+Acts that gagged them, where two pairs carry the whole topic — Adam licensed
+the press and Metcalfe freed it, Lytton gagged it and Ripon freed it again.
+
+**The organisations likewise.** The bodies before the Congress, from the
+Landholders' Society of 1838 to the Indian Association of 1876; the reform
+societies; and the revolutionary and political bodies from Anushilan Samiti to
+the Forward Bloc. One branch of the map does nothing but list the years that
+carry several at once — 1875, 1906, 1916 and 1925 — because a question that
+gives a year and four bodies is almost always one of those four.
+
+**The Congress sessions and the Viceroys were already strong,** so these parts
+are ladders rather than repeats. `CONGRESS.sessions` has held all 63 sessions
+since the site's second week, checked against Wikipedia by `tools/verify/
+check.py`; `#/history/raj` has held every Governor-General and Viceroy for as
+long. What the set adds is the eleven sessions that are actually asked and what
+happened at each, the presidents that are asked, and — in the Viceroys part —
+the offices tied to *this set's* material, so the Vernacular Press Act sits
+with Lytton and the founding of the Congress with Dufferin.
+
+**Two new maps**, `press` and `bodies`, bring Modern History to ten. Both are
+registered in `HIST_MAP_ORDER` with their notes pointing at a daily-set page
+rather than a subject page, which is what the `notes`/`label` fields on an
+order entry are for.
+
+## Filling the gaps across all four sets
+
+A later pass went back over all four sets looking for what a question could
+reasonably ask that nothing on the site answered. Seven parts came out of it,
+and they are listed here separately because they are not what those days were
+originally written for.
+
+**What was missing site-wide, not just from a set.** Four of the seven filled
+holes that no page anywhere covered. The **Bhakti movement** — Kabir, Nanak,
+the four acharyas, the Alvars and Nayanars, the Nirguna and Saguna division —
+appeared nowhere; a grep for Kabir and Namdev returned nothing at all.
+**Vijayanagara and the Bahmani kingdom** had two passing mentions and no
+Krishnadeva Raya, no Talikota, no five Deccan sultanates. **Sufism** had three
+mentions of the Chishtis and one of Nizamuddin. **The Marathas after Shivaji**
+had no Peshwas, no Panipat 1761, and none of the three Anglo-Maratha wars.
+Those four are now parts of the 3 and 4 November sets, with the 3 November
+Sultanate pages beside them.
+
+**Hydro and the dams** were the same kind of hole in Geography: the set had
+coal, oil and the coalfields but nothing on a multipurpose project, so Bhakra,
+Hirakud, Tehri, the Damodar Valley Corporation and the nuclear stations are a
+new part of 5 November.
+
+**The Governors-General before 1858** were the clearest miss against what the
+6 November set set out to do. It covered the Viceroys tied to the press and
+stopped; Warren Hastings to Canning — the Regulating Act, the Permanent
+Settlement, the Subsidiary Alliance, the Doctrine of Lapse, the first railway
+— were not in it. That part also carries the comparison the whole topic turns
+on: the first Governor-General of *Bengal* is Warren Hastings in 1773, the
+first Governor-General of *India* is Bentinck in 1833.
+
+**Mughal art and letters** is the one part here that overlaps the subject
+pages on purpose. `EARLY` already has `mughal-architecture`, `mughal-books`
+and `mughal-religion`, so the buildings and the chronicles were covered — but
+the 4 November set, which teaches the Mughals reign by reign, had no culture
+part at all, and the Navratnas appeared nowhere on the site. It is written as
+the comparisons rather than as a survey: Hawkins against Roe, Humayun's Tomb
+against Itmad-ud-Daulah's tomb, painting's rise under Jahangir against its
+collapse under Aurangzeb.
+
+**Blocks, not parts, where a part already existed.** Four existing parts were
+short of something rather than missing a subject, so they gained tables and
+kept everything they had: the Khalji, Tughlaq and Sayyid rulers one by one,
+the two battles of Tarain and the Mongol invasions, and the coins, into the
+Sultanate part; erosion, conservation and the soil profile into the soil part;
+the three cropping seasons, the Green Revolution in detail, irrigation and the
+research institutes into the agriculture part; and the eight Viceroys the 6
+November set had not named, into the Viceroys part.
+
+**274 new questions**, taking the four sets from 398 to 632. The rebalance ran
+again afterwards, because a batch written straight through lands on B — the
+spread was 163/220/136/113 before it and 162/153/160/157 after.
 
 ## Practice
 

@@ -2219,6 +2219,12 @@ var HIST_MAP_ORDER = [
     label: 'All of them, office by office' },
   { id: 'treaties',  n: 'The treaties',        notes: '#/history/treaties',
     label: 'The treaties in full' },
+  /* Two maps whose notes live in a daily set rather than on a subject page:
+     the press and the organisations were not on the site before 6 November. */
+  { id: 'press',     n: 'The press',           notes: '#/daily/6-november/newspapers-early',
+    label: 'The notes, in the 6 November set' },
+  { id: 'bodies',    n: 'The organisations',   notes: '#/daily/6-november/pre-congress',
+    label: 'The notes, in the 6 November set' },
   { id: 'facts',     n: 'The quick facts',     notes: '#/history/high-yield/facts',
     label: 'The tables in full' }
 ];
@@ -4130,8 +4136,16 @@ function quizLead(it, ok) {
      lead gives the letter alone. */
   function bare(x) { return x.toLowerCase().replace(/^(the|a|an)\s+/, ''); }
   var sol = String(it.s || '').trim();
-  var head = bare(sol.split(/\s+/).slice(0, 8).join(' '));
-  var twice = ans && head.indexOf(bare(ans)) >= 0;
+  /* The window has to be at least as long as the answer, or a long answer
+     can never be found inside it: "The Mines and Minerals (Development and
+     Regulation) Act, 1957" is ten words, so a fixed eight-word head cut it
+     off, and the lead named it again right before the solution repeated it.
+     Eight words is the opening clause for a short answer; a long one needs
+     room for itself and no more. */
+  var want = bare(ans);
+  var n = Math.max(8, want.split(/\s+/).length + 2);
+  var head = bare(sol.split(/\s+/).slice(0, n).join(' '));
+  var twice = ans && head.indexOf(want) >= 0;
   return 'Not that one \u2014 the answer is ' + letter +
          (twice ? '.' : ', ' + esc(ans) + '.');
 }
