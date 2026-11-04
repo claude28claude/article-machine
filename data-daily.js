@@ -29,6 +29,768 @@ window.DAILY = {
 
 sets: [
 
+  /* ------------------------------------------- 7 NOVEMBER */
+  {id:"7-november", d:"7 November", y:2026,
+ w:"The gharanas in full — what a gharana actually is, the eleven khayal gharanas with the founder, the town and the voice of each, the four dhrupad banis and the families that hold them, the six tabla gharanas, the four Kathak gharanas, and the instrumental lineages from Tansen's Seniya line to Maihar and Etawah — with the Carnatic side that has banis instead, the texts and the thaats, the four classes of instrument, and the ladder of who belonged to which.",
+ intro:"The site carried the eight classical dances and a short line about Kathak having three gharanas, and nothing else. That line is the whole of what most study files say, and it is the one topic in Art and Culture where SSC asks past it — not what a gharana is, but which gharana, founded by whom, at which town, and who sang or played in it. So this set is built the way the question is: every gharana with its founder, its place, the one feature it is identified by, and the names that belong to it. The khayal gharanas come first because they carry the most questions; then dhrupad with its four banis, which is the older layer underneath; then tabla, Kathak and the instrumental lines. The Carnatic side is here too, because the examiner likes to pair them and because Carnatic music has no gharanas at all — it has banis and sampradayas, and knowing that the word does not cross over is itself a question. The last three parts are the furniture the whole topic rests on: the texts from the Natya Shastra to the Sangeet Ratnakara, Bhatkhande's ten thaats, the four classes of instrument, and the awards.",
+ parts:[
+
+  /* ================================= WHAT A GHARANA IS */
+  {id:"gharana-idea", tag:"Art and culture · new on the site", h:"What a gharana actually is",
+   w:"The word, the three-generation test, why they appeared when they did, and the vocabulary a question hands you.",
+   notes:[
+    "==Gharana== comes from ==ghar==, a house. It is a ==school or lineage of music==, named almost always after the ==place== where it settled — Gwalior, Kirana, Agra, Patiala — and occasionally after the ==founder==.",
+    "The working test, and the one stated in most answers: a style is a gharana only when it has been carried through ==at least three generations== of teachers and pupils, and has a ==distinct, recognisable style== of its own.",
+    "The teaching relationship is the ==guru-shishya parampara==. The formal bond is the ==ganda bandhan== — the thread tied on the pupil's wrist — which makes him a ==gandabandh shagird==, a formally initiated disciple, as opposed to a casual student.",
+    "==Why they formed when they did.== Mughal patronage collapsed after ==1857==, and the court musicians of Delhi scattered to the ==princely states== — Gwalior, Rampur, Jaipur, Patiala, Indore, Baroda, Mysore. Cut off from each other, each line hardened into a house style. ==The gharana system is a nineteenth-century thing==, even though the music is far older.",
+    "==Carnatic music has no gharanas.== Its equivalents are ==bani== and ==sampradaya== — a style and a tradition — and they are named for a teacher or a town in much the same way, but the word gharana belongs to ==Hindustani== music. A question that puts gharana next to Carnatic is usually testing exactly this.",
+    "A gharana is not only vocal. There are gharanas of ==khayal== singing, of ==dhrupad==, of the ==tabla==, of ==Kathak==, and of ==sitar and sarod==. The same place-name can appear in two of them and mean two different houses — ==Delhi==, ==Lucknow== and ==Jaipur== each name both a music gharana and something else.",
+    "==Ang== means the manner or leaning of a style — ==gayaki ang== is an instrument made to imitate the voice, ==tantrakari ang== is playing that stays idiomatic to the string.",
+    "==Baaj== is the word used for a tabla gharana's playing style: ==khuli baaj== is open, resonant, loud, made to be heard across a dance floor; ==band baaj== or ==closed== playing is tight and quiet, made for a small room."
+   ],
+   blocks:[
+    {h:"The words a question gives you",
+     rows:[
+      ["Gharana","A lineage school of Hindustani music, usually named for a place"],
+      ["Bani / Sampradaya","The Carnatic equivalents — Hindustani dhrupad also uses bani"],
+      ["Guru-shishya parampara","The teacher-to-pupil chain the whole system runs on"],
+      ["Ganda bandhan","The thread ceremony that formally makes someone a disciple"],
+      ["Gandabandh shagird","A formally initiated disciple, as against an ordinary student"],
+      ["Baaj","A tabla gharana's style of playing"],
+      ["Khuli / band baaj","Open and loud, against closed and quiet"],
+      ["Gayaki ang","Instrumental playing that imitates the singing voice"],
+      ["Tantrakari ang","Playing that stays idiomatic to the string instrument"],
+      ["Khandan","A musical family — several gharanas are family names first"]
+     ]},
+    {h:"The five kinds of gharana, and how many of each",
+     rows:[
+      ["Khayal (vocal)","Gwalior, Agra, Kirana, Jaipur-Atrauli, Patiala, Rampur-Sahaswan, Bhendibazaar, Mewati, Indore, Delhi, Sham Chaurasi"],
+      ["Dhrupad","Four banis, held by the Dagar, Darbhanga, Bettiah and Talwandi families, with Bishnupur in Bengal"],
+      ["Tabla","Six — Delhi, Ajrada, Lucknow, Farrukhabad, Benaras, Punjab"],
+      ["Kathak","Four — Lucknow, Jaipur, Banaras, Raigarh"],
+      ["Instrumental","Seniya (Beenkar and Rababiya), Maihar, Imdadkhani or Etawah, Bangash or Gwalior for sarod, Shahjahanpur"]
+     ]}
+   ],
+   cmp:[
+    {k:"Gharana or bani — the word matters",
+     rows:[
+      ["Gharana","HINDUSTANI. Khayal, tabla, Kathak, sitar. Named for a place: Gwalior, Kirana, Agra"],
+      ["Bani","Used twice: for the FOUR DHRUPAD STYLES (Gauhar, Khandar, Nauhar, Dagar), and in CARNATIC music for a teacher's style"],
+      ["Sampradaya","The Carnatic word for a tradition or school. Carnatic music has NO gharanas"]
+     ],
+     note:"If the question says Carnatic and offers gharana as an option, that option is wrong."}
+   ],
+   links:[["#/gk/pack/dance","The eight classical dances"],["#/daily/7-november/theory","The texts and the thaats"]]},
+
+  /* ================================= THE KHAYAL GHARANAS */
+  {id:"vocal-gharanas", tag:"Art and culture · new on the site", h:"The khayal gharanas",
+   w:"Eleven houses of Hindustani vocal music, with the founder, the town, the one feature each is identified by, and the singers.",
+   notes:[
+    "==Gwalior gharana== — the ==oldest khayal gharana==, and the one all the others are measured against, which is why it is called the ==mother of khayal gharanas==. Founder: ==Nathan Pir Bakhsh==, carried on by his grandsons ==Haddu Khan== and ==Hassu Khan== at the court of ==Gwalior==. Its style is ==plain, broad and simple==, with a straightforward raga exposition and clear bol-banao. Singers: ==Vishnu Digambar Paluskar==, ==Omkarnath Thakur==, ==Krishnarao Shankar Pandit==, ==D. V. Paluskar==, ==Veena Sahasrabuddhe==.",
+    "==Agra gharana== — traced to ==Haji Sujan Khan==, and shaped into a khayal house by ==Ghagge Khuda Baksh==, who brought khayal into what had been a ==dhrupad== family. That is its signature: a ==dhrupad-rooted, forceful, open-throated== style that opens with ==nom-tom alap==. Singer above all others: ==Ustad Faiyaz Khan==, titled ==Aftab-e-Mousiqi==, the sun of music. Also ==Vilayat Hussain Khan==, ==Latafat Hussain Khan==, ==C. R. Vyas==, ==Dinkar Kaikini==.",
+    "==Kirana gharana== — named after ==Kairana==, a town in ==Uttar Pradesh==. Founders: ==Ustad Abdul Karim Khan== and ==Ustad Abdul Wahid Khan==. Its mark is ==swara== — the purity and the slow, patient unfolding of a single note, with long sustained tones rather than display. Singers: ==Sawai Gandharva==, ==Bhimsen Joshi==, ==Gangubai Hangal==, ==Hirabai Barodekar==, ==Prabha Atre==, ==Firoz Dastur==.",
+    "==Jaipur-Atrauli gharana== — founder ==Ustad Alladiya Khan==. Known for ==rare and complex ragas==, especially ==jod== or compound ragas, and for intricate, rolling taans. Singers: ==Kesarbai Kerkar==, whom Tagore named ==Surashri==; ==Mogubai Kurdikar==; her daughter ==Kishori Amonkar==; ==Mallikarjun Mansur==; ==Ashwini Bhide-Deshpande==.",
+    "==Patiala gharana== — founded by the pair remembered as ==Aliya-Fattu==: ==Ali Baksh Khan== and ==Fateh Ali Khan==. Known for ==fast, glittering taans== and for ==thumri and ghazal==. Its greatest name is ==Ustad Bade Ghulam Ali Khan==. Also ==Barkat Ali Khan==, ==Begum Parveen Sultana==, ==Ajoy Chakrabarty==.",
+    "==Rampur-Sahaswan gharana== — founder ==Ustad Inayat Hussain Khan==, son-in-law of a Gwalior singer, settled at ==Rampur==. Singers: ==Mushtaq Hussain Khan==, ==Nissar Hussain Khan==, ==Ghulam Mustafa Khan==, ==Ustad Rashid Khan==.",
+    "==Bhendibazaar gharana== — named for a ==quarter of Bombay==, not a princely town, which makes it the odd one out. Founded by three brothers: ==Chhajju Khan==, ==Nazir Khan== and ==Khadim Hussain Khan==. Known for ==breath control== — long passages in a single breath — and for ==merukhand==, the systematic permutation of notes. Singers: ==Anjanibai Malpekar==, ==Aman Ali Khan==, who also taught ==Lata Mangeshkar==.",
+    "==Mewati gharana== — founder ==Ghagge Nazir Khan==. Its famous name by a distance is ==Pandit Jasraj==, who gave it the ==Jasrangi jugalbandi==, a duet of a male and a female voice singing two different ragas at once.",
+    "==Indore gharana== — founded by ==Ustad Amir Khan==, and therefore the ==youngest of the major gharanas==. Its mark is an ==extremely slow vilambit== tempo and a ==merukhand==-based unfolding, grave and unhurried.",
+    "==Delhi gharana== — one of the older khayal houses, associated with ==Mamman Khan==; ==Chand Khan==, ==Usman Khan== and ==Iqbal Ahmed Khan== carried it. Do not confuse it with the ==Delhi tabla gharana==, which is a separate thing.",
+    "==Sham Chaurasi gharana== — from ==Sham Chaurasi== in ==Punjab==, now in Pakistan; a dhrupad-rooted house known for duet singing. Its names are the brothers ==Salamat Ali Khan== and ==Nazakat Ali Khan==.",
+    "==Bishnupur gharana== — ==Bengal's== own gharana, at ==Bishnupur== in Bankura, grown out of the ==dhrupad== of the Malla court. Founder usually given as ==Ramshankar Bhattacharya==."
+   ],
+   blocks:[
+    {h:"Founder and place — the pairing that is asked",
+     rows:[
+      ["Gwalior","Nathan Pir Bakhsh; Haddu and Hassu Khan · Gwalior · the OLDEST khayal gharana"],
+      ["Agra","Haji Sujan Khan; shaped by Ghagge Khuda Baksh · Agra · dhrupad-rooted, nom-tom"],
+      ["Kirana","Abdul Karim Khan and Abdul Wahid Khan · Kairana, UP · purity of swara"],
+      ["Jaipur-Atrauli","Alladiya Khan · Atrauli and Jaipur · rare and compound ragas"],
+      ["Patiala","Ali Baksh and Fateh Ali Khan, the Aliya-Fattu pair · Patiala · fast taans, thumri"],
+      ["Rampur-Sahaswan","Inayat Hussain Khan · Rampur · full-throated, Gwalior-descended"],
+      ["Bhendibazaar","Chhajju, Nazir and Khadim Hussain Khan · BOMBAY, not a princely town"],
+      ["Mewati","Ghagge Nazir Khan · the Mewat region · Pandit Jasraj's house"],
+      ["Indore","Amir Khan · Indore · the YOUNGEST major gharana, very slow vilambit"],
+      ["Delhi","Mamman Khan's line · Delhi · not the same as the Delhi TABLA gharana"],
+      ["Sham Chaurasi","Salamat and Nazakat Ali Khan · Punjab · duet singing"],
+      ["Bishnupur","Ramshankar Bhattacharya · Bankura, Bengal · the only Bengali gharana"]
+     ]},
+    {h:"The singer, and the house he or she belongs to",
+     rows:[
+      ["Bade Ghulam Ali Khan","PATIALA"],
+      ["Bhimsen Joshi","KIRANA — through Sawai Gandharva"],
+      ["Gangubai Hangal","KIRANA"],
+      ["Faiyaz Khan","AGRA — Aftab-e-Mousiqi"],
+      ["Kesarbai Kerkar","JAIPUR-ATRAULI — Tagore's Surashri"],
+      ["Kishori Amonkar","JAIPUR-ATRAULI — taught by her mother Mogubai Kurdikar"],
+      ["Mallikarjun Mansur","JAIPUR-ATRAULI"],
+      ["Amir Khan","INDORE — he founded it"],
+      ["Pandit Jasraj","MEWATI"],
+      ["Rashid Khan","RAMPUR-SAHASWAN"],
+      ["Parveen Sultana","PATIALA"],
+      ["Omkarnath Thakur","GWALIOR — pupil of Vishnu Digambar Paluskar"],
+      ["Prabha Atre","KIRANA"],
+      ["Salamat Ali Khan","SHAM CHAURASI"]
+     ]}
+   ],
+   cmp:[
+    {k:"Kirana or Jaipur-Atrauli — the two most confused",
+     rows:[
+      ["Kirana","Abdul Karim Khan · SLOW, note by note, purity of SWARA · Bhimsen Joshi, Gangubai Hangal"],
+      ["Jaipur-Atrauli","Alladiya Khan · COMPLEX and RARE ragas, jod ragas, dense taans · Kesarbai, Kishori Amonkar"]
+     ],
+     note:"Kirana is about the single note held; Jaipur-Atrauli is about the difficult raga chosen."},
+    {k:"Gwalior or Agra — both old, both claimed as first",
+     rows:[
+      ["Gwalior","The OLDEST KHAYAL gharana. Plain and broad. Nathan Pir Bakhsh"],
+      ["Agra","Older as a DHRUPAD family, a khayal gharana later. Forceful, opens with nom-tom alap"]
+     ],
+     note:"If the question says oldest khayal gharana, the answer is Gwalior."}
+   ],
+   links:[["#/daily/7-november/exponents","The full ladder of singers"],["#/daily/7-november/gharana-idea","What a gharana is"]]},
+
+  /* ================================= DHRUPAD AND THE VOCAL FORMS */
+  {id:"dhrupad-forms", tag:"Art and culture · new on the site", h:"Dhrupad, its four banis, and the vocal forms",
+   w:"The older layer under khayal — the four banis and the families that hold them — and then every form a Hindustani singer sings.",
+   notes:[
+    "==Dhrupad== is the ==oldest surviving form of Hindustani classical singing==. It is austere, slow, and sung with a ==pakhawaj== rather than a tabla. It flowered under ==Raja Man Singh Tomar of Gwalior== in the fifteenth century and at ==Akbar's== court.",
+    "A dhrupad composition has ==four parts==: ==Sthayi==, ==Antara==, ==Sanchari== and ==Abhog==. A khayal has only the ==first two==. That count is the cleanest way to tell them apart in a question.",
+    "Dhrupad is preceded by the ==alap==, unmetred and wordless, and by ==nom-tom==, where the alap is sung on syllables like nom and tom.",
+    "==The four banis== — the four styles of dhrupad, traditionally traced to the singers of Akbar's court: ==Gauhar==, ==Khandar==, ==Nauhar== and ==Dagar==. Bani here means style, and this is the one place the word is used in Hindustani music.",
+    "==Dagarvani== is held by the ==Dagar family==, the best-known dhrupad lineage; the ==Dagar brothers== and ==Zia Mohiuddin Dagar== on the ==rudra veena== are its names.",
+    "==Khandarvani== is held by the ==Mallik family of Darbhanga==, in ==Bihar==. The ==Mishra family of Bettiah==, also Bihar, holds the ==Bettiah gharana==. The ==Talwandi gharana== is the fourth family line, from ==Punjab==.",
+    "==Dhamar== is dhrupad's companion: sung in ==Dhamar tala== of ==14 beats==, with words about ==Holi== and the play of Krishna. It is lighter than dhrupad proper.",
+    "==Khayal== — from the Persian-Arabic word for imagination — is the ==dominant form of Hindustani vocal music today==. It is ornamented and free where dhrupad is austere, and it is sung in two tempos: a slow ==vilambit== (bada khayal) followed by a fast ==drut== (chhota khayal). Tradition credits its introduction to ==Amir Khusrau==, and its development to ==Sultan Hussain Sharqi of Jaunpur==.",
+    "==Thumri== is the chief ==semi-classical== form, romantic and devotional, built on love for Krishna and loose with the raga. Its two main styles are the ==Purab ang== of ==Lucknow and Banaras== and the ==Punjab ang==. ==Wajid Ali Shah==, the last Nawab of Awadh, wrote thumris under the pen-name ==Akhtarpiya==. Singers: ==Begum Akhtar==, ==Girija Devi==, ==Siddheshwari Devi==, ==Shobha Gurtu==.",
+    "==Tappa== grew out of the ==songs of the camel drivers of Punjab==, and was made a classical form by ==Shori Miyan==, Ghulam Nabi. It is fast and built on quick, knotty phrases.",
+    "==Tarana== is sung on ==meaningless syllables== — ta, na, dir, dim — at speed. Tradition credits it to ==Amir Khusrau==.",
+    "==Ghazal== is a Persian-derived poetic form set to music; ==Qawwali== is the devotional singing of the ==Chishti== Sufis, also credited to ==Amir Khusrau==. ==Dhrupad, Dhamar, Khayal, Tarana, Thumri, Tappa== is the order a question usually lists them in.",
+    "==Haveli Sangeet== is temple music of the ==Pushtimarg== sect; ==Sopana Sangeetam== is Kerala's temple form sung on the steps of the sanctum."
+   ],
+   blocks:[
+    {h:"The forms, from the most austere to the most free",
+     rows:[
+      ["Dhrupad","Oldest. Four parts. Pakhawaj. No ornament to speak of"],
+      ["Dhamar","Dhrupad's lighter cousin. 14-beat Dhamar tala. Holi songs"],
+      ["Khayal","The dominant form today. Two parts. Vilambit then drut. Tabla"],
+      ["Tarana","Meaningless syllables at speed. Credited to Amir Khusrau"],
+      ["Thumri","Semi-classical, romantic. Purab and Punjab angs"],
+      ["Tappa","From Punjabi camel-drivers' songs. Shori Miyan. Fast and knotty"],
+      ["Ghazal / Qawwali","Poetic and Sufi devotional. Qawwali credited to Amir Khusrau"]
+     ]},
+    {h:"The four banis and the families",
+     rows:[
+      ["Dagar bani","The Dagar family · Zia Mohiuddin Dagar, the Dagar brothers · rudra veena"],
+      ["Khandar bani","The Mallik family of DARBHANGA, Bihar"],
+      ["Gauhar bani","One of the four Akbar-period styles"],
+      ["Nauhar bani","The fourth of the four"],
+      ["Bettiah gharana","The Mishra family of Bettiah, Bihar"],
+      ["Talwandi gharana","The Punjab dhrupad line"],
+      ["Bishnupur gharana","Bengal's dhrupad-derived house, at Bankura"]
+     ]}
+   ],
+   cmp:[
+    {k:"Dhrupad or Khayal — the four-part test",
+     rows:[
+      ["Dhrupad","FOUR parts: Sthayi, Antara, Sanchari, Abhog. PAKHAWAJ. Austere. Older"],
+      ["Khayal","TWO parts: Sthayi, Antara. TABLA. Ornamented. Dominant today"]
+     ],
+     note:"Count the parts and name the drum. That settles almost every version of this question."}
+   ],
+   links:[["#/daily/7-november/vocal-gharanas","The khayal gharanas"],["#/daily/7-november/theory","Texts, thaats and talas"]]},
+
+  /* ================================= TABLA */
+  {id:"tabla-gharanas", tag:"Art and culture · new on the site", h:"The six tabla gharanas",
+   w:"Delhi, Ajrada, Lucknow, Farrukhabad, Benaras and Punjab — the founder of each, the baaj, and the players.",
+   notes:[
+    "There are ==six tabla gharanas==, and the number itself is asked. They split into ==two families==: the ==Delhi baaj==, which is closed and played largely with two fingers, and the ==Purab baaj== — the eastern style — which is open, loud and powerful.",
+    "==Delhi gharana== — the ==oldest==, founded by ==Ustad Siddhar Khan Dhadhi==. Its mark is ==do ungliyon ka baaj==, the ==two-finger== technique, and a ==closed, delicate== sound suited to a small room and to accompanying khayal. Every other tabla gharana descends from it.",
+    "==Ajrada gharana== — from the village of ==Ajrada== near ==Meerut==, founded by ==Kallu Khan== and ==Miru Khan==, who were from the Delhi line. It kept the two-finger technique but made the rhythm far more intricate, with heavy use of ==even-numbered== rhythmic play. ==Habibuddin Khan== is its best-known player.",
+    "==Lucknow gharana== — founded by ==Modu Khan== and ==Bakshu Khan==, who went from Delhi to the court of ==Awadh==. It was shaped by the needs of ==Kathak==: ==khuli baaj==, open and resonant, loud enough to carry across a dance floor, with the full palm used. ==Abid Hussain Khan== and ==Swapan Chaudhuri== belong to it.",
+    "==Farrukhabad gharana== — founded by ==Haji Vilayat Ali Khan==, who had married into the ==Lucknow== line; it is therefore an offshoot of Lucknow. Known for rich, flowing compositions and for the ==rela==. Its players are among the greatest: ==Ustad Ahmed Jan Thirakwa==, ==Amir Hussain Khan==, ==Keramatullah Khan==, ==Sabir Khan==.",
+    "==Benaras gharana== — founded by ==Pandit Ram Sahai==, the only one of the six founded by a ==Hindu== musician, and the one most associated with ==solo== tabla playing and with ==pakhawaj==-like power. Players: ==Pandit Kishan Maharaj==, ==Pandit Samta Prasad==, known as ==Gudai Maharaj==, and ==Pandit Anokhelal Mishra==.",
+    "==Punjab gharana== — grown out of the ==pakhawaj== tradition rather than out of Delhi, which makes it the odd one; it is traced to ==Lala Bhavani Das==. Its names are the two most famous tabla players of the modern era: ==Ustad Alla Rakha== and his son ==Ustad Zakir Hussain==.",
+    "==Ahmed Jan Thirakwa== is usually given as the greatest tabla player of the twentieth century, and belongs to ==Farrukhabad==. ==Zakir Hussain== belongs to ==Punjab==. Those two names carry most of the questions.",
+    "The ==tabla== is a pair: the right-hand ==dayan== or tabla, of wood, and the left-hand ==bayan== or dagga, of metal. The black patch at the centre is the ==syahi==, which is what gives the drum its pitch."
+   ],
+   blocks:[
+    {h:"The six, with founder and mark",
+     rows:[
+      ["Delhi","Siddhar Khan Dhadhi · OLDEST · do ungliyon ka baaj, two fingers, closed sound"],
+      ["Ajrada","Kallu Khan and Miru Khan · near Meerut · Delhi technique, intricate rhythm"],
+      ["Lucknow","Modu Khan and Bakshu Khan · court of Awadh · khuli baaj, made for KATHAK"],
+      ["Farrukhabad","Haji Vilayat Ali Khan · an offshoot of LUCKNOW · rela, flowing compositions"],
+      ["Benaras","Pandit Ram Sahai · the only Hindu-founded one · solo playing, pakhawaj power"],
+      ["Punjab","Lala Bhavani Das · from PAKHAWAJ, not from Delhi · Alla Rakha, Zakir Hussain"]
+     ]},
+    {h:"The player, and the gharana",
+     rows:[
+      ["Ahmed Jan Thirakwa","FARRUKHABAD"],
+      ["Alla Rakha","PUNJAB"],
+      ["Zakir Hussain","PUNJAB"],
+      ["Kishan Maharaj","BENARAS"],
+      ["Samta Prasad (Gudai Maharaj)","BENARAS"],
+      ["Anokhelal Mishra","BENARAS"],
+      ["Habibuddin Khan","AJRADA"],
+      ["Swapan Chaudhuri","LUCKNOW"],
+      ["Keramatullah Khan","FARRUKHABAD"]
+     ]}
+   ],
+   cmp:[
+    {k:"Delhi baaj or Purab baaj",
+     rows:[
+      ["Delhi baaj","DELHI and AJRADA. Closed, quiet, two fingers. Made to accompany a singer"],
+      ["Purab baaj","LUCKNOW, FARRUKHABAD, BENARAS. Open, loud, full palm. Made for dance and for solo"]
+     ],
+     note:"Punjab sits outside both, because it comes from the pakhawaj."}
+   ],
+   links:[["#/daily/7-november/kathak-gharanas","The Kathak gharanas"],["#/daily/7-november/theory","The four classes of instrument"]]},
+
+  /* ================================= KATHAK */
+  {id:"kathak-gharanas", tag:"Art and culture · new on the site", h:"The four Kathak gharanas",
+   w:"Lucknow, Jaipur, Banaras and Raigarh — the one classical dance that is organised into gharanas at all.",
+   notes:[
+    "==Kathak== is the ==only one of the eight classical dances organised into gharanas==, and the only one with both ==Hindu temple== and ==Muslim court== lineages. The name comes from ==Kathakar==, a story-teller. Most study files name three gharanas; there are ==four==, and ==Raigarh== is the one left out.",
+    "==Lucknow gharana== — founded by ==Ishwari Prasad== of Handia near Allahabad, and brought to its height at the court of ==Nawab Wajid Ali Shah== by ==Thakur Prasad== and his sons ==Binda Din Maharaj== and ==Kalka Prasad==. Its emphasis is on ==bhava and abhinaya== — expression and grace — rather than on speed. Its dancers: ==Achhan Maharaj==, ==Shambhu Maharaj==, ==Lachhu Maharaj== and, above all, ==Pandit Birju Maharaj==.",
+    "==Jaipur gharana== — founded by ==Bhanuji==, and the ==oldest== of the Kathak gharanas. Its emphasis is on ==layakari== — rhythm, mathematics, fast footwork and ==chakkars==, the spins. Dancers: ==Jai Lal==, ==Sundar Prasad==, ==Kundan Lal Gangani==, ==Durga Lal==, ==Rohini Bhate==.",
+    "==Banaras gharana== — founded by ==Janakiprasad==, who is credited with inventing many of the ==bols==, the spoken rhythmic syllables, and with the ==thaat==, the opening standing posture. Its dancers: ==Sitara Devi==, whom Tagore called ==Nritya Samragni==, the empress of dance, and ==Gopi Krishna==.",
+    "==Raigarh gharana== — the ==newest==, and the only one founded by a ==ruler rather than a dancer==: ==Raja Chakradhar Singh== of ==Raigarh== in what is now ==Chhattisgarh==, in the twentieth century. He wrote ==Taal Toyanidhi==, ==Nartan Sarvaswa== and ==Ragratnamanjusha==.",
+    "The theoretical basis of every classical dance is the ==Natya Shastra== of ==Bharata Muni==. ==Kathak== is the dance of ==North India==, principally ==Uttar Pradesh==.",
+    "Kathak's vocabulary: ==tatkar== is the footwork, ==chakkar== the spin, ==thaat== the opening posture, ==tora== and ==tukra== the short rhythmic pieces, ==paran== a piece using pakhawaj syllables, ==amad== the entry. The dancer wears ==ghungroos==, and the accompanying drum is the ==tabla== — which is why the ==Lucknow tabla gharana== developed as it did.",
+    "==Birju Maharaj== belongs to ==Lucknow== and ==Sitara Devi== to ==Banaras==: that pairing is asked more than any other in this part."
+   ],
+   blocks:[
+    {h:"The four, with founder and emphasis",
+     rows:[
+      ["Lucknow","Ishwari Prasad · court of Wajid Ali Shah · BHAVA and ABHINAYA, grace · Birju Maharaj"],
+      ["Jaipur","Bhanuji · the OLDEST · LAYAKARI, fast footwork, chakkars · Durga Lal, Sundar Prasad"],
+      ["Banaras","Janakiprasad · invented bols and the thaat · Sitara Devi, Gopi Krishna"],
+      ["Raigarh","RAJA CHAKRADHAR SINGH · the NEWEST · founded by a ruler · Taal Toyanidhi"]
+     ]},
+    {h:"The words Kathak gives a question",
+     rows:[
+      ["Tatkar","The footwork"],
+      ["Chakkar","The spin or pirouette"],
+      ["Thaat","The opening standing posture — a Banaras contribution"],
+      ["Tora / Tukra","Short rhythmic compositions"],
+      ["Paran","A piece built on pakhawaj syllables"],
+      ["Amad","The entry"],
+      ["Ghungroo","The ankle bells"],
+      ["Kathakar","The story-teller the dance is named for"]
+     ]}
+   ],
+   cmp:[
+    {k:"Lucknow or Jaipur — expression against rhythm",
+     rows:[
+      ["Lucknow Kathak","BHAVA. Grace, expression, subtlety. Wajid Ali Shah's court. BIRJU MAHARAJ"],
+      ["Jaipur Kathak","LAYA. Rhythm, speed, footwork, spins. Founded by Bhanuji. The OLDEST"]
+     ],
+     note:"Lucknow for feeling, Jaipur for footwork. The other two are Banaras, which invented the bols, and Raigarh, founded by a king."}
+   ],
+   links:[["#/gk/pack/dance","The eight classical dances"],["#/daily/7-november/tabla-gharanas","The tabla gharanas"]]},
+
+  /* ================================= INSTRUMENTAL */
+  {id:"instrumental-gharanas", tag:"Art and culture · new on the site", h:"The instrumental gharanas",
+   w:"From Tansen's own line to Maihar and Etawah — who taught whom, and which instrument each house is built on.",
+   notes:[
+    "==Seniya gharana== — the parent line of Hindustani instrumental music, traced to ==Tansen== himself. It splits in two by descent: the ==Beenkar== branch, through Tansen's ==daughter== and the ==rudra veena== or been, and the ==Rababiya== branch, through his ==son Bilas Khan== and the ==rabab==. ==Bilaskhani Todi== is the raga named for that son.",
+    "==Maihar gharana==, also called ==Maihar-Seniya== — founded by ==Ustad Allauddin Khan== at the small state of ==Maihar== in what is now ==Madhya Pradesh==. It is the most influential instrumental school of the twentieth century because of whom it produced: ==Pandit Ravi Shankar== on the ==sitar==, ==Ustad Ali Akbar Khan==, Allauddin's son, on the ==sarod==, ==Annapurna Devi==, his daughter, on the ==surbahar==, ==Pandit Nikhil Banerjee== on the sitar and ==Pandit Pannalal Ghosh== on the ==flute==.",
+    "==Imdadkhani gharana==, also called the ==Etawah gharana== — founded by ==Ustad Imdad Khan==, and the other great sitar house. Its line runs ==Imdad Khan — Enayat Khan — Vilayat Khan — Shujaat Khan==. Its signature is the ==gayaki ang==: the sitar made to sing, imitating the phrasing of a voice.",
+    "==Bangash or Gwalior sarod gharana== — the sarod line brought from Afghanistan by the ==Bangash== family; ==Ghulam Ali Khan Bangash== is its founding name, and the line runs through ==Hafiz Ali Khan== to ==Ustad Amjad Ali Khan==.",
+    "==Shahjahanpur gharana== — the other sarod line, through ==Niyamatullah Khan==, carried in modern times by ==Pandit Buddhadev Das Gupta==.",
+    "==Ravi Shankar and Vilayat Khan are the pairing to hold==: both sitar, but ==Ravi Shankar is Maihar== and ==Vilayat Khan is Imdadkhani or Etawah==. ==Ali Akbar Khan and Amjad Ali Khan== are the matching sarod pair: ==Maihar== and ==Bangash==.",
+    "The instrument and the name, for the players who are asked without a gharana: ==shehnai== — ==Ustad Bismillah Khan==; ==santoor== — ==Pandit Shivkumar Sharma==; ==flute== — ==Pandit Hariprasad Chaurasia== and ==Pannalal Ghosh==; ==violin== in the Hindustani system — ==Pandit V. G. Jog==; ==sarangi== — ==Pandit Ram Narayan==; ==mohan veena== — ==Pandit Vishwa Mohan Bhatt==; ==rudra veena== — ==Zia Mohiuddin Dagar==.",
+    "==Pannalal Ghosh== is credited with bringing the ==bansuri== into classical concert music as a solo instrument rather than a folk one."
+   ],
+   blocks:[
+    {h:"The houses and the instruments",
+     rows:[
+      ["Seniya","Tansen's own line · Beenkar branch through his daughter, Rababiya through his son Bilas Khan"],
+      ["Maihar","Allauddin Khan · Maihar, MP · Ravi Shankar, Ali Akbar Khan, Annapurna Devi, Nikhil Banerjee, Pannalal Ghosh"],
+      ["Imdadkhani / Etawah","Imdad Khan · sitar and surbahar · gayaki ang · Enayat, Vilayat, Shujaat Khan"],
+      ["Bangash / Gwalior sarod","Ghulam Ali Khan Bangash · Hafiz Ali Khan · Amjad Ali Khan"],
+      ["Shahjahanpur","Niyamatullah Khan · sarod · Buddhadev Das Gupta"]
+     ]},
+    {h:"The instrument and the name",
+     rows:[
+      ["Sitar","Ravi Shankar (Maihar), Vilayat Khan (Imdadkhani), Nikhil Banerjee, Shujaat Khan"],
+      ["Sarod","Ali Akbar Khan (Maihar), Amjad Ali Khan (Bangash), Buddhadev Das Gupta"],
+      ["Shehnai","Bismillah Khan"],
+      ["Santoor","Shivkumar Sharma"],
+      ["Bansuri / flute","Hariprasad Chaurasia, Pannalal Ghosh"],
+      ["Sarangi","Ram Narayan"],
+      ["Rudra veena","Zia Mohiuddin Dagar"],
+      ["Surbahar","Annapurna Devi"],
+      ["Violin, Hindustani","V. G. Jog"],
+      ["Mohan veena","Vishwa Mohan Bhatt"]
+     ]}
+   ],
+   cmp:[
+    {k:"The two sitar houses, and the two sarod houses",
+     rows:[
+      ["Ravi Shankar","SITAR · MAIHAR · pupil of Allauddin Khan"],
+      ["Vilayat Khan","SITAR · IMDADKHANI or ETAWAH · gayaki ang"],
+      ["Ali Akbar Khan","SAROD · MAIHAR · son of Allauddin Khan"],
+      ["Amjad Ali Khan","SAROD · BANGASH or GWALIOR · son of Hafiz Ali Khan"]
+     ],
+     note:"Four names, two instruments, four houses. This grid is the single most useful thing in the part."}
+   ],
+   links:[["#/daily/7-november/exponents","The full ladder"],["#/daily/7-november/awards","Who won what"]]},
+
+  /* ================================= THE LADDER */
+  {id:"exponents", tag:"Art and culture · the ladder", h:"Who belonged to which — the ladder",
+   w:"Every name in this set on one list, with the gharana and the instrument or form beside it. This is the form the question takes.",
+   notes:[
+    "The exam almost never asks what a gharana is. It asks ==which gharana== a named musician belonged to, or ==who founded== a named gharana. Both directions are on this ladder.",
+    "The three that are asked more than any others: ==Bade Ghulam Ali Khan is Patiala==, ==Bhimsen Joshi is Kirana==, ==Birju Maharaj is Lucknow Kathak==.",
+    "Three founders who are also the most famous performer of their own gharana: ==Amir Khan== founded ==Indore==, ==Alladiya Khan== founded ==Jaipur-Atrauli==, and ==Allauddin Khan== founded ==Maihar==.",
+    "Two families to keep straight: ==Allauddin Khan== of ==Maihar== is father to ==Ali Akbar Khan== and ==Annapurna Devi==; ==Hafiz Ali Khan== of the ==Bangash== sarod line is father to ==Amjad Ali Khan==. Both are sarod, and the question likes to swap them.",
+    "==Alla Rakha and Zakir Hussain== are father and son, both ==Punjab tabla gharana==. ==Mogubai Kurdikar and Kishori Amonkar== are mother and daughter, both ==Jaipur-Atrauli==."
+   ],
+   blocks:[
+    {h:"Vocal",
+     rows:[
+      ["Bade Ghulam Ali Khan","Patiala · khayal and thumri"],
+      ["Bhimsen Joshi","Kirana · khayal"],
+      ["Gangubai Hangal","Kirana · khayal"],
+      ["Hirabai Barodekar","Kirana"],
+      ["Prabha Atre","Kirana"],
+      ["Faiyaz Khan","Agra · Aftab-e-Mousiqi"],
+      ["Kesarbai Kerkar","Jaipur-Atrauli · Surashri"],
+      ["Kishori Amonkar","Jaipur-Atrauli"],
+      ["Mallikarjun Mansur","Jaipur-Atrauli"],
+      ["Amir Khan","Indore · founded it"],
+      ["Pandit Jasraj","Mewati · the Jasrangi jugalbandi"],
+      ["Rashid Khan","Rampur-Sahaswan"],
+      ["Parveen Sultana","Patiala"],
+      ["Omkarnath Thakur","Gwalior"],
+      ["Vishnu Digambar Paluskar","Gwalior · founded the Gandharva Mahavidyalaya"],
+      ["Begum Akhtar","Thumri, dadra and ghazal"],
+      ["Girija Devi","Banaras thumri · called Appaji"]
+     ]},
+    {h:"Tabla, dance and instruments",
+     rows:[
+      ["Ahmed Jan Thirakwa","Tabla · Farrukhabad"],
+      ["Alla Rakha","Tabla · Punjab"],
+      ["Zakir Hussain","Tabla · Punjab"],
+      ["Kishan Maharaj","Tabla · Benaras"],
+      ["Samta Prasad","Tabla · Benaras · Gudai Maharaj"],
+      ["Birju Maharaj","Kathak · Lucknow"],
+      ["Sitara Devi","Kathak · Banaras · Nritya Samragni"],
+      ["Gopi Krishna","Kathak · Banaras"],
+      ["Durga Lal","Kathak · Jaipur"],
+      ["Ravi Shankar","Sitar · Maihar"],
+      ["Vilayat Khan","Sitar · Imdadkhani / Etawah"],
+      ["Nikhil Banerjee","Sitar · Maihar"],
+      ["Ali Akbar Khan","Sarod · Maihar"],
+      ["Amjad Ali Khan","Sarod · Bangash / Gwalior"],
+      ["Bismillah Khan","Shehnai"],
+      ["Shivkumar Sharma","Santoor"],
+      ["Hariprasad Chaurasia","Bansuri"],
+      ["Ram Narayan","Sarangi"],
+      ["Pannalal Ghosh","Flute · Maihar"],
+      ["Annapurna Devi","Surbahar · Maihar"]
+     ]},
+    {h:"The titles that are asked",
+     rows:[
+      ["Aftab-e-Mousiqi","Ustad Faiyaz Khan — the sun of music"],
+      ["Surashri","Kesarbai Kerkar — given by Rabindranath Tagore"],
+      ["Nritya Samragni","Sitara Devi — the empress of dance"],
+      ["Gudai Maharaj","Pandit Samta Prasad"],
+      ["Appaji","Girija Devi"],
+      ["Sangeet Samrat","Tansen"],
+      ["Pitamaha of Carnatic music","Purandara Dasa"],
+      ["Nightingale of India","Sarojini Naidu — a poet, not a musician; the trap option"]
+     ]}
+   ],
+   links:[["#/daily/7-november/vocal-gharanas","The khayal gharanas"],["#/daily/7-november/awards","The awards"]]},
+
+  /* ================================= CARNATIC */
+  {id:"carnatic", tag:"Art and culture · the other system", h:"The Carnatic side — banis, not gharanas",
+   w:"The trinity, the forms, the melakarta system, the instruments, and the difference the examiner builds the question on.",
+   notes:[
+    "==Carnatic music== is the classical music of ==South India== — Tamil Nadu, Andhra Pradesh, Telangana, Karnataka and Kerala. ==Hindustani== music is that of the north. Both descend from the same root and split in about the ==thirteenth to fourteenth century==, as the north absorbed ==Persian and Central Asian== influence and the south did not.",
+    "==Carnatic music has no gharanas.== It has ==bani== and ==sampradaya==, and its schools are named for teachers and towns — the ==Tanjore== and ==Karaikudi== lines, for example.",
+    "==Purandara Dasa== is called the ==Pitamaha== or father of Carnatic music. He laid down the ==graded exercises== — sarali varisai and the rest — that every student still begins with.",
+    "==The Carnatic Trinity==: ==Tyagaraja==, ==Muthuswami Dikshitar== and ==Syama Sastri==. All three were born at ==Tiruvarur== in ==Tamil Nadu==, and all three lived across the eighteenth and nineteenth centuries. ==Tyagaraja== composed mostly in ==Telugu== and in praise of ==Rama==; the ==Tyagaraja Aradhana== at ==Thiruvaiyaru== is held in his memory.",
+    "==Melakarta==: Carnatic music organises its ragas into ==72 parent ragas==, the melakartas, each with seven notes in both ascent and descent. The scheme is credited to ==Venkatamakhin==, in his ==Chaturdandi Prakasika==. A raga derived from a melakarta is a ==janya== raga. ==Hindustani== music does the same job with ==10 thaats==.",
+    "==Aarohana== is the ascending order of notes and ==avarohana== the descending; ==Sruti== is the pitch and ==laya== the tempo. The Carnatic rhythmic cycle is the ==tala==, organised into ==seven basic talas== and the ==35 tala== scheme.",
+    "==The forms==: ==Varnam== opens a concert; ==Kriti== or ==Kirtana== is the main composed form, in three parts — ==Pallavi, Anupallavi, Charanam==; ==Ragam-Tanam-Pallavi== is the great improvised centrepiece; ==Tillana== is fast and rhythmic and usually closes; ==Javali== and ==Padam== are the lighter, romantic forms.",
+    "==The instruments==: the ==Saraswati veena==, the ==mridangam== as the chief drum, the ==violin==, adopted from Europe and now central, the ==ghatam== (a clay pot), the ==kanjira== (a frame drum), the ==morsing== (a jaw harp), the ==nadaswaram== and its drum the ==thavil==, which together are the temple and wedding pair.",
+    "==M. S. Subbulakshmi== is the Carnatic name that carries the most questions: the ==first musician to receive the Bharat Ratna==, in ==1998==; the first Indian to receive the ==Ramon Magsaysay Award== for music, in ==1974==; and the first Indian to perform at the ==United Nations General Assembly==, in ==1966==.",
+    "Other Carnatic names: ==Semmangudi Srinivasa Iyer==, ==M. Balamuralikrishna==, ==Lalgudi Jayaraman== on the violin, ==Palghat Mani Iyer== on the mridangam, ==Bombay Jayashri==, ==Sudha Raghunathan==, and ==Sheikh Chinna Moulana== on the nadaswaram."
+   ],
+   blocks:[
+    {h:"Carnatic against Hindustani",
+     rows:[
+      ["Region","South · against North"],
+      ["Schools","Bani and sampradaya · against GHARANA"],
+      ["Raga system","72 MELAKARTAS, by Venkatamakhin · against 10 THAATS, by Bhatkhande"],
+      ["Main drum","MRIDANGAM · against TABLA"],
+      ["Main string","Saraswati VEENA · against SITAR and SAROD"],
+      ["Chief form","KRITI · against KHAYAL"],
+      ["Improvisation","More composition-centred · more improvisation-centred"],
+      ["Outside influence","Little Persian influence · heavy Persian and Central Asian influence"]
+     ]},
+    {h:"The Carnatic forms, in concert order",
+     rows:[
+      ["Varnam","The opening piece, a warm-up in the raga"],
+      ["Kriti / Kirtana","The main composed form. Pallavi, Anupallavi, Charanam"],
+      ["Ragam-Tanam-Pallavi","The long improvised centrepiece"],
+      ["Javali, Padam","Lighter, romantic forms"],
+      ["Tillana","Fast and rhythmic, usually the close"]
+     ]}
+   ],
+   cmp:[
+    {k:"The trinity",
+     rows:[
+      ["Tyagaraja","Mostly TELUGU, in praise of RAMA. The Tyagaraja Aradhana at Thiruvaiyaru"],
+      ["Muthuswami Dikshitar","Mostly SANSKRIT. The Navagraha kritis"],
+      ["Syama Sastri","The smallest output of the three. Devoted to the goddess at Madurai"]
+     ],
+     note:"All three born at TIRUVARUR, Tamil Nadu. That single fact is asked more often than their compositions."}
+   ],
+   links:[["#/daily/7-november/theory","The texts and the thaats"],["#/gk/pack/dance","The classical dances"]]},
+
+  /* ================================= THEORY */
+  {id:"theory", tag:"Art and culture · the foundations", h:"The texts, the thaats and the instruments",
+   w:"The books every answer cites, Bhatkhande's ten thaats, Tansen and Amir Khusrau, and the four classes of instrument.",
+   notes:[
+    "==Natya Shastra==, by ==Bharata Muni== — the foundational text on ==drama, dance and music==, and the theoretical basis of all eight classical dances. It is also where the ==rasa== theory comes from.",
+    "==Brihaddeshi==, by ==Matanga==, around the eighth or ninth century — the ==first text to use the word raga== in its modern sense.",
+    "==Sangeet Ratnakara==, by ==Sarangadeva==, thirteenth century — written at the ==Yadava== court at Devagiri, and called the ==Saptadhyayi== because it has ==seven chapters==. It is the ==last great text common to both systems==, written just before they separated, which is why both north and south cite it.",
+    "==Chaturdandi Prakasika==, by ==Venkatamakhin==, seventeenth century — sets out the ==72 melakarta== scheme of Carnatic music.",
+    "==Vishnu Narayan Bhatkhande== organised Hindustani ragas into ==ten thaats==, and wrote ==Hindustani Sangeet Paddhati== and ==Shri Mallakshya Sangeetam==. The ten: ==Bilawal, Kalyan, Khamaj, Bhairav, Bhairavi, Asavari, Todi, Purvi, Marwa, Kafi==.",
+    "==Vishnu Digambar Paluskar== took music out of the courts and into public teaching: he founded the ==Gandharva Mahavidyalaya== at ==Lahore== in ==1901==, the first school of its kind open to ordinary students. He belonged to the ==Gwalior== gharana. ==Bhatkhande and Paluskar are the two reformers, and the question usually asks which did which==: Bhatkhande classified, Paluskar taught.",
+    "==Tansen== — born ==Ramtanu Pandey==, a disciple of ==Swami Haridas==, and one of ==Akbar's navaratnas==. Ragas credited to him include ==Miyan ki Todi==, ==Miyan ki Malhar== and ==Darbari Kanada==. He is buried at ==Gwalior==, and the ==Tansen Samman== is given by the government of ==Madhya Pradesh==.",
+    "==Amir Khusrau== — at the court of several Delhi Sultans and a disciple of ==Nizamuddin Auliya==. Tradition credits him with the ==sitar==, the ==tabla==, the ==khayal==, the ==tarana== and the ==qawwali==. Historians dispute most of it, but it is asked as credited to him.",
+    "==Raja Man Singh Tomar of Gwalior== is credited with the flowering of ==dhrupad== and with ==Man Kutuhal==, a treatise on music.",
+    "==The four classes of instrument==, the division given in the Natya Shastra: ==Tata== (stringed), ==Sushira== (wind), ==Avanaddha== (covered, that is drums) and ==Ghana== (solid, struck without tuning).",
+    "==Sapta swara== — the seven notes: ==Shadja, Rishabha, Gandhara, Madhyama, Panchama, Dhaivata, Nishada==, shortened to ==Sa Re Ga Ma Pa Dha Ni==. ==Sa and Pa== are fixed; the others vary. ==Raga== is the melodic frame and ==tala== the rhythmic cycle; ==Teentaal== of ==16 beats== is the commonest Hindustani tala."
+   ],
+   blocks:[
+    {h:"The texts",
+     rows:[
+      ["Natya Shastra","Bharata Muni · drama, dance and music · the rasa theory"],
+      ["Brihaddeshi","Matanga · FIRST use of the word raga"],
+      ["Sangeet Ratnakara","Sarangadeva · 13th c. · seven chapters, the Saptadhyayi · common to BOTH systems"],
+      ["Chaturdandi Prakasika","Venkatamakhin · the 72 MELAKARTAS"],
+      ["Man Kutuhal","Raja Man Singh Tomar of Gwalior · dhrupad"],
+      ["Hindustani Sangeet Paddhati","V. N. Bhatkhande · the TEN THAATS"],
+      ["Sangeet Parijat","Ahobala · 17th century"],
+      ["Rag Darpan","Faqirullah · a Persian work on Indian music"]
+     ]},
+    {h:"The ten thaats of Bhatkhande",
+     rows:[
+      ["Bilawal","The natural scale — all notes shuddha"],
+      ["Kalyan","Sharp fourth"],
+      ["Khamaj","Flat seventh"],
+      ["Bhairav","Flat second and flat sixth"],
+      ["Bhairavi","All five variable notes flat"],
+      ["Asavari","Flat third, sixth and seventh"],
+      ["Todi","The most altered of the ten"],
+      ["Purvi","Flat second with sharp fourth"],
+      ["Marwa","Flat second, sharp fourth, no fifth emphasis"],
+      ["Kafi","Flat third and flat seventh"]
+     ]},
+    {h:"The four classes of instrument",
+     rows:[
+      ["Tata vadya","STRINGED — veena, sitar, sarod, sarangi, santoor, violin, tanpura"],
+      ["Sushira vadya","WIND — bansuri, shehnai, nadaswaram, harmonium"],
+      ["Avanaddha vadya","DRUMS, covered with skin — tabla, mridangam, pakhawaj, dholak, thavil"],
+      ["Ghana vadya","SOLID, struck — manjira, jaltarang, ghatam, morsing, ghungroo"]
+     ]}
+   ],
+   cmp:[
+    {k:"Bhatkhande or Paluskar",
+     rows:[
+      ["V. N. Bhatkhande","CLASSIFIED. The ten thaats. Hindustani Sangeet Paddhati"],
+      ["V. D. Paluskar","TAUGHT. Founded the Gandharva Mahavidyalaya, Lahore, 1901. Gwalior gharana"]
+     ],
+     note:"Both are called the modern reformers of Hindustani music. One wrote the system down; the other opened the schools."},
+    {k:"Thaat or Melakarta",
+     rows:[
+      ["Thaat","HINDUSTANI · TEN · Bhatkhande · Bilawal, Kalyan, Khamaj, Bhairav, Bhairavi, Asavari, Todi, Purvi, Marwa, Kafi"],
+      ["Melakarta","CARNATIC · SEVENTY-TWO · Venkatamakhin · a derived raga is a janya"]
+     ],
+     note:"Ten against seventy-two is the fastest way to answer anything in this area."}
+   ],
+   links:[["#/daily/7-november/carnatic","The Carnatic system"],["#/daily/7-november/gharana-idea","What a gharana is"]]},
+
+  /* ================================= AWARDS */
+  {id:"awards", tag:"Art and culture · the awards", h:"The academies and the awards",
+   w:"Sangeet Natak Akademi, the musicians with a Bharat Ratna, and the state awards that are asked by name.",
+   notes:[
+    "==Sangeet Natak Akademi== — India's ==national academy for music, dance and drama==, set up in ==1952== and inaugurated in ==1953==; its first chairman was ==Dr P. V. Rajamannar==. It is the body that ==recognises a dance form as classical==, which is why ==Sattriya==, added in ==2000==, is the eighth.",
+    "The Akademi's ordinary honour is the ==Sangeet Natak Akademi Award==; its ==highest== honour is the ==Akademi Ratna==, the ==Fellowship==, which is limited in number at any one time.",
+    "The other three national academies, which are often asked together: ==Sahitya Akademi== for letters, ==Lalit Kala Akademi== for the fine arts, and the ==National School of Drama==. ==Sangeet Natak Akademi was the first of them==, in 1952.",
+    "==Musicians who have received the Bharat Ratna==: ==M. S. Subbulakshmi== in ==1998==, the ==first musician== to get it; ==Pandit Ravi Shankar== in ==1999==; ==Ustad Bismillah Khan== in ==2001==; ==Lata Mangeshkar== in ==2001==; ==Pandit Bhimsen Joshi== in ==2008==; and ==Bhupen Hazarika== in ==2019==, posthumously.",
+    "==Bhimsen Joshi, in 2008, is the last classical musician to receive it==, and the only Hindustani classical vocalist on the list.",
+    "==Tansen Samman== — given by the government of ==Madhya Pradesh==, at the ==Tansen Samaroh== held at ==Gwalior== beside Tansen's tomb. ==Kalidas Samman== is the other Madhya Pradesh award, for the arts generally.",
+    "==Other awards that are asked by name==: the ==Kumar Gandharva Samman==, also of Madhya Pradesh; the ==Sangeet Samman== of West Bengal; and the ==Ramon Magsaysay Award==, which ==M. S. Subbulakshmi== received in ==1974==.",
+    "==UNESCO intangible heritage== in music and the performing arts includes the ==Vedic chanting==, ==Ramlila==, ==Kutiyattam==, ==Ramman==, ==Mudiyettu==, ==Kalbelia==, ==Chhau==, ==Sankirtana== of Manipur, the ==brass and copper craft of Punjab==, ==Yoga==, ==Kumbh Mela==, ==Durga Puja== and ==Garba of Gujarat==."
+   ],
+   blocks:[
+    {h:"The Bharat Ratna musicians, in order",
+     rows:[
+      ["1998","M. S. Subbulakshmi · Carnatic vocal · the FIRST musician"],
+      ["1999","Pandit Ravi Shankar · sitar · Maihar gharana"],
+      ["2001","Ustad Bismillah Khan · shehnai"],
+      ["2001","Lata Mangeshkar · playback singing"],
+      ["2008","Pandit Bhimsen Joshi · Hindustani vocal · Kirana gharana"],
+      ["2019","Bhupen Hazarika · posthumous"]
+     ]},
+    {h:"The academies",
+     rows:[
+      ["Sangeet Natak Akademi","1952 · music, dance and drama · recognises the classical dances"],
+      ["Sahitya Akademi","1954 · letters"],
+      ["Lalit Kala Akademi","1954 · the fine arts"],
+      ["National School of Drama","1959 · theatre training"],
+      ["Akademi Ratna","The Sangeet Natak Akademi FELLOWSHIP — its highest honour"]
+     ]}
+   ],
+   cmp:[
+    {k:"Which academy does what",
+     rows:[
+      ["Sangeet Natak Akademi","MUSIC, DANCE, DRAMA. 1952 — the first. Declares a dance classical"],
+      ["Sahitya Akademi","LETTERS. 1954"],
+      ["Lalit Kala Akademi","FINE ARTS — painting, sculpture. 1954"]
+     ],
+     note:"Sattriya became the eighth classical dance in 2000 because the Sangeet Natak Akademi said so."}
+   ],
+   links:[["#/gk/pack/awards","The awards pack"],["#/gk/pack/heritage","UNESCO heritage"],["#/daily/7-november/exponents","The ladder of names"]]}
+
+ ],
+ quiz:[
+
+  /* ---- gharana-idea ---- */
+  {q:"The word gharana is derived from which word?",o:["Ghar, meaning house","Gharu, meaning teacher","Garana, meaning to sing","Ghara, meaning a pot"],a:0,p:"gharana-idea",s:"Gharana comes from ghar, a house. A gharana is a house or lineage of music, usually named after the place where it settled."},
+  {q:"A style is conventionally accepted as a gharana only when it has survived through at least how many generations?",o:["Two","Three","Five","Seven"],a:1,p:"gharana-idea",s:"The working test is three generations of teachers and pupils, together with a distinct and recognisable style."},
+  {q:"Most Hindustani gharanas are named after",o:["The raga they specialise in","The place where they settled","The instrument they use","The ruler who paid them"],a:1,p:"gharana-idea",s:"Gwalior, Kirana, Agra, Patiala, Rampur, Indore — almost all are place names. A few are named for a founder instead."},
+  {q:"The ceremony by which a pupil is formally bound to a teacher in the guru-shishya tradition is called",o:["Ganda bandhan","Raksha bandhan","Shishya sanskar","Taleem"],a:0,p:"gharana-idea",s:"Ganda bandhan is the tying of a thread on the pupil's wrist. The pupil is then a gandabandh shagird, a formally initiated disciple."},
+  {q:"The gharana system in Hindustani music took its modern shape mainly because of",o:["The arrival of the gramophone","The scattering of court musicians after 1857","The founding of All India Radio","The Bhakti movement"],a:1,p:"gharana-idea",s:"Mughal patronage collapsed after 1857 and the musicians of Delhi moved to the princely states, where isolated lines hardened into house styles."},
+  {q:"Which of the following is true of Carnatic music?",o:["It has six gharanas","It has no gharanas; it has banis and sampradayas","It has four gharanas named after the trinity","Its gharanas are the same as the Hindustani ones"],a:1,p:"gharana-idea",s:"The word gharana belongs to Hindustani music. The Carnatic equivalents are bani and sampradaya."},
+  {q:"Gayaki ang refers to",o:["Singing in a very low register","Instrumental playing that imitates the voice","The opening section of a dhrupad","A style of tabla accompaniment"],a:1,p:"gharana-idea",s:"Gayaki ang is instrumental playing made to sing. Tantrakari ang is the opposite — playing that stays idiomatic to the string."},
+  {q:"Baaj is a term used with reference to",o:["The tabla","The sitar","Kathak footwork","Carnatic talas"],a:0,p:"gharana-idea",s:"Baaj is the word for a tabla gharana's style of playing — khuli baaj being open and loud, band baaj closed and quiet."},
+  {q:"Khuli baaj describes a tabla style that is",o:["Closed, quiet and played with two fingers","Open, resonant and loud","Played only in slow tempo","Played only with the left hand"],a:1,p:"gharana-idea",s:"Khuli baaj is open and loud, developed to carry across a Kathak dance floor. The Delhi style is the closed opposite."},
+  {q:"Which of the following does NOT have gharanas?",o:["Khayal singing","Tabla playing","Kathak","Bharatanatyam"],a:3,p:"gharana-idea",s:"Kathak is the only classical dance organised into gharanas. Bharatanatyam has styles and schools, but not gharanas."},
+  {q:"Tantrakari ang means",o:["Playing idiomatic to the string instrument itself","Imitating the voice on an instrument","Singing without words","Accompanying a dancer"],a:0,p:"gharana-idea",s:"Tantrakari ang stays true to the instrument; gayaki ang imitates the voice."},
+  {q:"The term khandan, used of musicians, means",o:["A raga family","A musical family or lineage","A kind of tala","A court appointment"],a:1,p:"gharana-idea",s:"Khandan is a musical family. Several gharanas were family names before they were place names."},
+
+  /* ---- vocal-gharanas ---- */
+  {q:"Which is the oldest khayal gharana of Hindustani music?",o:["Agra","Kirana","Gwalior","Patiala"],a:2,p:"vocal-gharanas",s:"Gwalior is the oldest khayal gharana and is called the mother of khayal gharanas."},
+  {q:"The Gwalior gharana was founded by",o:["Nathan Pir Bakhsh","Alladiya Khan","Inayat Hussain Khan","Imdad Khan"],a:0,p:"vocal-gharanas",s:"Nathan Pir Bakhsh founded it; his grandsons Haddu Khan and Hassu Khan carried it at the Gwalior court."},
+  {q:"Haddu Khan and Hassu Khan belong to which gharana?",o:["Agra","Gwalior","Kirana","Indore"],a:1,p:"vocal-gharanas",s:"They were the grandsons of Nathan Pir Bakhsh and the best-known early singers of the Gwalior gharana."},
+  {q:"The Kirana gharana takes its name from",o:["Its founder Kiran Khan","The town of Kairana in Uttar Pradesh","A raga called Kirana","A quarter of Lucknow"],a:1,p:"vocal-gharanas",s:"Kairana, in Uttar Pradesh, is the town the gharana is named after."},
+  {q:"The Kirana gharana was founded by",o:["Abdul Karim Khan and Abdul Wahid Khan","Ali Baksh and Fateh Ali Khan","Chhajju and Nazir Khan","Haddu and Hassu Khan"],a:0,p:"vocal-gharanas",s:"Ustad Abdul Karim Khan and Ustad Abdul Wahid Khan are its founders."},
+  {q:"Pandit Bhimsen Joshi belonged to which gharana?",o:["Gwalior","Patiala","Kirana","Mewati"],a:2,p:"vocal-gharanas",s:"Kirana, which he learnt from Sawai Gandharva. He received the Bharat Ratna in 2008."},
+  {q:"Gangubai Hangal was a singer of which gharana?",o:["Kirana","Jaipur-Atrauli","Agra","Rampur-Sahaswan"],a:0,p:"vocal-gharanas",s:"Kirana, and like Bhimsen Joshi she was a pupil of Sawai Gandharva."},
+  {q:"The Kirana gharana is particularly known for",o:["Rare and compound ragas","Purity of swara and slow elaboration","Very fast taans and thumri","Nom-tom alap"],a:1,p:"vocal-gharanas",s:"Its mark is the single note held and unfolded patiently, rather than display."},
+  {q:"The Jaipur-Atrauli gharana was founded by",o:["Alladiya Khan","Amir Khan","Nazir Khan","Faiyaz Khan"],a:0,p:"vocal-gharanas",s:"Ustad Alladiya Khan founded it. It is known for rare and compound jod ragas."},
+  {q:"Kesarbai Kerkar, given the title Surashri by Rabindranath Tagore, belonged to which gharana?",o:["Kirana","Patiala","Jaipur-Atrauli","Gwalior"],a:2,p:"vocal-gharanas",s:"Jaipur-Atrauli, the gharana of Alladiya Khan."},
+  {q:"Kishori Amonkar was trained chiefly by her mother, who was",o:["Hirabai Barodekar","Mogubai Kurdikar","Anjanibai Malpekar","Siddheshwari Devi"],a:1,p:"vocal-gharanas",s:"Mogubai Kurdikar, of the Jaipur-Atrauli gharana. Mother and daughter both belong to it."},
+  {q:"Ustad Bade Ghulam Ali Khan belonged to which gharana?",o:["Patiala","Agra","Indore","Kirana"],a:0,p:"vocal-gharanas",s:"Patiala, the gharana founded by the Aliya-Fattu pair, known for fast taans and for thumri."},
+  {q:"The Patiala gharana was founded by the pair remembered as",o:["Haddu-Hassu","Aliya-Fattu","Modu-Bakshu","Kallu-Miru"],a:1,p:"vocal-gharanas",s:"Ali Baksh Khan and Fateh Ali Khan, remembered together as Aliya-Fattu."},
+  {q:"The Agra gharana is distinguished by",o:["Extremely slow vilambit","A dhrupad-rooted, forceful style opening with nom-tom alap","Breath control and merukhand","A duet of two different ragas"],a:1,p:"vocal-gharanas",s:"It grew out of a dhrupad family, and its khayal keeps the dhrupad opening and the open-throated power."},
+  {q:"Ustad Faiyaz Khan, titled Aftab-e-Mousiqi, belonged to which gharana?",o:["Kirana","Agra","Rampur-Sahaswan","Bhendibazaar"],a:1,p:"vocal-gharanas",s:"Agra. Aftab-e-Mousiqi means the sun of music."},
+  {q:"Which gharana is named not after a princely town but after a quarter of Bombay?",o:["Mewati","Indore","Bhendibazaar","Sham Chaurasi"],a:2,p:"vocal-gharanas",s:"Bhendibazaar is a locality of Bombay, which makes it the odd one out among the gharana names."},
+  {q:"The Bhendibazaar gharana is especially associated with",o:["Breath control and merukhand","Jod ragas","Tappa singing","Dhamar"],a:0,p:"vocal-gharanas",s:"Long passages in a single breath, and merukhand, the systematic permutation of notes."},
+  {q:"Pandit Jasraj belonged to which gharana?",o:["Mewati","Gwalior","Indore","Patiala"],a:0,p:"vocal-gharanas",s:"Mewati, founded by Ghagge Nazir Khan. Jasraj devised the Jasrangi jugalbandi."},
+  {q:"The Jasrangi jugalbandi, in which a male and a female voice sing two different ragas at once, was devised by",o:["Bhimsen Joshi","Pandit Jasraj","Amir Khan","Rashid Khan"],a:1,p:"vocal-gharanas",s:"Pandit Jasraj of the Mewati gharana."},
+  {q:"The Indore gharana was founded by",o:["Amir Khan","Inayat Hussain Khan","Alladiya Khan","Abdul Karim Khan"],a:0,p:"vocal-gharanas",s:"Ustad Amir Khan founded it, which makes it the youngest of the major khayal gharanas."},
+  {q:"Which gharana is known for an exceptionally slow vilambit tempo?",o:["Patiala","Indore","Agra","Jaipur-Atrauli"],a:1,p:"vocal-gharanas",s:"The Indore gharana of Amir Khan, built on a grave, unhurried, merukhand-based unfolding."},
+  {q:"Ustad Rashid Khan belonged to which gharana?",o:["Rampur-Sahaswan","Kirana","Mewati","Delhi"],a:0,p:"vocal-gharanas",s:"Rampur-Sahaswan, founded by Inayat Hussain Khan."},
+  {q:"The Rampur-Sahaswan gharana was founded by",o:["Mushtaq Hussain Khan","Inayat Hussain Khan","Nissar Hussain Khan","Ghulam Mustafa Khan"],a:1,p:"vocal-gharanas",s:"Inayat Hussain Khan. The others named are later singers of the same house."},
+  {q:"Begum Parveen Sultana is a singer of which gharana?",o:["Kirana","Patiala","Agra","Gwalior"],a:1,p:"vocal-gharanas",s:"Patiala."},
+  {q:"Pandit Omkarnath Thakur belonged to which gharana?",o:["Gwalior","Agra","Indore","Kirana"],a:0,p:"vocal-gharanas",s:"Gwalior. He was a pupil of Vishnu Digambar Paluskar."},
+  {q:"The brothers Salamat Ali Khan and Nazakat Ali Khan belonged to which gharana?",o:["Sham Chaurasi","Bhendibazaar","Delhi","Bishnupur"],a:0,p:"vocal-gharanas",s:"Sham Chaurasi, a Punjab gharana now in Pakistan, known for duet singing."},
+  {q:"Which gharana of Hindustani vocal music belongs to Bengal?",o:["Bishnupur","Darbhanga","Bettiah","Talwandi"],a:0,p:"vocal-gharanas",s:"Bishnupur, in Bankura district, grown out of the dhrupad of the Malla court."},
+  {q:"Prabha Atre is associated with which gharana?",o:["Jaipur-Atrauli","Kirana","Mewati","Agra"],a:1,p:"vocal-gharanas",s:"Kirana. The Atre in her name has nothing to do with Atrauli."},
+  {q:"Which pair correctly matches gharana and founder?",o:["Kirana — Alladiya Khan","Indore — Amir Khan","Agra — Abdul Karim Khan","Mewati — Imdad Khan"],a:1,p:"vocal-gharanas",s:"Amir Khan founded the Indore gharana. Alladiya Khan founded Jaipur-Atrauli, Abdul Karim Khan founded Kirana, and Imdad Khan founded the Imdadkhani instrumental gharana."},
+  {q:"Mallikarjun Mansur sang in which gharana?",o:["Jaipur-Atrauli","Kirana","Gwalior","Patiala"],a:0,p:"vocal-gharanas",s:"Jaipur-Atrauli, known for its rare ragas."},
+  {q:"Aman Ali Khan, who taught Lata Mangeshkar, belonged to which gharana?",o:["Patiala","Bhendibazaar","Agra","Kirana"],a:1,p:"vocal-gharanas",s:"The Bhendibazaar gharana of Bombay."},
+  {q:"Hirabai Barodekar was a singer of which gharana?",o:["Gwalior","Kirana","Agra","Indore"],a:1,p:"vocal-gharanas",s:"Kirana. She was a daughter of Abdul Karim Khan, the gharana's founder."},
+  {q:"Which gharana is sometimes called the mother of khayal gharanas?",o:["Agra","Delhi","Gwalior","Kirana"],a:2,p:"vocal-gharanas",s:"Gwalior, because it is the oldest and the other khayal gharanas are measured against it."},
+  {q:"C. R. Vyas and Vilayat Hussain Khan belonged to which gharana?",o:["Agra","Kirana","Patiala","Mewati"],a:0,p:"vocal-gharanas",s:"Agra, the gharana of Faiyaz Khan."},
+  {q:"Sawai Gandharva, the teacher of Bhimsen Joshi and Gangubai Hangal, belonged to which gharana?",o:["Gwalior","Kirana","Jaipur-Atrauli","Agra"],a:1,p:"vocal-gharanas",s:"Kirana. His real name was Rambhau Kundgolkar."},
+  {q:"Which gharana is identified with rare and compound jod ragas?",o:["Kirana","Jaipur-Atrauli","Indore","Bhendibazaar"],a:1,p:"vocal-gharanas",s:"Jaipur-Atrauli. Kirana is identified with the purity of a single note instead."},
+  {q:"Veena Sahasrabuddhe sang in which gharana?",o:["Gwalior","Kirana","Patiala","Rampur-Sahaswan"],a:0,p:"vocal-gharanas",s:"Gwalior."},
+  {q:"The Delhi khayal gharana is associated with the line of",o:["Mamman Khan","Siddhar Khan","Modu Khan","Bhanuji"],a:0,p:"vocal-gharanas",s:"Mamman Khan. Siddhar Khan founded the Delhi TABLA gharana, which is a different house with the same place name."},
+  {q:"Vishnu Digambar Paluskar belonged to which gharana?",o:["Agra","Gwalior","Kirana","Indore"],a:1,p:"vocal-gharanas",s:"Gwalior. He founded the Gandharva Mahavidyalaya at Lahore in 1901."},
+
+  /* ---- dhrupad-forms ---- */
+  {q:"Which is the oldest surviving form of Hindustani classical vocal music?",o:["Khayal","Thumri","Dhrupad","Tappa"],a:2,p:"dhrupad-forms",s:"Dhrupad. Khayal is the dominant form today, but it is later."},
+  {q:"A dhrupad composition has how many sections?",o:["Two","Three","Four","Six"],a:2,p:"dhrupad-forms",s:"Four — Sthayi, Antara, Sanchari and Abhog. A khayal has only the first two."},
+  {q:"The four sections of a dhrupad, in order, are",o:["Pallavi, Anupallavi, Charanam, Abhog","Sthayi, Antara, Sanchari, Abhog","Alap, Jod, Jhala, Gat","Varnam, Kriti, Tanam, Tillana"],a:1,p:"dhrupad-forms",s:"Sthayi, Antara, Sanchari, Abhog. Pallavi and Anupallavi belong to the Carnatic kriti."},
+  {q:"Dhrupad is accompanied by which percussion instrument?",o:["Tabla","Pakhawaj","Mridangam","Dholak"],a:1,p:"dhrupad-forms",s:"The pakhawaj. Khayal is accompanied by the tabla, and that is the quickest way to tell the two apart."},
+  {q:"The four banis of dhrupad are",o:["Gauhar, Khandar, Nauhar, Dagar","Dagar, Darbhanga, Bettiah, Talwandi","Bilawal, Kalyan, Khamaj, Kafi","Sthayi, Antara, Sanchari, Abhog"],a:0,p:"dhrupad-forms",s:"Gauhar, Khandar, Nauhar and Dagar. The second list is of dhrupad families, not banis."},
+  {q:"The Khandar bani of dhrupad is chiefly held by which family?",o:["The Dagar family","The Mallik family of Darbhanga","The Mishra family of Bettiah","The Bangash family"],a:1,p:"dhrupad-forms",s:"The Mallik family of Darbhanga, in Bihar."},
+  {q:"The Bettiah gharana of dhrupad belongs to which state?",o:["Uttar Pradesh","Bihar","West Bengal","Madhya Pradesh"],a:1,p:"dhrupad-forms",s:"Bettiah is in Bihar, as is Darbhanga. Both are dhrupad family lines."},
+  {q:"Dhrupad flowered in the fifteenth century under which ruler?",o:["Akbar","Raja Man Singh Tomar of Gwalior","Wajid Ali Shah","Krishnadeva Raya"],a:1,p:"dhrupad-forms",s:"Raja Man Singh Tomar of Gwalior, who is also credited with the treatise Man Kutuhal."},
+  {q:"Dhamar is sung in a tala of how many beats?",o:["12","14","16","10"],a:1,p:"dhrupad-forms",s:"Dhamar tala has 14 beats. Its words are about Holi and the play of Krishna."},
+  {q:"Nom-tom refers to",o:["A tala of ten beats","An alap sung on syllables such as nom and tom","The closing section of a khayal","A kind of tabla stroke"],a:1,p:"dhrupad-forms",s:"It is the syllabic alap that opens dhrupad, and the Agra khayal gharana kept it."},
+  {q:"The word khayal comes from a word meaning",o:["Devotion","Imagination","Rhythm","Court"],a:1,p:"dhrupad-forms",s:"Khayal is the Persian-Arabic word for imagination or thought, which describes its freer, more ornamented manner."},
+  {q:"A khayal is sung in two tempos. The slow one is called",o:["Drut","Vilambit","Madhya","Ati-drut"],a:1,p:"dhrupad-forms",s:"Vilambit, the bada khayal, comes first, followed by the fast drut or chhota khayal."},
+  {q:"Tradition credits the introduction of khayal to",o:["Tansen","Amir Khusrau","Swami Haridas","Purandara Dasa"],a:1,p:"dhrupad-forms",s:"Amir Khusrau is traditionally credited with khayal, tarana, qawwali, the sitar and the tabla, though historians dispute most of it."},
+  {q:"Thumri is best described as",o:["The oldest classical form","A semi-classical romantic and devotional form","A purely rhythmic form with no words","A Carnatic concert opener"],a:1,p:"dhrupad-forms",s:"Thumri is the chief semi-classical form, loose with the raga and built on love for Krishna."},
+  {q:"Wajid Ali Shah, the last Nawab of Awadh, wrote thumris under the pen-name",o:["Akhtarpiya","Shori Miyan","Sadarang","Khusrau"],a:0,p:"dhrupad-forms",s:"Akhtarpiya. He is central to both the Lucknow thumri and the Lucknow Kathak gharana."},
+  {q:"The tappa developed out of the songs of",o:["Bengal's boatmen","Punjab's camel drivers","Rajasthan's Manganiyars","Kerala's temple singers"],a:1,p:"dhrupad-forms",s:"The camel drivers of Punjab. Shori Miyan, or Ghulam Nabi, made it a classical form."},
+  {q:"Tarana is sung on",o:["Sanskrit devotional verse","Meaningless syllables such as ta, na, dir and dim","Urdu ghazal couplets","The names of the seven notes"],a:1,p:"dhrupad-forms",s:"Meaningless syllables sung at speed. It is traditionally credited to Amir Khusrau."},
+  {q:"Qawwali is the devotional music of which Sufi order above all?",o:["Suhrawardi","Chishti","Qadiri","Naqshbandi"],a:1,p:"dhrupad-forms",s:"The Chishti silsila, which permitted sama, music as a path to devotion."},
+  {q:"Which form is accompanied by the tabla rather than the pakhawaj?",o:["Dhrupad","Dhamar","Khayal","Both dhrupad and dhamar"],a:2,p:"dhrupad-forms",s:"Khayal is accompanied by the tabla. Dhrupad and dhamar both take the pakhawaj."},
+  {q:"Haveli Sangeet is the temple music of which sect?",o:["Pushtimarg","Lingayat","Warkari","Nath"],a:0,p:"dhrupad-forms",s:"The Pushtimarg sect. Sopana Sangeetam is Kerala's temple form, sung on the steps of the sanctum."},
+
+  /* ---- tabla-gharanas ---- */
+  {q:"How many tabla gharanas are conventionally recognised?",o:["Four","Five","Six","Eight"],a:2,p:"tabla-gharanas",s:"Six — Delhi, Ajrada, Lucknow, Farrukhabad, Benaras and Punjab."},
+  {q:"Which is the oldest tabla gharana?",o:["Lucknow","Delhi","Benaras","Punjab"],a:1,p:"tabla-gharanas",s:"Delhi, founded by Siddhar Khan Dhadhi. Every other tabla gharana except Punjab descends from it."},
+  {q:"The Delhi tabla gharana was founded by",o:["Siddhar Khan Dhadhi","Ram Sahai","Lala Bhavani Das","Haji Vilayat Ali Khan"],a:0,p:"tabla-gharanas",s:"Ustad Siddhar Khan Dhadhi."},
+  {q:"Do ungliyon ka baaj, the two-finger technique, belongs to which tabla gharana?",o:["Benaras","Punjab","Delhi","Farrukhabad"],a:2,p:"tabla-gharanas",s:"The Delhi gharana, whose sound is closed and delicate, suited to accompanying a singer in a small room."},
+  {q:"The Ajrada tabla gharana grew up near which town?",o:["Meerut","Aligarh","Kanpur","Bareilly"],a:0,p:"tabla-gharanas",s:"Ajrada is a village near Meerut. Kallu Khan and Miru Khan, from the Delhi line, founded the gharana there."},
+  {q:"Which tabla gharana was shaped by the needs of Kathak accompaniment?",o:["Delhi","Ajrada","Lucknow","Punjab"],a:2,p:"tabla-gharanas",s:"Lucknow, whose khuli baaj is open and loud enough to carry across a dance floor."},
+  {q:"The Lucknow tabla gharana was founded by",o:["Modu Khan and Bakshu Khan","Kallu Khan and Miru Khan","Ali Baksh and Fateh Ali Khan","Chhajju and Nazir Khan"],a:0,p:"tabla-gharanas",s:"Modu Khan and Bakshu Khan, who went from Delhi to the court of Awadh."},
+  {q:"The Farrukhabad tabla gharana is an offshoot of which gharana?",o:["Delhi","Lucknow","Benaras","Ajrada"],a:1,p:"tabla-gharanas",s:"Its founder Haji Vilayat Ali Khan married into the Lucknow line."},
+  {q:"Ustad Ahmed Jan Thirakwa belonged to which tabla gharana?",o:["Punjab","Benaras","Farrukhabad","Delhi"],a:2,p:"tabla-gharanas",s:"Farrukhabad. He is usually called the greatest tabla player of the twentieth century."},
+  {q:"The Benaras tabla gharana was founded by",o:["Pandit Ram Sahai","Pandit Kishan Maharaj","Pandit Samta Prasad","Pandit Anokhelal Mishra"],a:0,p:"tabla-gharanas",s:"Pandit Ram Sahai. The others are later players of the same gharana."},
+  {q:"Which tabla gharana is the only one founded by a Hindu musician?",o:["Delhi","Ajrada","Benaras","Farrukhabad"],a:2,p:"tabla-gharanas",s:"Benaras, founded by Pandit Ram Sahai, and the one most associated with solo tabla playing."},
+  {q:"Pandit Samta Prasad, known as Gudai Maharaj, belonged to which gharana?",o:["Benaras","Lucknow","Punjab","Ajrada"],a:0,p:"tabla-gharanas",s:"Benaras, along with Kishan Maharaj and Anokhelal Mishra."},
+  {q:"Ustad Zakir Hussain belongs to which tabla gharana?",o:["Farrukhabad","Punjab","Delhi","Benaras"],a:1,p:"tabla-gharanas",s:"Punjab, the gharana of his father Ustad Alla Rakha."},
+  {q:"The Punjab tabla gharana is distinctive because it grew out of",o:["The Delhi two-finger style","The pakhawaj tradition","Kathak accompaniment","Carnatic mridangam playing"],a:1,p:"tabla-gharanas",s:"It comes from the pakhawaj rather than from Delhi, which puts it outside both the Delhi baaj and the Purab baaj families."},
+  {q:"Which of these tabla gharanas belongs to the Purab baaj, the eastern open style?",o:["Delhi","Ajrada","Farrukhabad","None of these"],a:2,p:"tabla-gharanas",s:"Lucknow, Farrukhabad and Benaras form the Purab baaj. Delhi and Ajrada are the closed Delhi baaj."},
+  {q:"Ustad Alla Rakha, who accompanied Ravi Shankar, belonged to which gharana?",o:["Punjab","Farrukhabad","Benaras","Lucknow"],a:0,p:"tabla-gharanas",s:"The Punjab gharana. His son Zakir Hussain belongs to the same house."},
+  {q:"The right-hand drum of the tabla pair is called",o:["Bayan","Dayan","Dagga","Syahi"],a:1,p:"tabla-gharanas",s:"The wooden right-hand drum is the dayan; the metal left-hand drum is the bayan or dagga."},
+  {q:"The black patch at the centre of a tabla head is called",o:["Gajra","Syahi","Chanti","Lav"],a:1,p:"tabla-gharanas",s:"The syahi, which gives the drum its definite pitch."},
+  {q:"Pandit Kishan Maharaj was a player of which instrument and gharana?",o:["Tabla, Benaras","Tabla, Punjab","Pakhawaj, Lucknow","Sarod, Maihar"],a:0,p:"tabla-gharanas",s:"Tabla, Benaras gharana."},
+  {q:"Which tabla gharana kept the Delhi two-finger technique but made its rhythmic play far more intricate?",o:["Lucknow","Ajrada","Benaras","Punjab"],a:1,p:"tabla-gharanas",s:"Ajrada, founded by Kallu Khan and Miru Khan, who came out of the Delhi line."},
+
+  /* ---- kathak-gharanas ---- */
+  {q:"Which classical dance is organised into gharanas?",o:["Odissi","Kathak","Kuchipudi","Manipuri"],a:1,p:"kathak-gharanas",s:"Kathak alone. It is also the only one with both Hindu temple and Muslim court lineages."},
+  {q:"How many Kathak gharanas are there?",o:["Two","Three","Four","Six"],a:2,p:"kathak-gharanas",s:"Four — Lucknow, Jaipur, Banaras and Raigarh. Most study files name only the first three."},
+  {q:"The Lucknow Kathak gharana reached its height at the court of",o:["Akbar","Wajid Ali Shah","Raja Chakradhar Singh","Man Singh Tomar"],a:1,p:"kathak-gharanas",s:"Nawab Wajid Ali Shah of Awadh, under Thakur Prasad and his sons Binda Din Maharaj and Kalka Prasad."},
+  {q:"The Lucknow Kathak gharana is founded on",o:["Layakari and fast footwork","Bhava and abhinaya, expression and grace","The invention of new bols","Pakhawaj-based composition"],a:1,p:"kathak-gharanas",s:"Expression rather than speed. Jaipur is the gharana of rhythm and footwork."},
+  {q:"Pandit Birju Maharaj belonged to which Kathak gharana?",o:["Jaipur","Banaras","Lucknow","Raigarh"],a:2,p:"kathak-gharanas",s:"Lucknow. He was the son of Achhan Maharaj."},
+  {q:"The Jaipur Kathak gharana was founded by",o:["Bhanuji","Ishwari Prasad","Janakiprasad","Chakradhar Singh"],a:0,p:"kathak-gharanas",s:"Bhanuji. It is the oldest of the Kathak gharanas."},
+  {q:"The Jaipur Kathak gharana emphasises",o:["Abhinaya","Layakari, rhythm and fast footwork","Temple ritual","Group choreography"],a:1,p:"kathak-gharanas",s:"Rhythm, mathematics, footwork and chakkars, the spins."},
+  {q:"The Banaras Kathak gharana was founded by",o:["Janakiprasad","Sitara Devi","Gopi Krishna","Sundar Prasad"],a:0,p:"kathak-gharanas",s:"Janakiprasad, credited with inventing many of the bols and with the thaat, the opening posture."},
+  {q:"Sitara Devi, called Nritya Samragni, belonged to which Kathak gharana?",o:["Lucknow","Jaipur","Banaras","Raigarh"],a:2,p:"kathak-gharanas",s:"Banaras. The title, meaning empress of dance, was given to her by Rabindranath Tagore."},
+  {q:"The Raigarh Kathak gharana was founded by",o:["A temple dancer","A ruler, Raja Chakradhar Singh","A tabla player","A Mughal noble"],a:1,p:"kathak-gharanas",s:"Raja Chakradhar Singh of Raigarh, which makes it the only gharana founded by a ruler rather than a dancer."},
+  {q:"Raigarh, the seat of the newest Kathak gharana, is in which present-day state?",o:["Odisha","Chhattisgarh","Jharkhand","Madhya Pradesh"],a:1,p:"kathak-gharanas",s:"Chhattisgarh."},
+  {q:"Taal Toyanidhi and Nartan Sarvaswa were written by",o:["Raja Chakradhar Singh","Birju Maharaj","Janakiprasad","Bharata Muni"],a:0,p:"kathak-gharanas",s:"Raja Chakradhar Singh of Raigarh, who founded the Raigarh gharana."},
+  {q:"In Kathak, tatkar refers to",o:["The footwork","The spin","The opening posture","The ankle bells"],a:0,p:"kathak-gharanas",s:"Tatkar is the footwork; chakkar is the spin; thaat is the opening posture; ghungroo are the bells."},
+  {q:"The spin or pirouette in Kathak is called",o:["Tora","Chakkar","Amad","Paran"],a:1,p:"kathak-gharanas",s:"Chakkar. Tora and tukra are short rhythmic compositions, amad is the entry, and paran uses pakhawaj syllables."},
+  {q:"The word Kathak is derived from",o:["Katha, a story, and Kathakar, a story-teller","Kath, wood","Kathin, difficult","Kathaka, a temple"],a:0,p:"kathak-gharanas",s:"From Kathakar, the story-teller who narrated with gesture and song."},
+  {q:"A Kathak composition built on pakhawaj syllables is called",o:["Tukra","Paran","Amad","Thaat"],a:1,p:"kathak-gharanas",s:"A paran. The thaat is the opening standing posture, a Banaras gharana contribution."},
+  {q:"Which Kathak gharana is the oldest?",o:["Lucknow","Jaipur","Banaras","Raigarh"],a:1,p:"kathak-gharanas",s:"Jaipur, founded by Bhanuji. Raigarh is the newest."},
+  {q:"Shambhu Maharaj and Lachhu Maharaj belonged to which Kathak gharana?",o:["Jaipur","Lucknow","Banaras","Raigarh"],a:1,p:"kathak-gharanas",s:"Lucknow, the family of Birju Maharaj."},
+
+  /* ---- instrumental-gharanas ---- */
+  {q:"The Seniya gharana traces its descent to",o:["Amir Khusrau","Tansen","Swami Haridas","Baiju Bawra"],a:1,p:"instrumental-gharanas",s:"Tansen. Its two branches are the Beenkar line through his daughter and the Rababiya line through his son Bilas Khan."},
+  {q:"The Beenkar branch of the Seniya gharana is built on which instrument?",o:["Rabab","Rudra veena","Sarod","Sitar"],a:1,p:"instrumental-gharanas",s:"The rudra veena or been. The Rababiya branch is built on the rabab."},
+  {q:"The raga Bilaskhani Todi is named after",o:["Tansen's son Bilas Khan","A Sultan of Delhi","A disciple of Swami Haridas","A Gwalior court singer"],a:0,p:"instrumental-gharanas",s:"Bilas Khan, Tansen's son, from whom the Rababiya branch of the Seniya gharana descends."},
+  {q:"The Maihar gharana was founded by",o:["Ustad Allauddin Khan","Ustad Imdad Khan","Ustad Hafiz Ali Khan","Pandit Ravi Shankar"],a:0,p:"instrumental-gharanas",s:"Ustad Allauddin Khan, at the small state of Maihar in present-day Madhya Pradesh."},
+  {q:"Maihar, the seat of the gharana, is in which state?",o:["Uttar Pradesh","Madhya Pradesh","Bihar","Rajasthan"],a:1,p:"instrumental-gharanas",s:"Madhya Pradesh."},
+  {q:"Pandit Ravi Shankar belonged to which gharana?",o:["Imdadkhani","Maihar","Bangash","Seniya Beenkar"],a:1,p:"instrumental-gharanas",s:"Maihar. He was a disciple of Allauddin Khan."},
+  {q:"Ustad Ali Akbar Khan, the sarod player, was the son of",o:["Hafiz Ali Khan","Allauddin Khan","Imdad Khan","Enayat Khan"],a:1,p:"instrumental-gharanas",s:"Allauddin Khan of the Maihar gharana. Hafiz Ali Khan was the father of Amjad Ali Khan, in the Bangash line."},
+  {q:"Annapurna Devi, daughter of Allauddin Khan, played which instrument?",o:["Sitar","Sarod","Surbahar","Sarangi"],a:2,p:"instrumental-gharanas",s:"The surbahar, the bass sitar."},
+  {q:"The Imdadkhani gharana is also known as the",o:["Etawah gharana","Shahjahanpur gharana","Bangash gharana","Bishnupur gharana"],a:0,p:"instrumental-gharanas",s:"The Etawah gharana, founded by Ustad Imdad Khan."},
+  {q:"Ustad Vilayat Khan, the sitar player, belonged to which gharana?",o:["Maihar","Imdadkhani / Etawah","Bangash","Seniya"],a:1,p:"instrumental-gharanas",s:"Imdadkhani, also called Etawah. The line runs Imdad Khan, Enayat Khan, Vilayat Khan, Shujaat Khan."},
+  {q:"The gayaki ang on the sitar is most associated with which gharana?",o:["Maihar","Imdadkhani","Bangash","Punjab"],a:1,p:"instrumental-gharanas",s:"The Imdadkhani or Etawah gharana, which made the sitar imitate the phrasing of a singing voice."},
+  {q:"Ustad Amjad Ali Khan belongs to which sarod lineage?",o:["Maihar","Bangash or Gwalior","Shahjahanpur","Seniya Rababiya"],a:1,p:"instrumental-gharanas",s:"The Bangash line, through his father Hafiz Ali Khan."},
+  {q:"Which instrumentalist and gharana are correctly matched?",o:["Ravi Shankar — Imdadkhani","Vilayat Khan — Maihar","Ali Akbar Khan — Maihar","Amjad Ali Khan — Etawah"],a:2,p:"instrumental-gharanas",s:"Ali Akbar Khan was Allauddin Khan's son and belonged to Maihar. Ravi Shankar is Maihar, Vilayat Khan is Imdadkhani, Amjad Ali Khan is Bangash."},
+  {q:"Pandit Nikhil Banerjee, the sitar player, belonged to which gharana?",o:["Maihar","Imdadkhani","Bishnupur","Bangash"],a:0,p:"instrumental-gharanas",s:"Maihar, like Ravi Shankar."},
+  {q:"Pandit Pannalal Ghosh is credited with",o:["Inventing the sarod","Bringing the bansuri into classical concert music","Founding the Etawah gharana","Reviving the rudra veena"],a:1,p:"instrumental-gharanas",s:"He made the bamboo flute a solo classical instrument rather than a folk one. He belonged to the Maihar gharana."},
+  {q:"Ustad Bismillah Khan played which instrument?",o:["Sarangi","Shehnai","Sarod","Santoor"],a:1,p:"instrumental-gharanas",s:"The shehnai. He received the Bharat Ratna in 2001."},
+  {q:"Pandit Shivkumar Sharma is associated with which instrument?",o:["Santoor","Sarangi","Surbahar","Sarod"],a:0,p:"instrumental-gharanas",s:"The santoor, which he brought into Hindustani classical concert music."},
+  {q:"Pandit Ram Narayan is a master of which instrument?",o:["Sarod","Sarangi","Santoor","Shehnai"],a:1,p:"instrumental-gharanas",s:"The sarangi, which he established as a solo concert instrument."},
+  {q:"The Shahjahanpur gharana is built on which instrument?",o:["Sitar","Sarod","Rudra veena","Flute"],a:1,p:"instrumental-gharanas",s:"The sarod, through Niyamatullah Khan, and carried in modern times by Buddhadev Das Gupta."},
+  {q:"Pandit Hariprasad Chaurasia is a master of the",o:["Shehnai","Bansuri","Sarangi","Santoor"],a:1,p:"instrumental-gharanas",s:"The bansuri, the bamboo flute."},
+
+  /* ---- exponents ---- */
+  {q:"Which of these founders was also the most celebrated performer of his own gharana?",o:["Nathan Pir Bakhsh","Ustad Amir Khan","Ghagge Nazir Khan","Siddhar Khan"],a:1,p:"exponents",s:"Amir Khan founded Indore and remains its greatest singer. The same is true of Alladiya Khan at Jaipur-Atrauli and Allauddin Khan at Maihar."},
+  {q:"Alla Rakha and Zakir Hussain are",o:["Teacher and pupil from different gharanas","Father and son of the Punjab gharana","Brothers of the Farrukhabad gharana","Unrelated players of the Benaras gharana"],a:1,p:"exponents",s:"Father and son, both of the Punjab tabla gharana."},
+  {q:"Mogubai Kurdikar and Kishori Amonkar were",o:["Sisters of the Kirana gharana","Mother and daughter of the Jaipur-Atrauli gharana","Teacher and pupil of the Agra gharana","Unrelated Gwalior singers"],a:1,p:"exponents",s:"Mother and daughter, both Jaipur-Atrauli."},
+  {q:"The title Aftab-e-Mousiqi was held by",o:["Bade Ghulam Ali Khan","Faiyaz Khan","Amir Khan","Abdul Karim Khan"],a:1,p:"exponents",s:"Ustad Faiyaz Khan of the Agra gharana. It means the sun of music."},
+  {q:"Rabindranath Tagore gave the title Surashri to",o:["Kesarbai Kerkar","Gangubai Hangal","Sitara Devi","M. S. Subbulakshmi"],a:0,p:"exponents",s:"Kesarbai Kerkar of the Jaipur-Atrauli gharana. Tagore also called Sitara Devi Nritya Samragni."},
+  {q:"Girija Devi, known as Appaji, was famous for singing",o:["Dhrupad","Banaras thumri","Carnatic kritis","Tappa only"],a:1,p:"exponents",s:"She was the great modern voice of the Banaras thumri."},
+  {q:"Begum Akhtar is remembered chiefly for",o:["Dhrupad","Ghazal, thumri and dadra","Khayal in the Agra style","Carnatic varnams"],a:1,p:"exponents",s:"Ghazal, thumri and dadra — the semi-classical repertoire."},
+  {q:"Which of these was NOT a singer of the Kirana gharana?",o:["Bhimsen Joshi","Gangubai Hangal","Hirabai Barodekar","Kishori Amonkar"],a:3,p:"exponents",s:"Kishori Amonkar belonged to Jaipur-Atrauli. The other three were Kirana."},
+  {q:"Pandit Samta Prasad and Pandit Kishan Maharaj shared which gharana?",o:["Benaras","Punjab","Lucknow","Farrukhabad"],a:0,p:"exponents",s:"Both were Benaras tabla players."},
+  {q:"Which Kathak dancer and gharana are correctly matched?",o:["Birju Maharaj — Jaipur Kathak","Sitara Devi — Banaras Kathak","Durga Lal — Lucknow Kathak","Gopi Krishna — Raigarh Kathak"],a:1,p:"exponents",s:"Sitara Devi and Gopi Krishna were Banaras; Birju Maharaj was Lucknow; Durga Lal was Jaipur."},
+  {q:"Hafiz Ali Khan was the father of",o:["Ali Akbar Khan","Amjad Ali Khan","Vilayat Khan","Zakir Hussain"],a:1,p:"exponents",s:"Amjad Ali Khan, in the Bangash sarod line. Ali Akbar Khan's father was Allauddin Khan of Maihar."},
+  {q:"Which three names are most often asked as a set of gharana pairings?",o:["Bade Ghulam Ali Khan–Patiala, Bhimsen Joshi–Kirana, Birju Maharaj–Lucknow","Tansen–Gwalior, Akbar–Agra, Khusrau–Delhi","Tyagaraja–Tanjore, Dikshitar–Madurai, Syama Sastri–Tiruvarur","Zakir Hussain–Delhi, Alla Rakha–Benaras, Thirakwa–Punjab"],a:0,p:"exponents",s:"Those three pairings carry more questions than any others in this topic."},
+  {q:"Enayat Khan and Shujaat Khan belong to the line of",o:["Allauddin Khan","Imdad Khan","Hafiz Ali Khan","Alladiya Khan"],a:1,p:"exponents",s:"The Imdadkhani or Etawah line: Imdad Khan, Enayat Khan, Vilayat Khan, Shujaat Khan."},
+  {q:"Pandit V. G. Jog is associated with which instrument?",o:["Violin in the Hindustani system","Sarangi","Santoor","Flute"],a:0,p:"exponents",s:"He established the violin as a Hindustani classical instrument. In Carnatic music the violin was already central."},
+  {q:"Pandit Vishwa Mohan Bhatt is known for which instrument?",o:["Rudra veena","Mohan veena","Saraswati veena","Surbahar"],a:1,p:"exponents",s:"The mohan veena, his own modified slide guitar."},
+  {q:"Zia Mohiuddin Dagar was a master of the",o:["Rudra veena","Sarod","Sitar","Pakhawaj"],a:0,p:"exponents",s:"The rudra veena, in the Dagar dhrupad lineage."},
+  {q:"Which of these is NOT a musician?",o:["Sarojini Naidu","Kesarbai Kerkar","Siddheshwari Devi","Anjanibai Malpekar"],a:0,p:"exponents",s:"Sarojini Naidu was a poet and political leader called the Nightingale of India — a standard trap option in music questions."},
+  {q:"Durga Lal and Sundar Prasad were dancers of which Kathak gharana?",o:["Lucknow","Jaipur","Banaras","Raigarh"],a:1,p:"exponents",s:"Jaipur, the gharana of layakari and footwork."},
+
+  /* ---- carnatic ---- */
+  {q:"Purandara Dasa is known as the",o:["Father or Pitamaha of Carnatic music","Founder of the Tanjore bani","Author of the Sangeet Ratnakara","First of the Carnatic trinity"],a:0,p:"carnatic",s:"He laid down the graded exercises every Carnatic student still begins with."},
+  {q:"The Carnatic trinity consists of",o:["Purandara Dasa, Tyagaraja, Annamacharya","Tyagaraja, Muthuswami Dikshitar, Syama Sastri","Tyagaraja, Purandara Dasa, Venkatamakhin","Dikshitar, Syama Sastri, Swathi Thirunal"],a:1,p:"carnatic",s:"Tyagaraja, Muthuswami Dikshitar and Syama Sastri."},
+  {q:"All three members of the Carnatic trinity were born at",o:["Thanjavur","Tiruvarur","Madurai","Kanchipuram"],a:1,p:"carnatic",s:"Tiruvarur in Tamil Nadu. This single fact is asked more often than their compositions."},
+  {q:"Tyagaraja composed mostly in which language?",o:["Tamil","Sanskrit","Telugu","Kannada"],a:2,p:"carnatic",s:"Telugu, and mostly in praise of Rama. Dikshitar composed mostly in Sanskrit."},
+  {q:"The Tyagaraja Aradhana is held every year at",o:["Thiruvaiyaru","Tiruvarur","Chidambaram","Tirupati"],a:0,p:"carnatic",s:"Thiruvaiyaru, in Tamil Nadu."},
+  {q:"Carnatic music organises its ragas into how many parent ragas?",o:["10","22","72","108"],a:2,p:"carnatic",s:"72 melakartas. Hindustani music does the same job with 10 thaats."},
+  {q:"The 72 melakarta scheme is credited to",o:["Sarangadeva","Venkatamakhin","Matanga","Bharata Muni"],a:1,p:"carnatic",s:"Venkatamakhin, in the Chaturdandi Prakasika."},
+  {q:"A raga derived from a melakarta is called a",o:["Janya raga","Jod raga","Thaat","Bani"],a:0,p:"carnatic",s:"Janya, meaning born from."},
+  {q:"Which form usually opens a Carnatic concert?",o:["Tillana","Varnam","Kriti","Javali"],a:1,p:"carnatic",s:"The varnam opens; the tillana usually closes."},
+  {q:"The three sections of a Carnatic kriti are",o:["Sthayi, Antara, Sanchari","Pallavi, Anupallavi, Charanam","Alap, Jod, Jhala","Varnam, Tanam, Pallavi"],a:1,p:"carnatic",s:"Pallavi, Anupallavi and Charanam. The first list belongs to Hindustani dhrupad."},
+  {q:"Ragam-Tanam-Pallavi is",o:["A devotional group song","The long improvised centrepiece of a Carnatic concert","A temple ritual","A kind of tala"],a:1,p:"carnatic",s:"It is the great improvised section of a Carnatic recital."},
+  {q:"The chief percussion instrument of Carnatic music is the",o:["Tabla","Mridangam","Pakhawaj","Dholak"],a:1,p:"carnatic",s:"The mridangam. The tabla belongs to the Hindustani system."},
+  {q:"The ghatam, used in Carnatic music, is",o:["A clay pot","A bamboo flute","A bowed string instrument","A jaw harp"],a:0,p:"carnatic",s:"A clay pot struck with the hands. The morsing is the jaw harp and the kanjira the frame drum."},
+  {q:"The nadaswaram is usually paired with which drum?",o:["Mridangam","Thavil","Ghatam","Kanjira"],a:1,p:"carnatic",s:"The thavil. Together they are the temple and wedding pair of South India."},
+  {q:"Which instrument, adopted from Europe, became central to Carnatic music?",o:["Clarinet","Violin","Mandolin","Saxophone"],a:1,p:"carnatic",s:"The violin, now a standard accompanying and solo instrument in Carnatic concerts."},
+  {q:"M. S. Subbulakshmi was the first Indian musician to",o:["Receive the Bharat Ratna","Record for All India Radio","Win a Grammy","Head the Sangeet Natak Akademi"],a:0,p:"carnatic",s:"She received the Bharat Ratna in 1998, the first musician to do so. She was also the first Indian to receive the Ramon Magsaysay Award for music, in 1974."},
+  {q:"M. S. Subbulakshmi performed at the United Nations General Assembly in",o:["1956","1966","1974","1998"],a:1,p:"carnatic",s:"1966. The Magsaysay came in 1974 and the Bharat Ratna in 1998."},
+  {q:"Lalgudi Jayaraman was a master of which instrument?",o:["Mridangam","Violin","Veena","Nadaswaram"],a:1,p:"carnatic",s:"The Carnatic violin."},
+  {q:"Palghat Mani Iyer was a master of which instrument?",o:["Mridangam","Ghatam","Veena","Flute"],a:0,p:"carnatic",s:"The mridangam."},
+  {q:"Hindustani and Carnatic music are generally held to have separated in about the",o:["Eighth century","Thirteenth to fourteenth century","Sixteenth century","Eighteenth century"],a:1,p:"carnatic",s:"Around the thirteenth to fourteenth century, as the north absorbed Persian and Central Asian influence and the south did not."},
+
+  /* ---- theory ---- */
+  {q:"The Natya Shastra is attributed to",o:["Bharata Muni","Matanga","Sarangadeva","Abhinavagupta"],a:0,p:"theory",s:"Bharata Muni. It is the foundational text on drama, dance and music, and the source of the rasa theory."},
+  {q:"The first text to use the word raga in its modern sense is the",o:["Natya Shastra","Brihaddeshi","Sangeet Ratnakara","Chaturdandi Prakasika"],a:1,p:"theory",s:"The Brihaddeshi of Matanga."},
+  {q:"The Brihaddeshi was written by",o:["Matanga","Sarangadeva","Ahobala","Venkatamakhin"],a:0,p:"theory",s:"Matanga, around the eighth or ninth century."},
+  {q:"The Sangeet Ratnakara was written by",o:["Bharata Muni","Sarangadeva","Matanga","Venkatamakhin"],a:1,p:"theory",s:"Sarangadeva, in the thirteenth century, at the Yadava court at Devagiri."},
+  {q:"The Sangeet Ratnakara is called the Saptadhyayi because it has",o:["Seven authors","Seven chapters","Seven ragas","Seven talas"],a:1,p:"theory",s:"Seven chapters. It is the last great text common to both the Hindustani and the Carnatic systems."},
+  {q:"Which text is cited by BOTH the Hindustani and the Carnatic traditions as common ground?",o:["Chaturdandi Prakasika","Hindustani Sangeet Paddhati","Sangeet Ratnakara","Man Kutuhal"],a:2,p:"theory",s:"The Sangeet Ratnakara, written just before the two systems separated."},
+  {q:"Hindustani ragas were classified into ten thaats by",o:["V. D. Paluskar","V. N. Bhatkhande","Sarangadeva","Omkarnath Thakur"],a:1,p:"theory",s:"Vishnu Narayan Bhatkhande, who also wrote Hindustani Sangeet Paddhati."},
+  {q:"How many thaats are there in the Hindustani system?",o:["Seven","Ten","Twelve","Seventy-two"],a:1,p:"theory",s:"Ten. Seventy-two is the Carnatic melakarta count."},
+  {q:"Which of these is NOT one of Bhatkhande's ten thaats?",o:["Bilawal","Kalyan","Malhar","Marwa"],a:2,p:"theory",s:"Malhar is a raga, not a thaat. The ten are Bilawal, Kalyan, Khamaj, Bhairav, Bhairavi, Asavari, Todi, Purvi, Marwa and Kafi."},
+  {q:"The Gandharva Mahavidyalaya was founded in 1901 at Lahore by",o:["V. N. Bhatkhande","V. D. Paluskar","Omkarnath Thakur","Faiyaz Khan"],a:1,p:"theory",s:"Vishnu Digambar Paluskar, who took music teaching out of the courts and opened it to ordinary students."},
+  {q:"Bhatkhande and Paluskar are both called reformers of Hindustani music. The difference is that",o:["Bhatkhande classified the ragas; Paluskar founded public music schools","Paluskar classified the ragas; Bhatkhande founded the schools","Both only composed","Both only performed"],a:0,p:"theory",s:"One wrote the system down, the other opened the schools."},
+  {q:"Tansen's original name was",o:["Ramtanu Pandey","Baiju Mishra","Gopal Nayak","Bilas Chandra"],a:0,p:"theory",s:"Ramtanu Pandey. He was a disciple of Swami Haridas and one of Akbar's navaratnas."},
+  {q:"Tansen was a disciple of",o:["Swami Haridas","Amir Khusrau","Purandara Dasa","Nizamuddin Auliya"],a:0,p:"theory",s:"Swami Haridas."},
+  {q:"Which raga is NOT traditionally credited to Tansen?",o:["Miyan ki Todi","Miyan ki Malhar","Darbari Kanada","Bilaskhani Todi"],a:3,p:"theory",s:"Bilaskhani Todi is named for his son Bilas Khan, not composed by Tansen himself."},
+  {q:"The Tansen Samman is given by the government of",o:["Uttar Pradesh","Madhya Pradesh","Rajasthan","Delhi"],a:1,p:"theory",s:"Madhya Pradesh, at the Tansen Samaroh at Gwalior, beside Tansen's tomb."},
+  {q:"Amir Khusrau is traditionally credited with inventing all of the following EXCEPT",o:["The sitar","The tabla","The qawwali","The pakhawaj"],a:3,p:"theory",s:"Tradition credits him with the sitar, the tabla, the khayal, the tarana and the qawwali. The pakhawaj is older and belongs to the dhrupad tradition."},
+  {q:"Amir Khusrau was a disciple of which Sufi saint?",o:["Moinuddin Chishti","Nizamuddin Auliya","Baba Farid","Salim Chishti"],a:1,p:"theory",s:"Nizamuddin Auliya, of the Chishti silsila."},
+  {q:"Man Kutuhal, a treatise on music, is associated with",o:["Raja Man Singh Tomar of Gwalior","Akbar","Wajid Ali Shah","Raja Chakradhar Singh"],a:0,p:"theory",s:"Raja Man Singh Tomar of Gwalior, under whom dhrupad flowered."},
+  {q:"In the Natya Shastra's classification, stringed instruments are called",o:["Tata vadya","Sushira vadya","Avanaddha vadya","Ghana vadya"],a:0,p:"theory",s:"Tata is stringed, sushira is wind, avanaddha is skin-covered drums, and ghana is solid struck instruments."},
+  {q:"The tabla, mridangam and pakhawaj belong to which class of instrument?",o:["Tata","Sushira","Avanaddha","Ghana"],a:2,p:"theory",s:"Avanaddha vadya — instruments covered with a skin."},
+  {q:"The jaltarang, manjira and ghatam belong to which class?",o:["Tata","Sushira","Avanaddha","Ghana"],a:3,p:"theory",s:"Ghana vadya — solid instruments struck without a separate tuning element."},
+  {q:"The shehnai and the nadaswaram belong to which class of instrument?",o:["Tata","Sushira","Avanaddha","Ghana"],a:1,p:"theory",s:"Sushira vadya, the wind instruments."},
+  {q:"Which two of the seven swaras are fixed and do not vary?",o:["Sa and Pa","Sa and Ma","Re and Dha","Ga and Ni"],a:0,p:"theory",s:"Shadja and Panchama — Sa and Pa — are fixed. The other five vary."},
+  {q:"The commonest tala of Hindustani music, of sixteen beats, is",o:["Teentaal","Ektaal","Jhaptaal","Dhamar"],a:0,p:"theory",s:"Teentaal, of 16 beats. Dhamar has 14."},
+
+  /* ---- awards ---- */
+  {q:"The Sangeet Natak Akademi was established in",o:["1947","1952","1954","1959"],a:1,p:"awards",s:"1952, and inaugurated in 1953. It was the first of the national academies."},
+  {q:"Which body recognises a dance form as classical in India?",o:["Ministry of Culture","Sangeet Natak Akademi","Lalit Kala Akademi","National School of Drama"],a:1,p:"awards",s:"The Sangeet Natak Akademi, which is why Sattriya became the eighth classical dance in 2000."},
+  {q:"The highest honour of the Sangeet Natak Akademi is the",o:["Sangeet Natak Akademi Award","Akademi Ratna, the Fellowship","Kalidas Samman","Tansen Samman"],a:1,p:"awards",s:"The Akademi Ratna or Fellowship, which is limited in number at any one time."},
+  {q:"Which academy is concerned with the fine arts such as painting and sculpture?",o:["Sangeet Natak Akademi","Sahitya Akademi","Lalit Kala Akademi","National School of Drama"],a:2,p:"awards",s:"The Lalit Kala Akademi. Sahitya Akademi is for letters and Sangeet Natak Akademi for the performing arts."},
+  {q:"Who was the first musician to receive the Bharat Ratna?",o:["Ravi Shankar","M. S. Subbulakshmi","Bismillah Khan","Bhimsen Joshi"],a:1,p:"awards",s:"M. S. Subbulakshmi, in 1998."},
+  {q:"Pandit Ravi Shankar received the Bharat Ratna in",o:["1998","1999","2001","2008"],a:1,p:"awards",s:"1999, the year after M. S. Subbulakshmi."},
+  {q:"Ustad Bismillah Khan received the Bharat Ratna in",o:["1999","2001","2008","2019"],a:1,p:"awards",s:"2001, the same year as Lata Mangeshkar."},
+  {q:"Which Hindustani classical vocalist has received the Bharat Ratna?",o:["Bade Ghulam Ali Khan","Pandit Jasraj","Pandit Bhimsen Joshi","Ustad Amir Khan"],a:2,p:"awards",s:"Bhimsen Joshi, in 2008, of the Kirana gharana. He is the only Hindustani classical vocalist on the list."},
+  {q:"Arrange these Bharat Ratna musicians in the order they received it: Bhimsen Joshi, M. S. Subbulakshmi, Ravi Shankar, Bismillah Khan",o:["Subbulakshmi, Ravi Shankar, Bismillah Khan, Bhimsen Joshi","Ravi Shankar, Subbulakshmi, Bhimsen Joshi, Bismillah Khan","Bismillah Khan, Subbulakshmi, Ravi Shankar, Bhimsen Joshi","Subbulakshmi, Bismillah Khan, Ravi Shankar, Bhimsen Joshi"],a:0,p:"awards",s:"1998, 1999, 2001 and 2008 respectively."},
+  {q:"The Tansen Samaroh, at which the Tansen Samman is given, is held at",o:["Gwalior","Agra","Delhi","Bhopal"],a:0,p:"awards",s:"Gwalior, beside Tansen's tomb. The award is given by the government of Madhya Pradesh."},
+  {q:"The Kalidas Samman is awarded by which state government?",o:["Uttar Pradesh","Madhya Pradesh","Maharashtra","Karnataka"],a:1,p:"awards",s:"Madhya Pradesh, which also gives the Tansen Samman and the Kumar Gandharva Samman."},
+  {q:"M. S. Subbulakshmi received the Ramon Magsaysay Award in",o:["1966","1974","1988","1998"],a:1,p:"awards",s:"1974, for public service through music. She was the first Indian musician to receive it."},
+  {q:"Sattriya was recognised as a classical dance in",o:["1952","1972","2000","2010"],a:2,p:"awards",s:"2000, by the Sangeet Natak Akademi, making it the eighth classical dance."},
+  {q:"Which of the following is on the UNESCO list of India's intangible cultural heritage?",o:["Kathak","Sankirtana of Manipur","Khayal singing","Dhrupad"],a:1,p:"awards",s:"Sankirtana of Manipur is inscribed, as are Kutiyattam, Ramlila, Vedic chanting, Chhau, Kalbelia, Mudiyettu, Ramman, Durga Puja and Garba."},
+  {q:"Bhupen Hazarika received the Bharat Ratna in",o:["2008","2014","2019","2021"],a:2,p:"awards",s:"2019, posthumously."}
+
+ ]},
+
   /* ------------------------------------------- 6 NOVEMBER */
   {id:"6-november", d:"6 November", y:2026,
  w:"The press from Hicky to the National Herald, the laws that gagged it, the associations that came before the Congress, the reform and revival societies, the revolutionary and political bodies — and then the ladder that answers the real question: founded in which year, by whom, and under which Viceroy — and the Governors-General from Warren Hastings to Canning, with the act, war or reform each one is asked for.",

@@ -836,6 +836,53 @@ read. "Panipat, Khanwa, Chanderi, Ghaghra — 26, 27, 28, 29." "Zat is the man,
 sawar is the horse." "Three Panipats, three different losers." They are
 mnemonics for what is already on the branch, never a new fact.
 
+## The 7 November set
+
+The gharanas, which the site carried as a single clause — that Kathak has three
+of them — and nothing else. That clause is as far as most study files go, and it
+is the one place in Art and Culture where the exam asks past it. It does not ask
+what a gharana is. It asks which gharana, founded by whom, at which town, and
+who sang or played in it. So the set is built in that shape: every gharana with
+its founder, its place, the one feature it is identified by, and the names that
+belong to it.
+
+Ten parts, 206 questions.
+
+1. **What a gharana actually is** — the word, the three-generation test, the
+   ganda bandhan, why the houses formed after 1857 when Mughal patronage
+   collapsed and the Delhi musicians scattered to the princely courts, and the
+   fact that Carnatic music has no gharanas at all.
+2. **The khayal gharanas** — eleven of them: Gwalior, Agra, Kirana,
+   Jaipur-Atrauli, Patiala, Rampur-Sahaswan, Bhendibazaar, Mewati, Indore,
+   Delhi, Sham Chaurasi, with Bishnupur beside them.
+3. **Dhrupad, its four banis, and the vocal forms** — the older layer, the four
+   banis and the families that hold them, and then khayal, thumri, tappa,
+   tarana, dhamar, ghazal and qawwali.
+4. **The six tabla gharanas** — Delhi, Ajrada, Lucknow, Farrukhabad, Benaras,
+   Punjab, split into the closed Delhi baaj and the open Purab baaj.
+5. **The four Kathak gharanas** — Lucknow, Jaipur, Banaras and Raigarh. Raigarh
+   is the one the three-gharana answer leaves out.
+6. **The instrumental gharanas** — Tansen's own Seniya line and its two
+   branches, Maihar, Imdadkhani or Etawah, the Bangash sarod line,
+   Shahjahanpur.
+7. **Who belonged to which** — the whole set as one ladder, because that is the
+   form the question takes, with the titles (Aftab-e-Mousiqi, Surashri, Nritya
+   Samragni) on the end of it.
+8. **The Carnatic side** — the trinity, the 72 melakartas, the forms in concert
+   order, the instruments, and the point that the word gharana does not cross
+   over.
+9. **The texts, the thaats and the instruments** — Natya Shastra, Brihaddeshi,
+   Sangeet Ratnakara, Chaturdandi Prakasika; Bhatkhande's ten thaats against
+   Venkatamakhin's seventy-two melakartas; Tansen and Amir Khusrau; the four
+   classes of instrument.
+10. **The academies and the awards** — Sangeet Natak Akademi, the Akademi Ratna,
+    and the six musicians with a Bharat Ratna in the order they received it.
+
+The comparison boxes are where the confusions are settled: Kirana against
+Jaipur-Atrauli, Gwalior against Agra, dhrupad against khayal by counting the
+sections and naming the drum, Delhi baaj against Purab baaj, Lucknow Kathak
+against Jaipur Kathak, Bhatkhande against Paluskar, thaat against melakarta.
+
 ## The 3 November set
 
 `#/daily/3-november`. Ten parts, **118 highlighted notes and 230 table rows**
