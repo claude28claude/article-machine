@@ -5534,6 +5534,7 @@ function jcaHome() {
         ' minutes · minus ' + JCA_MOCK.neg + '</i></a>' +
       '<a class="mmode" href="#/jca/practice/mixed"><b>Twenty mixed</b><i>From all three sections, least-tried first</i></a>' +
       '<a class="mmode" href="#/jca/maps"><b>Mind maps</b><i>Every topic as keywords, with a cover-and-recall mode</i></a>' +
+      '<a class="mmode" href="#/jca/tricks"><b>Tricks to remember</b><i>Memory hooks for the two rule books, in English and Hinglish</i></a>' +
       '<a class="mmode" href="' + (wrong ? '#/jca/practice/wrong' : '#/jca/r/scr-orders') + '"><b>' +
         (wrong ? 'Your ' + jcaPlural(wrong, 'wrong answer') : 'Every Order, in one table') + '</b><i>' +
         (wrong ? 'Until each one is right' : 'The 57 Orders of the 2013 Rules') + '</i></a>' +
@@ -5633,6 +5634,7 @@ function jcaSectionPage(s) {
     '<div class="stack"><a class="pill big" href="#/jca/practice/' + s.id + '">Practise all ' + ids.length +
     ' questions</a> <a class="pill big" href="#/jca/mock">Mock test</a>' +
     (s.id === 'r' ? ' <a class="pill big" href="#/jca/r/scr-orders">Every Order, in one table</a>' : '') +
+    (jcaTricks(s.id).length ? ' <a class="pill big" href="#/jca/tricks/' + s.id + '">Tricks to remember</a>' : '') +
     '</div></div>';
 
   h += jcaTopicParts(s);
@@ -5704,6 +5706,7 @@ function jcaTopicPage(s, t) {
   h += '<div class="stack-sm"><a class="pill big" href="#/jca/practice/' + s.id + '/' + t.id + '">' +
     'Practise these ' + jcaPlural(ids.length, 'question') + '</a>' +
     (jcaMap(s.id, t.id) ? ' <a class="pill big" href="#/jca/maps/' + s.id + '/' + t.id + '">Mind map</a>' : '') +
+    (jcaTricks(s.id, t.id).length ? ' <a class="pill big" href="#/jca/tricks/' + s.id + '/' + t.id + '">Tricks to remember</a>' : '') +
     (p.tried ? ' <span class="jcmeta">' + esc(jcaProgressLine(p)) + '</span>' : '') + '</div>';
 
   if (grouped) {
@@ -5840,7 +5843,7 @@ function jcaAnswerCard(id, pick) {
     (pick != null && pick !== q.a ? '<div class="mans jcyours">You chose ' + 'ABCD'.charAt(pick) +
       ' · ' + esc(q.o[pick]) + '</div>' : '') +
     '<div class="mans">' + 'ABCD'.charAt(q.a) + ' · ' + esc(q.o[q.a]) + '</div>' +
-    '<div class="mqsol">' + hiMark(prose(q.s, 1)) + '</div>' + jcaQMeta(item, true) + '</div>';
+    '<div class="mqsol">' + hiMark(prose(q.s, 1)) + '</div>' + jcaTipFor(id) + jcaQMeta(item, true) + '</div>';
 }
 
 function jcaDrawQuiz() {
@@ -5897,7 +5900,9 @@ function jcaPick(pick) {
     quizLead({ a: q.a, o: q.o, s: unmark(String(q.s || '')) }, ok).replace(' \u2014 the', ': the') +
     '</b> ' + hiMark(prose(q.s, 1)) + ' <span class="jctests">Tests ' + esc(q.r) + '</span></div>' +
     '<div class="stack"><button class="pill big" type="button" data-act="next">' +
-    (z.i + 1 >= z.ids.length ? 'See the score' : 'Next question') + '</button></div>';
+    (z.i + 1 >= z.ids.length ? 'See the score' : 'Next question') + '</button></div>' +
+    /* the trick after the Next button, so Next stays on a short screen */
+    jcaTipFor(id);
   var nb = box.querySelector('[data-act="next"]');
   if (nb) nb.focus({ preventScroll: true });
 }
@@ -5929,6 +5934,13 @@ function jcaPractice(seg) {
   if (k === 'mixed') {
     return jcaStartQuiz(jcaFreshFirst(JCA_Q.map(function (x) { return x.id; })).slice(0, 20), 'Twenty mixed',
       'From all three sections, the ones you have tried least first.');
+  }
+  if (k === 'trick') {
+    var found = jcaTrickBook(seg[1] || '');
+    if (!found) return notFound('There is no such trick in JCA.');
+    return jcaStartQuiz(jcaFreshFirst(jcaTrickQs(found.tr.id).slice()), found.tr.h,
+      'The questions this trick answers, ' + found.tr.k + ', in a different order each time.',
+      [found.tr.h, jcaTrickHref(found.b, found.tr)]);
   }
   if (k === 'a') {
     var num = seg[1], a = byArt[num];
@@ -6499,6 +6511,286 @@ function jcaMaps(seg) {
   jcaMapPage(s, t);
 }
 
+/* ---------------------------------------------------------------- tricks
+
+   Tricks to remember (data-jca-tricks.js): a memory hook for each part of
+   the two rule books, in English with a line of Hinglish under it, over
+   the facts it unlocks. Each trick knows the questions it answers, by their
+   references, so it can open a practice set of exactly those, and an
+   answered question can show its trick under the reason. The 1961 Rules
+   come first: they carry the most detail and the most questions. */
+
+var JCA_TRICKS = window.JCA_TRICKS || {};
+var JCA_TRICK_BOOKS = ['s', 'r'].filter(function (b) { return jcaSec[b] && (JCA_TRICKS[b] || []).length; });
+
+function jcaTricks(b, tid) {
+  return (JCA_TRICKS[b] || []).filter(function (tr) { return !tid || tr.t === tid; });
+}
+
+function jcaTrickBook(id) {
+  var hit = null;
+  JCA_TRICK_BOOKS.forEach(function (b) {
+    jcaTricks(b).forEach(function (tr) { if (tr.id === id) hit = { b: b, tr: tr }; });
+  });
+  return hit;
+}
+
+/* "Rule 11" takes "Rule 11(iii)" and "Rule 11, Explanation 4" but never
+   "Rule 110"; "Order XLVII" never takes "Order XLVIII". */
+function jcaRefHit(r, ref) {
+  var i = r.indexOf(ref);
+  while (i >= 0) {
+    var before = i ? r.charAt(i - 1) : ' ', after = r.charAt(i + ref.length);
+    if (!/[A-Za-z0-9]/.test(before) && !/[A-Za-z0-9]/.test(after)) return true;
+    i = r.indexOf(ref, i + 1);
+  }
+  return false;
+}
+
+/* How well a trick fits a question, 0 for not at all. A trick with
+   keywords needs one of them in the question or its answer, and then beats
+   one without; the question's own topic beats another; a longer reference
+   beats a shorter. */
+function jcaTrickScore(tr, q) {
+  var best = 0;
+  (tr.refs || []).forEach(function (ref) {
+    if (ref.length > best && jcaRefHit(String(q.r || ''), ref)) best = ref.length;
+  });
+  if (!best) return 0;
+  if (tr.kw) {
+    var text = (q.q + ' ' + q.o[q.a]).toLowerCase();
+    if (!tr.kw.some(function (k) { return text.indexOf(k) >= 0; })) return 0;
+    best += 100;
+  }
+  return best + (tr.t === q.t ? 50 : 0) + (tr.pri || 0);
+}
+
+var jcaTrickQ = null, jcaTrickFor = null;
+function jcaTrickIndex() {
+  if (jcaTrickQ) return;
+  jcaTrickQ = {}; jcaTrickFor = {};
+  JCA_TRICK_BOOKS.forEach(function (b) { jcaTricks(b).forEach(function (tr) { jcaTrickQ[tr.id] = []; }); });
+  JCA_Q.forEach(function (item) {
+    var top = null, topScore = 0;
+    jcaTricks(item.sec.id).forEach(function (tr) {
+      var sc = jcaTrickScore(tr, item.q);
+      if (!sc) return;
+      jcaTrickQ[tr.id].push(item.id);
+      if (sc > topScore) { top = tr; topScore = sc; }
+    });
+    if (top) jcaTrickFor[item.id] = top;
+  });
+}
+
+/* The questions a trick answers, and the trick a question is best
+   answered by. */
+function jcaTrickQs(id) { jcaTrickIndex(); return jcaTrickQ[id] || []; }
+function jcaQTrick(qid) { jcaTrickIndex(); return jcaTrickFor[qid] || null; }
+
+function jcaTrickTopicName(b, tid) {
+  if (tid === 'numbers') return 'Every number in one card';
+  var t = jcaTopic(b, tid);
+  return t ? t.t : '';
+}
+
+/* A trick's facts: its own rows, or a stretch of the 2013 Rules' list of
+   Orders, read from that list so a heading is never written twice. */
+function jcaTrickRows(b, tr) {
+  if (!tr.orders) return tr.rows || [];
+  var list = (jcaSec[b] && jcaSec[b].orders) || [], on = false, out = [];
+  list.forEach(function (o) {
+    if (o[0] === tr.orders[0]) on = true;
+    if (on) out.push(['Order ' + o[0], o[1]]);
+    if (o[0] === tr.orders[1]) on = false;
+  });
+  return out;
+}
+
+function jcaTrickHref(b, tr) {
+  return '#/jca/tricks/' + b + '/' + encodeURIComponent(tr.t);
+}
+
+function jcaTrickCard(b, tr, i, inList) {
+  var n = jcaTrickQs(tr.id).length, hue = JCA_GHUES[i % JCA_GHUES.length];
+  return '<section class="' + (inList ? '' : 'block ') + 'jcgrp jctrick g-' + hue + '" id="tr-' + tr.id + '">' +
+    '<p class="jcgk">' + esc(tr.k) + '</p><h3>' + esc(tr.h) + '</h3>' +
+    '<p class="jthook">' + hiMark(esc(tr.hook)) + '</p>' +
+    '<p class="jthi"><b>Hinglish</b>' + esc(tr.hi) + '</p>' +
+    '<ul class="jtrows">' + jcaTrickRows(b, tr).map(function (r) {
+      return '<li class="jtr"><span class="jtk">' + esc(r[0]) + '</span><span class="jtv">' + hiMark(linkArts(r[1])) + '</span></li>';
+    }).join('') + '</ul>' +
+    '<div class="jtacts">' +
+      (n ? '<a class="pill" href="#/jca/practice/trick/' + encodeURIComponent(tr.id) + '">Practise the ' +
+        jcaPlural(n, 'question') + ' it answers</a>' : '') +
+      '<button class="pill jtall" type="button" data-jt="card" hidden>Uncover this card</button>' +
+    '</div></section>';
+}
+
+/* The cover-and-recall bar: the hooks stay, the facts under them are
+   covered, and each line opens when it is pressed. */
+function jcaTrickTools() {
+  return '<div class="jttools" id="jttools">' +
+    '<button class="pill big" type="button" data-jt="cover">Cover the facts</button>' +
+    '<button class="pill big" type="button" data-jt="show" hidden>Show everything</button>' +
+    '<span class="jtprog" id="jtprog" hidden></span></div>';
+}
+
+function jcaTrickWire() {
+  var box = main.querySelector('.jtwrap'), tools = document.getElementById('jttools');
+  if (!box || !tools) return;
+  function rows(root) { return (root || box).querySelectorAll('.jtr'); }
+  function uncover(r) {
+    r.classList.add('shown');
+    r.removeAttribute('tabindex'); r.removeAttribute('role'); r.removeAttribute('aria-label');
+  }
+  function count() {
+    var p = document.getElementById('jtprog'), all = rows().length, shown = box.querySelectorAll('.jtr.shown').length;
+    if (!p) return;
+    p.hidden = !box.classList.contains('jtrecall');
+    p.textContent = shown >= all ? 'All ' + all + ' uncovered. Cover them again tomorrow.' : shown + ' of ' + all + ' uncovered';
+  }
+  function cover(on) {
+    box.classList.toggle('jtrecall', on);
+    Array.prototype.forEach.call(rows(), function (r) {
+      r.classList.remove('shown');
+      if (on) { r.setAttribute('tabindex', '0'); r.setAttribute('role', 'button'); r.setAttribute('aria-label', 'Covered line: press to uncover'); }
+      else { r.removeAttribute('tabindex'); r.removeAttribute('role'); r.removeAttribute('aria-label'); }
+    });
+    Array.prototype.forEach.call(box.querySelectorAll('[data-jt="card"]'), function (x) { x.hidden = !on; });
+    tools.querySelector('[data-jt="cover"]').hidden = on;
+    tools.querySelector('[data-jt="show"]').hidden = !on;
+    count();
+  }
+  tools.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-jt]');
+    if (b) cover(b.getAttribute('data-jt') === 'cover');
+  });
+  box.addEventListener('click', function (e) {
+    if (!box.classList.contains('jtrecall')) return;
+    var all = e.target.closest('[data-jt="card"]');
+    if (all) { Array.prototype.forEach.call(rows(all.closest('.jctrick')), uncover); return count(); }
+    var r = e.target.closest('.jtr');
+    if (r && !r.classList.contains('shown')) {
+      /* a covered line may hold an article link: the first press uncovers */
+      e.preventDefault();
+      uncover(r);
+      count();
+    }
+  });
+  box.addEventListener('keydown', function (e) {
+    var r = e.target;
+    if (!box.classList.contains('jtrecall') || !r.classList || !r.classList.contains('jtr') || r.classList.contains('shown')) return;
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); uncover(r); count(); }
+  });
+}
+
+/* The topics of a book that have tricks, in the book's own order, with the
+   card of every number last. */
+function jcaTrickTopics(b) {
+  var s = jcaSec[b], ids = [];
+  s.topics.forEach(function (t) { if (jcaTricks(b, t.id).length) ids.push(t.id); });
+  if (jcaTricks(b, 'numbers').length) ids.push('numbers');
+  return ids;
+}
+
+function jcaTrickAnswered(b) {
+  var n = 0;
+  jcaQs(b).forEach(function (id) { if (jcaQTrick(id)) n++; });
+  return n;
+}
+
+function jcaTricksHub() {
+  var h = jcaCrumb([['Tricks to remember']]) +
+    pageH1('Tricks to remember', 'A memory hook for every part of the two rule books, the 1961 Rules first. Each trick is in ' +
+      'English with a line of Hinglish under it, sits over the facts it unlocks, and opens the questions it answers.') +
+    '<div class="grid">' + JCA_TRICK_BOOKS.map(function (b) {
+      var s = jcaSec[b], n = jcaQs(b).length, a = jcaTrickAnswered(b);
+      return '<a class="pcard" href="#/jca/tricks/' + b + '"><div class="pn">' + jcaPlural(jcaTricks(b).length, 'trick') + '</div>' +
+        '<div class="pt">' + esc(s.name) + '</div><div class="jcdesc">' + esc(a === n ? 'They answer all ' + n + ' of its questions.'
+          : 'They answer ' + a + ' of its ' + n + ' questions.') + '</div></a>';
+    }).join('') + '</div>' +
+    '<div class="block"><h3>How to use them</h3><ol class="mmhow">' +
+      '<li><b>Say the hook aloud,</b> then its Hinglish line. The one that sticks is yours; keep that one.</li>' +
+      '<li><b>Press Cover the facts.</b> Unpack each covered line from the hook alone, then press it to check.</li>' +
+      '<li><b>Practise what it answers.</b> Every card opens its own questions, and an answered question in practice shows its trick under the reason.</li>' +
+      '<li><b>Come back tomorrow, and again in three days.</b> A hook that will not come back is the one to say ten times.</li>' +
+    '</ol></div>';
+  JCA_TRICK_BOOKS.forEach(function (b) {
+    var s = jcaSec[b];
+    h += '<div class="hubsec"><div class="hubhead"><a href="#/jca/tricks/' + b + '">' + esc(s.name) + '</a>' +
+      '<span>' + jcaPlural(jcaTricks(b).length, 'trick') + ', topic by topic</span></div><div class="topics">' +
+      jcaTrickTopics(b).map(function (tid) {
+        var list = jcaTricks(b, tid), t = jcaTopic(b, tid);
+        return '<a class="topic" href="#/jca/tricks/' + b + '/' + encodeURIComponent(tid) + '"><b>' + esc(jcaTrickTopicName(b, tid)) + '</b>' +
+          '<i>' + esc(list.map(function (tr) { return tr.h; }).join(' · ')) + '</i>' +
+          '<em>' + (t && t.span ? esc(t.span) + ' · ' : '') + jcaPlural(list.length, 'trick') + '</em></a>';
+      }).join('') + '</div></div>';
+  });
+  render(jcaShell(h));
+}
+
+function jcaTricksBook(b) {
+  var s = jcaSec[b], all = jcaTricks(b), n = jcaQs(b).length, a = jcaTrickAnswered(b);
+  var h = jcaCrumb([['Tricks to remember', '#/jca/tricks'], [s.short]]) +
+    pageH1(s.short + ': tricks to remember', jcaPlural(all.length, 'trick') + ', each with a Hinglish line. ' +
+      (a === n ? 'Between them they answer all ' + n + ' questions in the bank.' : 'Between them they answer ' + a + ' of the ' + n + ' questions in the bank.')) +
+    jcaTrickTools() + '<div class="jtwrap">';
+  jcaTrickTopics(b).forEach(function (tid) {
+    var t = jcaTopic(b, tid);
+    h += '<div class="partband"><span class="pn">' + esc(t && t.span ? t.span : 'All the figures') + '</span>' +
+      '<h2><a class="jch3a" href="#/jca/tricks/' + b + '/' + encodeURIComponent(tid) + '">' + esc(jcaTrickTopicName(b, tid)) + '</a></h2></div>' +
+      jcaTricks(b, tid).map(function (tr, i) { return jcaTrickCard(b, tr, i, true); }).join('');
+  });
+  h += '</div><div class="stack"><a class="pill big" href="#/jca/practice/' + b + '">Practise all of ' + esc(s.short) + '</a> ' +
+    '<a class="pill big" href="#/jca/' + b + '">The notes</a> <a class="pill big" href="#/jca/tricks">Both rule books</a></div>';
+  render(jcaShell(h));
+  jcaTrickWire();
+}
+
+function jcaTricksTopic(b, tid) {
+  var s = jcaSec[b], list = jcaTricks(b, tid), t = jcaTopic(b, tid);
+  if (!list.length) return notFound('There are no tricks for that topic yet.');
+  var order = jcaTrickTopics(b), i = order.indexOf(tid), prev = order[i - 1], next = order[i + 1];
+  var ids = {};
+  list.forEach(function (tr) { jcaTrickQs(tr.id).forEach(function (id) { ids[id] = 1; }); });
+  var nq = Object.keys(ids).length;
+  var h = jcaCrumb([['Tricks to remember', '#/jca/tricks'], [s.short, '#/jca/tricks/' + b], [jcaTrickTopicName(b, tid)]]) +
+    (t && t.span ? '<p class="eyebrow jceyebrow">' + esc(t.span) + '</p>' : '') +
+    pageH1(jcaTrickTopicName(b, tid), jcaPlural(list.length, 'trick') + (nq ? ' · they answer ' + jcaPlural(nq, 'question') : '') + '.') +
+    jcaTrickTools() + '<div class="jtwrap">' +
+    list.map(function (tr, k) { return jcaTrickCard(b, tr, k, false); }).join('') + '</div>' +
+    '<div class="stack">' +
+      (t ? '<a class="pill big" href="#/jca/practice/' + b + '/' + encodeURIComponent(tid) + '">Practise the topic</a> ' +
+        '<a class="pill big" href="#/jca/' + b + '/' + encodeURIComponent(tid) + '">The full notes</a>' +
+        (jcaMap(b, tid) ? ' <a class="pill big" href="#/jca/maps/' + b + '/' + encodeURIComponent(tid) + '">Mind map</a>' : '')
+        : '<a class="pill big" href="#/jca/practice/' + b + '">Practise all of ' + esc(s.short) + '</a>') +
+    '</div><div class="nextprev">' +
+      (prev ? '<a href="#/jca/tricks/' + b + '/' + encodeURIComponent(prev) + '"><span class="d">Previous</span><span class="t">' +
+        esc(jcaTrickTopicName(b, prev)) + '</span></a>' : '<span></span>') +
+      (next ? '<a class="r" href="#/jca/tricks/' + b + '/' + encodeURIComponent(next) + '"><span class="d">Next</span><span class="t">' +
+        esc(jcaTrickTopicName(b, next)) + '</span></a>' : '<span></span>') +
+    '</div>';
+  render(jcaShell(h));
+  jcaTrickWire();
+}
+
+function jcaTricksRoute(seg) {
+  if (!seg[0]) return jcaTricksHub();
+  var b = seg[0];
+  if (JCA_TRICK_BOOKS.indexOf(b) < 0) return notFound('There are tricks for the two rule books only: the 2013 Rules and the 1961 Rules.');
+  if (!seg[1]) return jcaTricksBook(b);
+  jcaTricksTopic(b, seg[1]);
+}
+
+/* The trick under an answered question: shown only after the answer, for
+   the reason the rule reference is. */
+function jcaTipFor(qid) {
+  var tr = jcaQTrick(qid), item = JCA_QBY[qid];
+  if (!tr || !item) return '';
+  return '<div class="jctip"><b>Trick</b><a href="' + jcaTrickHref(item.sec.id, tr) + '">' + esc(tr.h) + '</a>: ' +
+    esc(tr.short) + '<i>' + esc(tr.hi) + '</i></div>';
+}
+
 /* ------------------------------------------------------------------ keys
 
    In a mock, A to D (or 1 to 4) choose and the arrows move; in practice,
@@ -6529,6 +6821,7 @@ function jcaRoute(seg) {
   if (k === 'mock') return seg[1] === 'result' ? jcaMockResult() : jcaMockPage();
   if (k === 'review') return jcaReviewPage();
   if (k === 'maps') return jcaMaps(seg.slice(1));
+  if (k === 'tricks') return jcaTricksRoute(seg.slice(1));
   var s = jcaSec[k];
   if (!s) return notFound('That address does not exist in JCA.');
   if (!seg[1]) return jcaSectionPage(s);
@@ -6548,6 +6841,7 @@ SUBJECTS.push({
     { href: '#/jca/r',        label: 'SC Rules 2013',  match: ['r'] },
     { href: '#/jca/s',        label: 'O&S Rules 1961', match: ['s'] },
     { href: '#/jca/maps',     label: 'Mind maps',      match: ['maps'] },
+    { href: '#/jca/tricks',   label: 'Tricks',         match: ['tricks'] },
     { href: '#/jca/practice', label: 'Practice',       match: ['practice'] },
     { href: '#/jca/mock',     label: 'Mock test',      match: ['mock'] },
     { href: '#/jca/review',   label: 'Review',         match: ['review'] }
@@ -6564,6 +6858,14 @@ SUBJECTS.push({
                    k: s.name + ' ' + (t.blocks || []).map(function (b) { return b.h; }).join(' ') +
                       ' jca junior court assistant supreme court exam' });
       });
+    });
+    JCA_TRICK_BOOKS.forEach(function (b) {
+      var list = jcaTricks(b);
+      out.push({ t: 'Tricks to remember: ' + jcaSec[b].short, href: '#/jca/tricks/' + b, n: jcaPlural(list.length, 'trick'),
+        w: 'Memory hooks for ' + jcaSec[b].name + ', each with a Hinglish line, the facts it unlocks and the questions it answers.',
+        k: 'tricks trick mnemonic memory hook yaad hinglish jca ' + list.map(function (tr) {
+          return tr.h + ' ' + tr.k + ' ' + unmark(tr.hook) + ' ' + tr.hi;
+        }).join(' ') });
     });
     return out.concat([
       { t: 'JCA mock test', href: '#/jca/mock', n: '35 questions',
@@ -6582,6 +6884,12 @@ SUBJECTS.push({
    all: they are pages to concentrate on. */
 function sideJca(seg) {
   var k = seg[0] || '', s = jcaSec[k];
+  if (k === 'tricks') {
+    var tb = jcaSec[seg[1]];
+    return [sLinks('Practise', (tb ? [tb] : JCA_TRICK_BOOKS.map(function (b) { return jcaSec[b]; })).map(function (x) {
+      return { href: '#/jca/practice/' + x.id, t: 'All of ' + x.short, d: jcaPlural(jcaQs(x.id).length, 'question') };
+    }).concat([{ href: '#/jca/mock', t: 'A mock test', d: '35 questions, 32 minutes' }]))];
+  }
   if (!k) {
     var n = jcaDaysLeft();
     return [sFacts('The law paper', [
@@ -7548,12 +7856,27 @@ function buildIndex() {
    ['Practice', '#/jca/practice', 'Every topic, twenty mixed, or one section', 'practice practise questions mcq quiz'],
    ['Review', '#/jca/review', 'Your wrong answers and every mock score', 'review wrong answers mistakes mock history score'],
    ['Only my wrong answers', '#/jca/practice/wrong', 'Practise the questions you got wrong', 'wrong answers mistakes revise'],
-   ['Mind maps', '#/jca/maps', 'Every part and topic as keywords, with cover and recall', 'mind map mindmap maps revision memory remember recall keywords']
+   ['Mind maps', '#/jca/maps', 'Every part and topic as keywords, with cover and recall', 'mind map mindmap maps revision memory remember recall keywords'],
+   ['Tricks to remember', '#/jca/tricks', 'Memory hooks for the two rule books, in English and Hinglish', 'tricks trick mnemonic memory hook remember yaad hinglish']
   ].forEach(function (x, i) {
     searchIndex.push({
       kind: 'jca', id: 'jcatool-' + i, no: '', title: x[0], sub: 'JCA \u00b7 ' + x[2],
       near: x[0].toLowerCase(), hay: (x[0] + ' ' + x[3] + ' jca junior court assistant').toLowerCase(),
       href: x[1], num: ''
+    });
+  });
+  /* Every trick, by its title, its hook and its Hinglish line, so that
+     "ReCoRD" or "Can We Recover" finds the penalties. */
+  JCA_TRICK_BOOKS.forEach(function (b) {
+    jcaTricks(b).forEach(function (tr) {
+      searchIndex.push({
+        kind: 'jca', id: 'jctrick-' + tr.id, no: '', title: tr.h,
+        sub: 'Trick \u00b7 ' + jcaSec[b].short + ' \u00b7 ' + tr.short,
+        near: (tr.h + ' ' + tr.short).toLowerCase(),
+        hay: unmark([tr.h, tr.k, tr.hook, tr.hi].concat(jcaTrickRows(b, tr).map(function (r) { return r.join(' '); })).join(' ') +
+             ' trick tricks mnemonic remember jca').toLowerCase(),
+        href: jcaTrickHref(b, tr), num: ''
+      });
     });
   });
   ((jcaSec.r && jcaSec.r.orders) || []).forEach(function (o) {
