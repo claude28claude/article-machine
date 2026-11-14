@@ -171,7 +171,8 @@ and cases, and that article page carries a JCA card back (the questions that
 test it, and a warning where the official edition still prints the
 struck-down NJAC wording). The two rule books exist nowhere else on the site.
 Its data is `data-jca-judiciary.js`, `data-jca-scr.js` and `data-jca-osr.js`,
-with the mind maps in `data-jca-maps.js`.
+with the mind maps in `data-jca-maps.js` and the memory tricks in
+`data-jca-tricks.js`.
 
 **Four ways to work.** Every topic page carries JCA notes, fact tables and
 confused pairs. The notes are in short sections, one for each rule, Order or
@@ -210,6 +211,30 @@ the keys (an article, an Order, a rule) stay as prompts, every line becomes
 a blank bar the length of its words, and a tap, Enter or Space uncovers it.
 The words are made invisible rather than removed, so uncovering moves
 nothing. The maps take the whole width: they have no side column.
+
+**Tricks to remember** (`#/jca/tricks`). A memory hook for every part of
+the two rule books, the 1961 Rules first: 43 tricks for them and 25 for the
+2013 Rules, written after reading what the bank's 417 rule-book questions
+actually ask (a rule's number, who decides, a time limit, a list in order,
+the odd one out). Each card has the hook in English (“Can We Recover?” for
+the three minor penalties, “ReCoRD” for the four major ones; Five for
+Filing, Six for Staff; the T20 rule for Rule 20's one month), the same
+trick in one line of Hinglish, a second way in, and the facts it unlocks as
+rows. A hook may hang a fact on an outside image (1857 for
+Order LVII, the seven times table for Order XXI and Form No. 28); the rows
+never add anything: every number, rule, Order and article in them is
+checked against the verified notes of the book, and a single-source table
+is never used. **Cover the facts** covers the rows and leaves the hooks as
+prompts, as the maps do.
+
+Each trick carries the references it answers (`refs`, with `kw` where two
+tricks share a rule), so it knows its questions: every card opens a
+practice set of exactly those (`#/jca/practice/trick/<id>`), and in practice,
+the results and the review list an answered question shows its best trick
+under the reason, never before the answer. Between them they answer all 231
+questions on the 1961 Rules and 185 of the 186 on the 2013 Rules. The
+headings of the Order-by-Order tricks are read from the 2013 Rules' own list
+of Orders (`orders: [first, last]`), so no heading is written twice.
 
 **How firm the rule-book material is.** The 1961 Rules were checked line by
 line against the Court's full consolidated text (amended up to 6 November

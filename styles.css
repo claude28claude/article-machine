@@ -329,6 +329,9 @@ nav.tabs a[aria-current="page"]{color:var(--gold);border-bottom-color:var(--gold
   letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
   padding:8px var(--s4);border-radius:var(--r-pill);
   white-space:nowrap;transition:background var(--fast) var(--ease);
+  /* a flex item drops the space that opens its label, so the gap puts it
+     back: without it the pill read "JCALAW PAPER" */
+  gap:.5em;
 }
 .jcabtn:hover{background:rgba(var(--gold-rgb),.28)}
 .jcabtn[aria-current="page"]{background:var(--gold);color:var(--bg)}
@@ -2303,3 +2306,60 @@ a.mmk:hover{text-decoration:underline}
   details > summary{display:block!important;font-weight:700}
   details:not([open]) > *{display:revert!important}
 }
+
+/* ==========================================================================
+   TRICKS TO REMEMBER
+
+   A trick card is a section card (.jcgrp) that holds three things: the
+   hook, in the reading face with its key letters in gold; a line of
+   Hinglish in italic under a small purple label; and the facts it unlocks,
+   as key and value. Covered, a value keeps its words but turns transparent
+   over a bar, as a mind map's lines do, so uncovering one moves nothing.
+   ========================================================================== */
+
+.jttools{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2) var(--s3);margin:var(--s4) 0 var(--s2)}
+.jtprog{font-family:var(--mono);font-size:var(--t-tiny);letter-spacing:.06em;color:var(--dim)}
+.jctrick > h3{margin-bottom:var(--s2)}
+.jthook{margin:0 0 var(--s3);font-family:var(--serif);font-size:var(--t-base);line-height:1.62;color:var(--ink)}
+.jcpage .jthook mark.hi{color:var(--gold);text-decoration:none}
+.jthi{margin:0 0 var(--s4);font-size:var(--t-copy);line-height:1.55;color:var(--dim);font-style:italic}
+.jthi b,.jctip b{
+  font-style:normal;font-family:var(--mono);font-weight:500;font-size:var(--t-micro);
+  letter-spacing:.12em;text-transform:uppercase;margin-right:.6em;
+}
+.jthi b{color:var(--purple)}
+.jtrows{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.jtr{
+  display:grid;grid-template-columns:minmax(0,13em) minmax(0,1fr);gap:2px var(--s4);
+  padding:9px 0;border-bottom:1px solid var(--line);
+}
+.jtk{font-family:var(--mono);font-size:var(--t-small);line-height:1.5;color:var(--purple)}
+.jtv{font-size:var(--t-copy);line-height:1.55;color:var(--ink)}
+.jtv a{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(var(--gold-rgb),.4)}
+.jtacts{display:flex;flex-wrap:wrap;gap:var(--s2);margin:var(--s3) 0 var(--s2)}
+.jtwrap > .partband:first-child{margin-top:var(--s5)}
+.jtwrap > .jctrick{margin-top:var(--s4)}
+
+.jtrecall .jtr:not(.shown){cursor:pointer}
+.jtrecall .jtr:not(.shown) .jtv{
+  color:transparent;background:var(--line);border-radius:3px;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+}
+.jtrecall .jtr:not(.shown) .jtv *{color:transparent;border-color:transparent;background:none}
+.jtrecall .jtr:not(.shown):hover .jtv{background:var(--line2)}
+.jtrecall .jtr:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
+.jtrecall .jtr.shown .jtv{animation:mmfade .25s var(--ease)}
+@media (prefers-reduced-motion:reduce){.jtrecall .jtr.shown .jtv{animation:none}}
+@media (max-width:620px){.jtr{grid-template-columns:1fr}}
+
+/* The trick under an answered question: a dashed gold box, quieter than
+   the reason above it, and only ever shown once the answer is in. */
+.jctip{
+  margin-top:var(--s3);padding:var(--s3) var(--s4);max-width:72ch;
+  border:1px dashed rgba(var(--gold-rgb),.45);border-radius:var(--r-lg);
+  font-size:var(--t-copy);line-height:1.55;color:var(--dim);
+}
+.jctip b{color:var(--gold)}
+.jctip a{color:var(--ink);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(var(--gold-rgb),.4)}
+.jctip a:hover{color:var(--gold)}
+.jctip i{display:block;margin-top:var(--s1);font-size:var(--t-small);color:var(--dimmer)}
